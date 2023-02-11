@@ -10,45 +10,16 @@
                 </div><!-- end card header -->
 
                 <div class="card-body" style="min-height:300px">
-                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                        @foreach ($process as $proses)
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ $proses->id == $kasus->status_id ? 'active' : '' }}"
-                                    id="{{ $proses->name }}-id" data-bs-toggle="pill" data-bs-target="#{{ $proses->name }}"
-                                    type="button" role="tab" aria-controls="pills-home"
-                                    aria-selected="true">{{ $proses->name }}</button>
-                            </li>
-                        @endforeach
+                    <input type="text" class="form-control" id="data_pelanggar_id" name="data_pelanggar_id"
+                        value="{{ $kasus->id }}" hidden>
+                    <input type="text" class="form-control" id="process_id" name="data_pelanggar_id"
+                        value="{{ $kasus->status_id }}" hidden>
+                    <div class="loader-view" style="display:block;">
 
-                    </ul>
-
-                    <div class="tab-content px-3" id="pills-tabContent">
-                        <div class="tab-pane fade {{ 1 == $kasus->status_id ? 'show active' : '' }}" id="Diterima"
-                            role="tabpanel" aria-labelledby="pills-home-tab">Diterima</div>
-                        <div class="tab-pane fade {{ 4 == $kasus->status_id ? 'show active' : '' }}" id="Pulbaket"
-                            role="tabpanel" aria-labelledby="pills-profile-tab"> Pulbaket
-                        </div>
-                        <div class="tab-pane fade {{ 2 == $kasus->id ? 'show active' : '' }}" id="Disposisi" role="tabpanel"
-                            aria-labelledby="pills-contact-tab">
-                            <form>
-                                <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Disposisi</label>
-                                    <select class="form-select" aria-label="Default select example" name="disposisi-tujuan"
-                                        {{ 2 != $kasus->status_id ? 'disabled' : '' }} onchange="getPolda()"
-                                        id="disposisi-tujuan">
-                                        <option value="Pulbaket">Pulbaket</option>
-                                        <option value="Limpah">Limpah</option>
-                                    </select>
-                                </div>
-                                <div id="limpah-polda">
-
-                                </div>
-                                <button type="submit" class="btn btn-primary"
-                                    {{ 2 != $kasus->status_id ? 'disabled' : '' }}>Submit</button>
-                            </form>
-                        </div>
                     </div>
+                    <div id="viewProses">
 
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,12 +27,61 @@
 @endsection
 
 @section('scripts')
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/decoupled-document/ckeditor.js"></script> --}}
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/inline/ckeditor.js"></script> --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+
+
+    {{-- <script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script> --}}
+
     <script>
+        $(document).ready(function() {
+            // ClassicEditor
+            //     .create(document.querySelector('#editor'))
+            //     .catch(error => {
+            //         console.error(error);
+            //     });
+            let process_id = $('#process_id').val()
+            getViewProcess(process_id)
+        });
+    </script>
+    <script>
+        function getViewProcess(id) {
+            let kasus_id = $('#data_pelanggar_id').val()
+            let process_id = $('#process_id').val()
+            $("#viewProses").html("")
+            $('.loader-view').css("display", "block");
+            if (id == 3 && process_id > 3) {
+                id = 4
+            }
+
+            $.ajax({
+                url: `/data-kasus/view/${kasus_id}/${id}`,
+                method: "get"
+            }).done(function(data) {
+                $('.loader-view').css("display", "none");
+                $("#viewProses").html(data)
+            });
+        }
+
+        function getValue() {
+            console.log($('#editor').text())
+        }
+
         function getPolda() {
             let disposisi = $('#disposisi-tujuan').val()
-            if (disposisi == 'Limpah') {
-                // Panggil Form Polda
-            }
+            if (disposisi == '3') {
+                $.ajax({
+                    url: "/api/all-polda",
+                    method: "get"
+                }).done(function(data) {
+                    $("#limpah-polda").html(data)
+                });
+            } else $("#limpah-polda").html("")
+
+
+
         }
     </script>
 @endsection

@@ -4,7 +4,6 @@
 
 
 <head>
-
     <meta charset="utf-8" />
     <title>Dashboard | Paminal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +32,22 @@
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> --}}
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
+
+    <style>
+        .loader-view {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid blue;
+            border-bottom: 16px solid blue;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+    </style>
 
 </head>
 
