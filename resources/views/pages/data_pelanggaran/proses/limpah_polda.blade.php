@@ -18,6 +18,24 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12" style="text-align: center;">
+            <div class="f1-steps">
+                <div class="f1-progress">
+                    <div class="f1-progress-line" data-now-value="75" data-number-of-steps="2" style="width: 75%;">
+                    </div>
+                </div>
+                <div class="f1-step" style="width: 50%;">
+                    <div class="f1-step-icon"><i class="fa fa-user"></i></div>
+                    <p>Diterima</p>
+                </div>
+                <div class="f1-step active" style="width: 50%;">
+                    <div class="f1-step-icon"><i class="fa fa-home"></i></div>
+                    <p>Limpah Polda</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-lg-12">
         <h4>Limpah Ke Polda</h4>
         <form action="">

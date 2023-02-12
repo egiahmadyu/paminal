@@ -25,7 +25,7 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/pdf-test', [LimpahPoldaController::class, 'generateDocumen']);
-Route::get('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
+// Route::get('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
 Route::post('login', [AuthController::class, 'loginAction'])->name('login-action');
 
 
@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function (){
     Route::get('data-kasus/view/{kasus_id}/{id}', [KasusController::class, 'viewProcess'])->name('kasus.proses.view');
 
     // End View Kasus
+
+    // Generate
+    Route::post('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');

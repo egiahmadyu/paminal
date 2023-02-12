@@ -32,7 +32,7 @@
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> --}}
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
-
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
     <style>
         .loader-view {
             margin-left: auto;
@@ -46,6 +46,91 @@
             height: 120px;
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
+        }
+
+        .f1-steps {
+            overflow: hidden;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .f1-progress {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .f1-progress-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 1px;
+            background: #338056;
+        }
+
+        .f1-step {
+            position: relative;
+            float: left;
+            width: 25%;
+            padding: 0 5px;
+        }
+
+        .f1-step-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-top: 4px;
+            background: #ddd;
+            font-size: 16px;
+            color: #fff;
+            line-height: 40px;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        .f1-step.activated .f1-step-icon {
+            background: #fff;
+            border: 1px solid #338056;
+            color: #338056;
+            line-height: 38px;
+        }
+
+        .f1-step.active .f1-step-icon {
+            width: 48px;
+            height: 48px;
+            margin-top: 0;
+            background: #0c19db;
+            font-size: 22px;
+            line-height: 48px;
+        }
+
+        .f1-step p {
+            color: #ccc;
+        }
+
+        .f1-step.activated p {
+            color: #338056;
+        }
+
+        .f1-step.active p {
+            color: #338056;
+        }
+
+        .f1 fieldset {
+            display: none;
+            text-align: left;
+        }
+
+        .f1-buttons {
+            text-align: right;
+        }
+
+        .f1 .input-error {
+            border-color: #f35b3f;
         }
     </style>
 

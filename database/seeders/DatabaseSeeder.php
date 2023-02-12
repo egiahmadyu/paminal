@@ -62,6 +62,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Nota Dinas Hasil Gelar'
         ]);
 
+        $this->call([
+            AgamaSeeder::class,
+            JenisKelaminSeed::class,
+            JenisIdentitasSeeder::class,
+          ]);
+
         // Process::create([
         //     'name' => 'Diterima'
         // ]);

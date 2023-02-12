@@ -55,8 +55,8 @@
                                     <th scope="col">Tanggal</th>
                                     <th scope="col">Pelapor</th>
                                     <th scope="col">Terlapor</th>
-                                    <th scope="col">NRP</th>
                                     <th scope="col">Pangkat</th>
+                                    <th scope="col">Nama Korban</th>
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
@@ -106,8 +106,8 @@
                         name: 'no_nota_dinas'
                     },
                     {
-                        data: 'tanggal',
-                        name: 'tanggal'
+                        data: 'tanggal_kejadian',
+                        name: 'tanggal_kejadian'
                     },
                     {
                         data: 'pelapor',
@@ -122,8 +122,8 @@
                         name: 'pangkat'
                     },
                     {
-                        data: 'nrp',
-                        name: 'nrp'
+                        data: 'nama_korban',
+                        name: 'nama_korban'
                     },
                     {
                         data: 'status.name',

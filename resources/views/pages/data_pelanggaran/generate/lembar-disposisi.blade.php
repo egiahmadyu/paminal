@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .table-disposisi {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 
 <body style="font-size:14px;font-weight: bold">
@@ -36,110 +42,112 @@
             <td><u>LEMBAR DISPOSISI</u></td>
         </tr>
     </table>
-
-    <table style="float: right">
+    <table style="width: 100%; margin-top:20px">
         <tr>
-            <td style="width: 400px">Diterima tanggal :</td>
-            <td style="width: 400px">Jam :</td>
-        </tr>
-    </table>
-    <table style="">
-        <tr>
-            <td>Nomor Agenda</td>
-            <td>:</td>
-            <td>......../</td>
-            <td>......../</td>
-            <td>......../20</td>
-        </tr>
-    </table>
-    <table style="width: 100%">
-        <tr>
-            <td>Nomor Agenda :</td>
-            <td>...../</td>
-            <td>...../</td>
-            <td>..../20</td>
+            <td style="width: 100px">Nomor Agenda :</td>
+            <td style="width: 200px">{{ $nomor_agenda }}</td>
             <td>Diterima tanggal :</td>
             <td>Jam :</td>
         </tr>
     </table>
-
     <br>
-    <div>
-        <table style="margin-top:auto;width: 90%">
-            <tr>
-                <td>1.</td>
-                <td>Rujukan : </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    &bull; Undang-Undang Nomor 2 Tahun 2022 tentang Kepolisian Negara Republik Indonesia. <br>
-                    &bull; Peraturan Kepolisian Negara Republik Indonesia Nomor 7 Tahun 2022 tentang Kode Etik Profesi
-                    dan
-                    Komisi Kode Etik Polri. <br>
-                    &bull; Peraturan Kepala Kepolisian Negara Republik Indonesia Nomor 13 Tahun 2016 tentang Pengamanan
-                    Internal di Lingkungan Polri <br>
-                    &bull; Nota Dinas Kepala Bagian Pelayanan Pengaduan Divpropam Polri Nomor:
-                    R/ND-2766-b/XII/WAS.2.4/2022/Divpropam tanggal 16 Desember 2022 perihal pelimpahan Dumas BRIPKA
-                    JAMALUDDIN ASYARI. <br>
-                </td>
-            </tr>
-            <tr>
-                <td>2.</td>
-                <td>Sehubungan dengan rujukan di atas, disampaikan kepada Ka. Bahwa BRIPKA JAMALUDDIN ASYARI telah
-                    mengirimkan surat pengaduan tentang adanya dugaan perselingkuhan yang dilakukan oleh AIPDA ANGGA
-                    FRANSKY
-                    selaku anggota Korpbrimob Polri Kelapa Dua dengan istri sah Pengadu</td>
-            </tr>
-            <tr>
-                <td>3.</td>
-                <td>Berkaitan dengan hal di atas agar KA. menindaklanjuti pengaduan di atas dan ANGGA FRANSKY serta
-                    melaporkan hasilnya kepada Kadivpropam Polri u.p. Pendumas paling lambat 30 hari kerja setelah
-                    menerima
-                    surat ini.</td>
-            </tr>
-            <tr>
-                <td>4.</td>
-                <td>Demikian untuk menjadi maklum</td>
-            </tr>
-        </table>
-    </div>
-
-
-    <table style="margin-top:10px;width: 100%;font-size: 16px;font-weight: bold;text-align: right">
-        <tr>
-            <td>a.n KEPALA DIVISI PRODESI DAN <br> PENGAMANAN POLRI KAPROMINAL</td>
+    <table class="table-disposisi" style="width: 100%">
+        <tr class="table-disposisi">
+            <td class="table-disposisi" colspan="4" width="100">
+                Catatan Kaurtu
+            </td>
+            <td rowspan="2" class="table-disposisi">Isi Disposisi</td>
         </tr>
-    </table>
-    <table style="margin-top:100px;float:right">
+        <tr class="table-disposisi">
+            <td class="table-disposisi" colspan="4">
+                Yth. : Karopaminal / Sespropaminal
+            </td>
+        </tr>
         <tr>
-            <td>HARUN YUNI APRIN, S.H, S.I.K, M.Si. <br>
-                <hr>
-                KOMISARIS BESAR POLISI NRP 75060705
+            <td colspan="3">
+                Surat Dari : {{ $surat_dati }}
+            </td>
+            <td class="table-disposisi" width="100">Binpam</td>
+            <td rowspan="11" class="table-disposisi"> </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+
+            </td>
+            <td class="table-disposisi">Litpers</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                Nomor Surat {{ $nomor_surat }}
+            </td>
+            <td class="table-disposisi">Prodok</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+
+            </td>
+            <td class="table-disposisi">Kaden "A"</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                Tanggal : {{ $tanggal }}
+            </td>
+            <td class="table-disposisi">Kaden "B"</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+
+            </td>
+            <td class="table-disposisi">Kaden "C"</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                Perihal {{ $perihal }}
+            </td>
+            <td class="table-disposisi">Urtu</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+
+            </td>
+            <td class="table-disposisi">Sub Bensat</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="table-disposisi">
+                Diteruskan
+            </td>
+            <td class="table-disposisi" rowspan="2">Lain - Lain</td>
+        </tr>
+        <tr>
+            <td class="table-disposisi" width="60">
+                Kepada
+            </td>
+            <td class="table-disposisi" width="60">
+                Kepada
+            </td>
+            <td class="table-disposisi" width="60">
+                Kepada
+            </td>
+        </tr>
+        <tr>
+            <td class="table-disposisi" height="90">
+
+            </td>
+            <td class="table-disposisi" width="90">
+
+            </td>
+            <td class="table-disposisi" width="90">
+
+            </td>
+            <td class="table-disposisi" width="90">
+
             </td>
         </tr>
     </table>
-    <table style="margin-top: 120px;">
-        <tr>
-            <td>Tembusan</td>
-        </tr>
-        <tr>
-            <td>1.</td>
-            <td>Dankorbrimob Polri</td>
-        </tr>
-        <tr>
-            <td>2.</td>
-            <td>Kadivpropam Polri</td>
-        </tr>
-        <tr>
-            <td>3.</td>
-            <td>Karopaminal Divpropam Polri</td>
-        </tr>
-        <tr>
-            <td>4.</td>
-            <td>Kabagyanduan Divpropam Polri</td>
-        </tr>
-    </table>
+    <p>* Lampiran / Tanpa Lampiran <br>
+        <u>Catatan</u>
+    </p>
+
 
 </body>
 

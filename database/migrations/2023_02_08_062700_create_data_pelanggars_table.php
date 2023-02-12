@@ -18,13 +18,23 @@ return new class extends Migration
             $table->string('no_nota_dinas');
             $table->string('no_pengaduan');
             $table->string('pelapor')->nullable();
+            $table->integer('umur')->nullable();
+            $table->integer('jenis_kelamin')->nullable();
+            $table->string('pekerjaan')->nullable();
+            $table->integer('agama')->nullable();
+            $table->text('alamat')->nullable();
+            $table->string('no_identitas')->nullable();
+            $table->integer('jenis_identitas')->nullable();
+            // Terlapor
             $table->string('terlapor')->nullable();
-            $table->string('pangkat')->nullable();
+            $table->string('kesatuan')->nullable();
+            $table->string('tempat_kejadian')->nullable();
             $table->string('nrp')->nullable();
-            $table->string('wujud')->nullable();
-            $table->string('polda')->nullable();
-            $table->integer('status')->nullable();
-            $table->date('tanggal')->nullable();
+            $table->date('tanggal_kejadian')->nullable();
+            $table->text('kronologi')->nullable();
+            $table->string('pangkat')->nullable();
+            $table->string('nama_korban')->nullable();
+            $table->integer('status_id')->nullable();
 
             $table->timestamps();
         });
