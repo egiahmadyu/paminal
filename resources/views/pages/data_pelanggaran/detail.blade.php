@@ -30,7 +30,8 @@
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/decoupled-document/ckeditor.js"></script> --}}
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/inline/ckeditor.js"></script> --}}
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
+
 
 
     {{-- <script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script> --}}
@@ -42,6 +43,7 @@
             //     .catch(error => {
             //         console.error(error);
             //     });
+
             let process_id = $('#process_id').val()
             getViewProcess(process_id)
         });

@@ -50,6 +50,12 @@ class KasusController extends Controller
         return view('pages.data_pelanggaran.detail', $data);
     }
 
+    public function updateData(Request $request)
+    {
+        // dd($request->all());
+        if ($request->type_submit = 'update_status') return $this->limpahToPolda(($request));
+    }
+
     public function updateStatus(Request $request)
     {
         if ($request->disposisi_tujuan == 3) return $this->limpahToPolda($request);
@@ -80,12 +86,14 @@ class KasusController extends Controller
 
     private function limpahToPolda(Request $request)
     {
-        $data = DataPelanggar::find($request->data_pelanggar_id);
+        // dd(auth()->user()->id);
+        $data = DataPelanggar::find($request->kasus_id);
         $limpah = LimpahPolda::create([
-            'data_pelanggar_id' => $request->data_pelanggar_id,
+            'data_pelanggar_id' => $request->kasus_id,
             'polda_id' => $request->polda,
             'tanggal_limpah' => date('Y-m-d'),
-            'created_by' => auth()->user()->id
+            'created_by' => auth()->user()->id,
+            'isi_surat' => '<ol><li>Rujukan :&nbsp;<br><b>a</b>.&nbsp;Undang-Undang Nomor 2 Tahun 2022 tentang Kepolisian Negara Republik Indonesia.<br><b>b</b>.&nbsp;Peraturan Kepolisian Negara Republik Indonesia Nomor 7 Tahun 2022 tentang Kode Etik Profesi&nbsp; &nbsp; &nbsp;dan Komisi Kode Etik Polri.<br><b>c</b>.&nbsp;Peraturan Kepala Kepolisian Negara Republik Indonesia Nomor 13 Tahun 2016 tentang Pengamanan Internal di Lingkungan Polri<br><b>d</b>.&nbsp;Nota Dinas Kepala Bagian Pelayanan Pengaduan Divpropam Polri Nomor: R/ND-2766-b/XII/WAS.2.4/2022/Divpropam tanggal 16 Desember 2022 perihal pelimpahan Dumas BRIPKA JAMALUDDIN ASYARI.</li></ol>'
         ]);
          if ($limpah)
          {

@@ -36,7 +36,9 @@
         </div>
     </div>
     <div class="col-lg-12">
-        <form action="">
+        <form action="/data-kasus/update" method="post">
+            @csrf
+            <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="row">
@@ -130,8 +132,10 @@
             </div>
             <div class="row">
                 <div class="col-lg-12" style="float: right;">
-                    <button class="btn btn-success">Update Data</button>
-                    <button class="btn btn-primary">Update Status</button>
+                    <button class="btn btn-success" type="submit" value="update_data" name="type_submit">Update
+                        Data</button>
+                    <button class="btn btn-primary" type="submit" value="update_status" name="type_submit">Update
+                        Status</button>
                 </div>
             </div>
         </form>
@@ -176,6 +180,4 @@
                     <button type="submit" class="btn btn-primary">Generate</button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+            /div>

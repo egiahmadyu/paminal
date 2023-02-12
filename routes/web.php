@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function (){
 
     Route::get('data-kasus', [KasusController::class, 'index'])->name('kasus.index');
     Route::post('data-kasus/data', [KasusController::class, 'data'])->name('kasus.data');
+    Route::post('data-kasus/update', [KasusController::class, 'updateData'])->name('kasus.update');
     Route::get('data-kasus/detail/{id}', [KasusController::class, 'detail'])->name('kasus.detail');
     Route::post('data-kasus/status/update', [KasusController::class, 'updateStatus'])->name('kasus.update.status');
 
@@ -46,6 +47,7 @@ Route::middleware(['auth'])->group(function (){
 
     // Generate
     Route::post('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
+    Route::post('/surat-limpah-polda', [LimpahPoldaController::class, 'generateLimpahPolda']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');

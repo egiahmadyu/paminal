@@ -20,4 +20,8 @@
 <!-- App js -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
 
+<script src="{{ asset('assets/pelljs/pell.js') }}"></script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+{{-- <script src="{{ asset('assets/pelljs/pell.js') }}"></script> --}}

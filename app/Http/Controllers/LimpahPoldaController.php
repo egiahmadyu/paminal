@@ -7,13 +7,15 @@ use PDF;
 
 class LimpahPoldaController extends Controller
 {
-    public function generateDocumen()
+    public function generateLimpahPolda(Request $request)
     {
+        // dd($request->all());
+        $data['ticketDesc'] = $request->ticketDesc;
         $pdf =  PDF::setOptions(['isRemoteEnabled' => TRUE])
         ->setPaper('A4', 'potrait')
-        ->loadView('pages.data_pelanggaran.generate.limpah-polda');
+        ->loadView('pages.data_pelanggaran.generate.limpah-polda', $data);
 
-        return $pdf->download('itsolutionstuff.pdf');
+        return $pdf->download('limpah-polda.pdf');
     }
 
     public function generateDisposisi(Request $request)

@@ -19,7 +19,7 @@
     <link href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Layout config Js -->
-    <script src="assets/js/layout.js"></script>
+    <script src="/assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
@@ -33,6 +33,7 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/pelljs/pell.scss') }}"> --}}
     <style>
         .loader-view {
             margin-left: auto;
@@ -131,6 +132,71 @@
 
         .f1 .input-error {
             border-color: #f35b3f;
+        }
+
+        .title h1,
+        .title h2,
+        .title h3,
+        .title h4 {
+            margin: 5px;
+        }
+
+        .title {
+            position: relative;
+            display: block;
+            padding-bottom: 0;
+            border-bottom: 3px double #dcdcdc;
+            margin-bottom: 30px;
+        }
+
+        .title::before {
+            width: 15%;
+            height: 3px;
+            background: #53bdff;
+            position: absolute;
+            bottom: -3px;
+            content: '';
+        }
+
+        a {
+            color: #53bdff;
+            text-decoration: none;
+            outline: 0;
+        }
+
+        a:hover {
+            color: #06a0ff;
+            text-decoration: none;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        /* ==========================================================================
+   WYSIWYG
+   ========================================================================== */
+        #editor {
+            resize: vertical;
+            overflow: auto;
+            line-height: 1.5;
+            background-color: #fafafa;
+            background-image: none;
+            border: 0;
+            border-bottom: 1px solid #3b8dbd;
+            min-height: 500px;
+            box-shadow: none;
+            padding: 8px 16px;
+            margin: 0 auto;
+            font-size: 14px;
+            transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        }
+
+        #editor:focus {
+            background-color: #f0f0f0;
+            border-color: #38af5b;
+            box-shadow: none;
+            outline: 0 none;
         }
     </style>
 

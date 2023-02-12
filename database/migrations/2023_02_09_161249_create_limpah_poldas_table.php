@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('data_pelanggar_id');
             $table->bigInteger('polda_id');
             $table->date('tanggal_limpah');
+            $table->text('isi_surat')->nullable();
             $table->bigInteger('created_by');
             $table->timestamps();
         });

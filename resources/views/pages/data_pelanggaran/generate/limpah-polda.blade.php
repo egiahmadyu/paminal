@@ -12,8 +12,8 @@
     <table style="width: 60%;font-size: 16px;font-weight: bold;text-align: center">
         <tr>
             <td>
-                <img src="https://polresokuselatan.com/wp-content/uploads/2020/09/tribrata_PNG_12-removebg-preview-1-293x300.png"
-                    alt="" width="70">
+                <img src="https://i.pinimg.com/originals/20/77/99/207799f7cced618213261af2fd71bba0.png" alt=""
+                    width="70">
             </td>
         </tr>
         <tr>
@@ -83,7 +83,7 @@
 
     <br>
     <div>
-        <table style="margin-top:auto;width: 90%">
+        {{-- <table style="margin-top:auto;width: 90%">
             <tr>
                 <td>1.</td>
                 <td>Rujukan : </td>
@@ -120,7 +120,8 @@
                 <td>4.</td>
                 <td>Demikian untuk menjadi maklum</td>
             </tr>
-        </table>
+        </table> --}}
+        {!! $ticketDesc !!}
     </div>
 
 

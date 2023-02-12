@@ -10,7 +10,7 @@ class LimpahPolda extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data_pelanggar_id', 'polda_id', 'tanggal_limpah'
+        'data_pelanggar_id', 'polda_id', 'tanggal_limpah', 'created_by', 'isi_surat'
     ];
 
     public function polda()
