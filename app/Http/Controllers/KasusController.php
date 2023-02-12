@@ -21,12 +21,15 @@ class KasusController extends Controller
     {
         $query = DataPelanggar::orderBy('id', 'desc')->with('status');
 
-        return Datatables::of($query)
+        return DataTables::of($query)
             ->editColumn('no_nota_dinas', function($query) {
                 // return $query->no_nota_dinas;
                 return '<a href="/data-kasus/detail/'.$query->id.'">'.$query->no_nota_dinas.'</a>';
             })
-            ->rawColumns(['no_nota_dinas'])
+            ->addColumn('status', function($query) {
+                return $query->status;
+            })
+            ->rawColumns(['no_nota_dinas','status'])
             ->make(true);
     }
 

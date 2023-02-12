@@ -118,16 +118,16 @@
                         name: 'terlapor'
                     },
                     {
-                        data: 'pangkat',
-                        name: 'pangkat'
-                    },
-                    {
                         data: 'nrp',
                         name: 'nrp'
                     },
                     {
-                        data: 'status.name',
-                        name: 'status.name'
+                        data: 'pangkat',
+                        name: 'pangkat'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                 ]
             });

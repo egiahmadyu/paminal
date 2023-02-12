@@ -33,6 +33,8 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
 
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
     <style>
         .loader-view {
             margin-left: auto;
@@ -48,7 +50,7 @@
             animation: spin 2s linear infinite;
         }
     </style>
-
+    @stack('css')
 </head>
 
 <body>

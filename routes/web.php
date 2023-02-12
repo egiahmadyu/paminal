@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KasusController;
 use App\Http\Controllers\LimpahPoldaController;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +32,7 @@ Route::post('login', [AuthController::class, 'loginAction'])->name('login-action
 
 Route::middleware(['auth'])->group(function (){
     Route::get('/', function () {
-        return view('partials.master');
+        return view('pages.dashboard');
     });
 
     Route::get('data-kasus', [KasusController::class, 'index'])->name('kasus.index');
