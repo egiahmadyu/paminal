@@ -5,7 +5,11 @@
                 {{-- <button type="button" class="btn btn-info">Sebelumnya</button> --}}
             </div>
             <div>
-                <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya</button>
+
+                @if ($kasus->status_id > 1)
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya</button>
+                @endif
+
             </div>
         </div>
     </div>
@@ -26,11 +30,11 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-key"></i></div>
-                    <p>Akun</p>
+                    <p>Gelar Peneyelidikan</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Sosial</p>
+                    <p>Provost / Wabprof</p>
                 </div>
             </div>
         </div>
@@ -134,7 +138,8 @@
                 <div class="col-lg-12" style="float: right;">
                     <button class="btn btn-success" type="submit" value="update_data" name="type_submit">Update
                         Data</button>
-                    <button class="btn btn-primary" type="submit" value="update_status" name="type_submit">Update
+                    <button class="btn btn-primary" type="submit" value="update_status" name="type_submit"
+                        {{ $kasus->status_id > 1 ? 'disabled' : '' }}>Update
                         Status</button>
                 </div>
             </div>
@@ -180,4 +185,6 @@
                     <button type="submit" class="btn btn-primary">Generate</button>
                 </div>
             </form>
-            /div>
+        </div>
+    </div>
+</div>

@@ -31,7 +31,7 @@ Route::post('login', [AuthController::class, 'loginAction'])->name('login-action
 
 Route::middleware(['auth'])->group(function (){
     Route::get('/', function () {
-        return view('partials.master');
+        return view('pages.dashboard.index');
     });
 
     Route::get('data-kasus', [KasusController::class, 'index'])->name('kasus.index');
