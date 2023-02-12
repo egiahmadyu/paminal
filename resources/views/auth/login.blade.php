@@ -19,7 +19,7 @@
     <!-- Icons Css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -51,12 +51,12 @@
                 </div>
                 <!--end col-->
                 <div class="col-xl-4 col-lg-6">
-                    <div class="card mb-0 py-5">
+                    <div class="card mb-0 py-5" style="opacity: 0.9;">
 
                         <div class="card-body p-4 p-sm-5 m-lg-2">
                             <div class="text-center mt-2">
                                 <h5 class="text-primary fs-22">Welcome Back !</h5>
-                                <p class="text-muted">Sign in to continue to Paminal.</p>
+                                <p class="text-muted">Sign in to continue to Propam Integrated System.</p>
                             </div>
                             <div class="p-2 mt-5">
                                 <form action="{{ route('login-action') }}" method="post">

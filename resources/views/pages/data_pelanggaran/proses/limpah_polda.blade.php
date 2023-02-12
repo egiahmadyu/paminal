@@ -19,10 +19,13 @@
                     <div class="f1-progress-line" data-now-value="75" data-number-of-steps="2" style="width: 75%;">
                     </div>
                 </div>
-                <div class="f1-step" style="width: 50%;">
-                    <div class="f1-step-icon"><i class="fa fa-user"></i></div>
-                    <p>Diterima</p>
-                </div>
+                <a href="javascript::void(0)" onclick="getViewProcess(1)">
+                    <div class="f1-step" style="width: 50%;">
+                        <div class="f1-step-icon"><i class="fa fa-user"></i></div>
+                        <p>Diterima</p>
+                    </div>
+                </a>
+
                 <div class="f1-step active" style="width: 50%;">
                     <div class="f1-step-icon"><i class="fa fa-home"></i></div>
                     <p>Limpah Polda</p>

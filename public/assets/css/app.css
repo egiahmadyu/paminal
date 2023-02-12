@@ -12251,14 +12251,14 @@ span.flatpickr-weekday {
 }
 
 .auth-bg-cover {
-  background-image: url("../images/auth-one-bg.jpg");
+  background-image: url("../images/propam-logn.png");
   background-size: cover;
   background-position: right center;
 }
 .auth-bg-cover > .bg-overlay {
   background: -webkit-gradient(linear, left top, right top, from(#0d6efd), to(#0257d5));
   background: linear-gradient(to right, #0d6efd, #0257d5);
-  opacity: 0.9;
+  opacity: 0.4;
 }
 .auth-bg-cover .footer {
   color: rgba(255, 255, 255, 0.5);
