@@ -48,11 +48,17 @@
                             <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan Surat Perintah</label>
                             <input type="text" class="form-control" id="exampleInputEmail1"
                                 aria-describedby="emailHelp"
-                                value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) : '' }}"
+                                value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) . ' WIB' : '' }}"
                                 readonly>
                         </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#modal_sprin">Buat Surat</button>
+                        @if (!empty($sprin))
+                            <a href="/surat-perintah/{{ $kasus->id }}"><button type="button"
+                                    class="btn btn-primary">Download Surat</button></a>
+                        @else
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modal_sprin">Buat Surat</button>
+                        @endif
+
                     </form>
                 </div>
                 <div class="col-lg-4">
@@ -74,7 +80,8 @@
                             <input type="text" class="form-control" id="exampleInputEmail1"
                                 aria-describedby="emailHelp">
                         </div>
-                        <button type="submit" class="btn btn-primary">Buat Surat</button>
+                        <a href="/surat-sp2hp2-awal/{{ $kasus->id }}"><button type="button"
+                                class="btn btn-primary">Buat Surat</button></a>
                     </form>
                 </div>
             </div>

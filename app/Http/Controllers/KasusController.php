@@ -55,12 +55,20 @@ class KasusController extends Controller
     public function updateData(Request $request)
     {
         // dd($request->all());
-        if ($request->type_submit = 'update_status') return $this->limpahToPolda(($request));
+        if ($request->type_submit = 'update_status') return $this->updateStatus(($request));
     }
 
     public function updateStatus(Request $request)
     {
-        if ($request->disposisi_tujuan == 3) return $this->limpahToPolda($request);
+        if ($request->disposisi_tujuan != 3)
+        {
+            DataPelanggar::where('id', $request->kasus_id)
+            ->update([
+                'status_id' => $request->disposisi_tujuan
+            ]);
+
+            return redirect()->back();
+        } return $this->limpahToPolda($request);
     }
 
     public function viewProcess($kasus_id,$status_id)

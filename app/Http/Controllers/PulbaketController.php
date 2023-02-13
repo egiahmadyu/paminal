@@ -56,4 +56,13 @@ class PulbaketController extends Controller
 
         return response()->download(storage_path('template_surat/surat-uuk.docx'))->deleteFileAfterSend(true);
     }
+
+    public function sp2hp2Awal($kasus_id)
+    {
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\sp2hp2_awal.docx'));
+
+        $template_document->saveAs(storage_path('template_surat/surat-sp2hp2_awal.docx'));
+
+        return response()->download(storage_path('template_surat/surat-sp2hp2_awal.docx'))->deleteFileAfterSend(true);
+    }
 }

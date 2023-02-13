@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::post('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::get('/surat-uuk/{id}', [PulbaketController::class, 'printUUK']);
+    Route::get('/surat-sp2hp2-awal/{id}', [PulbaketController::class, 'sp2hp2Awal']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');
