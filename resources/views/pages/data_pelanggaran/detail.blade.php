@@ -72,19 +72,5 @@
             console.log($('#editor').text())
         }
 
-        function getPolda() {
-            let disposisi = $('#disposisi-tujuan').val()
-            if (disposisi == '3') {
-                $.ajax({
-                    url: "/api/all-polda",
-                    method: "get"
-                }).done(function(data) {
-                    $("#limpah-polda").html(data)
-                });
-            } else $("#limpah-polda").html("")
-
-
-
-        }
     </script>
 @endsection

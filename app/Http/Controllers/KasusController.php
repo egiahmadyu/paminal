@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\DataPelanggar;
 use App\Models\LimpahPolda;
 use App\Models\Process;
+use App\Models\SprinHistory;
+use App\Models\UukHistory;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -34,7 +36,7 @@ class KasusController extends Controller
     {
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
-        $process = Process::where('sort', '<=', $status->sort)->get();
+        $process = Process::where('sort', '<=', $status->id)->get();
 
         $data = [
             'kasus' => $kasus,
@@ -53,12 +55,20 @@ class KasusController extends Controller
     public function updateData(Request $request)
     {
         // dd($request->all());
-        if ($request->type_submit = 'update_status') return $this->limpahToPolda(($request));
+        if ($request->type_submit = 'update_status') return $this->updateStatus(($request));
     }
 
     public function updateStatus(Request $request)
     {
-        if ($request->disposisi_tujuan == 3) return $this->limpahToPolda($request);
+        if ($request->disposisi_tujuan != 3)
+        {
+            DataPelanggar::where('id', $request->kasus_id)
+            ->update([
+                'status_id' => $request->disposisi_tujuan
+            ]);
+
+            return redirect()->back();
+        } return $this->limpahToPolda($request);
     }
 
     public function viewProcess($kasus_id,$status_id)
@@ -66,13 +76,14 @@ class KasusController extends Controller
         if ($status_id == 1) return $this->viewDiterima($kasus_id);
         elseif ($status_id == 2) return $this->viewDisposisi($kasus_id);
         elseif ($status_id == 3) return $this->viewLimpah($kasus_id);
+        elseif ($status_id == 4) return $this->viewPulbaket($kasus_id);
     }
 
     private function viewLimpah($id)
     {
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
-        $process = Process::where('sort', '<=', $status->sort)->get();
+        $process = Process::where('sort', '<=', $status->id)->get();
 
         $data = [
             'kasus' => $kasus,
@@ -108,7 +119,7 @@ class KasusController extends Controller
     {
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
-        $process = Process::where('sort', '<=', $status->sort)->get();
+        $process = Process::where('sort', '<=', $status->id)->get();
 
         $data = [
             'kasus' => $kasus,
@@ -123,7 +134,7 @@ class KasusController extends Controller
     {
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
-        $process = Process::where('sort', '<=', $status->sort)->get();
+        $process = Process::where('sort', '<=', $status->id)->get();
 
         $data = [
             'kasus' => $kasus,
@@ -132,5 +143,21 @@ class KasusController extends Controller
         ];
 
         return view('pages.data_pelanggaran.proses.diterima', $data);
+    }
+
+    private function viewPulbaket($id)
+    {
+        $kasus = DataPelanggar::find($id);
+        // $status = Process::find($kasus->status_id);
+        // $process = Process::where('sort', '<=', $status->id)->get();
+
+        $data = [
+            'kasus' => $kasus,
+            'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
+            'uuk' => UukHistory::where('data_pelanggar_id', $id)->first(),
+        ];
+        // $data['limpahPolda'] = LimpahPolda::where('data_pelanggar_id', $id)->first();
+
+        return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }
 }
