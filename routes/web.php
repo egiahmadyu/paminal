@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KasusController;
 use App\Http\Controllers\LimpahPoldaController;
+use App\Http\Controllers\PulbaketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,6 +49,9 @@ Route::middleware(['auth'])->group(function (){
     // Generate
     Route::post('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
     Route::post('/surat-limpah-polda', [LimpahPoldaController::class, 'generateLimpahPolda']);
+    Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
+    Route::post('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
+    Route::get('/surat-uuk/{id}', [PulbaketController::class, 'printUUK']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');
