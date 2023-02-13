@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('uuk_histories', function (Blueprint $table) {
+        Schema::create('sp2hp2_hisories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
-            // $table->string('nama');
-            // $table->string('pangkat');
-            // $table->string('nrp');
-            // $table->string('jabatan');
+            $table->string('penangan')->nullable();
+            $table->string('dihubungi')->nullable();
+            $table->string('jabatan_dihubungi')->nullable();
+            $table->string('telp_dihubungi')->nullable();
+            $table->string('hasil_keputusan')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uuk_histories');
+        Schema::dropIfExists('sp2hp2_hisories');
     }
 };

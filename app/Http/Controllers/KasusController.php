@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataPelanggar;
 use App\Models\LimpahPolda;
 use App\Models\Process;
+use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UukHistory;
 use Illuminate\Http\Request;
@@ -155,6 +156,7 @@ class KasusController extends Controller
             'kasus' => $kasus,
             'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
             'uuk' => UukHistory::where('data_pelanggar_id', $id)->first(),
+            'sp2hp_awal' => Sp2hp2Hisory::where('data_pelanggar_id', $id)->first(),
         ];
         // $data['limpahPolda'] = LimpahPolda::where('data_pelanggar_id', $id)->first();
 

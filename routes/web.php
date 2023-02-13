@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function (){
 
     // View Kasus
     Route::get('data-kasus/view/{kasus_id}/{id}', [KasusController::class, 'viewProcess'])->name('kasus.proses.view');
+    Route::get('pulbaket/view/next-data', [PulbaketController::class, 'viewNextData'])->name('kasus.pulbaket.next');
 
     // End View Kasus
 
@@ -50,6 +51,7 @@ Route::middleware(['auth'])->group(function (){
     Route::post('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
     Route::post('/surat-limpah-polda', [LimpahPoldaController::class, 'generateLimpahPolda']);
     Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
+    Route::get('/surat-perintah-pengantar/{id}', [PulbaketController::class, 'printSuratPengantarSprin']);
     Route::post('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::get('/surat-uuk/{id}', [PulbaketController::class, 'printUUK']);
     Route::get('/surat-sp2hp2-awal/{id}', [PulbaketController::class, 'sp2hp2Awal']);
