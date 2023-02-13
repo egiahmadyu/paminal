@@ -1,13 +1,22 @@
 @extends('partials.master')
 
-@push('css')
+@prepend('styles')
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" type="text/css" />
-@endpush
+@endprepend
 
 
 @section('content')
+    {{-- Title --}}
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <h1>DASHBOARD</h1>
+            </div>
+        </div>
+    </div>
     {{-- STAT --}}
     <div class="row">
+        
         <div class="col col-md-4 col-xl-4">
             <div class="card bg-c-blue order-card">
                 <div class="card-block">
@@ -21,7 +30,7 @@
             <div class="card bg-c-green order-card">
                 <div class="card-block">
                     <h6 class="m-b-20">Total Pengaduan Diproses</h6>
-                    <h2 class="text-right"><i class="fa fa-refresh f-left"></i><span>486</span></h2>
+                    <h2 class="text-right"><i class="fa fa-sync-alt f-left"></i><span>486</span></h2>
                 </div>
             </div>
         </div>
@@ -30,7 +39,7 @@
             <div class="card bg-c-yellow order-card">
                 <div class="card-block">
                     <h6 class="m-b-20">Total Polda</h6>
-                    <h2 class="text-right"><i class="fa fa-institution f-left"></i><span>486</span></h2>
+                    <h2 class="text-right"><i class="fa fa-landmark f-left"></i><span>486</span></h2>
                 </div>
             </div>
         </div>

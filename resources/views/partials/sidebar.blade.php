@@ -39,7 +39,7 @@
                 <li class="nav-item">
                     <a href="{{ route('kasus.index') }}"
                         class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i
-                            class="bi bi-clipboard-data"></i> <span data-key="t-dashboard">Data Pelanggar</span> </a>
+                            class="bi bi-card-list"></i> <span data-key="t-dashboard">Data Pelanggar</span> </a>
                 </li>
 
             </ul>
