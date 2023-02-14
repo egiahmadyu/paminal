@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('uuk_histories', function (Blueprint $table) {
+        Schema::create('gelar_perkara_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
-            // $table->string('nama');
-            // $table->string('pangkat');
-            // $table->string('nrp');
-            // $table->string('jabatan');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uuk_histories');
+        Schema::dropIfExists('gelar_perkara_histories');
     }
 };

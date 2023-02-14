@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GelarPerkaraController;
 use App\Http\Controllers\KasusController;
 use App\Http\Controllers\LimpahPoldaController;
 use App\Http\Controllers\PulbaketController;
@@ -47,6 +48,7 @@ Route::middleware(['auth'])->group(function (){
 
     // View Kasus
     Route::get('data-kasus/view/{kasus_id}/{id}', [KasusController::class, 'viewProcess'])->name('kasus.proses.view');
+    Route::get('pulbaket/view/next-data/{id}', [PulbaketController::class, 'viewNextData'])->name('kasus.pulbaket.next');
 
     // End View Kasus
 
@@ -54,9 +56,11 @@ Route::middleware(['auth'])->group(function (){
     Route::post('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
     Route::post('/surat-limpah-polda', [LimpahPoldaController::class, 'generateLimpahPolda']);
     Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
+    Route::get('/surat-perintah-pengantar/{id}', [PulbaketController::class, 'printSuratPengantarSprin']);
     Route::post('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::get('/surat-uuk/{id}', [PulbaketController::class, 'printUUK']);
     Route::get('/surat-sp2hp2-awal/{id}', [PulbaketController::class, 'sp2hp2Awal']);
+    Route::get('/gelar-perkara-undangan/{id}', [GelarPerkaraController::class, 'printUGP']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');

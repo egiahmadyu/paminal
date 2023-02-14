@@ -33,6 +33,7 @@ return new class extends Migration
             $table->date('tanggal_kejadian')->nullable();
             $table->text('kronologi')->nullable();
             $table->string('pangkat')->nullable();
+            $table->string('jabatan')->nullable();
             $table->string('nama_korban')->nullable();
             $table->integer('status_id')->nullable();
 
