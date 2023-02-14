@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataPelanggar;
+use App\Models\GelarPerkaraHistory;
 use App\Models\LimpahPolda;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
@@ -78,6 +79,34 @@ class KasusController extends Controller
         elseif ($status_id == 2) return $this->viewDisposisi($kasus_id);
         elseif ($status_id == 3) return $this->viewLimpah($kasus_id);
         elseif ($status_id == 4) return $this->viewPulbaket($kasus_id);
+        elseif ($status_id == 5) return $this->viewGelarPenyelidikan($kasus_id);
+        elseif ($status_id == 6) return $this->viewLimpahBiro($kasus_id);
+    }
+
+    private function viewLimpahBiro($id)
+    {
+        $kasus = DataPelanggar::find($id);
+        $status = Process::find($kasus->status_id);
+        $data = [
+            'kasus' => $kasus,
+            'status' => $status,
+            'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first()
+        ];
+
+        return view('pages.data_pelanggaran.proses.limpah-biro', $data);
+    }
+
+    private function viewGelarPenyelidikan($id)
+    {
+        $kasus = DataPelanggar::find($id);
+        $status = Process::find($kasus->status_id);
+        $data = [
+            'kasus' => $kasus,
+            'status' => $status,
+            'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first()
+        ];
+
+        return view('pages.data_pelanggaran.proses.gelar_penyelidikan', $data);
     }
 
     private function viewLimpah($id)
@@ -158,7 +187,6 @@ class KasusController extends Controller
             'uuk' => UukHistory::where('data_pelanggar_id', $id)->first(),
             'sp2hp_awal' => Sp2hp2Hisory::where('data_pelanggar_id', $id)->first(),
         ];
-        // $data['limpahPolda'] = LimpahPolda::where('data_pelanggar_id', $id)->first();
 
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }

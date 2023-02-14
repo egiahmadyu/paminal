@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataPelanggar;
+use App\Models\GelarPerkaraHistory;
 use App\Models\HistorySprin;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
@@ -100,8 +101,15 @@ class PulbaketController extends Controller
         return response()->download(storage_path('template_surat/surat-sp2hp2_awal.docx'))->deleteFileAfterSend(true);
     }
 
-    public function viewNextData()
+    public function viewNextData($id)
     {
-        return view('pages.data_pelanggaran.proses.pulbaket-next');
+        $kasus = DataPelanggar::find($id);
+        // $status = Process::find($kasus->status_id);
+        // $process = Process::where('sort', '<=', $status->id)->get();
+
+        $data = [
+            'kasus' => $kasus
+        ];
+        return view('pages.data_pelanggaran.proses.pulbaket-next', $data);
     }
 }

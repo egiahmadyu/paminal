@@ -38,6 +38,13 @@
 </div>
 <div class="row mt-4">
     <div class="col-lg-12">
-        <button class="btn btn-success">Lanjutkan ke proses Gelar Penyelidikan</button>
+        <form action="/data-kasus/update" method="post">
+            @csrf
+            <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
+            <input type="text" class="form-control" value="5" hidden name="disposisi_tujuan" hidden>
+            <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 4 ? 'disabled' : '' }}
+                value="update_status">Lanjutkan
+                ke proses Gelar Penyelidikan</button>
+        </form>
     </div>
 </div>

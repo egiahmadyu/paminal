@@ -113,9 +113,27 @@
                             <input type="text" class="form-control" value="{{ $kasus->kronologi }}" readonly>
                         </div>
                         <div class="col-lg-12 mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Download Berkas Disposisi</label>
-                            <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
-                                data-bs-target="#modal_disposisi" type="button">Download</button>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Karo ke
+                                        Binpam</label>
+                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
+                                        data-bs-target="#modal_disposisi" type="button">Download</button>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Binpam ke Den
+                                        A</label>
+                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
+                                        data-bs-target="#modal_disposisi" type="button">Download</button>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Ka Den A ke
+                                        Unit 1/2/3</label>
+                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
+                                        data-bs-target="#modal_disposisi" type="button">Download</button>
+                                </div>
+                            </div>
+
                             {{-- <input type="text" class="form-control" value="{{ $kasus->terlapor }}" readonly> --}}
                         </div>
                         <div class="col-lg-12 mb-3">
