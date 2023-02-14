@@ -43,7 +43,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('kasus.index') }}"
+                    <a href="{{ route('kasus.input') }}"
                         class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}"> <i
                             class="bi bi-clipboard-data"></i> <span data-key="t-dashboard">Input Data Pelanggar</span>
                     </a>

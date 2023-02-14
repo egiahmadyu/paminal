@@ -19,6 +19,38 @@ class KasusController extends Controller
         return view('pages.data_pelanggaran.index', $data);
     }
 
+    public function inputKasus()
+    {
+        $data['agama'] = ['Islam','Kristen','Katolik','Hindu','Buddha','Khonghucu'];
+        return view('pages.data_pelanggaran.input_kasus.input',$data);
+    }
+
+    public function storeKasus(Request $request)
+    {
+        $no_nota_dinas = "11/32/propam";
+        $no_pengaduan = "123456";
+        $DP = DataPelanggar::create([
+            'no_nota_dinas' => $no_nota_dinas,
+            'no_pengaduan' => $no_pengaduan,
+            'pelapor' => $request->pelapor,
+            'umur' => $request->umur,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'pekerjaan' => $request->pekerjaan,
+            'agama' => $request->agama,
+            'alamat' => $request->alamat,
+            'no_identitas' => $request->no_identitas,
+            'jenis_identitas' => $request->jenis_identitas,
+            'terlapor' => $request->terlapor,
+            'tempat_kejadian' => $request->tempat_kejadian,
+            'tanggal_kejadian' => $request->tanggal_kejadian,
+            'kronologi' => $request->kronologi,
+            'pangkat' => $request->pangkat,
+            'nama_korban' => $request->nama_korban,
+            'status_id' => 1
+        ]);
+        return redirect()->route('kasus.index');
+    }
+
     public function data(Request $request)
     {
         $query = DataPelanggar::orderBy('id', 'desc')->with('status');

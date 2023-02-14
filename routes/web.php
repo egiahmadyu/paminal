@@ -40,6 +40,10 @@ Route::middleware(['auth'])->group(function (){
     Route::post('data-kasus/update', [KasusController::class, 'updateData'])->name('kasus.update');
     Route::get('data-kasus/detail/{id}', [KasusController::class, 'detail'])->name('kasus.detail');
     Route::post('data-kasus/status/update', [KasusController::class, 'updateStatus'])->name('kasus.update.status');
+    
+    // Create Kasus
+    Route::get('input-data-kasus', [KasusController::class, 'inputKasus'])->name('kasus.input');
+    Route::post('input-data-kasus/store', [KasusController::class, 'storeKasus'])->name('kasus.store.kasus');
 
     // View Kasus
     Route::get('data-kasus/view/{kasus_id}/{id}', [KasusController::class, 'viewProcess'])->name('kasus.proses.view');
