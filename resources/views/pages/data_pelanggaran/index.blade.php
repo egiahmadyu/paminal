@@ -51,7 +51,9 @@
                         <div class="icon">
                             <i class="fa fa-gavel f-left" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="card-box-footer"><h6>Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
+                        <a href="#" class="card-box-footer">
+                            <h6>Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
@@ -63,7 +65,9 @@
                         <div class="icon">
                             <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                        <a href="#" class="card-box-footer">
+                            <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
@@ -75,7 +79,9 @@
                         <div class="icon">
                             <i class="fad fa-clipboard-check fa-swap-opacity"></i>
                         </div>
-                        <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                        <a href="#" class="card-box-footer">
+                            <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -91,6 +97,23 @@
                 </div><!-- end card header -->
 
                 <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <label for="exampleFormControlInput1" class="form-label">No. Nota Dinas</label>
+                            <input type="text" class="form-control" id="no_nota_dinas">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="exampleFormControlInput1" class="form-label">Nama Pelapor</label>
+                            <input type="text" class="form-control" id="no_nota_dinas">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-12">
+                            <button class="btn btn-info">Filter</button>
+                            <button class="btn btn-warning">Reset</button>
+                        </div>
+
+                    </div>
                     <div class="table-responsive table-card px-3">
                         <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
                             <thead class="text-muted table-light">

@@ -56,6 +56,25 @@
                     </a>
                 </li>
 
+                <li class="menu-title"><span data-key="t-menu">Setting</span></li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link menu-link {{ Request::segment(1) == '' ? 'active' : '' }}"> <i
+                            class="bi bi-speedometer2"></i> <span data-key="t-dashboard">User</span> </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('kasus.index') }}"
+                        class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i
+                            class="bi bi-card-list"></i> <span data-key="t-dashboard">Role</span> </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('kasus.input') }}"
+                        class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}"> <i
+                            class="bi bi-clipboard-data"></i> <span data-key="t-dashboard">Permission</span>
+                    </a>
+                </li>
+
             </ul>
         </div>
         <!-- Sidebar -->

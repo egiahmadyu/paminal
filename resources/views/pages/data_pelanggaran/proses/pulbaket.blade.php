@@ -42,7 +42,7 @@
     <div class="row">
         <div class="col-lg-12 mt-4">
             <div class="row mv-3">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <input type="text" id="test_sprin" value="{{ !empty($sprin) ? 'done' : '' }}" hidden>
                     <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
                     <form>
@@ -59,14 +59,14 @@
                             <a href="/surat-perintah-pengantar/{{ $kasus->id }}"><i class="fas fa-print"></i>
                                 Pengantar Surat Perintah</a>
                         @else
-                            <a href="javascript::void(0)" data-bs-toggle="modal" data-bs-target="#modal_sprin"><i
-                                    class="fas fa-print"></i> Buat Surat
+                            <a href="javascript::void(0)" onclick="downloadSprin()"><i class="fas fa-print"></i> Buat
+                                Surat
                                 Awal</a>
                         @endif
 
                     </form>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <form>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan UUK</label>
@@ -79,40 +79,23 @@
                             data-bs-target="#modal_uuk">Buat Surat</button> --}}
                     </form>
                 </div>
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Awal</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp"
-                                    value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
-                                    readonly>
-                            </div>
-                            @if (!empty($sp2hp_awal))
-                                <a href="/surat-sp2hp2-awal/{{ $kasus->id }}"><i class="fas fa-print"></i> SP2HP2
-                                    Awal</a>
-                            @else
-                                <a href="javascript::void(0)" data-bs-toggle="modal"
-                                    data-bs-target="#modal_sp2hp2_awal"><i class="fas fa-print"></i> Buat Surat
-                                    Awal</a>
-                                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                <div class="col-lg-4">
+                    <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Awal</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
+                        readonly>
+                    @if (!empty($sp2hp_awal))
+                        <a href="/surat-sp2hp2-awal/{{ $kasus->id }}"><i class="fas fa-print"></i> SP2HP2
+                            Awal</a>
+                    @else
+                        <a href="javascript::void(0)" data-bs-toggle="modal" data-bs-target="#modal_sp2hp2_awal"><i
+                                class="fas fa-print"></i> Buat Surat
+                            Awal</a>
+                        {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#modal_sp2hp2_awal">Buat Surat</button> --}}
-                            @endif
-
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2
-                                    Akhir</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp">
-                            </div>
-                            <a href="/surat-sp2hp2-awal/{{ $kasus->id }}"><i class="fas fa-print"></i> SP2HP2
-                                Akhir</a>
-                        </div>
-                    </div>
+                    @endif
                 </div>
+
             </div>
             <hr>
         </div>
@@ -135,12 +118,12 @@
                         <label class="form-label" for="textAreaExample2">Isi Surat</label>
                         <textarea class="form-control" name="isi_surat_perintah" rows="8"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
+                    <button type="submit" class="btn btn-primary" onclick="getNextData()">Buat Surat</button>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
             </div>
         </div>
     </div>
@@ -228,6 +211,11 @@
     $(document).ready(function() {
         getNextData()
     });
+
+    function downloadSprin() {
+        window.open('/surat-perintah/{{ $kasus->id }}', '_blank');
+        location.reload();
+    }
 
     function getNextData() {
         console.log($('#test_sprin').val())
