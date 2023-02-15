@@ -30,7 +30,7 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-key"></i></div>
-                    <p>Gelar Peneyelidikan</p>
+                    <p>Gelar Penyelidikan</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
@@ -45,7 +45,6 @@
             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
             <div class="row">
                 <div class="col-lg-6">
-                    
                     <div class="row">
                         <div class="col-lg-12 mb-3">
                             <label for="pelapor" class="form-label">Pelapor</label>
@@ -122,20 +121,17 @@
                         <div class="col-lg-12 mb-3">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Karo ke
-                                        Binpam</label>
+                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Karo/Sesro</label>
                                     <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
                                         data-bs-target="#modal_disposisi" type="button">Download</button>
                                 </div>
                                 <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Binpam ke Den
-                                        A</label>
+                                    <label for="exampleFormControlInput1" class="form-label">Distribusi Binpam</label>
                                     <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
                                         data-bs-target="#modal_disposisi" type="button">Download</button>
                                 </div>
                                 <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Ka Den A ke
-                                        Unit 1/2/3</label>
+                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Ka. Den A</label>
                                     <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
                                         data-bs-target="#modal_disposisi" type="button">Download</button>
                                 </div>

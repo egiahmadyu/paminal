@@ -26,7 +26,7 @@
                 </div>
                 <div class="f1-step ">
                     <div class="f1-step-icon"><i class="fa fa-key"></i></div>
-                    <p>Gelar Peneyelidikan</p>
+                    <p>Gelar Penyelidikan</p>
                 </div>
                 <div class="f1-step active">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
