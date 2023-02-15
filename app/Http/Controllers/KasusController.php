@@ -9,6 +9,7 @@ use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UukHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -16,8 +17,11 @@ class KasusController extends Controller
 {
     public function index()
     {
-        $data['kasuss'] = DataPelanggar::all();
-
+        $data['kasuss'] = DataPelanggar::get();
+        $data['diterima'] = $data['kasuss']->where('status_id',1);
+        $data['diproses'] = $data['kasuss']->where('status_id','>',1)->where('status_id','<',6);
+        $data['selesai'] = $data['kasuss']->where('status_id',6);
+        // dd($data['k']);
         return view('pages.data_pelanggaran.index', $data);
     }
 
@@ -30,7 +34,10 @@ class KasusController extends Controller
     public function storeKasus(Request $request)
     {
         $no_nota_dinas = "11/32/propam";
-        $no_pengaduan = "123456";
+        $no_pengaduan = "123456"; //generate otomatis
+        $tgl_kejadian = date("Y-m-d",strtotime($request->tanggal_kejadian));
+        $tgl_kejadian = date("Y-m-d",strtotime($request->tanggal_kejadian));
+        // dd(date_format()->$tgl_kejadian);
         $DP = DataPelanggar::create([
             'no_nota_dinas' => $no_nota_dinas,
             'no_pengaduan' => $no_pengaduan,
@@ -44,13 +51,13 @@ class KasusController extends Controller
             'jenis_identitas' => $request->jenis_identitas,
             'terlapor' => $request->terlapor,
             'tempat_kejadian' => $request->tempat_kejadian,
-            'tanggal_kejadian' => $request->tanggal_kejadian,
+            'tanggal_kejadian' => $tgl_kejadian,
             'kronologi' => $request->kronologi,
             'pangkat' => $request->pangkat,
             'nama_korban' => $request->nama_korban,
             'status_id' => 1
         ]);
-        return redirect()->route('kasus.index');
+        return redirect()->route('kasus.detail',['id'=>$DP->id]);
     }
 
     public function data(Request $request)
@@ -71,7 +78,6 @@ class KasusController extends Controller
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
-
         $data = [
             'kasus' => $kasus,
             'status' => $status,

@@ -1,5 +1,14 @@
 @extends('partials.master')
 
+@prepend('styles')
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <style>
+        select:hover, #datepicker:hover {
+            cursor: pointer;
+        }
+    </style>
+@endprepend
+
 @section('content')
     <div class="row">
         <div class="col-lg-12">

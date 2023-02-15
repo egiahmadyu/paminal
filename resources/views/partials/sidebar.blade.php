@@ -3,18 +3,18 @@
     <div class="navbar-brand-box">
         <a href="index.html" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="/assets/images/Paminal.png" alt="" height="26">
+                <img src="/assets/images/logo/paminal.png" alt="" height="40">
             </span>
             <span class="logo-lg">
-                <img src="/assets/images/Paminal.png" alt="" height="26">
+                <img src="/assets/images/logo/Paminal_v7.png" alt="" height="60">
             </span>
         </a>
         <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
-                <img src="/assets/images/Paminal.png" alt="" height="26">
+                <img src="/assets/images/logo/paminal.png" alt="" height="40">
             </span>
             <span class="logo-lg">
-                <img src="/assets/images/Paminal.png" alt="" height="26">
+                <img src="/assets/images/logo/Paminal_v5.png" alt="" height="60">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -46,6 +46,13 @@
                     <a href="{{ route('kasus.input') }}"
                         class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}"> <i
                             class="bi bi-clipboard-data"></i> <span data-key="t-dashboard">Input Data Pelanggar</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}"
+                        class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}"> <i
+                            class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Logout</span>
                     </a>
                 </li>
 

@@ -1,10 +1,14 @@
 @extends('partials.master')
 
+@prepend('styles')
+    <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" type="text/css" />
+@endprepend
+
 @section('content')
     <div class="row">
         <div class="col-xl-12 col-md-6">
             <!-- card -->
-            <div class="card card-animate">
+            {{-- <div class="card card-animate">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div class="flex-grow-1">
@@ -34,7 +38,47 @@
                 <div class="animation-effect-3 text-success opacity-25 fs-18">
                     <i class="bi bi-currency-euro"></i>
                 </div>
-            </div><!-- end card -->
+            </div> --}}
+            <!-- end card -->
+
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card-box bg-blue">
+                        <div class="inner">
+                            <h1> {{ isset($diterima) ? count($diterima) : 0 }} </h1>
+                            <h5> Pengaduan Diterima </h5>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-gavel f-left" aria-hidden="true"></i>
+                        </div>
+                        <a href="#" class="card-box-footer"><h6>Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card-box bg-orange">
+                        <div class="inner">
+                            <h1> {{ isset($diproses) ? count($diproses) : 0 }} </h1>
+                            <h5> Pengaduan Diproses </h5>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
+                        </div>
+                        <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card-box bg-red">
+                        <div class="inner">
+                            <h1> {{ isset($selesai) ? count($selesai) : 0 }} </h1>
+                            <h5> Pengaduan Selesai </h5>
+                        </div>
+                        <div class="icon">
+                            <i class="fad fa-clipboard-check fa-swap-opacity"></i>
+                        </div>
+                        <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

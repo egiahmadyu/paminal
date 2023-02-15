@@ -12,7 +12,7 @@
 @section('content')
     <div class="row form-control">
         <div class="text-center">
-            <h3>Form Input Data Kasus</h3>
+            <h3>Form Input Dumas</h3>
         </div>
         <form action="/input-data-kasus/store" method="post">
             @csrf

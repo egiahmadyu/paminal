@@ -9,38 +9,48 @@
     {{-- Title --}}
     <div class="row">
         <div class="col">
-            <div class="card">
+            <div class="card mb-1 p-1">
                 <h1>DASHBOARD</h1>
             </div>
         </div>
     </div>
     {{-- STAT --}}
+
     <div class="row">
-        
-        <div class="col col-md-4 col-xl-4">
-            <div class="card bg-c-blue order-card">
-                <div class="card-block">
-                    <h6 class="m-b-20">Total Pelanggar</h6>
-                    <h2 class="text-right"><i class="fa fa-gavel f-left"></i><span>486</span></h2>
+        <div class="col-lg-4 col-sm-6">
+            <div class="card-box bg-blue">
+                <div class="inner">
+                    <h1> {{ isset($pelanggar) ? count($pelanggar) : 0 }} </h1>
+                    <h5> Total Pelanggar </h5>
                 </div>
+                <div class="icon">
+                    <i class="fa fa-gavel f-left" aria-hidden="true"></i>
+                </div>
+                <a href="#" class="card-box-footer"><h6>Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
             </div>
         </div>
-
-        <div class="col col-md-4 col-xl-4">
-            <div class="card bg-c-green order-card">
-                <div class="card-block">
-                    <h6 class="m-b-20">Total Pengaduan Diproses</h6>
-                    <h2 class="text-right"><i class="fa fa-sync-alt f-left"></i><span>486</span></h2>
+        <div class="col-lg-4 col-sm-6">
+            <div class="card-box bg-orange">
+                <div class="inner">
+                    <h1> {{ isset($pengaduan_diproses) ? count($pengaduan_diproses) : 0 }} </h1>
+                    <h5> Total Pengaduan Diproses </h5>
                 </div>
+                <div class="icon">
+                    <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
+                </div>
+                <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
             </div>
         </div>
-
-        <div class="col col-md-4 col-xl-4">
-            <div class="card bg-c-yellow order-card">
-                <div class="card-block">
-                    <h6 class="m-b-20">Total Polda</h6>
-                    <h2 class="text-right"><i class="fa fa-landmark f-left"></i><span>486</span></h2>
+        <div class="col-lg-4 col-sm-6">
+            <div class="card-box bg-red">
+                <div class="inner">
+                    <h1> {{ isset($polda) ? count($polda) : 0 }} </h1>
+                    <h5> Jumlah POLDA </h5>
                 </div>
+                <div class="icon">
+                    <i class="fa fa-landmark"></i>
+                </div>
+                <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
             </div>
         </div>
     </div>
