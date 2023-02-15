@@ -45,40 +45,49 @@
             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
             <div class="row">
                 <div class="col-lg-6">
-                    
+
                     <div class="row">
                         <div class="col-lg-12 mb-3">
                             <label for="pelapor" class="form-label">Pelapor</label>
-                            <input type="text" class="form-control" value="{{ isset($kasus) ? $kasus->pelapor : '' }}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ isset($kasus) ? $kasus->pelapor : '' }}" readonly>
                         </div>
                         <div class="col-lg-6 mb-3">
                             <label for="umur" class="form-label">Umur</label>
-                            <input type="number" class="form-control" value="{{ isset($kasus) ? $kasus->umur : '' }}" readonly>
+                            <input type="number" class="form-control" value="{{ isset($kasus) ? $kasus->umur : '' }}"
+                                readonly>
                         </div>
                         <div class="col-lg-6 mb-3">
-                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label> 
-                            <input type="text" class="form-control" value="{{ isset($kasus) ? ($kasus->jenis_kelamin === 0 ? 'Laki-laki' : 'Perempuan') : '' }}" readonly>
+                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                            <input type="text" class="form-control"
+                                value="{{ isset($kasus) ? ($kasus->jenis_kelamin === 0 ? 'Laki-laki' : 'Perempuan') : '' }}"
+                                readonly>
                         </div>
                         <div class="col-lg-6 mb-3">
                             <label for="pekerjaan" class="form-label">Pekerjaan</label>
-                            <input type="text" class="form-control" value="{{ isset($kasus) ? $kasus->pekerjaan : '' }}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ isset($kasus) ? $kasus->pekerjaan : '' }}" readonly>
                         </div>
                         <div class="col-lg-6 mb-3">
                             <label for="agama" class="form-label">Agama</label>
-                            <input type="text" class="form-control" value="{{ isset($kasus) ? ($kasus->agama == 0 ? 'Islam' : 'Kristen') : '' }}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ isset($kasus) ? $kasus->religi->name : '' }}" readonly>
                         </div>
                         <div class="col-lg-6 mb-3">
                             <label for="no_identitas" class="form-label">No Identitas</label>
-                            <input type="text" class="form-control" value="{{ isset($kasus) ? $kasus->no_identitas : ''}}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ isset($kasus) ? $kasus->no_identitas : '' }}" readonly>
                         </div>
                         <div class="col-lg-6 mb-3">
                             <label for="jenis_identitas" class="form-label">Jenis Identitas</label>
-                            <input type="text" class="form-control" value="{{ isset($kasus) ? $kasus->jenis_identitas : '' }}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ isset($kasus) ? $kasus->identitas->name : '' }}" readonly>
                         </div>
                         <div class="col-lg-12 mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
                             {{-- <textarea class="form-control" value="{{ isset($kasus) ? $kasus->alamat }}"></textarea> --}}
-                            <input type="text" class="form-control" value="{{ isset($kasus) ? $kasus->alamat : '' }}" readonly>
+                            <input type="text" class="form-control" value="{{ isset($kasus) ? $kasus->alamat : '' }}"
+                                readonly>
                             {{-- <input type="text" class="form-control" value="{{ isset($kasus) ? $kasus->alamat }}" readonly> --}}
                         </div>
                     </div>
@@ -124,23 +133,25 @@
                                 <div class="col-lg-4">
                                     <label for="exampleFormControlInput1" class="form-label">Disposisi Karo ke
                                         Binpam</label>
-                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
-                                        data-bs-target="#modal_disposisi" type="button">Download</button>
+                                    <a href="/lembar-disposisi/1"><button class="btn btn-primary" style="width: 100%"
+                                            type="button">Download</button></a>
+                                    {{-- <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
+                                        data-bs-target="#modal_disposisi" type="button">Download</button> --}}
                                 </div>
                                 <div class="col-lg-4">
                                     <label for="exampleFormControlInput1" class="form-label">Disposisi Binpam ke Den
                                         A</label>
-                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
-                                        data-bs-target="#modal_disposisi" type="button">Download</button>
+                                    <a href="/lembar-disposisi/2"><button class="btn btn-primary" style="width: 100%"
+                                            type="button">Download</button></a>
                                 </div>
                                 <div class="col-lg-4">
                                     <label for="exampleFormControlInput1" class="form-label">Disposisi Ka Den A ke
                                         Unit 1/2/3</label>
-                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
-                                        data-bs-target="#modal_disposisi" type="button">Download</button>
+                                    <a href="/lembar-disposisi/3"><button class="btn btn-primary" style="width: 100%"
+                                            type="button">Download</button></a>
                                 </div>
                             </div>
-    
+
                             {{-- <input type="text" class="form-control" value="{{ $kasus->terlapor }}" readonly> --}}
                         </div>
                         <div class="col-lg-12 mb-3">
@@ -154,7 +165,7 @@
                             </select>
                         </div>
                         <div class="col-lg-12 mb-3" id="limpah-polda">
-    
+
                         </div>
                     </div>
                 </div>

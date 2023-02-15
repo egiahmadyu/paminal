@@ -9,5 +9,5 @@ class SprinHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'data_pelanggar_id', 'isi_surat_perintah' ];
+    protected $fillable = [ 'data_pelanggar_id' ];
 }

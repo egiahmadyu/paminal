@@ -16,21 +16,33 @@
                 <tr>
                     <td>Undangan Klarifikasi</td>
                     <td>
-                        <button type="button" class="btn btn-primary">Buat Undangan</button>
-                        <button type="button" class="btn btn-warning">Tambah Saksi</button>
+                        <a href="http://"><i class="fas fa-print"></i>
+                            Undangan Pelapor</a> | <a href="http://"><i class="fas fa-print"></i>
+                            Undangan Terlapor</a>
+                        {{-- <button type="button" class="btn btn-warning btn-sm">Tambah Saksi</button> --}}
                     </td>
                 </tr>
                 <tr>
                     <td>Berita Acara Intograsi</td>
-                    <td><button type="button" class="btn btn-primary">Buat Dokumen BAI</button></td>
+                    <td>
+                        <a href="/bai-sipil/{{ $kasus->id }}"><i class="fas fa-print"></i>
+                            BAI Pelapor</a> | <a href="/bai-anggota/{{ $kasus->id }}"><i class="fas fa-print"></i>
+                            BAI Terlapor</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Laporan Hasil Penyelidikan</td>
-                    <td><button type="button" class="btn btn-primary">Buat Dokumen</button></td>
+                    <td>
+                        <a href="/laporan-hasil-penyelidikan/{{ $kasus->id }}"><i class="fas fa-print"></i>
+                            LHP</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>ND Permohonan Gelar Perkara</td>
-                    <td><button type="button" class="btn btn-primary">Buat Dokumen</button></td>
+                    <td>
+                        <a href="/nd-permohonan-gerlar/{{ $kasus->id }}"><i class="fas fa-print"></i>
+                            ND Perrmohonan Gelar Perkara</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

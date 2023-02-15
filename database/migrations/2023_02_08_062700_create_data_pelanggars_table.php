@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('no_nota_dinas');
             $table->string('no_pengaduan');
+            $table->string('perihal_nota_dinas')->nullable();
+            $table->string('wujud_perbuatan')->nullable();
+            $table->date('tanggal_nota_dinas');
             $table->string('pelapor')->nullable();
             $table->integer('umur')->nullable();
             $table->integer('jenis_kelamin')->nullable();
@@ -24,7 +27,9 @@ return new class extends Migration
             $table->integer('agama')->nullable();
             $table->text('alamat')->nullable();
             $table->string('no_identitas')->nullable();
+            $table->string('no_telp')->nullable();
             $table->integer('jenis_identitas')->nullable();
+            $table->string('kewarganegaraan')->nullable();
             // Terlapor
             $table->string('terlapor')->nullable();
             $table->string('kesatuan')->nullable();
