@@ -242,7 +242,7 @@
                             placeholder="Kanit II Den A">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan</label>
+                        <label for="telp_dihubungi" class="form-label">No. Telepon yang dihubungi</label>
                         <input type="text" class="form-control" name="telp_dihubungi">
                     </div>
 
@@ -257,10 +257,43 @@
     </div>
 </div>
 
+<!-- Vertically centered modal -->
+<div class="modal fade" id="modal_tambah_saksi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Saksi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="POST">
+                    <div class="mb-3" id="form_tambah_saksi">
+                        <label for="nama_saksi" class="form-label">Nama Saksi</label>
+                        <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
+                        <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                    </div>
+                </form>
+            </div>
+            {{-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div> --}}
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         getNextData()
     });
+
+    function tambahSaksi() {
+        let inHtml = '<input type="text" class="form-control" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama ">';
+        $('#form_tambah_saksi .inputNamaSaksi:last').before(inHtml);
+    }
 
     function getNextData() {
         console.log($('#test_sprin').val())

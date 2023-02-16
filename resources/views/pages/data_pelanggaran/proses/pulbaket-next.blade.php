@@ -19,7 +19,7 @@
                         {{-- <button type="button" class="btn btn-primary">Buat Undangan <i class="far fa-file-plus"></i></button>
                         <button type="button" class="btn btn-warning">Tambah Saksi <i class="far fa-user-plus"></i></button> --}}
                         <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Buat Undangan</h6> </a>
-                        <a href="#" class="btn btn-outline-warning text-warning px-2"> <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> Tambah Saksi</h6> </a>
+                        <a href="#!" class="btn btn-outline-warning text-warning px-2" data-bs-toggle="modal" data-bs-target="#modal_tambah_saksi"> <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> Tambah Saksi</h6> </a>
                     </td>
                 </tr>
                 <tr>
