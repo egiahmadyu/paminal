@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PDF;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class LimpahPoldaController extends Controller
 {
@@ -34,5 +35,17 @@ class LimpahPoldaController extends Controller
         ->loadView('pages.data_pelanggaran.generate.lembar-disposisi', $data);
 
         return $pdf->download('itsolutionstuff.pdf');
+    }
+
+
+    public function downloadDisposisi($type)
+    {
+        if ($type == 1) $template_document = new TemplateProcessor(storage_path('template_surat\lembar_disposisi_kabagbinpam.docx'));
+        elseif ($type == 2) $template_document = new TemplateProcessor(storage_path('template_surat\lembar_disposisi_kabagbinpam.docx'));
+        elseif ($type == 3) $template_document = new TemplateProcessor(storage_path('template_surat\lembar_disposisi_kabagbinpam.docx'));
+
+        $template_document->saveAs(storage_path('template_surat/surat-disposisi.docx'));
+
+        return response()->download(storage_path('template_surat/surat-disposisi.docx'))->deleteFileAfterSend(true);
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('penyidiks', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('data_pelanggar_id');
             $table->string('name');
             $table->string('nrp');
             $table->string('pangkat');

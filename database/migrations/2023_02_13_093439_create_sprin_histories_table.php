@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sprin_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
-            $table->text('isi_surat_perintah');
+            $table->string('no_sprin');
             $table->timestamps();
         });
     }

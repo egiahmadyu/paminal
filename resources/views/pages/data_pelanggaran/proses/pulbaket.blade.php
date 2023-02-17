@@ -51,7 +51,8 @@
                     <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
                     <form>
                         <div class="form-buat-surat col-lg-12 mb-3">
-                            <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Pembuatan Surat Perintah (SPRIN)</label>
+                            <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Pembuatan Surat
+                                Perintah (SPRIN)</label>
                             <input type="text" class="form-control" id="tgl_pembuatan_surat_perintah"
                                 aria-describedby="emailHelp"
                                 value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) . ' WIB' : '' }}"
@@ -66,7 +67,7 @@
                                 </div>
                                 <div class="col-8">
                                     <a href="/surat-perintah-pengantar/{{ $kasus->id }}">
-                                        <i class="far fa-download"></i> Surat Pengantar SPRIN 
+                                        <i class="far fa-download"></i> Surat Pengantar SPRIN
                                     </a>
                                 </div>
                             </div>
@@ -86,7 +87,7 @@
                                 readonly aria-describedby="emailHelp">
                         </div>
                         <a href="/surat-uuk/{{ $kasus->id }}">
-                            <i class="far fa-download"></i> UUK 
+                            <i class="far fa-download"></i> UUK
                         </a>
                     </form>
                 </div>
@@ -109,7 +110,7 @@
                                     <i class="far fa-file-plus"></i> SP2HP2
                                 </a>
                             @endif
-    
+
                         </div>
                     </form>
 
@@ -119,7 +120,7 @@
                                 <div class="form-label">
                                     <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Awal</label>
                                 </div>
-                                
+
                                 <input type="text" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                     value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
@@ -141,7 +142,7 @@
                                 <div class="form-label">
                                     <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Akhir</label>
                                 </div>
-                                
+
                                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                             </div>
                             <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
@@ -169,64 +170,71 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/surat-perintah/{{ $kasus->id }}">
+                <form action="/surat-perintah/{{ $kasus->id }}" method="post">
+                    @csrf
                     <!-- Input data penyidik -->
                     <div class="card card-data-penyidik">
                         <div class="card-header">Input Data Penyelidik</div>
                         <div class="card-body">
                             <div class="mb-3" id="form_input_anggota">
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label for="exampleInputEmail1" class="form-label">No Sprin</label>
+                                        <input type="text" class="form-control" name="no_sprin">
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-outline mb-3">
-                                            <input type="text" class="form-control" name="pangkat" id="pangkat" placeholder="Pangkat Penyelidik">
+                                            <input type="text" class="form-control" name="pangkat_ketua"
+                                                id="pangkat" placeholder="Pangkat Penyelidik">
                                         </div>
                                     </div>
-    
+
                                     <div class="col">
                                         <div class="form-outline mb-3">
-                                            <input type="text" class="form-control" name="nama_penyelidik" id="nama_penyidik" placeholder="Nama Penyelidik">
+                                            <input type="text" class="form-control" name="nama_penyelidik_ketua"
+                                                id="nama_penyidik" placeholder="Nama Penyelidik">
                                         </div>
                                     </div>
-            
+
                                     <div class="col">
                                         <div class="form-outline mb-3">
-                                            <input type="text" class="form-control" name="nrp" id="nrp" placeholder="NRP">
+                                            <input type="text" class="form-control" name="nrp_ketua"
+                                                id="nrp" placeholder="NRP">
                                         </div>
                                     </div>
-            
+
                                     <div class="col">
                                         <div class="form-outline mb-3">
-                                            <input type="text" class="form-control" name="jabatan" id="jabatan" placeholder="Jabatan Penyelidik">
+                                            <input type="text" class="form-control" name="jabatan_ketua"
+                                                id="jabatan" placeholder="Jabatan Penyelidik">
                                         </div>
                                     </div>
-            
+
                                     <div class="col">
                                         <div class="form-outline mb-3">
-                                            <select name="tipe_tim" id="tipe_tim" class="form-control" disabeled>
+                                            <select name="tipe_tim_ketua" id="tipe_tim" class="form-control"
+                                                disabeled>
                                                 <option value="1" selected>Ketua</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-3" class="d-flex justify-content-end">
-                                <a href="#" onclick="tambahAnggota()"> <i class="far fa-plus-square"></i> Anggota </a>
+                                <a href="#" onclick="tambahAnggota()"> <i class="far fa-plus-square"></i>
+                                    Anggota </a>
                             </div>
                         </div>
                     </div>
 
                     <!-- Input data sprin -->
-                    <div class="card card-data-penyidik">
+                    {{-- <div class="card card-data-penyidik">
                         <div class="card-header">Input Data SPRIN</div>
                         <div class="card-body">
                             <div class="row mb-3">
-                                <div class="col">
-                                    <div class="form-outline mb-3">
-                                        <input type="text" class="form-control" name="nd_bag_yanduan" id="nd_bag_yanduan" placeholder="Nota Dinas Bag Yanduan">
-                                    </div>
-                                </div>
-
                                 <div class="col">
                                     <div class="form-outline mb-3">
                                         <select name="tipe_tim" id="satker" class="form-control">
@@ -238,7 +246,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     {{-- <div class="form-outline mb-3">
                         <label class="form-label" for="textAreaExample2">Isi Sprin</label>
@@ -252,10 +260,13 @@
             </div>
             {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div> --}}
+<<<<<<< HEAD
+                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
         </div>
+        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
     </div>
+</div>
+</div>
 </div>
 
 <div class="modal fade" id="modal_uuk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -337,8 +348,9 @@
 </div>
 
 <!-- Vertically centered modal -->
-<div class="modal fade" id="modal_tambah_saksi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" >
+<div class="modal fade" id="modal_tambah_saksi" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Saksi</h5>
@@ -346,9 +358,10 @@
             </div>
             <div class="modal-body">
                 <form action="#" method="POST">
-                    <div class="mb-3"  id="form_tambah_saksi">
+                    <div class="mb-3" id="form_tambah_saksi">
                         <div>
-                            <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
+                            <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
+                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
                         </div>
                     </div>
                     <div>
@@ -371,14 +384,34 @@
     });
 
     function tambahSaksi() {
-        let inHtml = '<div><input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi"></div>';
+        let inHtml =
+            '<div><input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi"></div>';
         // let inHtml = '<input type="text" class="form-control" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama ">';
         $('#form_tambah_saksi').append(inHtml);
         // $('#form_tambah_saksi .inputNamaSaksi:last').before(inHtml);
     }
 
     function tambahAnggota() {
-        let inHtml = '<div class="row"><div class="col"><div class="form-outline mb-3"><input type="text" class="form-control" name="pangkat" id="pangkat" placeholder="Pangkat Penyidik"></div></div><div class="col"><div class="form-outline mb-3"><input type="text" class="form-control" name="nama_penyelidik" id="nama_penyidik" placeholder="Nama Penyidik"></div></div><div class="col"><div class="form-outline mb-3"><input type="text" class="form-control" name="nrp" id="nrp" placeholder="NRP"></div></div><div class="col"><div class="form-outline mb-3"><input type="text" class="form-control" name="jabatan" id="jabatan" placeholder="Nama Jabatan"></div></div><div class="col"><div class="form-outline mb-3"><select name="tipe_tim" id="tipe_tim" class="form-control" disabeled><option value="2" selected>Anggota</option></select></div></div></div>';
+        let inHtml =
+            `<div class="row"><div class="col">
+                <div class="form-outline mb-3">
+                <input type="text" class="form-control" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyidik">
+                </div></div>
+                <div class="col">
+                    <div class="form-outline mb-3">
+                        <input type="text" class="form-control" name="nama_penyelidik[]" id="nama_penyidik" placeholder="Nama Penyidik">
+                        </div></div>
+                <div class="col">
+                    <div class="form-outline mb-3">
+                        <input type="text" class="form-control" name="nrp_anggota[]" id="nrp" placeholder="NRP">
+                        </div></div>
+                <div class="col">
+                    <div class="form-outline mb-3">
+                        <input type="text" class="form-control" name="jabatan_anggota[]" id="jabatan" placeholder="Nama Jabatan">
+                        </div></div>
+                <div class="col">
+                    <div class="form-outline mb-3">
+                        <select name="tipe_tim[]" id="tipe_tim" class="form-control" disabeled><option value="2" selected>Anggota</option></select></div></div></div>`;
         // inHtml = inHtml.outerHTML;
         $('#form_input_anggota').append(inHtml);
     }

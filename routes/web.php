@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function (){
     Route::post('data-kasus/update', [KasusController::class, 'updateData'])->name('kasus.update');
     Route::get('data-kasus/detail/{id}', [KasusController::class, 'detail'])->name('kasus.detail');
     Route::post('data-kasus/status/update', [KasusController::class, 'updateStatus'])->name('kasus.update.status');
-    
+
     // Create Kasus
     Route::get('input-data-kasus', [KasusController::class, 'inputKasus'])->name('kasus.input');
     Route::post('input-data-kasus/store', [KasusController::class, 'storeKasus'])->name('kasus.store.kasus');
@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function (){
 
     // Generate
     Route::post('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
+    Route::get('/lembar-disposisi/{type}', [LimpahPoldaController::class, 'downloadDisposisi']);
     Route::post('/surat-limpah-polda', [LimpahPoldaController::class, 'generateLimpahPolda']);
     Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::get('/surat-perintah-pengantar/{id}', [PulbaketController::class, 'printSuratPengantarSprin']);
@@ -66,6 +67,10 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/surat-uuk/{id}', [PulbaketController::class, 'printUUK']);
     Route::get('/surat-sp2hp2-awal/{id}', [PulbaketController::class, 'sp2hp2Awal']);
     Route::get('/gelar-perkara-undangan/{id}', [GelarPerkaraController::class, 'printUGP']);
+    Route::get('/bai-sipil/{id}', [PulbaketController::class, 'printBaiSipil']);
+    Route::get('/bai-anggota/{id}', [PulbaketController::class, 'printBaiAnggota']);
+    Route::get('/laporan-hasil-penyelidikan/{id}', [PulbaketController::class, 'lhp']);
+    Route::get('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');

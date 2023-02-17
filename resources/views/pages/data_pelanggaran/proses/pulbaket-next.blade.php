@@ -20,40 +20,56 @@
                         <button type="button" class="btn btn-warning">Tambah Saksi <i class="far fa-user-plus"></i></button> --}}
                         <div class="row">
                             <div class="col-md-6 col-lg-6">
-                                <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Undangan</h6> </a>
+                                <a href="#" class="btn btn-outline-primary text-primary">
+                                    <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Undangan</h6>
+                                </a>
                             </div>
                             <div class="col-md-6 col-lg-6">
-                                <a href="#!" class="btn btn-outline-warning text-warning px-2" data-bs-toggle="modal" data-bs-target="#modal_tambah_saksi"> <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> Saksi</h6> </a>
+                                <a href="#!" class="btn btn-outline-warning text-warning px-2"
+                                    data-bs-toggle="modal" data-bs-target="#modal_tambah_saksi">
+                                    <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> Saksi</h6>
+                                </a>
                             </div>
                         </div>
-                        
-                        
+
+
                     </td>
                 </tr>
                 <tr>
                     <td>Berita Acara Intograsi</td>
                     <td>
-                        <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI</h6> </a>
+                        <a href="/bai-sipil/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
+                        </a>
+                        <a href="/bai-anggota/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Terlapor</h6>
+                        </a>
                     </td>
                 </tr>
                 <tr>
                     <td>Laporan Hasil Penyelidikan</td>
                     <td>
-                        <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6> </a>
+                        <a href="/laporan-hasil-penyelidikan/{{ $kasus->id }}"
+                            class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6>
+                        </a>
                         {{-- <button type="button" class="btn btn-outline-primary text-primary">Buat Dokumen</button> --}}
                     </td>
                 </tr>
                 <tr>
                     <td>ND Permohonan Gelar Perkara</td>
                     <td>
-                        <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6> </a>
+                        <a href="/nd-permohonan-gerlar/{{ $kasus->id }}"
+                            class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6>
+                        </a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
-@if ( isset($kasus) & $kasus->status_id === 4)
+@if (isset($kasus) & ($kasus->status_id === 4))
     <div class="row mt-4">
         <div class="col-lg-12">
             <form action="/data-kasus/update" method="post">
@@ -68,6 +84,4 @@
         </div>
     </div>
 @else
-    
 @endif
-
