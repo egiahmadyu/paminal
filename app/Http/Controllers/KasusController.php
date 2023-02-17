@@ -225,7 +225,6 @@ class KasusController extends Controller
             'uuk' => UukHistory::where('data_pelanggar_id', $id)->first(),
             'sp2hp_awal' => Sp2hp2Hisory::where('data_pelanggar_id', $id)->first(),
         ];
-
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }
 }

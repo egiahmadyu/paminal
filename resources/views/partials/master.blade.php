@@ -10,7 +10,7 @@
     <meta content="Minimal Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/icon/paminal.ico') }}">
 
     <!-- jsvectormap css -->
     <link href="{{ asset('assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -175,9 +175,6 @@
             margin: 10px 0;
         }
 
-        /* ==========================================================================
-   WYSIWYG
-   ========================================================================== */
         #editor {
             resize: vertical;
             overflow: auto;

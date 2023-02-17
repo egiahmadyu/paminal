@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
 use App\Models\HistorySprin;
+use App\Models\Penyidik;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UukHistory;
@@ -17,20 +18,63 @@ class PulbaketController extends Controller
     public function printSuratPerintah($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
+        // dd($request->all());
         if (!$data = SprinHistory::where('data_pelanggar_id', $kasus_id)->first())
         {
+
             $data = SprinHistory::create([
-                'data_pelanggar_id' => $kasus_id
+                'data_pelanggar_id' => $kasus_id,
+                'no_sprin' => $request->no_sprin
                 // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
-        }
 
+            Penyidik::create([
+                'data_pelanggar_id' => $kasus_id,
+                'name' => $request->nama_penyelidik_ketua,
+                'nrp' => $request->nrp_ketua,
+                'pangkat' => $request->pangkat_ketua,
+                'jabatan' => $request->jabatan_ketua
+            ]);
+
+            for ($i=0; $i < count($request->nama_penyelidik); $i++) {
+                Penyidik::create([
+                    'data_pelanggar_id' => $kasus_id,
+                    'name' => $request->nama_penyelidik[$i],
+                    'nrp' => $request->nrp_anggota[$i],
+                    'pangkat' => $request->pangkat_anggota[$i],
+                    'jabatan' => $request->jabatan_anggota[$i]
+                ]);
+            }
+        }
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
+        $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
+        // dd($penyidik[0]);
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\template_sprin.docx'));
         $template_document->setValues(array(
-            'tanggal' => Carbon::parse($kasus->created_at)->translatedFormat('d F Y'),
+            'no_sprin' => $sprin->no_sprin,
+            'tanggal' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
+            'perihal' => $kasus->perihal_nota_dinas,
             'kesatuan' => $kasus->kesatuan,
-            'tanggal_ttd' => Carbon::parse($data->created_at)->translatedFormat('F Y')
+            'tanggal_ttd' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+            'ketua' => $penyidik[0]['name'] ?? '',
+            'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
+            'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
+            'anggota_1' => $penyidik[0]['name'] ?? '',
+            'pangkat_1' => $penyidik[0]['pangkat'] ?? '',
+            'nrp_1' => $penyidik[0]['nrp'] ?? '',
+            'anggota_2' => $penyidik[1]['name'] ?? '',
+            'pangkat_2' => $penyidik[1]['pangkat'] ?? '',
+            'nrp_2' => $penyidik[1]['nrp'] ?? '',
+            'anggota_3' => $penyidik[2]['name'] ?? '',
+            'pangkat_3' => $penyidik[2]['pangkat'] ?? '',
+            'nrp_3' => $penyidik[2]['nrp'] ?? '',
+            'anggota_4' => $penyidik[3]['name'] ?? '',
+            'pangkat_4' => $penyidik[3]['pangkat'] ?? '',
+            'nrp_4' => $penyidik[3]['nrp'] ?? '',
+            'anggota_5' => $penyidik[4]['name'] ?? '',
+            'pangkat_5' => $penyidik[4]['pangkat'] ?? '',
+            'nrp_5' => $penyidik[4]['nrp'] ?? '',
 
         ));
 
@@ -42,6 +86,7 @@ class PulbaketController extends Controller
     public function printSuratPengantarSprin($kasus_id)
     {
         $kasus = DataPelanggar::find($kasus_id);
+        $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\pengantar_sprin.docx'));
         $template_document->setValues(array(
             'nama' => $kasus->terlapor,
@@ -49,7 +94,9 @@ class PulbaketController extends Controller
             'pangkat' => $kasus->pangkat,
             'jabatan' => $kasus->jabatan,
             'no_nota_dinas' => $kasus->no_nota_dinas,
-            'kronologi' => $kasus->kronologi
+            'kronologi' => $kasus->kronologi,
+            'tanggal' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+            'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y')
         ));
 
         $template_document->saveAs(storage_path('template_surat/surat-pengantar-sprin.docx'));

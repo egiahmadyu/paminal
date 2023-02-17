@@ -30,7 +30,7 @@
                 </div>
                 <div class="f1-step active">
                     <div class="f1-step-icon"><i class="fa fa-key"></i></div>
-                    <p>Gelar Peneyelidikan</p>
+                    <p>Gelar Penyelidikan</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
@@ -55,7 +55,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Undangan Gelar</td>
+                        <td>Undangan Gelar Perkara Penyelidikan</td>
                         <td>
                             <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
                                 <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
@@ -64,7 +64,7 @@
                     </tr>
                     @if (!empty($ugp))
                         <tr>
-                            <td>Notules Hasil Gelar</td>
+                            <td>Notulen Hasil Gelar Perkara</td>
                             <td>
                                 <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
@@ -72,7 +72,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>ND Laporan Hasil Gelar</td>
+                            <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
                             <td>
                                 <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
@@ -80,11 +80,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>ND LITPERS</td>
+                            <td>Nota Dinas Ka. LITPERS</td>
                             <td>
                                 <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
-                                        Dokumen</button></a>
+                                        Dokumen</button>
+                                </a>
                             </td>
                         </tr>
                     @endif

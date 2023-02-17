@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SprinHistory extends Model
+class Penyidik extends Model
 {
     use HasFactory;
-
-    protected $fillable = [ 'data_pelanggar_id', 'no_sprin' ];
+    protected $fillable = [ 'data_pelanggar_id' ,'name', 'nrp', 'pangkat', 'jabatan' ];
 }

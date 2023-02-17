@@ -16,47 +16,72 @@
                 <tr>
                     <td>Undangan Klarifikasi</td>
                     <td>
-                        <a href="http://"><i class="fas fa-print"></i>
-                            Undangan Pelapor</a> | <a href="http://"><i class="fas fa-print"></i>
-                            Undangan Terlapor</a>
-                        {{-- <button type="button" class="btn btn-warning btn-sm">Tambah Saksi</button> --}}
+                        {{-- <button type="button" class="btn btn-primary">Buat Undangan <i class="far fa-file-plus"></i></button>
+                        <button type="button" class="btn btn-warning">Tambah Saksi <i class="far fa-user-plus"></i></button> --}}
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <a href="#" class="btn btn-outline-primary text-primary">
+                                    <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Undangan</h6>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <a href="#!" class="btn btn-outline-warning text-warning px-2"
+                                    data-bs-toggle="modal" data-bs-target="#modal_tambah_saksi">
+                                    <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> Saksi</h6>
+                                </a>
+                            </div>
+                        </div>
+
+
                     </td>
                 </tr>
                 <tr>
                     <td>Berita Acara Intograsi</td>
                     <td>
-                        <a href="/bai-sipil/{{ $kasus->id }}"><i class="fas fa-print"></i>
-                            BAI Pelapor</a> | <a href="/bai-anggota/{{ $kasus->id }}"><i class="fas fa-print"></i>
-                            BAI Terlapor</a>
+                        <a href="/bai-sipil/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
+                        </a>
+                        <a href="/bai-anggota/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Terlapor</h6>
+                        </a>
                     </td>
                 </tr>
                 <tr>
                     <td>Laporan Hasil Penyelidikan</td>
                     <td>
-                        <a href="/laporan-hasil-penyelidikan/{{ $kasus->id }}"><i class="fas fa-print"></i>
-                            LHP</a>
+                        <a href="/laporan-hasil-penyelidikan/{{ $kasus->id }}"
+                            class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6>
+                        </a>
+                        {{-- <button type="button" class="btn btn-outline-primary text-primary">Buat Dokumen</button> --}}
                     </td>
                 </tr>
                 <tr>
                     <td>ND Permohonan Gelar Perkara</td>
                     <td>
-                        <a href="/nd-permohonan-gerlar/{{ $kasus->id }}"><i class="fas fa-print"></i>
-                            ND Perrmohonan Gelar Perkara</a>
+                        <a href="/nd-permohonan-gerlar/{{ $kasus->id }}"
+                            class="btn btn-outline-primary text-primary">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6>
+                        </a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
-<div class="row mt-4">
-    <div class="col-lg-12">
-        <form action="/data-kasus/update" method="post">
-            @csrf
-            <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
-            <input type="text" class="form-control" value="5" hidden name="disposisi_tujuan" hidden>
-            <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 4 ? 'disabled' : '' }}
-                value="update_status">Lanjutkan
-                ke proses Gelar Penyelidikan</button>
-        </form>
+@if (isset($kasus) & ($kasus->status_id === 4))
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <form action="/data-kasus/update" method="post">
+                @csrf
+                <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
+                <input type="text" class="form-control" value="5" hidden name="disposisi_tujuan" hidden>
+                <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 4 ? 'disabled' : '' }}
+                    value="update_status">
+                    Lanjutkan ke proses Gelar Penyelidikan
+                </button>
+            </form>
+        </div>
     </div>
-</div>
+@else
+@endif
