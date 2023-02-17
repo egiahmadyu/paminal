@@ -2,6 +2,7 @@
 
 @prepend('styles')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
     <style>
         select:hover, #datepicker:hover {
             cursor: pointer;

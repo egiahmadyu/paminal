@@ -2,11 +2,12 @@
 
 @prepend('styles')
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
 @endprepend
 
 @section('content')
     <div class="row">
-        <div class="col-xl-12 col-md-6">
+        <div class="col-xl-12 col-md-12 col-lg-12">
             <!-- card -->
             {{-- <div class="card card-animate">
                 <div class="card-body">

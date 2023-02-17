@@ -18,21 +18,36 @@
                     <td>
                         {{-- <button type="button" class="btn btn-primary">Buat Undangan <i class="far fa-file-plus"></i></button>
                         <button type="button" class="btn btn-warning">Tambah Saksi <i class="far fa-user-plus"></i></button> --}}
-                        <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Buat Undangan</h6> </a>
-                        <a href="#!" class="btn btn-outline-warning text-warning px-2" data-bs-toggle="modal" data-bs-target="#modal_tambah_saksi"> <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> Tambah Saksi</h6> </a>
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Undangan</h6> </a>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <a href="#!" class="btn btn-outline-warning text-warning px-2" data-bs-toggle="modal" data-bs-target="#modal_tambah_saksi"> <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> Saksi</h6> </a>
+                            </div>
+                        </div>
+                        
+                        
                     </td>
                 </tr>
                 <tr>
                     <td>Berita Acara Intograsi</td>
-                    <td><button type="button" class="btn btn-primary">Buat Dokumen BAI</button></td>
+                    <td>
+                        <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI</h6> </a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Laporan Hasil Penyelidikan</td>
-                    <td><button type="button" class="btn btn-primary">Buat Dokumen</button></td>
+                    <td>
+                        <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6> </a>
+                        {{-- <button type="button" class="btn btn-outline-primary text-primary">Buat Dokumen</button> --}}
+                    </td>
                 </tr>
                 <tr>
                     <td>ND Permohonan Gelar Perkara</td>
-                    <td><button type="button" class="btn btn-primary">Buat Dokumen</button></td>
+                    <td>
+                        <a href="#" class="btn btn-outline-primary text-primary"> <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6> </a>
+                    </td>
                 </tr>
             </tbody>
         </table>
