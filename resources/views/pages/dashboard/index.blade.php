@@ -152,7 +152,7 @@
             };
 
             const config = {
-                type: 'pie',
+                type: 'polarArea',
                 data: data,
                 options: {}
             };

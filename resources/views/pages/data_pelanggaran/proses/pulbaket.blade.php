@@ -47,14 +47,14 @@
         <div class="col-lg-12 mt-4">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card">
+                    <div class="card border-dark">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
                                             <td>
-                                                No Sprin
+                                                No. SPRIN
                                             </td>
                                             <td>
                                                 :
@@ -114,7 +114,7 @@
                         <div class="form-buat-surat col-lg-12 mb-3">
                             <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Pembuatan Surat
                                 Perintah (SPRIN)</label>
-                            <input type="text" class="form-control" id="tgl_pembuatan_surat_perintah"
+                            <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                                 aria-describedby="emailHelp"
                                 value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) . ' WIB' : '' }}"
                                 readonly>
@@ -143,7 +143,7 @@
                     <form>
                         <div class="form-buat-surat col-lg-12 mb-3">
                             <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan UUK</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1"
+                            <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                 value="{{ !empty($uuk) ? date('d-m-Y H:i', strtotime($uuk->created_at)) : '' }}"
                                 readonly aria-describedby="emailHelp">
                         </div>
@@ -157,7 +157,7 @@
                         <div class="form">
                             <div class="form-buat-surat col-lg-12 mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1"
+                                <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                     value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
                                     readonly>

@@ -58,8 +58,10 @@
                         <td>Undangan Gelar Perkara Penyelidikan</td>
                         <td>
                             <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
-                                <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
-                                    Dokumen</button></a>
+                                <button type="button" class="btn btn-outline-primary text-primary">
+                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
+                                </button>
+                            </a>
                         </td>
                     </tr>
                     @if (!empty($ugp))
@@ -67,24 +69,29 @@
                             <td>Notulen Hasil Gelar Perkara</td>
                             <td>
                                 <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
-                                    <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
-                                        Dokumen</button></a>
+                                    <button type="button" class="btn btn-outline-primary text-primary">
+                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
                             <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
                             <td>
                                 <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
-                                    <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
-                                        Dokumen</button></a>
+                                    <button type="button" class="btn btn-outline-primary text-primary">
+                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
                             <td>Nota Dinas Ka. LITPERS</td>
                             <td>
                                 <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
-                                    <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
-                                        Dokumen</button>
+                                    <button type="button" class="btn btn-outline-primary text-primary">
+                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
+                                    </button>
                                 </a>
                             </td>
                         </tr>
@@ -105,20 +112,22 @@
             </table>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col-lg-12">
-            @if (!empty($ugp))
-                <form action="/data-kasus/update" method="post">
-                    @csrf
-                    <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
-                    <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" hidden>
-                    <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }}
-                        value="update_status">Lanjutkan
-                        ke Provost / Wabprof</button>
-                </form>
-            @endif
+    @if (isset($kasus) & ($kasus->status_id === 5))
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                @if (!empty($ugp))
+                    <form action="/data-kasus/update" method="post">
+                        @csrf
+                        <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
+                        <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" hidden>
+                        <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }}
+                            value="update_status">Lanjutkan
+                            ke Provost / Wabprof</button>
+                    </form>
+                @endif
+            </div>
         </div>
-    </div>
+    @endif
 </div>
 
 <div class="modal fade" id="modal_sprin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
