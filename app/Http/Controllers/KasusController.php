@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agama;
 use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
+use App\Models\JenisIdentitas;
+use App\Models\JenisKelamin;
 use App\Models\LimpahPolda;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
@@ -27,20 +30,32 @@ class KasusController extends Controller
 
     public function inputKasus()
     {
-        $data['agama'] = ['Islam','Kristen','Katolik','Hindu','Buddha','Khonghucu'];
+        $agama = Agama::get();
+        $jenis_identitas = JenisIdentitas::get();
+        $jenis_kelamin = JenisKelamin::get();
+        $data = [
+            'agama' => $agama,
+            'jenis_identitas' => $jenis_identitas,
+            'jenis_kelamin' => $jenis_kelamin
+        ];
+
         return view('pages.data_pelanggaran.input_kasus.input',$data);
     }
 
     public function storeKasus(Request $request)
     {
         $no_nota_dinas = "11/32/propam";
+        $perihal_nota_dinas = "Penting";
+        $wujud_perbuatan = "Kode Erik";
+        $tgl_nota_dinas = Carbon::now();
         $no_pengaduan = "123456"; //generate otomatis
-        $tgl_kejadian = date("Y-m-d",strtotime($request->tanggal_kejadian));
-        $tgl_kejadian = date("Y-m-d",strtotime($request->tanggal_kejadian));
-        // dd(date_format()->$tgl_kejadian);
+        // dd($request->all());
         $DP = DataPelanggar::create([
             'no_nota_dinas' => $no_nota_dinas,
             'no_pengaduan' => $no_pengaduan,
+            'perihal_nota_dinas' => $perihal_nota_dinas,
+            'wujud_perbuatan' => $wujud_perbuatan,
+            'tanggal_nota_dinas' => $tgl_nota_dinas,
             'pelapor' => $request->pelapor,
             'umur' => $request->umur,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -48,11 +63,16 @@ class KasusController extends Controller
             'agama' => $request->agama,
             'alamat' => $request->alamat,
             'no_identitas' => $request->no_identitas,
+            'no_telp' => '08212345678',
             'jenis_identitas' => $request->jenis_identitas,
+            'kewarganegaraan' => 'WNI',
             'terlapor' => $request->terlapor,
+            'nrp' => $request->nrp,
+            'jabatan' => $request->jabatan,
+            'kesatuan' => $request->kesatuan,
             'tempat_kejadian' => $request->tempat_kejadian,
-            'tanggal_kejadian' => $tgl_kejadian,
-            'kronologi' => $request->kronologi,
+            'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
+            'kronologi' => $request->kronologis,
             'pangkat' => $request->pangkat,
             'nama_korban' => $request->nama_korban,
             'status_id' => 1
@@ -78,10 +98,13 @@ class KasusController extends Controller
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
+        $agama = Agama::get();
+        
+        // dd($agama[0]->name);
         $data = [
             'kasus' => $kasus,
             'status' => $status,
-            'process' =>  $process
+            'process' =>  $process,
         ];
 
         // if ($kasus->status_id == 3)
@@ -94,8 +117,31 @@ class KasusController extends Controller
 
     public function updateData(Request $request)
     {
-        // dd($request->all());
-        if ($request->type_submit = 'update_status') return $this->updateStatus(($request));
+        if ($request->type_submit === 'update_status') {
+            return $this->updateStatus(($request));
+        } 
+        $data_pelanggar = DataPelanggar::where('id', $request->kasus_id)->first();
+        $data_pelanggar->update([
+            'pelapor' => $request->pelapor,
+            'umur' => $request->umur,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'pekerjaan' => $request->pekerjaan,
+            'agama' => $request->agama,
+            'alamat' => $request->alamat,
+            'no_identitas' => $request->no_identitas,
+            'no_telp' => '08212345678',
+            'jenis_identitas' => $request->jenis_identitas,
+            'kewarganegaraan' => 'WNI',
+            'terlapor' => $request->terlapor,
+            'kesatuan' => $request->kesatuan,
+            'tempat_kejadian' => $request->tempat_kejadian,
+            'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
+            'kronologi' => $request->kronologis,
+            'pangkat' => $request->pangkat,
+            'nama_korban' => $request->nama_korban,
+        ]);
+        return redirect()->back();
+
     }
 
     public function updateStatus(Request $request)
@@ -108,7 +154,8 @@ class KasusController extends Controller
             ]);
 
             return redirect()->back();
-        } return $this->limpahToPolda($request);
+        } 
+        return $this->limpahToPolda($request);
     }
 
     public function viewProcess($kasus_id,$status_id)
@@ -203,11 +250,17 @@ class KasusController extends Controller
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
+        $agama = Agama::get();
+        $jenis_identitas = JenisIdentitas::get();
+        $jenis_kelamin = JenisKelamin::get();
 
         $data = [
             'kasus' => $kasus,
             'status' => $status,
-            'process' =>  $process
+            'process' =>  $process,
+            'agama' => $agama,
+            'jenis_identitas' => $jenis_identitas,
+            'jenis_kelamin' => $jenis_kelamin
         ];
 
         return view('pages.data_pelanggaran.proses.diterima', $data);
