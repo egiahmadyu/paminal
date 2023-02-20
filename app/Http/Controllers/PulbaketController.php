@@ -194,7 +194,7 @@ class PulbaketController extends Controller
     public function printBaiAnggota($kasus_id)
     {
         $kasus = DataPelanggar::find($kasus_id);
-
+        $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
         $template_document = new TemplateProcessor(storage_path('template_surat\bai_anggota.docx'));
 
         $template_document->setValues(array(
@@ -210,6 +210,8 @@ class PulbaketController extends Controller
             'jabatan' => $kasus->jabatan,
             'kesatuan' => $kasus->kesatuan,
             'pelapor' => $kasus->pelapor,
+            'no_sprin' => $sprin->no_sprin,
+            'tanggal_sprin' => Carbon::parse($sprin->created_ats)->translatedFormat('d F Y')
         ));
 
         $template_document->saveAs(storage_path('template_surat/surat-bai-anggota.docx'));
@@ -222,6 +224,7 @@ class PulbaketController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
         $template_document = new TemplateProcessor(storage_path('template_surat\lhp.docx'));
 
         $template_document->setValues(array(
@@ -229,6 +232,7 @@ class PulbaketController extends Controller
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => $kasus->pangkat,
             'jabatan' => $kasus->jabatan,
+            'perihal' => $kasus->perihal_nota_dinas,
             'kwn' => $kasus->kewarganegaraan,
             'terlapor' => $kasus->terlapor,
             'wujud_perbuatan' => $kasus->wujud_perbuatan,
@@ -237,7 +241,26 @@ class PulbaketController extends Controller
             'jabatan' => $kasus->jabatan,
             'kesatuan' => $kasus->kesatuan,
             'pelapor' => $kasus->pelapor,
-            'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y')
+            'tanggal_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+            'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
+            'nama_ketua' => $penyidik[0]['name'] ?? '',
+            'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
+            'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
+            'anggota_1' => $penyidik[0]['name'] ?? '',
+            'pangkat_1' => $penyidik[0]['pangkat'] ?? '',
+            'nrp_1' => $penyidik[0]['nrp'] ?? '',
+            'anggota_2' => $penyidik[1]['name'] ?? '',
+            'pangkat_2' => $penyidik[1]['pangkat'] ?? '',
+            'nrp_2' => $penyidik[1]['nrp'] ?? '',
+            'anggota_3' => $penyidik[2]['name'] ?? '',
+            'pangkat_3' => $penyidik[2]['pangkat'] ?? '',
+            'nrp_3' => $penyidik[2]['nrp'] ?? '',
+            'anggota_4' => $penyidik[3]['name'] ?? '',
+            'pangkat_4' => $penyidik[3]['pangkat'] ?? '',
+            'nrp_4' => $penyidik[3]['nrp'] ?? '',
+            'anggota_5' => $penyidik[4]['name'] ?? '',
+            'pangkat_5' => $penyidik[4]['pangkat'] ?? '',
+            'nrp_5' => $penyidik[4]['nrp'] ?? '',
         ));
 
         $template_document->saveAs(storage_path('template_surat/dokumen-lhp.docx'));

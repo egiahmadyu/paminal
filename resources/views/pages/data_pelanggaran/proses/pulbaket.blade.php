@@ -45,6 +45,67 @@
     <!-- Isi Form -->
     <div class="row">
         <div class="col-lg-12 mt-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                No Sprin
+                                            </td>
+                                            <td>
+                                                :
+                                            </td>
+                                            <td>
+                                                Sprin/${no_sprin}/HUK.6.6./2023
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pelapor</td>
+                                            <td>:</td>
+                                            <td>{{ $kasus->pelapor }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Terlapor</td>
+                                            <td>:</td>
+                                            <td>{{ $kasus->terlapor }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-lg-6">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                Perihal
+                                            </td>
+                                            <td>
+                                                :
+                                            </td>
+                                            <td>
+                                                Perihal
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Unit Pelaksana</td>
+                                            <td>:</td>
+                                            <td>{{ $kasus->pelapor }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ketua Tim</td>
+                                            <td>:</td>
+                                            <td>{{ $kasus->terlapor }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row mv-3">
                 <div class="col-lg-4 mb-3">
                     <input type="text" id="test_sprin" value="{{ !empty($sprin) ? 'done' : '' }}" hidden>
