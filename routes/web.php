@@ -67,6 +67,9 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/surat-uuk/{id}', [PulbaketController::class, 'printUUK']);
     Route::get('/surat-sp2hp2-awal/{id}', [PulbaketController::class, 'sp2hp2Awal']);
     Route::get('/gelar-perkara-undangan/{id}', [GelarPerkaraController::class, 'printUGP']);
+    Route::get('/notulen-gelar-perkara/{id}', [GelarPerkaraController::class, 'notulenHasilGelar']);
+    Route::get('/nd-hasil-gelar-perkara/{id}', [GelarPerkaraController::class, 'laporanHasilGelar']);
+    Route::get('/gelar-perkara-baglitpers/{id}', [GelarPerkaraController::class, 'baglitpers']);
     Route::get('/bai-sipil/{id}', [PulbaketController::class, 'printBaiSipil']);
     Route::get('/bai-anggota/{id}', [PulbaketController::class, 'printBaiAnggota']);
     Route::get('/laporan-hasil-penyelidikan/{id}', [PulbaketController::class, 'lhp']);

@@ -66,7 +66,7 @@
                         <tr>
                             <td>Notulen Hasil Gelar Perkara</td>
                             <td>
-                                <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
+                                <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
                                         Dokumen</button></a>
                             </td>
@@ -74,7 +74,7 @@
                         <tr>
                             <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
                             <td>
-                                <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
+                                <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
                                         Dokumen</button></a>
                             </td>
@@ -82,7 +82,7 @@
                         <tr>
                             <td>Nota Dinas Ka. LITPERS</td>
                             <td>
-                                <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
+                                <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-primary"><i class="fas fa-print"></i>
                                         Dokumen</button>
                                 </a>

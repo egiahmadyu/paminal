@@ -236,7 +236,8 @@
                     <!-- Input no SPRIN -->
                     <div class="row mb-3">
                         <div class="col">
-                            <input type="text" class="form-control" name="no_sprin" placeholder="Masukan No. SPRIN">
+                            <input type="text" class="form-control" name="no_sprin"
+                                placeholder="Masukan No. SPRIN">
                         </div>
                     </div>
                     <!-- Input data penyidik -->
@@ -414,32 +415,51 @@
 </div>
 
 <!-- Modal Tambah BAI Pelapor -->
-<div class="modal fade" id="bai_pelapor" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="bai_pelapor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Buat BAI Pelapor</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="getViewProcess(4)"></button>
             </div>
-            <div class="modal-body">
-                
-            </div>
+            <form action="/bai-sipil/{{ $kasus->id }}" target="_blank">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Tanggal Introgasi</label>
+                        <input type="date" class="form-control" name="tanggal_introgasi">
+                    </div>
+                    <div>
+                        {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
+                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <!-- Modal Tambah BAI Terlapor -->
-<div class="modal fade" id="bai_terlapor" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="bai_terlapor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Buat BAI Terlapor</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="getViewProcess(4)"></button>
             </div>
-            <div class="modal-body">
-            </div>
+            <form action="/bai-anggota/{{ $kasus->id }}" target="_blank">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Tanggal Introgasi</label>
+                        <input type="date" class="form-control" name="tanggal_introgasi">
+                    </div>
+                    <div>
+                        {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
+                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -458,8 +478,8 @@
     }
 
     function tambahAnggota() {
-        let inHtml = 
-        `<div class="row">
+        let inHtml =
+            `<div class="row">
             <div class="col-lg-6">
                 <div class="form-outline mb-3">
                     <input type="text" class="form-control" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyelidik">
@@ -510,6 +530,4 @@
             });
         }
     }
-
-
 </script>
