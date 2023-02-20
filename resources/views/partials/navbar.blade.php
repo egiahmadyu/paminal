@@ -34,7 +34,7 @@
                 {{-- <h4 class="px-3 fs-15 text-muted header-item d-none d-md-block">APPPPP</h4> --}}
                 <a href="/"><button type="button"
                         class="btn btn-sm px-3 fs-15 text-muted header-item d-none d-md-block">
-                        <h4 class="text-uppercase"> Propam Integrated System</h4>
+                        <h4 class="title-nav text-uppercase"> Propam Integrated System </h4>
                     </button></a>
 
             </div>

@@ -16,6 +16,25 @@
         </div>
         <form action="/input-data-kasus/store" method="post">
             @csrf
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <label for="no_nota_dinas" class="form-label">No. Nota Dinas</label>
+                    <input type="text" name="no_nota_dinas" class="form-control border-dark" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" >
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="perihal_nota_dinas" class="form-label">Perihal Nota Dinas</label>
+                    <input type="text" name="perihal_nota_dinas" class="form-control border-dark" placeholder="Perihal Nota Dinas" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" >
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="wujud_perbuatan" class="form-label">Wujud Perbuatan</label>
+                    <input type="text" name="wujud_perbuatan" class="form-control border-dark" placeholder="Wujud Perbuatan" value="{{ isset($kasus) ? $kasus->wujud_perbuatan : '' }}" >
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="tanggal_nota_dinas" class="form-label">Tanggal Nota Dinas</label>
+                    <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" >
+                </div>
+                <hr>
+            </div>
             {{-- <input type="text" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->id : '' }}" hidden name="kasus_id"> --}}
             <div class="row">
                 <div class="col-lg-6 p-3">
@@ -33,8 +52,13 @@
                             {{-- <input type="text" name="jenis_kelamin" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->jenis_kelamin : '' }}" > --}}
                             <select class="form-select border-dark" aria-label="Default select example" name="jenis_kelamin"id="jenis-kelamin">
                                 <option value="" selected>-- Jenis Kelamin --</option>
-                                <option value="0">Laki-laki</option>
-                                <option value="1">Perempuan</option>
+                                {{-- <option value="0">Laki-laki</option>
+                                <option value="1">Perempuan</option> --}}
+                                @if (isset($jenis_kelamin))
+                                    @foreach ($jenis_kelamin as $key => $jk)
+                                        <option value="{{ $jk->id }}" {{ isset($kasus) ? ($kasus->jenis_kelamin == $jk->id ? 'selected' : '') : '' }}>{{ $jk->name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="col-lg-6 mb-3">
@@ -47,7 +71,7 @@
                             <select class="form-select border-dark" aria-label="Default select example" name="agama" id="agama">
                                 <option value="" selected>-- Agama --</option>
                                 @foreach ($agama as $key => $ag)
-                                    <option value="{{ $key }}">{{ $ag }}</option>
+                                    <option value="{{ $ag->id }}">{{ $ag->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -62,17 +86,18 @@
                             {{-- <input type="text" name="jenis_identitas" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->jenis_identitas : '' }}" > --}}
                             <select class="form-select border-dark" aria-label="Default select example" name="jenis_identitas"id="jenis-identitas">
                                 <option value="" selected>-- Jenis Identitas --</option>
-                                <option value="0">KTP</option>
-                                <option value="1">SIM</option>
-                                <option value="2">PASPOR</option>
+                                @if (isset($jenis_identitas))
+                                    @foreach ($jenis_identitas as $key => $ji)
+                                        <option value="{{ $ji->id }}" {{ isset($kasus) ? ($kasus->jenis_identitas == $ji->id ? 'selected' : '') : '' }}>{{ $ji->name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
 
                         <div class="col-lg-12 mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
-                            <textarea name="alamat" placeholder="Alamat" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->alamat : '' }}"></textarea>
+                            <textarea name="alamat" cols="30" rows="9" placeholder="Alamat" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->alamat : '' }}"></textarea>
                         </div>
-                        
                     </div>
                 </div>
                 <div class="col-lg-6 p-3">
@@ -84,6 +109,14 @@
                         <div class="col-lg-6 mb-3">
                             <label for="pangkat" class="form-label">Pangkat</label>
                             <input type="text" name="pangkat" placeholder="Pangkat Terlapor" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->pangkat : '' }}" >
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <label for="nrp" class="form-label">NRP</label>
+                            <input type="text" name="nrp" placeholder="NRP Terlapor" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->nrp : '' }}" >
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <label for="jabatan" class="form-label">Jabatan</label>
+                            <input type="text" name="jabatan" placeholder="Jabatan Terlapor" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->jabatan : '' }}" >
                         </div>
                         <div class="col-lg-6 mb-3">
                             <label for="kesatuan" class="form-label">Kesatuan</label>
@@ -104,7 +137,7 @@
                         </div>
                         <div class="col-lg-12 mb-3">
                             <label for="kronologis" class="form-label">Kronologis</label>
-                            <textarea name="kronologis" class="form-control border-dark" placeholder="Kronologi Kejadian" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" ></textarea>
+                            <textarea name="kronologis" cols="30" rows="5" class="form-control border-dark" placeholder="Kronologi Kejadian" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" ></textarea>
                         </div>
                         {{-- <div class="col-lg-12 mb-3">
                             <label for="download_berkas_disposisi" class="form-label">Download Berkas Disposisi</label>

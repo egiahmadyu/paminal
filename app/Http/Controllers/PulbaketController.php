@@ -36,10 +36,10 @@ class PulbaketController extends Controller
                 'jabatan' => $request->jabatan_ketua
             ]);
 
-            for ($i=0; $i < count($request->nama_penyelidik); $i++) {
+            for ($i=0; $i < count($request->nama_penyelidik_anggota); $i++) {
                 Penyidik::create([
                     'data_pelanggar_id' => $kasus_id,
-                    'name' => $request->nama_penyelidik[$i],
+                    'name' => $request->nama_penyelidik_anggota[$i],
                     'nrp' => $request->nrp_anggota[$i],
                     'pangkat' => $request->pangkat_anggota[$i],
                     'jabatan' => $request->jabatan_anggota[$i]

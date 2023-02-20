@@ -38,10 +38,10 @@
                 <tr>
                     <td>Berita Acara Intograsi</td>
                     <td>
-                        <a href="/bai-sipil/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
-                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
+                        <a href="/bai-sipil/{{ $kasus->id }}" class="btn btn-outline-primary text-primary" data-bs-toggle="modal" data-bs-target="#bai_pelapor">
+                            <h6 class="p-0 m-0"><i class="far fa-file-plus" ></i> Dokumen BAI Pelapor</h6>
                         </a>
-                        <a href="/bai-anggota/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
+                        <a href="/bai-anggota/{{ $kasus->id }}" class="btn btn-outline-primary text-primary" data-bs-toggle="modal" data-bs-target="#bai_terlapor">
                             <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Terlapor</h6>
                         </a>
                     </td>

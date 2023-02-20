@@ -36,6 +36,8 @@
     {{-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
     {{-- <link rel="stylesheet" href="{{ asset('assets/pelljs/pell.scss') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <style>
         .loader-view {
             margin-left: auto;
