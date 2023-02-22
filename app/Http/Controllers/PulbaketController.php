@@ -52,7 +52,7 @@ class PulbaketController extends Controller
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
         // dd($penyidik[0]);
-        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\template_sprin.docx'));
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_sprin.docx'));
         $template_document->setValues(array(
             'no_sprin' => $sprin->no_sprin,
             'tanggal' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
@@ -90,7 +90,7 @@ class PulbaketController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
-        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\pengantar_sprin.docx'));
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/pengantar_sprin.docx'));
         $template_document->setValues(array(
             'nama' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
@@ -119,7 +119,7 @@ class PulbaketController extends Controller
             ]);
         }
 
-        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\template_uuk.docx'));
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_uuk.docx'));
         $template_document->setValues(array(
             'nama' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
@@ -148,7 +148,7 @@ class PulbaketController extends Controller
 
             ]);
         }
-        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\sp2hp2_awal.docx'));
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/sp2hp2_awal.docx'));
 
         $template_document->setValues(array(
             'penangan' => $data->penangan,
@@ -171,7 +171,7 @@ class PulbaketController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
 
-        $template_document = new TemplateProcessor(storage_path('template_surat\BAI_SIPIL.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/BAI_SIPIL.docx'));
         if (!$data = BaiPelapor::where('data_pelanggar_id', $kasus_id)->first())
         {
             $data = BaiPelapor::create([
@@ -233,7 +233,7 @@ class PulbaketController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
-        $template_document = new TemplateProcessor(storage_path('template_surat\bai_anggota.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/bai_anggota.docx'));
         if (!$data = BaiTerlapor::where('data_pelanggar_id', $kasus_id)->first())
         {
             $data = BaiTerlapor::create([
@@ -296,7 +296,7 @@ class PulbaketController extends Controller
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
-        $template_document = new TemplateProcessor(storage_path('template_surat\lhp.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/lhp.docx'));
 
         $template_document->setValues(array(
             'no_nota_dinas' => $kasus->no_nota_dinas,
@@ -343,7 +343,7 @@ class PulbaketController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
-        $template_document = new TemplateProcessor(storage_path('template_surat\nd_permohonan_gelar.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/nd_permohonan_gelar.docx'));
 
         $template_document->setValues(array(
             'no_nota_dinas' => $kasus->no_nota_dinas,
@@ -368,7 +368,7 @@ class PulbaketController extends Controller
 
     public function undanganGelarPerkara($kasus_id)
     {
-        $template_document = new TemplateProcessor(storage_path('template_surat\template_undangan_gelar_perkara.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_gelar_perkara.docx'));
         $template_document->saveAs(storage_path('template_surat/dokumen-template_undangan_gelar_perkara.docx'));
 
         return response()->download(storage_path('template_surat/dokumen-template_undangan_gelar_perkara.docx'))->deleteFileAfterSend(true);

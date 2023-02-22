@@ -21,7 +21,7 @@ class GelarPerkaraController extends Controller
 
             ]);
         }
-        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\template_undangan_gelar_perkara.docx'));
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_undangan_gelar_perkara.docx'));
 
         $template_document->setValues(array(
             'penangan' => $data->penangan,
@@ -36,7 +36,7 @@ class GelarPerkaraController extends Controller
 
     public function notulenHasilGelar($kasus_id)
     {
-        $template_document = new TemplateProcessor(storage_path('template_surat\notulen_gelar_perkara.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/notulen_gelar_perkara.docx'));
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
 
@@ -62,7 +62,7 @@ class GelarPerkaraController extends Controller
 
     public function laporanHasilGelar($kasus_id)
     {
-        $template_document = new TemplateProcessor(storage_path('template_surat\laporan_hasil_gelar.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/laporan_hasil_gelar.docx'));
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
 
@@ -88,7 +88,7 @@ class GelarPerkaraController extends Controller
 
     public function baglitpers($kasus_id)
     {
-        $template_document = new TemplateProcessor(storage_path('template_surat\BAGLITPERS.docx'));
+        $template_document = new TemplateProcessor(storage_path('template_surat/BAGLITPERS.docx'));
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
 

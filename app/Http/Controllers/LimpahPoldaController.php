@@ -40,9 +40,9 @@ class LimpahPoldaController extends Controller
 
     public function downloadDisposisi($type)
     {
-        if ($type == 1) $template_document = new TemplateProcessor(storage_path('template_surat\lembar_disposisi_kabagbinpam.docx'));
-        elseif ($type == 2) $template_document = new TemplateProcessor(storage_path('template_surat\lembar_disposisi_kabagbinpam.docx'));
-        elseif ($type == 3) $template_document = new TemplateProcessor(storage_path('template_surat\lembar_disposisi_kabagbinpam.docx'));
+        if ($type == 1) $template_document = new TemplateProcessor(storage_path('template_surat/lembar_disposisi_kabagbinpam.docx'));
+        elseif ($type == 2) $template_document = new TemplateProcessor(storage_path('template_surat/lembar_disposisi_kabagbinpam.docx'));
+        elseif ($type == 3) $template_document = new TemplateProcessor(storage_path('template_surat/lembar_disposisi_kabagbinpam.docx'));
 
         $template_document->saveAs(storage_path('template_surat/surat-disposisi.docx'));
 
