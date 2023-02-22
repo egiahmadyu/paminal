@@ -2,13 +2,15 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(5)">Sebelumnya</button>
+                <button type="button" class="btn btn-info" onclick="getViewProcess(5)"><i class="far fa-arrow-left"></i> Sebelumnya</button>
             </div>
             <div>
 
             </div>
         </div>
     </div>
+
+    <!--Timeline-->
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
             <div class="f1-steps">
@@ -30,28 +32,94 @@
                 </div>
                 <div class="f1-step active">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Provost / Wabprof</p>
+                    <p>Limpah Biro</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Deskripsi -->
     <div class="row">
         <div class="col-lg-12">
-            Pengiriman
+            <div class="card border-dark">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <table>
+                                <tr>
+                                    <td> No. SPRIN </td>
+                                    <td>:</td>
+                                    <td>
+                                        @if (isset($sprin))
+                                            Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                        @else 
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pelapor</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->pelapor }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Terlapor</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->terlapor }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table>
+                                <tr>
+                                    <td>Perihal</td>
+                                    <td>:</td>
+                                    <td>Perihal</td>
+                                </tr>
+                                <tr>
+                                    <td>Unit Pelaksana</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->pelapor }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ketua Tim</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->terlapor }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row mt-3">
+
+    <!-- Isi -->
+    <div class="row">
         <div class="col-lg-12">
-            @if (!empty($ugp))
-                <form action="/data-kasus/update" method="post">
-                    @csrf
-                    <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
-                    <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" hidden>
-                    <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }}
-                        value="update_status">Lanjutkan
-                        ke Provost / Wabprof</button>
-                </form>
-            @endif
+            <div class="row mv-3">
+                <div class="col-lg-12 mb-3">
+                    <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
+                    <form action="/limpah-biro/{{ $kasus->id }}" method="post">
+                        @csrf
+                        <div class="form-buat-surat col-lg-12 mb-3 mt-3">
+                            {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
+                            <select class="form-select border-dark" aria-label="Default select example" name="jenis_limpah" id="jenis_limpah">
+                                    <option value="" class="text-center">-- Pilih Limpah Biro --</option>
+                                    <option value="1" class="text-center">Provost</option>
+                                    <option value="2" class="text-center">Wabprof</option>
+                            </select>
+                        </div>
+                        <div class="form-buat-surat col-lg-12 mb-3">
+                            <button type="submit" class="form-control btn btn-outline-primary text-primary">
+                                <h6 class="p-0 m-0">Submit</h6>
+                            </button>
+                            {{-- <button type="submit" class="btn btn-outline-primary border-dark">Submit</button> --}}
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -80,83 +148,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_uuk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/surat-uuk/{{ $kasus->id }}">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Nama</label>
-                        <input type="text" class="form-control" name="nama" aria-describedby="emailHelp">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Pangkat</label>
-                        <input type="text" class="form-control" name="pangkat">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">NRP</label>
-                        <input type="text" class="form-control" name="nrp">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" name="jabatan">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal_sp2hp2_awal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Nama yang Menangani</label>
-                        <input type="text" class="form-control" name="penangan" aria-describedby="emailHelp"
-                            placeholder="Unit II Detasemen A Ropaminal Divpropam Polri">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Nama yang dihubungi</label>
-                        <input type="text" class="form-control" name="dihubungi"
-                            placeholder="AKP ERICSON SIREGAR, S.Kom., M.T., M.Sc">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan yang dihubungi</label>
-                        <input type="text" class="form-control" name="jabatan_dihubungi"
-                            placeholder="Kanit II Den A">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" name="telp_dihubungi">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     // $(document).ready(function() {

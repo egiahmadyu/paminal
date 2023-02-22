@@ -2,17 +2,19 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(4)">Sebelumnya</button>
+                <button type="button" class="btn btn-info" onclick="getViewProcess(4)"><i class="far fa-arrow-left"></i> Sebelumnya</button>
             </div>
             <div>
 
                 @if ($kasus->status_id > 5)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(6)">Selanjutnya</button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(6)">Selanjutnya <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
         </div>
     </div>
+
+    <!-- Timeline -->
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
             <div class="f1-steps">
@@ -34,11 +36,69 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Provost / Wabprof</p>
+                    <p>Limpah Biro</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card border-dark">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <table>
+                                <tr>
+                                    <td> No. SPRIN </td>
+                                    <td>:</td>
+                                    <td>
+                                        @if (isset($sprin))
+                                            Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                        @else 
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pelapor</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->pelapor }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Terlapor</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->terlapor }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table>
+                                <tr>
+                                    <td>Perihal</td>
+                                    <td>:</td>
+                                    <td>Perihal</td>
+                                </tr>
+                                <tr>
+                                    <td>Unit Pelaksana</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->pelapor }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ketua Tim</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->terlapor }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Isi Form -->
     <div class="row">
         <div class="col-lg-12">
             <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">

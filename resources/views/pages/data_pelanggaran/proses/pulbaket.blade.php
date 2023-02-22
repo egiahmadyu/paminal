@@ -2,12 +2,12 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(1)">Sebelumnya</button>
+                <button type="button" class="btn btn-info" onclick="getViewProcess(1)"><i class="far fa-arrow-left"></i> Sebelumnya</button>
             </div>
             <div>
 
                 @if ($kasus->status_id > 4)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">Selanjutnya</button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">Selanjutnya <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Provost / Wabprof</p>
+                    <p>Limpah Biro</p>
                 </div>
             </div>
         </div>
@@ -53,14 +53,14 @@
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
+                                            <td> No. SPRIN </td>
+                                            <td>:</td>
                                             <td>
-                                                No. SPRIN
-                                            </td>
-                                            <td>
-                                                :
-                                            </td>
-                                            <td>
-                                                Sprin/${no_sprin}/HUK.6.6./2023
+                                                @if (isset($sprin))
+                                                    Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                                @else 
+                                                    -
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr>
@@ -78,15 +78,9 @@
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
-                                            <td>
-                                                Perihal
-                                            </td>
-                                            <td>
-                                                :
-                                            </td>
-                                            <td>
-                                                Perihal
-                                            </td>
+                                            <td>Perihal</td>
+                                            <td>:</td>
+                                            <td>Perihal</td>
                                         </tr>
                                         <tr>
                                             <td>Unit Pelaksana</td>
@@ -393,7 +387,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="/tambah-saksi/{{ $kasus->id }}" method="post">
+                    @csrf
                     <div class="mb-3" id="form_tambah_saksi">
                         <div>
                             <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
@@ -402,14 +397,13 @@
                     </div>
                     <div>
                         <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
+                    </div>
+                    <div class="form-outline mb-3">
                         <button type="submit" class="btn btn-primary form-control">Simpan</button>
                     </div>
+                    
                 </form>
             </div>
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div> --}}
         </div>
     </div>
 </div>

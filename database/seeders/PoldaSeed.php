@@ -16,6 +16,10 @@ class PoldaSeed extends Seeder
     public function run()
     {
         Polda::create([
+            'name' => 'Polda Metro Jaya'
+        ]);
+
+        Polda::create([
             'name' => 'Polda Jabar'
         ]);
 

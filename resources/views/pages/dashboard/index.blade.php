@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    {{-- STAT --}}
+    <!-- STAT -->
 
     <div class="row">
         <div class="col-lg-4 col-sm-6">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    {{-- Line Chart --}}
+    <!-- Line Chart -->
     <div class="row mb-5">
         <div class="col-8">
             <canvas id="lineChartPelanggar"></canvas>
@@ -66,7 +66,7 @@
 
     </div>
 
-    {{-- DataTable list pelanggar --}}
+    <!-- DataTable list pelanggar -->
     <div class="row mb-5">
         <div class="card">
             <div class="card-header align-items-center d-flex">
@@ -94,6 +94,7 @@
             </div>
         </div>
     </div>
+    
 @endsection
 
 @section('scripts')

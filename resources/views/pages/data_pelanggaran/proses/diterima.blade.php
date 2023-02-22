@@ -7,7 +7,7 @@
             <div>
 
                 @if ($kasus->status_id > 1)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya</button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Provost / Wabprof</p>
+                    <p>Limpah Biro</p>
                 </div>
             </div>
         </div>

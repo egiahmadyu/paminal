@@ -175,6 +175,7 @@ class KasusController extends Controller
         $data = [
             'kasus' => $kasus,
             'status' => $status,
+            'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
             'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first()
         ];
 
@@ -188,6 +189,7 @@ class KasusController extends Controller
         $data = [
             'kasus' => $kasus,
             'status' => $status,
+            'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
             'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first()
         ];
 
