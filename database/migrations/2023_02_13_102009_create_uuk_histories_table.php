@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('uuk_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
+            $table->bigInteger('created_by');
             // $table->string('nama');
             // $table->string('pangkat');
             // $table->string('nrp');

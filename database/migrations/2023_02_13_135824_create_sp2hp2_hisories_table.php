@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('jabatan_dihubungi')->nullable();
             $table->string('telp_dihubungi')->nullable();
             $table->string('hasil_keputusan')->nullable();
+            $table->bigInteger('created_by');
             $table->timestamps();
         });
     }

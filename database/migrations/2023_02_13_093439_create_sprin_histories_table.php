@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('data_pelanggar_id');
             $table->string('no_sprin');
+            $table->bigInteger('created_by');
             $table->timestamps();
         });
     }

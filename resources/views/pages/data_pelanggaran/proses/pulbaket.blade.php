@@ -2,12 +2,14 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(1)"><i class="far fa-arrow-left"></i> Sebelumnya</button>
+                <button type="button" class="btn btn-info" onclick="getViewProcess(1)"><i class="far fa-arrow-left"></i>
+                    Sebelumnya</button>
             </div>
             <div>
 
                 @if ($kasus->status_id > 4)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">Selanjutnya <i class="far fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">Selanjutnya <i
+                            class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
@@ -58,30 +60,35 @@
                                             <td>
                                                 @if (isset($sprin))
                                                     Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
-                                                @else 
-                                                    -
+                                                @else
+                                                    Sprin/..../HUK.6.6./2023
                                                 @endif
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pembuat Sprin</td>
+                                            <td>:</td>
+                                            <td>{{ isset($sprin) ? $sprin->user->name : '' }}</td>
                                         </tr>
                                         <tr>
                                             <td>Pelapor</td>
                                             <td>:</td>
                                             <td>{{ $kasus->pelapor }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Terlapor</td>
-                                            <td>:</td>
-                                            <td>{{ $kasus->terlapor }}</td>
-                                        </tr>
                                     </table>
                                 </div>
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
+                                            <td>Terlapor</td>
+                                            <td>:</td>
+                                            <td>{{ $kasus->terlapor }}</td>
+                                        </tr>
+                                        {{-- <tr>
                                             <td>Perihal</td>
                                             <td>:</td>
                                             <td>Perihal</td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
                                             <td>Unit Pelaksana</td>
                                             <td>:</td>
@@ -401,7 +408,7 @@
                     <div class="form-outline mb-3">
                         <button type="submit" class="btn btn-primary form-control">Simpan</button>
                     </div>
-                    
+
                 </form>
             </div>
         </div>

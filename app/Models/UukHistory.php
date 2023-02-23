@@ -9,5 +9,5 @@ class UukHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'data_pelanggar_id' ];
+    protected $fillable = [ 'data_pelanggar_id', 'created_by' ];
 }

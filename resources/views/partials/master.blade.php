@@ -205,7 +205,7 @@
 </head>
 
 <body>
-    <script type="text/javascript" charset="utf-8">
+    {{-- <script type="text/javascript" charset="utf-8">
         let a;
         let time;
         setInterval(() => {
@@ -213,7 +213,7 @@
             time = a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds();
             document.getElementById('current-time').innerHTML = time;
         }, 1000);
-    </script>
+    </script> --}}
     <div id="layout-wrapper">
         <div class="top-tagbar">
             <div class="w-100">

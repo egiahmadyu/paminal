@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
+        Permission::create(['name' => 'manage-auth']);
         $adminRole = Role::create(['name' => 'admin']);
         $permission = Permission::where('name', 'manage-auth')->first();
         $adminRole->givePermissionTo($permission);
@@ -36,7 +36,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole($adminRole);
-
+        $adminRole = Role::create(['name' => 'operator']);
+        $user = User::create([
+            'name' => 'egi',
+            'username' => 'egiahmadyu',
+            'password' => bcrypt('123456')
+        ]);
+        $user->assignRole($adminRole);
 
         Process::create([
             'name' => 'Diterima'

@@ -28,7 +28,8 @@ class PulbaketController extends Controller
 
             $data = SprinHistory::create([
                 'data_pelanggar_id' => $kasus_id,
-                'no_sprin' => $request->no_sprin
+                'no_sprin' => $request->no_sprin,
+                'created_by' => auth()->user()->id,
                 // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
             if ($request->nama_penyelidik_anggota)
@@ -120,6 +121,7 @@ class PulbaketController extends Controller
         {
             $data = UukHistory::create([
                 'data_pelanggar_id' => $kasus_id,
+                'created_by' => auth()->user()->id,
             ]);
         }
 
@@ -148,7 +150,8 @@ class PulbaketController extends Controller
                 'penangan' => $request->penangan,
                 'dihubungi' => $request->dihubungi,
                 'jabatan_dihubungi' => $request->jabatan_dihubungi,
-                'telp_dihubungi' => $request->telp_dihubungi
+                'telp_dihubungi' => $request->telp_dihubungi,
+                'created_by' => auth()->user()->id,
 
             ]);
         }
@@ -180,7 +183,8 @@ class PulbaketController extends Controller
         {
             $data = BaiPelapor::create([
                 'data_pelanggar_id' => $kasus_id,
-                'tanggal_introgasi' => $request->tanggal_introgasi
+                'tanggal_introgasi' => $request->tanggal_introgasi,
+                'created_by' => auth()->user()->id,
 
             ]);
             // return redirect()->back();
@@ -242,7 +246,8 @@ class PulbaketController extends Controller
         {
             $data = BaiTerlapor::create([
                 'data_pelanggar_id' => $kasus_id,
-                'tanggal_introgasi' => $request->tanggal_introgasi
+                'tanggal_introgasi' => $request->tanggal_introgasi,
+                'created_by' => auth()->user()->id,
 
             ]);
             // return redirect()->back();

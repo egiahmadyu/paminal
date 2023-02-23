@@ -7,6 +7,8 @@ use App\Http\Controllers\KasusController;
 use App\Http\Controllers\LimpahPoldaController;
 use App\Http\Controllers\ProvostWabprofController;
 use App\Http\Controllers\PulbaketController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +39,12 @@ Route::middleware(['auth'])->group(function (){
     // Route::get('/', function () {
     //     return view('pages.dashboard.index');
     // });
+
+    Route::get('user', [UserController::class, 'index']);
+    Route::post('user/save', [UserController::class, 'store']);
+    Route::get('role', [RoleController::class, 'index']);
+    Route::get('role/permission/{id}', [RoleController::class, 'permission']);
+    Route::get('role/permission/{id}/save', [RoleController::class, 'savePermission']);
 
     //Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
