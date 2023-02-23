@@ -58,12 +58,12 @@
                     <li class="menu-title"><span data-key="t-menu">Settings</span></li>
                     <li class="nav-item">
                         <a href="/user" class="nav-link menu-link {{ Request::segment(1) == 'user' ? 'active' : '' }}">
-                            <i class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">User</span>
+                            <i class="fas fa-users"></i> <span data-key="t-dashboard">User</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/role" class="nav-link menu-link {{ Request::segment(1) == 'role' ? 'active' : '' }}">
-                            <i class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Role</span>
+                            <i class="far fa-user-tag"></i> <span data-key="t-dashboard">Role</span>
                         </a>
                     </li>
                 @endcan

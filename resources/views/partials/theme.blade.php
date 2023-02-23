@@ -1,3 +1,7 @@
+<button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+    <i class="ri-arrow-up-line"></i>
+</button>
+
 <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
     <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
         <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
