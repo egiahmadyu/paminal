@@ -30,24 +30,27 @@ class PulbaketController extends Controller
                 'no_sprin' => $request->no_sprin
                 // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
-
-            Penyidik::create([
-                'data_pelanggar_id' => $kasus_id,
-                'name' => $request->nama_penyelidik_ketua,
-                'nrp' => $request->nrp_ketua,
-                'pangkat' => $request->pangkat_ketua,
-                'jabatan' => $request->jabatan_ketua
-            ]);
-
-            for ($i=0; $i < count($request->nama_penyelidik_anggota); $i++) {
+            if (count($request->nama_penyelidik_anggota) > 1)
+            {
                 Penyidik::create([
                     'data_pelanggar_id' => $kasus_id,
-                    'name' => $request->nama_penyelidik_anggota[$i],
-                    'nrp' => $request->nrp_anggota[$i],
-                    'pangkat' => $request->pangkat_anggota[$i],
-                    'jabatan' => $request->jabatan_anggota[$i]
+                    'name' => $request->nama_penyelidik_ketua,
+                    'nrp' => $request->nrp_ketua,
+                    'pangkat' => $request->pangkat_ketua,
+                    'jabatan' => $request->jabatan_ketua
                 ]);
+
+                for ($i=0; $i < count($request->nama_penyelidik_anggota); $i++) {
+                    Penyidik::create([
+                        'data_pelanggar_id' => $kasus_id,
+                        'name' => $request->nama_penyelidik_anggota[$i],
+                        'nrp' => $request->nrp_anggota[$i],
+                        'pangkat' => $request->pangkat_anggota[$i],
+                        'jabatan' => $request->jabatan_anggota[$i]
+                    ]);
+                }
             }
+
         }
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
