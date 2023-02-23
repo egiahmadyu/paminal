@@ -31,7 +31,7 @@ class PulbaketController extends Controller
                 'no_sprin' => $request->no_sprin
                 // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
-            if (count($request->nama_penyelidik_anggota) > 1)
+            if ($request->nama_penyelidik_anggota)
             {
                 Penyidik::create([
                     'data_pelanggar_id' => $kasus_id,
