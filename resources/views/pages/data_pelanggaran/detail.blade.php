@@ -7,6 +7,9 @@
         select:hover, #datepicker:hover {
             cursor: pointer;
         }
+        .loader-view {
+            margin-top : 75px;
+        }
     </style>
 @endprepend
 

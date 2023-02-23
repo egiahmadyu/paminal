@@ -5,8 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Saksi extends Model
+class LimpahBiroHistory extends Model
 {
     use HasFactory;
-    protected $fillable = [ 'data_pelanggar_id','name' ];
+
+    protected $fillable = [
+        'data_pelanggar_id'
+    ];
 }

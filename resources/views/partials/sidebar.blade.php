@@ -50,9 +50,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('logout') }}"
-                        class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}"> <i
-                            class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Logout</span>
+                    <a href="{{ route('logout') }}" class="nav-link menu-link"> 
+                        <i class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Logout</span>
                     </a>
                 </li>
 

@@ -7,7 +7,7 @@
             <div>
 
                 @if ($kasus->status_id > 1)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya</button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Provost / Wabprof</p>
+                    <p>Limpah Biro</p>
                 </div>
             </div>
         </div>
@@ -198,7 +198,7 @@
                         </div>
                         <div class="col-lg-12 mb-3">
                             <label for="exampleInputEmail1" class="form-label">Status</label>
-                            <select class="form-select" aria-label="Default select example" name="disposisi_tujuan"
+                            <select class="form-select border-dark" aria-label="Default select example" name="disposisi_tujuan"
                                 {{-- {{ 2 != $kasus->status_id ? 'disabled' : '' }}  --}} onchange="getPolda()" id="disposisi-tujuan">
                                 <option value="" class="text-center">-- Pilih Status --</option>
                                 <option value="4" class="text-center" {{ $kasus->status_id == 4 ? 'selected' : '' }}>Pulbaket</option>

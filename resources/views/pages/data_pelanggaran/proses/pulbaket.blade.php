@@ -2,12 +2,12 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(1)">Sebelumnya</button>
+                <button type="button" class="btn btn-info" onclick="getViewProcess(1)"><i class="far fa-arrow-left"></i> Sebelumnya</button>
             </div>
             <div>
 
                 @if ($kasus->status_id > 4)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">Selanjutnya</button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">Selanjutnya <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Provost / Wabprof</p>
+                    <p>Limpah Biro</p>
                 </div>
             </div>
         </div>
@@ -47,20 +47,20 @@
         <div class="col-lg-12 mt-4">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card">
+                    <div class="card border-dark">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
+                                            <td> No. SPRIN </td>
+                                            <td>:</td>
                                             <td>
-                                                No Sprin
-                                            </td>
-                                            <td>
-                                                :
-                                            </td>
-                                            <td>
-                                                Sprin/${no_sprin}/HUK.6.6./2023
+                                                @if (isset($sprin))
+                                                    Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                                @else 
+                                                    -
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr>
@@ -78,15 +78,9 @@
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
-                                            <td>
-                                                Perihal
-                                            </td>
-                                            <td>
-                                                :
-                                            </td>
-                                            <td>
-                                                Perihal
-                                            </td>
+                                            <td>Perihal</td>
+                                            <td>:</td>
+                                            <td>Perihal</td>
                                         </tr>
                                         <tr>
                                             <td>Unit Pelaksana</td>
@@ -114,7 +108,7 @@
                         <div class="form-buat-surat col-lg-12 mb-3">
                             <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Pembuatan Surat
                                 Perintah (SPRIN)</label>
-                            <input type="text" class="form-control" id="tgl_pembuatan_surat_perintah"
+                            <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                                 aria-describedby="emailHelp"
                                 value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) . ' WIB' : '' }}"
                                 readonly>
@@ -143,7 +137,7 @@
                     <form>
                         <div class="form-buat-surat col-lg-12 mb-3">
                             <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan UUK</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1"
+                            <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                 value="{{ !empty($uuk) ? date('d-m-Y H:i', strtotime($uuk->created_at)) : '' }}"
                                 readonly aria-describedby="emailHelp">
                         </div>
@@ -157,7 +151,7 @@
                         <div class="form">
                             <div class="form-buat-surat col-lg-12 mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1"
+                                <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                     value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
                                     readonly>
@@ -393,7 +387,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="/tambah-saksi/{{ $kasus->id }}" method="post">
+                    @csrf
                     <div class="mb-3" id="form_tambah_saksi">
                         <div>
                             <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
@@ -402,14 +397,13 @@
                     </div>
                     <div>
                         <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
+                    </div>
+                    <div class="form-outline mb-3">
                         <button type="submit" class="btn btn-primary form-control">Simpan</button>
                     </div>
+                    
                 </form>
             </div>
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div> --}}
         </div>
     </div>
 </div>

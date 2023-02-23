@@ -8,6 +8,7 @@ use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
 use App\Models\HistorySprin;
 use App\Models\Penyidik;
+use App\Models\Saksi;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UukHistory;
@@ -377,8 +378,6 @@ class PulbaketController extends Controller
         return response()->download(storage_path('template_surat/dokumen-template_undangan_gelar_perkara.docx'))->deleteFileAfterSend(true);
     }
 
-
-
     public function viewNextData($id)
     {
         $kasus = DataPelanggar::find($id);
@@ -390,5 +389,19 @@ class PulbaketController extends Controller
             'bai_terlapor' => BaiPelapor::where('data_pelanggar_id', $id)->first()
         ];
         return view('pages.data_pelanggaran.proses.pulbaket-next', $data);
+    }
+
+    public function tambahSaksi($id, Request $request)
+    {
+        // dd($id);
+        $data_pelangggar = DataPelanggar::find($id);
+
+        foreach ($request->nama_saksi as $key => $value) {
+            Saksi::create([
+                'data_pelanggar_id' => $id,
+                'name' => $value
+            ]);
+        }
+        return redirect()->route('kasus.detail',['id'=>$id]);
     }
 }
