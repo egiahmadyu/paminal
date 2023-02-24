@@ -229,10 +229,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah (SPRIN)</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="getViewProcess(4)"></button>
             </div>
             <div class="modal-body">
-                <form action="/surat-perintah/{{ $kasus->id }}" method="post">
+                <form action="/surat-perintah/{{ $kasus->id }}" method="post" target="_blank">
                     @csrf
                     <!-- Input no SPRIN -->
                     <div class="row mb-3">
@@ -469,6 +470,12 @@
     $(document).ready(function() {
         getNextData();
     });
+
+    function submitForm(event) {
+        // document.forms['myform'].submit();
+        getViewProcess(4)
+        // alert('a')
+    }
 
     function tambahSaksi() {
         let inHtml =

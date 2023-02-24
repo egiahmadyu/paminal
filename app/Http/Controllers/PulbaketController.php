@@ -32,7 +32,7 @@ class PulbaketController extends Controller
                 'created_by' => auth()->user()->id,
                 // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
-            if ($request->nama_penyelidik_anggota)
+            if ($request->nama_penyelidik_ketua)
             {
                 Penyidik::create([
                     'data_pelanggar_id' => $kasus_id,
@@ -42,15 +42,19 @@ class PulbaketController extends Controller
                     'jabatan' => $request->jabatan_ketua
                 ]);
 
-                for ($i=0; $i < count($request->nama_penyelidik_anggota); $i++) {
-                    Penyidik::create([
-                        'data_pelanggar_id' => $kasus_id,
-                        'name' => $request->nama_penyelidik_anggota[$i],
-                        'nrp' => $request->nrp_anggota[$i],
-                        'pangkat' => $request->pangkat_anggota[$i],
-                        'jabatan' => $request->jabatan_anggota[$i]
-                    ]);
+                if ($request->nama_penyelidik_anggota)
+                {
+                    for ($i=0; $i < count($request->nama_penyelidik_anggota); $i++) {
+                        Penyidik::create([
+                            'data_pelanggar_id' => $kasus_id,
+                            'name' => $request->nama_penyelidik_anggota[$i],
+                            'nrp' => $request->nrp_anggota[$i],
+                            'pangkat' => $request->pangkat_anggota[$i],
+                            'jabatan' => $request->jabatan_anggota[$i]
+                        ]);
+                    }
                 }
+
             }
 
         }
