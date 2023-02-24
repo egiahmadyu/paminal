@@ -46,7 +46,8 @@
                                         <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
                                     </a>
                                 @else
-                                    <a href="/bai-sipil/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
+                                    <a href="/bai-sipil/{{ $kasus->id }}"
+                                        class="btn btn-outline-primary text-primary">
                                         <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
                                     </a>
                                 @endif
@@ -58,7 +59,7 @@
                                 </a>
                             </div>
                         </div>
-                        
+
                     </td>
                 </tr>
                 <tr>
@@ -74,10 +75,19 @@
                 <tr>
                     <td>ND Permohonan Gelar Perkara</td>
                     <td>
-                        <a href="/nd-permohonan-gerlar/{{ $kasus->id }}"
-                            class="btn btn-outline-primary text-primary">
-                            <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6>
-                        </a>
+                        @if (!$nd_pgp)
+                            <button class="btn btn-outline-primary text-primary" data-bs-toggle="modal"
+                                data-bs-target="#nd_permohonan_gelar_perkara">
+                                <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6>
+                            </button>
+                        @else
+                            <a href="/nd-permohonan-gerlar/{{ $kasus->id }}"
+                                class="btn btn-outline-primary text-primary">
+                                <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen</h6>
+                            </a>
+                        @endif
+
+
                     </td>
                 </tr>
             </tbody>

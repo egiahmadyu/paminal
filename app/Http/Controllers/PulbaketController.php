@@ -7,6 +7,7 @@ use App\Models\BaiTerlapor;
 use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
 use App\Models\HistorySprin;
+use App\Models\NdPermohonanGelar;
 use App\Models\Penyidik;
 use App\Models\Saksi;
 use App\Models\Sp2hp2Hisory;
@@ -352,13 +353,22 @@ class PulbaketController extends Controller
         return response()->download(storage_path('template_surat/dokumen-lhp.docx'))->deleteFileAfterSend(true);
     }
 
-    public function ndPG($kasus_id)
+    public function ndPG($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $template_document = new TemplateProcessor(storage_path('template_surat/nd_permohonan_gelar.docx'));
+        if (!$data = NdPermohonanGelar::where('data_pelanggar_id', $kasus_id)->first())
+        {
+            $data = NdPermohonanGelar::create([
+                'data_pelanggar_id' => $kasus->id,
+                'no_surat' => $request->no_surat,
+                'created_by' => auth()->user()->id
+            ]);
+        }
 
         $template_document->setValues(array(
+            'nomor_nd_permohonan' => $data->nomor_surat,
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => $kasus->pangkat,
@@ -395,8 +405,10 @@ class PulbaketController extends Controller
 
         $data = [
             'kasus' => $kasus,
-            'bai_terlapor' => BaiPelapor::where('data_pelanggar_id', $id)->first()
+            'bai_terlapor' => BaiPelapor::where('data_pelanggar_id', $id)->first(),
+            'nd_pgp' => NdPermohonanGelar::where('data_pelanggar_id', $id)->first()
         ];
+        // dd($data);
         return view('pages.data_pelanggaran.proses.pulbaket-next', $data);
     }
 

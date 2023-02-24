@@ -224,7 +224,8 @@
 </div>
 
 <!-- Modal Buat SPRIN -->
-<div class="modal fade" id="modal_sprin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_sprin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -455,6 +456,35 @@
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Tanggal Introgasi</label>
                         <input type="date" class="form-control" name="tanggal_introgasi">
+                    </div>
+                    <div>
+                        {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
+                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Modal ND Permohonan Gelar Perkara --}}
+<div class="modal fade" id="nd_permohonan_gelar_perkara" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Buat Nota Dinas Permohonan Gelar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="getViewProcess(4)"></button>
+            </div>
+            <form action="/nd-permohonan-gerlar/{{ $kasus->id }}" target="_blank" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="text" class="form-control" name="no_surat"
+                                placeholder="Masukan No. Nota Dinas Permohonan Gelar">
+                        </div>
                     </div>
                     <div>
                         {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}

@@ -89,6 +89,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/bai-anggota/{id}', [PulbaketController::class, 'printBaiAnggota']);
     Route::get('/laporan-hasil-penyelidikan/{id}', [PulbaketController::class, 'lhp']);
     Route::get('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
+    Route::post('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
 
     Route::post('/limpah-biro/{id}', [ProvostWabprofController::class, 'simpanData']);
     Route::post('/limpah-biro/update/{id}',[ProvostWabprofController::class, 'printLimpahBiro']);
