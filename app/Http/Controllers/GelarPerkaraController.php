@@ -13,11 +13,18 @@ class GelarPerkaraController extends Controller
 {
     public function printUGP($kasus_id, Request $request)
     {
+        // dd($request->all());
         $kasus = DataPelanggar::find($kasus_id);
         if (!$data = GelarPerkaraHistory::where('data_pelanggar_id', $kasus_id)->first())
         {
             $data = GelarPerkaraHistory::create([
-                'data_pelanggar_id' => $kasus_id
+                'data_pelanggar_id' => $kasus_id,
+                'tanggal' => Carbon::createFromFormat('Y-m-d',$request->tanggal_gelar_perkara)->format('Y-m-d H:i:s'),
+                'waktu' => Carbon::createFromFormat('H:i:s',$request->waktu_gelar_perkara)->format('H:i:s'),
+                'tempat' => $request->tempat_gelar_perkara,
+                'pimpinan' => $request->nama_pimpinan,
+                'pangkat_pimpinan' => $request->pangkat_pimpinan,
+                'jabatan_pimpinan' => $request->jabatan_pimpinan
 
             ]);
         }

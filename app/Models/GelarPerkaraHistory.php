@@ -10,6 +10,6 @@ class GelarPerkaraHistory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data_pelanggar_id'
+        'data_pelanggar_id','tanggal','waktu','tempat','pimpinan','pangkat_pimpinan','jabatan_pimpinan'
     ];
 }

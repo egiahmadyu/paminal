@@ -10,4 +10,8 @@ class SprinHistory extends Model
     use HasFactory;
 
     protected $fillable = [ 'data_pelanggar_id', 'no_sprin' ];
+
+    public $rules = [
+        'no_sprin' => 'required',
+    ];
 }

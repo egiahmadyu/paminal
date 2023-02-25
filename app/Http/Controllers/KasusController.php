@@ -7,6 +7,7 @@ use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
 use App\Models\JenisIdentitas;
 use App\Models\JenisKelamin;
+use App\Models\LimpahBiroHistory;
 use App\Models\LimpahPolda;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
@@ -175,7 +176,7 @@ class KasusController extends Controller
         $data = [
             'kasus' => $kasus,
             'status' => $status,
-            'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
+            'limpah_biro' => LimpahBiroHistory::where('data_pelanggar_id', $id)->first(),
             'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first()
         ];
 

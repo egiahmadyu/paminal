@@ -117,7 +117,7 @@
                     <tr>
                         <td>Undangan Gelar Perkara Penyelidikan</td>
                         <td>
-                            <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
+                            <a href="" data-bs-toggle="modal" data-bs-target="#modal_undangan_gelar_perkara">
                                 <button type="button" class="btn btn-outline-primary text-primary">
                                     <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
                                 </button>
@@ -182,7 +182,7 @@
                         <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" hidden>
                         <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }}
                             value="update_status">Lanjutkan
-                            ke Provost / Wabprof</button>
+                            ke Provos / Wabprof</button>
                     </form>
                 @endif
             </div>
@@ -190,124 +190,66 @@
     @endif
 </div>
 
-<div class="modal fade" id="modal_sprin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="modal_undangan_gelar_perkara" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Undangan Gelar Perkara</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/surat-perintah/{{ $kasus->id }}">
-                    <div class="form-outline mb-3">
-                        <label class="form-label" for="textAreaExample2">Isi Surat</label>
-                        <textarea class="form-control" name="isi_surat_perintah" rows="8"></textarea>
+                <form action="/gelar-perkara-undangan/{{ $kasus->id }}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <input type="date" class="form-control" name="tanggal_gelar_perkara"
+                                    id="tanggal_gelar_perkara">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" name="waktu_gelar_perkara"
+                                    id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" name="tempat_gelar_perkara"
+                                    id="tempat_gelar_perkara" placeholder="Tempat Gelar Perkara">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" name="pangkat_pimpinan"
+                                    id="pangkat_pimpinan" placeholder="Pangkat Pimpinan">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" name="nama_pimpinan"
+                                    id="nama_pimpinan" placeholder="Nama Pimpinan">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" name="jabatan_pimpinan"
+                                    id="jabatan_pimpinan" placeholder="Jabatan Pimpinan">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <button type="submit" class="form-control btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                        
                     </div>
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="modal_uuk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/surat-uuk/{{ $kasus->id }}">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Nama</label>
-                        <input type="text" class="form-control" name="nama" aria-describedby="emailHelp">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Pangkat</label>
-                        <input type="text" class="form-control" name="pangkat">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">NRP</label>
-                        <input type="text" class="form-control" name="nrp">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" name="jabatan">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal_sp2hp2_awal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Nama yang Menangani</label>
-                        <input type="text" class="form-control" name="penangan" aria-describedby="emailHelp"
-                            placeholder="Unit II Detasemen A Ropaminal Divpropam Polri">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Nama yang dihubungi</label>
-                        <input type="text" class="form-control" name="dihubungi"
-                            placeholder="AKP ERICSON SIREGAR, S.Kom., M.T., M.Sc">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan yang dihubungi</label>
-                        <input type="text" class="form-control" name="jabatan_dihubungi"
-                            placeholder="Kanit II Den A">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" name="telp_dihubungi">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // $(document).ready(function() {
-    //     getNextData()
-    // });
-
-    // function getNextData() {
-    //     console.log($('#test_sprin').val())
-    //     if ($('#test_sprin').val() == 'done') {
-
-    //         $.ajax({
-    //             url: `/pulbaket/view/next-data/` + $('#kasus_id').val(),
-    //             method: "get"
-    //         }).done(function(data) {
-    //             $('.loader-view').css("display", "none");
-    //             $("#viewNext").html(data)
-    //         });
-    //     }
-    // }
-</script>

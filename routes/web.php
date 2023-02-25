@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
 
     Route::post('/limpah-biro/{id}', [ProvostWabprofController::class, 'simpanData']);
-    Route::post('/limpah-biro/update/{id}',[ProvostWabprofController::class, 'printLimpahBiro']);
+    Route::get('/laporan-hasil-limpah-biro/{id}',[ProvostWabprofController::class, 'printLimpahBiro']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');

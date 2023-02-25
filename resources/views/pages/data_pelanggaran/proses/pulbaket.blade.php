@@ -101,7 +101,7 @@
                 </div>
             </div>
             <div class="row mv-3">
-                <div class="col-lg-4 mb-3">
+                <div class="col-lg-12 mb-3">
                     <input type="text" id="test_sprin" value="{{ !empty($sprin) ? 'done' : '' }}" hidden>
                     <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
                     <form>
@@ -115,12 +115,12 @@
                         </div>
                         @if (!empty($sprin))
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <a href="/surat-perintah/{{ $kasus->id }}">
                                         <i class="far fa-download"></i> SPRIN
                                     </a>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-6">
                                     <a href="/surat-perintah-pengantar/{{ $kasus->id }}">
                                         <i class="far fa-download"></i> Surat Pengantar SPRIN
                                     </a>
@@ -132,79 +132,6 @@
                             </a>
                         @endif
                     </form>
-                </div>
-                <div class="col-lg-4 mb-3">
-                    <form>
-                        <div class="form-buat-surat col-lg-12 mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan UUK</label>
-                            <input type="text" class="form-control border-dark" id="exampleInputEmail1"
-                                value="{{ !empty($uuk) ? date('d-m-Y H:i', strtotime($uuk->created_at)) : '' }}"
-                                readonly aria-describedby="emailHelp">
-                        </div>
-                        <a href="/surat-uuk/{{ $kasus->id }}">
-                            <i class="far fa-download"></i> UUK
-                        </a>
-                    </form>
-                </div>
-                <div class="col-lg-4 mb-3">
-                    <form>
-                        <div class="form">
-                            <div class="form-buat-surat col-lg-12 mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2</label>
-                                <input type="text" class="form-control border-dark" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp"
-                                    value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
-                                    readonly>
-                            </div>
-                            @if (!empty($sp2hp_awal))
-                                <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                                    <i class="far fa-download"></i> Surat
-                                </a>
-                            @else
-                                <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sp2hp2_awal">
-                                    <i class="far fa-file-plus"></i> SP2HP2
-                                </a>
-                            @endif
-
-                        </div>
-                    </form>
-
-                    {{-- <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <div class="form-label">
-                                    <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Awal</label>
-                                </div>
-
-                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp"
-                                    value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
-                                    readonly>
-                            </div>
-                            @if (!empty($sp2hp_awal))
-                                <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                                    Surat <i class="far fa-download"></i>
-                                </a>
-                            @else
-                                <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sp2hp2_awal">
-                                    Buat Surat <i class="far fa-file-plus"></i>
-                                </a>
-                            @endif
-
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <div class="form-label">
-                                    <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Akhir</label>
-                                </div>
-
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            </div>
-                            <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                                Buat Surat <i class="far fa-file-plus"></i>
-                            </a>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
             <hr>
@@ -230,8 +157,10 @@
                     <!-- Input no SPRIN -->
                     <div class="row mb-3">
                         <div class="col">
-                            <input type="text" class="form-control" name="no_sprin"
-                                placeholder="Masukan No. SPRIN">
+                            <input type="text" class="form-control" name="no_sprin" placeholder="Masukan No. SPRIN">
+                            @if ($errors->has('no_sprin'))
+                                <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
+                            @endif
                         </div>
                     </div>
                     <!-- Input data penyidik -->
@@ -391,8 +320,7 @@
                     @csrf
                     <div class="mb-3" id="form_tambah_saksi">
                         <div>
-                            <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
-                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
+                            <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
                         </div>
                     </div>
                     <div>

@@ -22,7 +22,6 @@ class PulbaketController extends Controller
     public function printSuratPerintah($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
-        // dd($request->all());
         if (!$data = SprinHistory::where('data_pelanggar_id', $kasus_id)->first())
         {
 
