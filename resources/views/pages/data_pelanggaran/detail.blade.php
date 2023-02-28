@@ -1,6 +1,7 @@
 @extends('partials.master')
 
 @prepend('styles')
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
     <style>
@@ -41,6 +42,7 @@
 @endsection
 
 @section('scripts')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/decoupled-document/ckeditor.js"></script> --}}
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/inline/ckeditor.js"></script> --}}
@@ -85,5 +87,17 @@
             console.log($('#editor').text())
         }
 
+    </script>
+    <script>
+        var timepicker = new TimePicker('time', {
+            lang: 'en',
+            theme: 'dark'
+        });
+        timepicker.on('change', function(evt) {
+        
+        var value = (evt.hour || '00') + ':' + (evt.minute || '00');
+        evt.element.value = value;
+    
+        });
     </script>
 @endsection

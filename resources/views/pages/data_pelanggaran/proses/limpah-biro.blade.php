@@ -103,20 +103,31 @@
                     <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
                     <form action="/limpah-biro/{{ $kasus->id }}" method="post">
                         @csrf
-                        <div class="form-buat-surat col-lg-12 mb-3 mt-3">
-                            {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
-                            <select class="form-select border-dark" aria-label="Default select example" name="jenis_limpah" id="jenis_limpah">
-                                    <option value="" class="text-center">-- Pilih Limpah Biro --</option>
-                                    <option value="1" class="text-center">Provost</option>
-                                    <option value="2" class="text-center">Wabprof</option>
-                            </select>
-                        </div>
-                        <div class="form-buat-surat col-lg-12 mb-3">
-                            <button type="submit" class="form-control btn btn-outline-primary text-primary">
-                                <h6 class="p-0 m-0">Submit</h6>
-                            </button>
-                            {{-- <button type="submit" class="btn btn-outline-primary border-dark">Submit</button> --}}
-                        </div>
+                        @if (!isset($limpah_biro))
+                            <div class="form-buat-surat col-lg-12 mb-3 mt-3">
+                                {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
+                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_limpah" id="jenis_limpah">
+                                        <option value="" class="text-center">-- Pilih Limpah Biro --</option>
+                                        <option value="1" class="text-center">Provos</option>
+                                        <option value="2" class="text-center">Wabprof</option>
+                                </select>
+                            </div>
+                            <div class="form-buat-surat col-lg-12 mb-3">
+                                <button type="submit" class="form-control btn btn-outline-primary text-primary">
+                                    <h6 class="p-0 m-0">Submit</h6>
+                                </button>
+                                {{-- <button type="submit" class="btn btn-outline-primary border-dark">Submit</button> --}}
+                            </div>
+                        @else
+                            <div class="form-buat-surat col-lg-12">
+                                <label for="download_laporan_limpah_biro" class="form-label">Laporan Limpah Biro :</label>
+                                <a href="/laporan-hasil-limpah-biro/{{ $kasus->id }}"
+                                    class="form-control btn btn-outline-primary text-primary">
+                                    <h6 class="p-0 m-0"><i class="far fa-download"></i> Dokumen</h6>
+                                </a>
+                            </div>
+                        @endif
+                        
                     </form>
                 </div>
             </div>

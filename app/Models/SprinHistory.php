@@ -11,7 +11,9 @@ class SprinHistory extends Model
 
     protected $fillable = [ 'data_pelanggar_id', 'no_sprin', 'created_by' ];
 
-
+    public $rules = [
+        'no_sprin' => 'required',
+    ];
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'created_by');

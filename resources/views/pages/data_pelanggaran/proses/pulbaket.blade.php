@@ -122,12 +122,12 @@
                         </div>
                         @if (!empty($sprin))
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <a href="/surat-perintah/{{ $kasus->id }}">
                                         <i class="far fa-download"></i> SPRIN
                                     </a>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-6">
                                     <a href="/surat-perintah-pengantar/{{ $kasus->id }}">
                                         <i class="far fa-download"></i> Surat Pengantar SPRIN
                                     </a>
@@ -241,6 +241,9 @@
                         <div class="col">
                             <input type="text" class="form-control" name="no_sprin"
                                 placeholder="Masukan No. SPRIN">
+                            @if ($errors->has('no_sprin'))
+                                <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
+                            @endif
                         </div>
                     </div>
                     <!-- Input data penyidik -->

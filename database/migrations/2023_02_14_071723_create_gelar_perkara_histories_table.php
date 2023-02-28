@@ -16,6 +16,12 @@ return new class extends Migration
         Schema::create('gelar_perkara_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
+            $table->timestamp('tanggal');
+            $table->time('waktu');
+            $table->string('tempat');
+            $table->string('pangkat_pimpinan');
+            $table->string('pimpinan');
+            $table->string('jabatan_pimpinan');
             $table->timestamps();
         });
     }

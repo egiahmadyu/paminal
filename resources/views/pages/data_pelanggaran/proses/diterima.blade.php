@@ -13,6 +13,8 @@
             </div>
         </div>
     </div>
+
+    <!--Timeline-->
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
             <div class="f1-steps">
@@ -39,6 +41,7 @@
             </div>
         </div>
     </div>
+    <!-- Isi -->
     <div class="col-lg-12">
         <form action="/data-kasus/update" method="post">
             @csrf
