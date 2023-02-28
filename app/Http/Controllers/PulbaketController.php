@@ -367,7 +367,8 @@ class PulbaketController extends Controller
         }
 
         $template_document->setValues(array(
-            'nomor_nd_permohonan' => $data->nomor_surat,
+            'nomor_nd_permohonan' => $data->no_surat,
+            'bulan_nd_permohonan' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => $kasus->pangkat,
