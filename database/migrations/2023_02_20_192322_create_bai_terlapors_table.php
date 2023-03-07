@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('data_pelanggar_id');
             $table->date('tanggal_introgasi');
+            $table->time('waktu_introgasi');
             $table->bigInteger('created_by');
             $table->timestamps();
         });

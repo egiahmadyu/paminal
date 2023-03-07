@@ -26,5 +26,9 @@ class PoldaSeed extends Seeder
         Polda::create([
             'name' => 'Polda Jateng'
         ]);
+
+        Polda::create([
+            'name' => 'Polda Jatim'
+        ]);
     }
 }

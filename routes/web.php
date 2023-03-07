@@ -90,9 +90,13 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/laporan-hasil-penyelidikan/{id}', [PulbaketController::class, 'lhp']);
     Route::get('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
     Route::post('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
+    Route::get('/undangan-klarifikasi/{id}',[PulbaketController::class, 'printUndanganKlarifikasi']);
+    Route::post('/undangan-klarifikasi/{id}',[PulbaketController::class, 'printUndanganKlarifikasi']);
+    Route::get('/laporan-hasil-limpah-biro/{id}',[ProvostWabprofController::class, 'printLimpahBiro']);
+   
+
 
     Route::post('/limpah-biro/{id}', [ProvostWabprofController::class, 'simpanData']);
-    Route::get('/laporan-hasil-limpah-biro/{id}',[ProvostWabprofController::class, 'printLimpahBiro']);
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');

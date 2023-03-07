@@ -61,7 +61,7 @@
                                                 @if (isset($sprin))
                                                     Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
                                                 @else
-                                                    Sprin/..../HUK.6.6./2023
+                                                    Sprin/____/HUK.6.6./2023
                                                 @endif
                                             </td>
                                         </tr>
@@ -309,12 +309,12 @@
     </div>
 </div>
 
-<!-- Modal Buat -->
-<div class="modal fade" id="modal_uuk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Buat UUK -->
+<div class="modal fade" id="modal_uuk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat UUK</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -347,13 +347,13 @@
     </div>
 </div>
 
-<!-- Modal Buat SP3HP2 -->
+<!-- Modal Buat SP2HP2 -->
 <div class="modal fade" id="modal_sp2hp2_awal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+    aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Pembuatan SP2HP2</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -389,29 +389,94 @@
     </div>
 </div>
 
+<!-- Modal Buat Undangan Klarifikasi -->
+<div class="modal fade" id="modal_undangan_sipil" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Undangan Klarifikasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="getViewProcess(4)"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/undangan-klarifikasi/{{ $kasus->id }}" method="post" target="_blank">
+                    @csrf
+                    <!-- Input no surat undangan -->
+                    <div class="form-floating mb-3">
+                        <select class="form-select border-dark" aria-label="Default select example" name="jenis_undangan" id="jenis_undangan">
+                            <option value="">Pilih Jenis Undangan</option>
+                            <option value="1">Sipil</option>
+                            <option value="2">Personel</option>
+                        </select>
+                        <label for="jenis_undangan" class="form-label">-- Pilih Jenis Undangan --</label>
+                    </div>
+
+                    <!--undangan sipil-->
+                    <div class="row mb-3">
+                        <div class="col-12 mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control border-dark" name="no_surat_undangan"placeholder="Masukan No. Surat Undangan">
+                                <label for="no_surat_undangan">No. Surat Undangan</label>
+                                @if ($errors->has('no_sprin'))
+                                    <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
+                                @endif
+                            </div>
+                            @if ($errors->has('no_sprin'))
+                                <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-floating">
+                                <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="Tanggal Klarifikasi" readonly>
+                                <label for="tgl_klarifikasi">Tanggal Klarifikasi</label>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-outline">
+                                <div class="form-floating">
+                                    <input type="time" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="Waktu Klarifikasi">
+                                    <label for="waktu_klarifikasi">Waktu Klarifikasi</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-outline mb-3">
+                        <button type="submit" class="form-control btn btn-primary">Buat Undangan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Tambah Saksi -->
 <div class="modal fade" id="modal_tambah_saksi" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+    aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tambah Saksi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="getViewProcess(4)" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="/tambah-saksi/{{ $kasus->id }}" method="post">
                     @csrf
-                    <div class="mb-3" id="form_tambah_saksi">
-                        <div>
-                            <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
+                    <div class="form-outline mb-3" id="form_tambah_saksi">
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
                                 aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
+                                <label for="nama_saksi">Nama Saksi</label>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
+                    <div class="form-outline mb-3">
+                        <a type="button" class="btn btn-outline-success" href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
                     </div>
                     <div class="form-outline mb-3">
-                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                        <button type="submit" class="btn btn-outline-primary form-control">Simpan</button>
                     </div>
 
                 </form>
@@ -421,8 +486,8 @@
 </div>
 
 <!-- Modal Tambah BAI Pelapor -->
-<div class="modal fade" id="bai_pelapor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal fade" id="bai_pelapor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Buat BAI Pelapor</h5>
@@ -432,11 +497,18 @@
             <form action="/bai-sipil/{{ $kasus->id }}" target="_blank">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Tanggal Introgasi</label>
-                        <input type="date" class="form-control" name="tanggal_introgasi">
+                        <div class="form-floating">
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi" placeholder="Tanggal Introgasi" readonly>
+                            <label for="tanggal_introgasi">Tanggal Introgasi</label>
+                        </div>
                     </div>
-                    <div>
-                        {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi">
+                            <label for="waktu_introgasi">Waktu Intograsi</label>
+                        </div>
+                    </div>
+                    <div class="form-outline border-0">
                         <button type="submit" class="btn btn-primary form-control">Simpan</button>
                     </div>
                 </div>
@@ -446,8 +518,8 @@
 </div>
 
 <!-- Modal Tambah BAI Terlapor -->
-<div class="modal fade" id="bai_terlapor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal fade" id="bai_terlapor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Buat BAI Terlapor</h5>
@@ -457,8 +529,16 @@
             <form action="/bai-anggota/{{ $kasus->id }}" target="_blank">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Tanggal Introgasi</label>
-                        <input type="date" class="form-control" name="tanggal_introgasi">
+                        <div class="form-floating">
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi_terlapor" placeholder="Tanggal Introgasi" readonly>
+                            <label for="tanggal_introgasi_terlapor">Tanggal Introgasi</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi">
+                            <label for="waktu_introgasi">Waktu Introgasi</label>
+                        </div>
                     </div>
                     <div>
                         {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
@@ -504,6 +584,39 @@
         getNextData();
     });
 
+    $(function() {
+        $( "#tanggal_introgasi" ).datepicker({
+            autoclose:true,
+            todayHighlight:true,
+            format:'yyyy-mm-dd',
+            language: 'id',
+            beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
+        });
+        $( "#tanggal_introgasi_terlapor" ).datepicker({
+            autoclose:true,
+            todayHighlight:true,
+            format:'yyyy-mm-dd',
+            language: 'id',
+            beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
+        });
+        $( "#tgl_klarifikasi" ).datepicker({
+            autoclose:true,
+            todayHighlight:true,
+            format:'yyyy-mm-dd',
+            language: 'id',
+            beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
+        });
+    });
+
+    function setDatepickerPos(input, inst) {
+        var rect = input.getBoundingClientRect();
+        // use 'setTimeout' to prevent effect overridden by other scripts
+        setTimeout(function () {
+            var scrollTop = $("body").scrollTop();
+    	    inst.dpDiv.css({ top: rect.top + input.offsetHeight + scrollTop });
+        }, 0);
+    }
+
     function submitForm(event) {
         // document.forms['myform'].submit();
         getViewProcess(4)
@@ -512,7 +625,11 @@
 
     function tambahSaksi() {
         let inHtml =
-            '<div><input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi"></div>';
+            `<div class="mb-3"><div class="form-floating">
+                                <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
+                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
+                                <label for="no_nota_dinas">Nama Saksi</label>
+                            </div></div>`;
         // let inHtml = '<input type="text" class="form-control" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama ">';
         $('#form_tambah_saksi').append(inHtml);
         // $('#form_tambah_saksi .inputNamaSaksi:last').before(inHtml);
@@ -520,7 +637,7 @@
 
     function tambahAnggota() {
         let inHtml =
-            `<div class="row">
+            `<div class="row mb-3">
             <div class="col-lg-6">
                 <div class="form-outline mb-3">
                     <input type="text" class="form-control" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyelidik">

@@ -89,7 +89,7 @@ class ProvostWabprofController extends Controller
             'pemimpin_gelar_perkara' => $gelar_perkara->pimpinan,
             'pangkat_pemimpin_gelar' => $gelar_perkara->pangkat_pimpinan,
             'jabatan_pemimpin_gelar' => $gelar_perkara->jabatan_pimpinan,
-            'tgl_ttd' => Carbon::now()->format('F Y'),
+            'tgl_ttd' => Carbon::now()->locale('id')->format('F Y'),
         ));
 
         $template_document->saveAs(storage_path('template_surat/nd_tindak_lanjut_hasil_penyelidikan.docx'));

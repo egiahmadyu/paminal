@@ -10,6 +10,6 @@ class BaiTerlapor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data_pelanggar_id', 'tanggal_introgasi', 'created_by'
+        'data_pelanggar_id', 'tanggal_introgasi', 'waktu_introgasi' , 'created_by'
     ];
 }

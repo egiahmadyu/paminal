@@ -47,11 +47,11 @@
                         <div class="col-lg-6">
                             <table>
                                 <tr>
-                                    <td> No. SPRIN </td>
+                                    <td> No. Gelar Penyelidikan </td>
                                     <td>:</td>
                                     <td>
-                                        @if (isset($sprin))
-                                            Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                        @if (isset($ugp))
+                                            Sprin/{{ $ugp->no_surat }}/HUK.6.6./2023
                                         @else 
                                             -
                                         @endif
@@ -135,7 +135,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_sprin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_sprin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

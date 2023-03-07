@@ -13,16 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('gelar_perkara_histories', function (Blueprint $table) {
+        Schema::create('n_d_hasil_gelar_penyelidikan_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
-            $table->timestamp('tanggal');
-            $table->time('waktu');
-            $table->string('tempat');
-            $table->string('pangkat_pimpinan');
-            $table->string('pimpinan');
-            $table->string('jabatan_pimpinan');
-            $table->string('nrp_pimpinan');
+            $table->string('no_surat')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gelar_perkara_histories');
+        Schema::dropIfExists('n_d_hasil_gelar_penyelidikan_histories');
     }
 };

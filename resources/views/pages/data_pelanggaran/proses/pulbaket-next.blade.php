@@ -20,7 +20,8 @@
                         <button type="button" class="btn btn-warning">Tambah Saksi <i class="far fa-user-plus"></i></button> --}}
                         <div class="row">
                             <div class="col-md-6 col-lg-6">
-                                <a href="#" class="btn btn-outline-primary text-primary">
+                                <a href="javascript::void(0)" class="btn btn-outline-primary text-primary"
+                                    data-bs-toggle="modal" data-bs-target="#modal_undangan_sipil">
                                     <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Undangan</h6>
                                 </a>
                             </div>

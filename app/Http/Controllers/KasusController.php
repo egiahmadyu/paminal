@@ -9,6 +9,8 @@ use App\Models\JenisIdentitas;
 use App\Models\JenisKelamin;
 use App\Models\LimpahBiroHistory;
 use App\Models\LimpahPolda;
+use App\Models\NDHasilGelarPenyelidikanHistory;
+use App\Models\NdPermohonanGelar;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
@@ -45,18 +47,14 @@ class KasusController extends Controller
 
     public function storeKasus(Request $request)
     {
-        $no_nota_dinas = "11/32/propam";
-        $perihal_nota_dinas = "Penting";
-        $wujud_perbuatan = "Kode Erik";
-        $tgl_nota_dinas = Carbon::now();
         $no_pengaduan = "123456"; //generate otomatis
         // dd($request->all());
         $DP = DataPelanggar::create([
-            'no_nota_dinas' => $no_nota_dinas,
+            'no_nota_dinas' => $request->no_nota_dinas,
             'no_pengaduan' => $no_pengaduan,
-            'perihal_nota_dinas' => $perihal_nota_dinas,
-            'wujud_perbuatan' => $wujud_perbuatan,
-            'tanggal_nota_dinas' => $tgl_nota_dinas,
+            'perihal_nota_dinas' => $request->perihal_nota_dinas,
+            'wujud_perbuatan' => $request->wujud_perbuatan,
+            'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),
             'pelapor' => $request->pelapor,
             'umur' => $request->umur,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -64,9 +62,7 @@ class KasusController extends Controller
             'agama' => $request->agama,
             'alamat' => $request->alamat,
             'no_identitas' => $request->no_identitas,
-            'no_telp' => '08212345678',
             'jenis_identitas' => $request->jenis_identitas,
-            'kewarganegaraan' => 'WNI',
             'terlapor' => $request->terlapor,
             'nrp' => $request->nrp,
             'jabatan' => $request->jabatan,
@@ -101,11 +97,11 @@ class KasusController extends Controller
         $process = Process::where('sort', '<=', $status->id)->get();
         $agama = Agama::get();
         
-        // dd($agama[0]->name);
         $data = [
             'kasus' => $kasus,
             'status' => $status,
             'process' =>  $process,
+            'agala' => $agama,
         ];
 
         // if ($kasus->status_id == 3)
@@ -120,9 +116,15 @@ class KasusController extends Controller
     {
         if ($request->type_submit === 'update_status') {
             return $this->updateStatus(($request));
-        } 
+        }
+        $no_pengaduan = "123456"; //generate otomatis
         $data_pelanggar = DataPelanggar::where('id', $request->kasus_id)->first();
         $data_pelanggar->update([
+            'no_nota_dinas' => $request->no_nota_dinas,
+            'no_pengaduan' => $no_pengaduan,
+            'perihal_nota_dinas' => $request->perihal_nota_dinas,
+            'wujud_perbuatan' => $request->wujud_perbuatan,
+            'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),
             'pelapor' => $request->pelapor,
             'umur' => $request->umur,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -130,10 +132,10 @@ class KasusController extends Controller
             'agama' => $request->agama,
             'alamat' => $request->alamat,
             'no_identitas' => $request->no_identitas,
-            'no_telp' => '08212345678',
             'jenis_identitas' => $request->jenis_identitas,
-            'kewarganegaraan' => 'WNI',
             'terlapor' => $request->terlapor,
+            'nrp' => $request->nrp,
+            'jabatan' => $request->jabatan,
             'kesatuan' => $request->kesatuan,
             'tempat_kejadian' => $request->tempat_kejadian,
             'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
@@ -191,7 +193,9 @@ class KasusController extends Controller
             'kasus' => $kasus,
             'status' => $status,
             'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
-            'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first()
+            'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first(),
+            'ndPG' => NdPermohonanGelar::where('data_pelanggar_id', $id)->first(),
+            'ndHGP' => NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $id)->first(),
         ];
 
         return view('pages.data_pelanggaran.proses.gelar_penyelidikan', $data);

@@ -47,14 +47,14 @@
             <div class="card border-dark">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-8">
                             <table>
                                 <tr>
-                                    <td> No. SPRIN </td>
+                                    <td> No. Permohonan Gelar Penyelidikan </td>
                                     <td>:</td>
                                     <td>
-                                        @if (isset($sprin))
-                                            Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                        @if (isset($ndPG))
+                                            R/ND-{{ $ndPG->no_surat }}/II/WAS.2.4./2023/Den A
                                         @else 
                                             -
                                         @endif
@@ -72,7 +72,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <table>
                                 <tr>
                                     <td>Perihal</td>
@@ -117,11 +117,19 @@
                     <tr>
                         <td>Undangan Gelar Perkara Penyelidikan</td>
                         <td>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#modal_undangan_gelar_perkara">
-                                <button type="button" class="btn btn-outline-primary text-primary">
-                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
-                                </button>
-                            </a>
+                            @if (!empty($ugp))
+                                <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
+                                    <button type="button" class="btn btn-outline-primary text-primary">
+                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Undangan</h6>
+                                    </button>
+                                </a>
+                            @else
+                                <a href="" data-bs-toggle="modal" data-bs-target="#modal_undangan_gelar_perkara">
+                                    <button type="button" class="btn btn-outline-primary text-primary">
+                                        <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen Undangan</h6>
+                                    </button>
+                                </a>
+                            @endif
                         </td>
                     </tr>
                     @if (!empty($ugp))
@@ -130,7 +138,7 @@
                             <td>
                                 <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
+                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Notulen</h6>
                                     </button>
                                 </a>
                             </td>
@@ -138,11 +146,19 @@
                         <tr>
                             <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
                             <td>
-                                <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
-                                    <button type="button" class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
-                                    </button>
-                                </a>
+                                @if (isset($ndHGP))
+                                    <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
+                                        <button type="button" class="btn btn-outline-primary text-primary">
+                                            <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Laporan</h6>
+                                        </button>
+                                    </a>
+                                @else
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal_nd_laporan_hasil_gelar">
+                                        <button type="button" class="btn btn-outline-primary text-primary">
+                                            <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Laporan</h6>
+                                        </button>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                         <tr>
@@ -150,7 +166,7 @@
                             <td>
                                 <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
                                     <button type="button" class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen</h6>
+                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Ka. LITPERS</h6>
                                     </button>
                                 </a>
                             </td>
@@ -190,55 +206,77 @@
     @endif
 </div>
 
-<div class="modal fade" id="modal_undangan_gelar_perkara" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+<!-- Modal undangan gelar penyelidikan -->
+<div class="modal fade" id="modal_undangan_gelar_perkara" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Undangan Gelar Perkara</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(5)"></button>
             </div>
             <div class="modal-body">
                 <form action="/gelar-perkara-undangan/{{ $kasus->id }}">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
-                                <input type="date" class="form-control" name="tanggal_gelar_perkara"
-                                    id="tanggal_gelar_perkara">
+                                <div class="form-floating">
+                                    <input type="text" name="tanggal_gelar_perkara" class="form-control border-dark" id="tanggal_gelar_perkara" placeholder="Tanggal Gelar Perkara" readonly>
+                                    <label for="tanggal_gelar_perkara">Tanggal Gelar Perkara</label>
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" name="waktu_gelar_perkara"
-                                    id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara">
+                                <div class="form-floating">
+                                    <input type="text" name="waktu_gelar_perkara" class="form-control border-dark" id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara">
+                                    <label for="waktu_gelar_perkara">Waktu Gelar Perkara</label>
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" name="tempat_gelar_perkara"
-                                    id="tempat_gelar_perkara" placeholder="Tempat Gelar Perkara">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-dark" name="tempat_gelar_perkara" id="tempat_gelar_perkara" placeholder="Tempat Gelar Perkara" >
+                                    <label for="tempat_gelar_perkara">Tempat Gelar Perkara</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" name="pangkat_pimpinan"
-                                    id="pangkat_pimpinan" placeholder="Pangkat Pimpinan">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-dark" name="pangkat_pimpinan" id="pangkat_pimpinan" placeholder="Pangkat Pimpinan" >
+                                    <label for="pangkat_pimpinan">Pangkat Pimpinan</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" name="nama_pimpinan"
-                                    id="nama_pimpinan" placeholder="Nama Pimpinan">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-dark" name="nama_pimpinan" id="nama_pimpinan" placeholder="Nama Pimpinan" >
+                                    <label for="nama_pimpinan">Nama Pimpinan</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" name="jabatan_pimpinan"
-                                    id="jabatan_pimpinan" placeholder="Jabatan Pimpinan">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-dark" name="jabatan_pimpinan" id="jabatan_pimpinan" placeholder="Jabatan Pimpinan" >
+                                    <label for="jabatan_pimpinan">Jabatan Pimpinan</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-outline mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-dark" name="nrp_pimpinan" id="nrp_pimpinan" placeholder="NRP Pimpinan" >
+                                    <label for="nrp_pimpinan">NRP Pimpinan</label>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -253,3 +291,63 @@
         </div>
     </div>
 </div>
+
+<!-- Modal ND Laporan Hasil Gelar Penyelidikan -->
+<div class="modal fade" id="modal_nd_laporan_hasil_gelar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Undangan Gelar Perkara</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(5)"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="no_surat"
+                                placeholder="Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan">
+                                    <label for="no_nd_gelar_penyelidikan">Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <button type="submit" class="form-control btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        
+    });
+    $(function() {
+        $( "#tanggal_gelar_perkara" ).datepicker({
+            autoclose:true,
+            todayHighlight:true,
+            format:'yyyy-mm-dd',
+            language: 'id',
+            beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
+        });
+        $('#waktu_gelar_perkara').timepicker({ 
+            'timeFormat': 'HH:mm:ss' 
+        });
+    });
+    function setDatepickerPos(input, inst) {
+        var rect = input.getBoundingClientRect();
+        // use 'setTimeout' to prevent effect overridden by other scripts
+        setTimeout(function () {
+            var scrollTop = $("body").scrollTop();
+    	    inst.dpDiv.css({ top: rect.top + input.offsetHeight + scrollTop });
+        }, 0);
+    }
+</script>

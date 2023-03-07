@@ -12,6 +12,8 @@ use App\Models\Penyidik;
 use App\Models\Saksi;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
+use App\Models\UndanganKlarifikasiHistory;
+use App\Models\UndanganKlarifikasiSipilHistory;
 use App\Models\UukHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -187,7 +189,8 @@ class PulbaketController extends Controller
         {
             $data = BaiPelapor::create([
                 'data_pelanggar_id' => $kasus_id,
-                'tanggal_introgasi' => $request->tanggal_introgasi,
+                'tanggal_introgasi' => Carbon::createFromFormat('m/d/Y',$request->tanggal_introgasi)->format('Y-m-d H:i:s'),
+                'waktu_introgasi' => Carbon::createFromFormat('H:i:s',$request->waktu_introgasi)->format('H:i:s'),
                 'created_by' => auth()->user()->id,
 
             ]);
@@ -211,6 +214,7 @@ class PulbaketController extends Controller
             'terlapor' => $kasus->terlapor,
             'wujud_perbuatan' => $kasus->wujud_perbuatan,
             'tanggal_introgasi' => Carbon::parse($data->tanggal_introgasi)->translatedFormat('d F Y'),
+            'waktu_introgasi' => Carbon::parse($data->waktu_introgasi)->translatedFormat('H:i'),
             'hari_introgasi' => Carbon::parse($data->tanggal_introgasi)->translatedFormat('l'),
             'anggota_1' => $penyidik[0]['name'] ?? '',
             'pangkat_1' => $penyidik[0]['pangkat'] ?? '',
@@ -250,7 +254,8 @@ class PulbaketController extends Controller
         {
             $data = BaiTerlapor::create([
                 'data_pelanggar_id' => $kasus_id,
-                'tanggal_introgasi' => $request->tanggal_introgasi,
+                'tanggal_introgasi' => Carbon::createFromFormat('m/d/Y',$request->tanggal_introgasi)->format('Y-m-d H:i:s'),
+                'waktu_introgasi' => Carbon::createFromFormat('H:i:s',$request->waktu_introgasi)->format('H:i:s'),
                 'created_by' => auth()->user()->id,
 
             ]);
@@ -274,6 +279,7 @@ class PulbaketController extends Controller
             'no_sprin' => $sprin->no_sprin,
             'tanggal_sprin' => Carbon::parse($sprin->created_ats)->translatedFormat('d F Y'),
             'tanggal_introgasi' => Carbon::parse($data->tanggal_introgasi)->translatedFormat('d F Y'),
+            'waktu_introgasi' => Carbon::parse($data->waktu_introgasi)->translatedFormat('H:i'),
             'hari_introgasi' => Carbon::parse($data->tanggal_introgasi)->translatedFormat('l'),
             'anggota_1' => $penyidik[0]['name'] ?? '',
             'pangkat_1' => $penyidik[0]['pangkat'] ?? '',
@@ -312,6 +318,8 @@ class PulbaketController extends Controller
         $template_document = new TemplateProcessor(storage_path('template_surat/lhp.docx'));
 
         $template_document->setValues(array(
+            'tgl_lhp' => Carbon::now()->translatedFormat('F Y'),
+            'no_sprin' => $sprin->no_sprin,
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => $kasus->pangkat,
@@ -388,6 +396,51 @@ class PulbaketController extends Controller
 
         return response()->download(storage_path('template_surat/dokumen-nd_permohonan_gelar.docx'))->deleteFileAfterSend(true);
     }
+    
+    public function printUndanganKlarifikasi($kasus_id, Request $request)
+    {
+        $kasus = DataPelanggar::find($kasus_id);
+        $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $penyelidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
+        $penyidik = Sp2hp2Hisory::where('data_pelanggar_id', $kasus->id)->first();
+        // dd($request->all());
+        $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_sipil.docx'));
+        if (!$data = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first())
+        {
+            $data = UndanganKlarifikasiHistory::create([
+                'data_pelanggar_id' => $kasus->id,
+                'no_surat_undangan' => $request->no_surat_undangan,
+                'tgl_klarifikasi' => Carbon::createFromFormat('m/d/Y',$request->tgl_klarifikasi)->format('Y-m-d H:i:s'),
+                'waktu_klarifikasi' => Carbon::createFromFormat('H:i',$request->waktu_klarifikasi)->format('H:i'),
+                'jenis_undangan' => $request->jenis_undangan,
+            ]);
+        }
+
+        $template_document->setValues(array(
+            'no_surat_undangan' => $data->no_surat_undangan,
+            'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+            'tahun_surat' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+            'tgl_undangan_sipil' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
+            'pelapor' => $kasus->pelapor,
+            'alamat_pelapor' => $kasus->alamat,
+            'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+            'no_nota_dinas' => $kasus->no_nota_dinas,
+            'perihal' => $kasus->perihal_nota_dinas,
+            'no_sprin' => 'SPRIN/'. $sprin->no_sprin .'/HUK.6.6./2023',
+            'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+            'hari_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('l'),
+            'tgl_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('d F Y'),
+            'waktu_klarifikasi' => Carbon::parse($request->waktu_klarifikasi)->translatedFormat('H:i'),
+            // 'pangkat_penyelidik' => $penyidik,
+            'nama_penyelidik' => $penyidik->dihubungi,
+            'jabatan_penyelidik' => $penyidik->jabatan_dihubungi,
+            'no_telp_penyelidik' => $penyidik->telp_dihubungi,
+        ));
+
+        $template_document->saveAs(storage_path('template_surat/dokumen-undangan_klarifikasi_sipil.docx'));
+
+        return response()->download(storage_path('template_surat/dokumen-undangan_klarifikasi_sipil.docx'))->deleteFileAfterSend(true);
+    }
 
     public function undanganGelarPerkara($kasus_id)
     {
@@ -424,5 +477,47 @@ class PulbaketController extends Controller
             ]);
         }
         return redirect()->route('kasus.detail',['id'=>$id]);
+    }
+
+    private function getRomawi($bln)
+    {
+        switch ($bln){
+            case 1: 
+                return "I";
+                break;
+            case 2:
+                return "II";
+                break;
+            case 3:
+                return "III";
+                break;
+            case 4:
+                return "IV";
+                break;
+            case 5:
+                return "V";
+                break;
+            case 6:
+                return "VI";
+                break;
+            case 7:
+                return "VII";
+                break;
+            case 8:
+                return "VIII";
+                break;
+            case 9:
+                return "IX";
+                break;
+            case 10:
+                return "X";
+                break;
+            case 11:
+                return "XI";
+                break;
+            case 12:
+                return "XII";
+                break;
+        }
     }
 }
