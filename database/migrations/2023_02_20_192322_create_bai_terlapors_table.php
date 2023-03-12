@@ -16,8 +16,6 @@ return new class extends Migration
         Schema::create('bai_terlapors', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
-            $table->date('tanggal_introgasi');
-            $table->time('waktu_introgasi');
             $table->bigInteger('created_by');
             $table->timestamps();
         });

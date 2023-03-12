@@ -183,21 +183,29 @@ class PulbaketController extends Controller
     public function printBaiSipil($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
+        $sp2hp = Sp2hp2Hisory::where('data_pelanggar_id', $kasus_id)->first();
+        $undangan_klarifikasi = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first();
+
+        if (!isset($sp2hp)) {
+            return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','Data Penyidik SP2HP2 belum dibuat !');
+        } elseif (!isset($undangan_klarifikasi)) {
+            return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','Undangan Klarifikasi belum dibuat !');
+        }
 
         $template_document = new TemplateProcessor(storage_path('template_surat/BAI_SIPIL.docx'));
         if (!$data = BaiPelapor::where('data_pelanggar_id', $kasus_id)->first())
         {
             $data = BaiPelapor::create([
                 'data_pelanggar_id' => $kasus_id,
-                'tanggal_introgasi' => Carbon::createFromFormat('m/d/Y',$request->tanggal_introgasi)->format('Y-m-d H:i:s'),
-                'waktu_introgasi' => Carbon::createFromFormat('H:i:s',$request->waktu_introgasi)->format('H:i:s'),
+                // 'tanggal_introgasi' => Carbon::createFromFormat('m/d/Y',$request->tanggal_introgasi)->format('Y-m-d H:i:s'),
+                // 'waktu_introgasi' => Carbon::createFromFormat('H:i:s',$request->waktu_introgasi)->format('H:i:s'),
                 'created_by' => auth()->user()->id,
 
             ]);
-            // return redirect()->back();
         }
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
+        $undangan_klarifikasi = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first();
         $template_document->setValues(array(
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
@@ -213,9 +221,9 @@ class PulbaketController extends Controller
             'kwn' => $kasus->kewarganegaraan,
             'terlapor' => $kasus->terlapor,
             'wujud_perbuatan' => $kasus->wujud_perbuatan,
-            'tanggal_introgasi' => Carbon::parse($data->tanggal_introgasi)->translatedFormat('d F Y'),
-            'waktu_introgasi' => Carbon::parse($data->waktu_introgasi)->translatedFormat('H:i'),
-            'hari_introgasi' => Carbon::parse($data->tanggal_introgasi)->translatedFormat('l'),
+            'tanggal_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('d F Y'),
+            'waktu_introgasi' => Carbon::parse($undangan_klarifikasi->waktu_klarifikasi)->translatedFormat('H:i'),
+            'hari_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('l'),
             'anggota_1' => $penyidik[0]['name'] ?? '',
             'pangkat_1' => $penyidik[0]['pangkat'] ?? '',
             'nrp_1' => $penyidik[0]['nrp'] ?? '',
@@ -249,6 +257,15 @@ class PulbaketController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
+        $sp2hp = Sp2hp2Hisory::where('data_pelanggar_id', $kasus_id)->first();
+        $undangan_klarifikasi = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first();
+
+        if (!isset($sp2hp)) {
+            return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','Data Penyidik SP2HP2 belum dibuat !');
+        } elseif (!isset($undangan_klarifikasi)) {
+            return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','Undangan Klarifikasi belum dibuat !');
+        }
+
         $template_document = new TemplateProcessor(storage_path('template_surat/bai_anggota.docx'));
         if (!$data = BaiTerlapor::where('data_pelanggar_id', $kasus_id)->first())
         {
@@ -402,8 +419,14 @@ class PulbaketController extends Controller
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $penyelidik = Penyidik::where('data_pelanggar_id', $kasus_id)->get()->toArray();
-        $penyidik = Sp2hp2Hisory::where('data_pelanggar_id', $kasus->id)->first();
-        // dd($request->all());
+
+        $sp2hp = Sp2hp2Hisory::where('data_pelanggar_id', $kasus_id)->first();
+
+        if (!isset($sp2hp)) {
+            return back()->with('error', 'Data Penyidik SP2HP2 belum dibuat !');
+            // return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','Data Penyidik SP2HP2 belum dibuat !');
+        }
+        
         $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_sipil.docx'));
         if (!$data = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first())
         {
@@ -432,9 +455,9 @@ class PulbaketController extends Controller
             'tgl_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('d F Y'),
             'waktu_klarifikasi' => Carbon::parse($request->waktu_klarifikasi)->translatedFormat('H:i'),
             // 'pangkat_penyelidik' => $penyidik,
-            'nama_penyelidik' => $penyidik->dihubungi,
-            'jabatan_penyelidik' => $penyidik->jabatan_dihubungi,
-            'no_telp_penyelidik' => $penyidik->telp_dihubungi,
+            'nama_penyelidik' => $sp2hp->dihubungi,
+            'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
+            'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
         ));
 
         $template_document->saveAs(storage_path('template_surat/dokumen-undangan_klarifikasi_sipil.docx'));
@@ -461,7 +484,6 @@ class PulbaketController extends Controller
             'bai_terlapor' => BaiPelapor::where('data_pelanggar_id', $id)->first(),
             'nd_pgp' => NdPermohonanGelar::where('data_pelanggar_id', $id)->first()
         ];
-        // dd($data);
         return view('pages.data_pelanggaran.proses.pulbaket-next', $data);
     }
 

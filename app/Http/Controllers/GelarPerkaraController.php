@@ -17,7 +17,6 @@ class GelarPerkaraController extends Controller
     {
         $nd_permohonan_gelar = NdPermohonanGelar::where('data_pelanggar_id',$kasus_id)->first();
         if (!isset($nd_permohonan_gelar)) {
-            // dd(isset($nd_permohonan_gelar));
             return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','ND Permohonan Gelar Penyelidikan belum dibuat');
         }
 

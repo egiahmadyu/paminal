@@ -172,7 +172,9 @@
                                     <i class="far fa-file-plus"></i> SP2HP2
                                 </a>
                             @endif
-
+                            @if($errors->any())
+                                <h4>{{$errors->first()}}</h4>
+                            @endif
                         </div>
                     </form>
 
@@ -354,7 +356,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Pembuatan SP2HP2</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(4)"></button>
             </div>
             <div class="modal-body">
                 <form action="/surat-sp2hp2-awal/{{ $kasus->id }}">
@@ -400,7 +402,7 @@
                     onclick="getViewProcess(4)"></button>
             </div>
             <div class="modal-body">
-                <form action="/undangan-klarifikasi/{{ $kasus->id }}" method="post" target="_blank">
+                <form action="/undangan-klarifikasi/{{ $kasus->id }}" id="form_undangan_klarifikasi" method="post">
                     @csrf
                     <!-- Input no surat undangan -->
                     <div class="form-floating mb-3">
@@ -416,7 +418,7 @@
                     <div class="row mb-3">
                         <div class="col-12 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="no_surat_undangan"placeholder="Masukan No. Surat Undangan">
+                                <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="Masukan No. Surat Undangan">
                                 <label for="no_surat_undangan">No. Surat Undangan</label>
                                 @if ($errors->has('no_sprin'))
                                     <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>

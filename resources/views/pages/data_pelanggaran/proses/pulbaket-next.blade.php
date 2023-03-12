@@ -41,21 +41,12 @@
                     <td>
                         <div class="row">
                             <div class="col-lg-6">
-                                @if (!$bai_terlapor)
-                                    <a href="javascript::void(0)" class="btn btn-outline-primary text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#bai_pelapor">
-                                        <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
-                                    </a>
-                                @else
-                                    <a href="/bai-sipil/{{ $kasus->id }}"
-                                        class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
-                                    </a>
-                                @endif
+                                <a href="/bai-sipil/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
+                                    <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
+                                </a>
                             </div>
                             <div class="col-lg-6">
-                                <a href="/bai-anggota/{{ $kasus->id }}" class="btn btn-outline-primary text-primary"
-                                    data-bs-toggle="modal" data-bs-target="#bai_terlapor">
+                                <a href="/bai-anggota/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
                                     <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Terlapor</h6>
                                 </a>
                             </div>
