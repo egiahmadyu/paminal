@@ -55,7 +55,7 @@
                                     <td>
                                         @if (isset($ndPG))
                                             R/ND-{{ $ndPG->no_surat }}/II/WAS.2.4./2023/Den A
-                                        @else 
+                                        @else
                                             -
                                         @endif
                                     </td>
@@ -220,7 +220,7 @@
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" name="tanggal_gelar_perkara" class="form-control border-dark" id="tanggal_gelar_perkara" placeholder="Tanggal Gelar Perkara" readonly>
+                                    <input type="text" name="tanggal_gelar_perkara" class="form-control border-dark" id="tanggal_gelar_perkara" placeholder="Tanggal Gelar Perkara" readonly required>
                                     <label for="tanggal_gelar_perkara">Tanggal Gelar Perkara</label>
                                 </div>
                             </div>
@@ -229,7 +229,7 @@
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" name="waktu_gelar_perkara" class="form-control border-dark" id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara">
+                                    <input type="text" name="waktu_gelar_perkara" class="form-control border-dark" id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara" required>
                                     <label for="waktu_gelar_perkara">Waktu Gelar Perkara</label>
                                 </div>
                             </div>
@@ -238,7 +238,7 @@
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="tempat_gelar_perkara" id="tempat_gelar_perkara" placeholder="Tempat Gelar Perkara" >
+                                    <input type="text" class="form-control border-dark" name="tempat_gelar_perkara" id="tempat_gelar_perkara" placeholder="Tempat Gelar Perkara" required>
                                     <label for="tempat_gelar_perkara">Tempat Gelar Perkara</label>
                                 </div>
                             </div>
@@ -247,7 +247,7 @@
                         <div class="col-lg-3">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="pangkat_pimpinan" id="pangkat_pimpinan" placeholder="Pangkat Pimpinan" >
+                                    <input type="text" class="form-control border-dark" name="pangkat_pimpinan" id="pangkat_pimpinan" placeholder="Pangkat Pimpinan" required>
                                     <label for="pangkat_pimpinan">Pangkat Pimpinan</label>
                                 </div>
                             </div>
@@ -256,7 +256,7 @@
                         <div class="col-lg-3">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="nama_pimpinan" id="nama_pimpinan" placeholder="Nama Pimpinan" >
+                                    <input type="text" class="form-control border-dark" name="nama_pimpinan" id="nama_pimpinan" placeholder="Nama Pimpinan" required>
                                     <label for="nama_pimpinan">Nama Pimpinan</label>
                                 </div>
                             </div>
@@ -265,7 +265,7 @@
                         <div class="col-lg-3">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="jabatan_pimpinan" id="jabatan_pimpinan" placeholder="Jabatan Pimpinan" >
+                                    <input type="text" class="form-control border-dark" name="jabatan_pimpinan" id="jabatan_pimpinan" placeholder="Jabatan Pimpinan" required>
                                     <label for="jabatan_pimpinan">Jabatan Pimpinan</label>
                                 </div>
                             </div>
@@ -274,7 +274,7 @@
                         <div class="col-lg-3">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="nrp_pimpinan" id="nrp_pimpinan" placeholder="NRP Pimpinan" >
+                                    <input type="text" class="form-control border-dark" name="nrp_pimpinan" id="nrp_pimpinan" placeholder="NRP Pimpinan" required>
                                     <label for="nrp_pimpinan">NRP Pimpinan</label>
                                 </div>
                             </div>
@@ -284,7 +284,7 @@
                                 <button type="submit" class="form-control btn btn-primary">Simpan</button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </form>
             </div>
@@ -311,14 +311,13 @@
                                     <label for="no_nd_gelar_penyelidikan">Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan</label>
                                 </div>
                             </div>
-                            
                         </div>
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
                                 <button type="submit" class="form-control btn btn-primary">Simpan</button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </form>
             </div>
@@ -328,7 +327,7 @@
 
 <script>
     $(document).ready(function(){
-        
+
     });
     $(function() {
         $( "#tanggal_gelar_perkara" ).datepicker({
@@ -338,8 +337,8 @@
             language: 'id',
             beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
         });
-        $('#waktu_gelar_perkara').timepicker({ 
-            'timeFormat': 'HH:mm:ss' 
+        $('#waktu_gelar_perkara').timepicker({
+            'timeFormat': 'HH:mm:ss'
         });
     });
     function setDatepickerPos(input, inst) {
