@@ -300,37 +300,38 @@
     </div>
 </div>
 
+<!-- Modal Disposisi Ka Den A -->
 <div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Template Disposisi</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Disposisi Ka. Den A</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(1)"></button>
             </div>
             <form action="/lembar-disposisi" method="post">
                 @csrf
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Nomor Agenda :</label>
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="nomor_agenda" aria-describedby="emailHelp"
-                            name="nomor_agenda">
+                            name="nomor_agenda" placeholder="Nomor Agenda :">
+                        <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Surat dari :</label>
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="surat_dari" aria-describedby="emailHelp"
-                            name="surat_dari">
+                            name="surat_dari" placeholder="Surat dari :">
+                        <label for="surat_dari" class="form-label">Surat dari :</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Nomor Surat</label>
-                        <input type="text" class="form-control" id="nomor_surat" name="nomor_surat">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" placeholder="Nomor Surat">
+                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal">
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" placeholder="mm/dd/yyyy">
+                        <label for="tanggal" class="form-label">Tanggal</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Perihal</label>
-                        <input type="text" class="form-control" id="perihal" name="perihal">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="perihal" name="perihal" placeholder="Perihal">
+                        <label for="perihal" class="form-label">Perihal</label>
                     </div>
                 </div>
                 <div class="modal-footer">
