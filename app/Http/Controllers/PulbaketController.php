@@ -426,8 +426,10 @@ class PulbaketController extends Controller
             return back()->with('error', 'Data Penyidik SP2HP2 belum dibuat !');
             // return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','Data Penyidik SP2HP2 belum dibuat !');
         }
+
+        $data = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->where('jenis_undangan', $request->jenis_undangan)->first();
         
-        if (!$data = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first())
+        if (!$data)
         {
             $data = UndanganKlarifikasiHistory::create([
                 'data_pelanggar_id' => $kasus->id,
@@ -438,38 +440,73 @@ class PulbaketController extends Controller
             ]);
         }
 
-        $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi.docx'));
+        if ($data->jenis_undangan == 1) {
+            $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_sipil.docx'));
 
-        $template_document->setValues(array(
-            'no_surat_undangan' => $data->no_surat_undangan,
-            'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
-            'tahun_surat' => Carbon::parse($data->created_at)->translatedFormat('Y'),
-            'tgl_undangan' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
-            'pelapor' => $kasus->pelapor,
-            'alamat_pelapor' => $kasus->alamat,
-            'terlapor' => $kasus->terlapor,
-            'pangkat_terlapor' => $kasus->pangkat,
-            'nrp_terlapor' => $kasus->nrp,
-            'jabatan_terlapor' =>$kasus->jabatan,
-            'kesatuan_terlapor' => $kasus->kesatuan,
-            'wujud_perbuatan' => $kasus->wujud_perbuatan,
-            'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'no_nota_dinas' => $kasus->no_nota_dinas,
-            'perihal' => $kasus->perihal_nota_dinas,
-            'no_sprin' => 'SPRIN/'. $sprin->no_sprin .'/HUK.6.6./2023',
-            'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
-            'hari_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('l'),
-            'tgl_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('d F Y'),
-            'waktu_klarifikasi' => Carbon::parse($request->waktu_klarifikasi)->translatedFormat('H:i'),
-            // 'pangkat_penyelidik' => $penyidik,
-            'nama_penyelidik' => $sp2hp->dihubungi,
-            'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
-            'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
-        ));
-    
-        $template_document->saveAs(storage_path('template_surat/dokumen-undangan_klarifikasi.docx'));
-    
-        return response()->download(storage_path('template_surat/dokumen-undangan_klarifikasi.docx'))->deleteFileAfterSend(true);
+            $template_document->setValues(array(
+                'no_surat_undangan' => $data->no_surat_undangan,
+                'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+                'tahun_surat' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+                'tgl_undangan_sipil' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
+                'pelapor' => $kasus->pelapor,
+                'alamat_pelapor' => $kasus->alamat,
+                'terlapor' => $kasus->terlapor,
+                'pangkat_terlapor' => $kasus->pangkat,
+                'nrp_terlapor' => $kasus->nrp,
+                'jabatan_terlapor' =>$kasus->jabatan,
+                'kesatuan_terlapor' => $kasus->kesatuan,
+                'wujud_perbuatan' => $kasus->wujud_perbuatan,
+                'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+                'no_nota_dinas' => $kasus->no_nota_dinas,
+                'perihal' => $kasus->perihal_nota_dinas,
+                'no_sprin' => 'SPRIN/'. $sprin->no_sprin .'/HUK.6.6./2023',
+                'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+                'hari_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('l'),
+                'tgl_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('d F Y'),
+                'waktu_klarifikasi' => Carbon::parse($request->waktu_klarifikasi)->translatedFormat('H:i'),
+                // 'pangkat_penyelidik' => $penyidik,
+                'nama_penyelidik' => $sp2hp->dihubungi,
+                'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
+                'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
+            ));
+        
+            $template_document->saveAs(storage_path('template_surat/dokumen-undangan_klarifikasi_sipil.docx'));
+        
+            return response()->download(storage_path('template_surat/dokumen-undangan_klarifikasi_sipil.docx'))->deleteFileAfterSend(true);
+        } else {
+            $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_personel.docx'));
+
+            $template_document->setValues(array(
+                'no_surat_undangan' => $data->no_surat_undangan,
+                'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+                'tahun_surat' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+                'tgl_undangan' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
+                'pelapor' => $kasus->pelapor,
+                'alamat_pelapor' => $kasus->alamat,
+                'terlapor' => $kasus->terlapor,
+                'pangkat_terlapor' => $kasus->pangkat,
+                'nrp_terlapor' => $kasus->nrp,
+                'jabatan_terlapor' =>$kasus->jabatan,
+                'kesatuan_terlapor' => $kasus->kesatuan,
+                'wujud_perbuatan' => $kasus->wujud_perbuatan,
+                'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+                'no_nota_dinas' => $kasus->no_nota_dinas,
+                'perihal' => $kasus->perihal_nota_dinas,
+                'no_sprin' => 'SPRIN/'. $sprin->no_sprin .'/HUK.6.6./2023',
+                'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+                'hari_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('l'),
+                'tgl_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('d F Y'),
+                'waktu_klarifikasi' => Carbon::parse($request->waktu_klarifikasi)->translatedFormat('H:i'),
+                // 'pangkat_penyelidik' => $penyidik,
+                'nama_penyelidik' => $sp2hp->dihubungi,
+                'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
+                'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
+            ));
+        
+            $template_document->saveAs(storage_path('template_surat/dokumen-undangan_klarifikasi_personel.docx'));
+        
+            return response()->download(storage_path('template_surat/dokumen-undangan_klarifikasi_personel.docx'))->deleteFileAfterSend(true);
+        }
     }
 
     public function undanganGelarPerkara($kasus_id)
