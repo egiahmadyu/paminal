@@ -239,14 +239,13 @@
                 <form action="/surat-perintah/{{ $kasus->id }}" method="post" target="_blank">
                     @csrf
                     <!-- Input no SPRIN -->
-                    <div class="row mb-3">
-                        <div class="col">
-                            <input type="text" class="form-control" name="no_sprin"
-                                placeholder="Masukan No. SPRIN">
-                            @if ($errors->has('no_sprin'))
-                                <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
-                            @endif
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="no_sprin"
+                            placeholder="No. SPRIN">
+                        <label for="no_sprin">No. SPRIN </label>
+                        @if ($errors->has('no_sprin'))
+                            <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
+                        @endif
                     </div>
                     <!-- Input data penyidik -->
                     <div class="card card-data-penyidik">
@@ -255,40 +254,44 @@
                             <div class="mb-3" id="form_input_anggota">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="form-outline mb-3">
+                                        <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="pangkat_ketua"
-                                                id="pangkat" placeholder="Pangkat Penyelidik">
+                                                id="pangkat_ketua" placeholder="Pangkat Penyelidik">
+                                            <label for="pangkat_ketua" class="form-label">Pangkat Penyelidik</label>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="form-outline mb-3">
+                                        <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="nama_penyelidik_ketua"
                                                 id="nama_penyidik" placeholder="Nama Penyelidik">
+                                            <label for="nama_penyelidik_ketua" class="form-label">Nama Penyelidik</label>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="form-outline mb-3">
+                                        <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="nrp_ketua"
                                                 id="nrp" placeholder="NRP">
+                                            <label for="nrp_ketua" class="form-label">NRP</label>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="form-outline mb-3">
+                                        <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="jabatan_ketua"
                                                 id="jabatan" placeholder="Jabatan Penyelidik">
+                                            <label for="jabatan_ketua" class="form-label">Jabatan Penyelidik</label>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12">
-                                        <div class="form-outline mb-3">
-                                            <label for="tipe_tim" class="form-label">Jabatan TIM : </label>
+                                        <div class="form-floating mb-3">
                                             <select name="tipe_tim_ketua" id="tipe_tim" class="form-control"
                                                 disabeled>
                                                 <option value="1" class="text-center" selected>Ketua</option>
                                             </select>
+                                            <label for="tipe_tim" class="form-label">Jabatan TIM : </label>
                                         </div>
                                     </div>
                                 </div>
@@ -360,33 +363,34 @@
             </div>
             <div class="modal-body">
                 <form action="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Nama yang Menangani</label>
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="penangan" aria-describedby="emailHelp"
-                            placeholder="Unit II Detasemen A Ropaminal Divpropam Polri">
+                            placeholder="Unit yang Menangani">
+                        <label for="exampleInputEmail1" class="form-label">Unit yang Menangani</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Nama yang dihubungi</label>
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="dihubungi"
-                            placeholder="AKP ERICSON SIREGAR, S.Kom., M.T., M.Sc">
+                            placeholder="Nama yang dihubungi">
+                        <label for="exampleInputPassword1" class="form-label">Nama yang dihubungi</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Jabatan yang dihubungi</label>
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="jabatan_dihubungi"
-                            placeholder="Kanit II Den A">
+                            placeholder="Jabatan yang dihubungi">
+                        <label for="exampleInputPassword1" class="form-label">Jabatan yang dihubungi</label>
                     </div>
-                    <div class="mb-3">
+                    <div class="form-floating mb-3">
+                        
+                        <input type="text" class="form-control" name="telp_dihubungi" placeholder="No. Telepon yang dihubungi">
                         <label for="telp_dihubungi" class="form-label">No. Telepon yang dihubungi</label>
-                        <input type="text" class="form-control" name="telp_dihubungi">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Buat Surat</button>
                 </form>
             </div>
-            <div class="modal-footer">
+            {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div> --}}
         </div>
     </div>
 </div>
@@ -641,35 +645,39 @@
         let inHtml =
             `<div class="row mb-3">
             <div class="col-lg-6">
-                <div class="form-outline mb-3">
+                <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyelidik">
+                    <label for="pangkat_anggota" class="form-label">Pangkat Penyelidik</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
-                <div class="form-outline mb-3">
+                <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="nama_penyelidik_anggota[]" id="nama_penyidik" placeholder="Nama Penyelidik">
+                    <label for="nama_penyelidik_anggota" class="form-label">Nama Penyelidik</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
-                <div class="form-outline mb-3">
+                <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="nrp_anggota[]" id="nrp" placeholder="NRP">
+                    <label for="nrp_anggota" class="form-label">NRP</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
-                <div class="form-outline mb-3">
+                <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="jabatan_anggota[]" id="jabatan" placeholder="Jabatan Penyelidik">
+                    <label for="jabatan_anggota" class="form-label">Jabatan Penyelidik</label>
                 </div>
             </div>
 
             <div class="col-lg-12">
-                <div class="form-outline mb-3">
-                <label for="tipe_tim" class="form-label">Jabatan TIM : </label>
-                <select name="tipe_tim_anggota[]" id="tipe_tim" class="form-control" disabeled>
-                    <option value="2" class="text-center" selected>Anggota</option>
-                </select>
+                <div class="form-floating mb-3">
+                    <select name="tipe_tim_anggota[]" id="tipe_tim" class="form-control" disabeled>
+                        <option value="2" class="text-center" selected>Anggota</option>
+                    </select>
+                    <label for="tipe_tim" class="form-label">Jabatan TIM : </label>
                 </div>
             </div>
         </div>
