@@ -220,7 +220,7 @@
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" name="tanggal_gelar_perkara" class="form-control border-dark" id="tanggal_gelar_perkara" placeholder="Tanggal Gelar Perkara" readonly required>
+                                    <input type="text" name="tanggal_gelar_perkara" class="form-control border-dark" id="tanggal_gelar_perkara" placeholder="Tanggal Gelar Perkara" required>
                                     <label for="tanggal_gelar_perkara">Tanggal Gelar Perkara</label>
                                 </div>
                             </div>
@@ -229,7 +229,7 @@
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" name="waktu_gelar_perkara" class="form-control border-dark" id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara" required>
+                                    <input type="time" name="waktu_gelar_perkara" class="form-control border-dark" id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara" required>
                                     <label for="waktu_gelar_perkara">Waktu Gelar Perkara</label>
                                 </div>
                             </div>
@@ -307,7 +307,7 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" name="no_surat"
-                                placeholder="Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan">
+                                placeholder="Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan" required>
                                     <label for="no_nd_gelar_penyelidikan">Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan</label>
                                 </div>
                             </div>

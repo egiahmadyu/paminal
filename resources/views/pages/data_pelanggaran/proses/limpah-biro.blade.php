@@ -106,7 +106,7 @@
                         @if (!isset($limpah_biro))
                             <div class="form-buat-surat col-lg-12 mb-3 mt-3">
                                 {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
-                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_limpah" id="jenis_limpah">
+                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_limpah" id="jenis_limpah" required>
                                         <option value="" class="text-center">-- Pilih Limpah Biro --</option>
                                         <option value="1" class="text-center">Provos</option>
                                         <option value="2" class="text-center">Wabprof</option>

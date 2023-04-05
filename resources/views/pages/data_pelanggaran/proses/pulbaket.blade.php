@@ -241,7 +241,7 @@
                     <!-- Input no SPRIN -->
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="no_sprin"
-                            placeholder="No. SPRIN">
+                            placeholder="No. SPRIN" required>
                         <label for="no_sprin">No. SPRIN </label>
                         @if ($errors->has('no_sprin'))
                             <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
@@ -256,7 +256,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="pangkat_ketua"
-                                                id="pangkat_ketua" placeholder="Pangkat Penyelidik">
+                                                id="pangkat_ketua" placeholder="Pangkat Penyelidik" required>
                                             <label for="pangkat_ketua" class="form-label">Pangkat Penyelidik</label>
                                         </div>
                                     </div>
@@ -264,7 +264,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="nama_penyelidik_ketua"
-                                                id="nama_penyidik" placeholder="Nama Penyelidik">
+                                                id="nama_penyidik" placeholder="Nama Penyelidik" required>
                                             <label for="nama_penyelidik_ketua" class="form-label">Nama Penyelidik</label>
                                         </div>
                                     </div>
@@ -272,7 +272,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="nrp_ketua"
-                                                id="nrp" placeholder="NRP">
+                                                id="nrp" placeholder="NRP" required>
                                             <label for="nrp_ketua" class="form-label">NRP</label>
                                         </div>
                                     </div>
@@ -280,7 +280,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" name="jabatan_ketua"
-                                                id="jabatan" placeholder="Jabatan Penyelidik">
+                                                id="jabatan" placeholder="Jabatan Penyelidik" required>
                                             <label for="jabatan_ketua" class="form-label">Jabatan Penyelidik</label>
                                         </div>
                                     </div>
@@ -365,22 +365,21 @@
                 <form action="/surat-sp2hp2-awal/{{ $kasus->id }}">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="penangan" aria-describedby="emailHelp"
-                            placeholder="Unit yang Menangani">
+                            placeholder="Unit yang Menangani" required>
                         <label for="exampleInputEmail1" class="form-label">Unit yang Menangani</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="dihubungi"
-                            placeholder="Nama yang dihubungi">
+                            placeholder="Nama yang dihubungi" required>
                         <label for="exampleInputPassword1" class="form-label">Nama yang dihubungi</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="jabatan_dihubungi"
-                            placeholder="Jabatan yang dihubungi">
+                            placeholder="Jabatan yang dihubungi" required>
                         <label for="exampleInputPassword1" class="form-label">Jabatan yang dihubungi</label>
                     </div>
                     <div class="form-floating mb-3">
-                        
-                        <input type="text" class="form-control" name="telp_dihubungi" placeholder="No. Telepon yang dihubungi">
+                        <input type="text" class="form-control" name="telp_dihubungi" placeholder="No. Telepon yang dihubungi" required>
                         <label for="telp_dihubungi" class="form-label">No. Telepon yang dihubungi</label>
                     </div>
 
@@ -410,7 +409,7 @@
                     @csrf
                     <!-- Input no surat undangan -->
                     <div class="form-floating mb-3">
-                        <select class="form-select border-dark" aria-label="Default select example" name="jenis_undangan" id="jenis_undangan">
+                        <select class="form-select border-dark" aria-label="Default select example" name="jenis_undangan" id="jenis_undangan" required>
                             <option value="">Pilih Jenis Undangan</option>
                             <option value="1">Sipil</option>
                             <option value="2">Personel</option>
@@ -422,7 +421,7 @@
                     <div class="row mb-3">
                         <div class="col-12 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="Masukan No. Surat Undangan">
+                                <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="Masukan No. Surat Undangan" required>
                                 <label for="no_surat_undangan">No. Surat Undangan</label>
                                 @if ($errors->has('no_sprin'))
                                     <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
@@ -434,14 +433,14 @@
                         </div>
                         <div class="col-12 mb-3">
                             <div class="form-floating">
-                                <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="Tanggal Klarifikasi" readonly>
+                                <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="Tanggal Klarifikasi" required>
                                 <label for="tgl_klarifikasi">Tanggal Klarifikasi</label>
                             </div>
                         </div>
                         <div class="col-12 mb-3">
                             <div class="form-outline">
                                 <div class="form-floating">
-                                    <input type="time" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="Waktu Klarifikasi">
+                                    <input type="time" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="Waktu Klarifikasi" required>
                                     <label for="waktu_klarifikasi">Waktu Klarifikasi</label>
                                 </div>
                             </div>
@@ -473,7 +472,7 @@
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
-                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
+                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi" required>
                                 <label for="nama_saksi">Nama Saksi</label>
                             </div>
                         </div>
@@ -504,13 +503,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi" placeholder="Tanggal Introgasi" readonly>
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi" placeholder="Tanggal Introgasi" required>
                             <label for="tanggal_introgasi">Tanggal Introgasi</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi">
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi" required>
                             <label for="waktu_introgasi">Waktu Intograsi</label>
                         </div>
                     </div>
@@ -536,13 +535,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi_terlapor" placeholder="Tanggal Introgasi" readonly>
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi_terlapor" placeholder="Tanggal Introgasi" required>
                             <label for="tanggal_introgasi_terlapor">Tanggal Introgasi</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi">
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi" required>
                             <label for="waktu_introgasi">Waktu Introgasi</label>
                         </div>
                     </div>
@@ -572,7 +571,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <input type="text" class="form-control" name="no_surat"
-                                placeholder="Masukan No. Nota Dinas Permohonan Gelar">
+                                placeholder="Masukan No. Nota Dinas Permohonan Gelar" required>
                         </div>
                     </div>
                     <div>
@@ -633,7 +632,7 @@
         let inHtml =
             `<div class="mb-3"><div class="form-floating">
                                 <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
-                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi">
+                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi" required>
                                 <label for="no_nota_dinas">Nama Saksi</label>
                             </div></div>`;
         // let inHtml = '<input type="text" class="form-control" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama ">';
@@ -646,28 +645,28 @@
             `<div class="row mb-3">
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyelidik">
+                    <input type="text" class="form-control" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyelidik" required>
                     <label for="pangkat_anggota" class="form-label">Pangkat Penyelidik</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="nama_penyelidik_anggota[]" id="nama_penyidik" placeholder="Nama Penyelidik">
+                    <input type="text" class="form-control" name="nama_penyelidik_anggota[]" id="nama_penyidik" placeholder="Nama Penyelidik" required>
                     <label for="nama_penyelidik_anggota" class="form-label">Nama Penyelidik</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="nrp_anggota[]" id="nrp" placeholder="NRP">
+                    <input type="text" class="form-control" name="nrp_anggota[]" id="nrp" placeholder="NRP" required>
                     <label for="nrp_anggota" class="form-label">NRP</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="jabatan_anggota[]" id="jabatan" placeholder="Jabatan Penyelidik">
+                    <input type="text" class="form-control" name="jabatan_anggota[]" id="jabatan" placeholder="Jabatan Penyelidik" required>
                     <label for="jabatan_anggota" class="form-label">Jabatan Penyelidik</label>
                 </div>
             </div>
