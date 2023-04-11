@@ -9,7 +9,7 @@ class SprinHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'data_pelanggar_id', 'no_sprin', 'created_by' ];
+    protected $fillable = [ 'data_pelanggar_id', 'no_sprin', 'created_by', 'masa_berlaku_sprin' ];
 
     public $rules = [
         'no_sprin' => 'required',

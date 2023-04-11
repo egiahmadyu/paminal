@@ -4,17 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Agama;
 use App\Models\DataPelanggar;
+use App\Models\DisposisiHistory;
 use App\Models\GelarPerkaraHistory;
 use App\Models\JenisIdentitas;
 use App\Models\JenisKelamin;
+use App\Models\LHPHistory;
 use App\Models\LimpahBiroHistory;
 use App\Models\LimpahPolda;
 use App\Models\NDHasilGelarPenyelidikanHistory;
 use App\Models\NdPermohonanGelar;
+use App\Models\Pangkat;
+use App\Models\Penyidik;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UukHistory;
+use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DataTables;
@@ -36,10 +41,40 @@ class KasusController extends Controller
         $agama = Agama::get();
         $jenis_identitas = JenisIdentitas::get();
         $jenis_kelamin = JenisKelamin::get();
+        $pangkat = Pangkat::get();
+        $wujud_perbuatan = WujudPerbuatan::get();
+        
+        $i_dis = 0;
+        $i_ke = 0;
+        foreach ($wujud_perbuatan as $key => $value) {
+            if ($value->jenis_wp == 'disiplin') {
+                $disiplin[$i_dis] = $value->keterangan_wp;
+                $id_disiplin[$i_dis] = $value->id;
+                $i_dis++;
+            } else {
+                $kode_etik[$i_ke] = $value->keterangan_wp;
+                $id_kode_etik[$i_ke] = $value->id;
+                $i_ke++;
+            }
+        }
+
+        $disiplin = implode('|',$disiplin);
+        $id_disiplin = implode('|',$id_disiplin);
+        $kode_etik = implode('|',$kode_etik);
+        $id_kode_etik = implode('|',$id_kode_etik);
+
+        // dd($id_kode_etik);
+
         $data = [
             'agama' => $agama,
             'jenis_identitas' => $jenis_identitas,
-            'jenis_kelamin' => $jenis_kelamin
+            'jenis_kelamin' => $jenis_kelamin,
+            'pangkat' => $pangkat,
+            'wujud_perbuatan' => $wujud_perbuatan,
+            'disiplin' => $disiplin,
+            'id_disiplin' => $id_disiplin,
+            'kode_etik' => $kode_etik,
+            'id_kode_etik' => $id_kode_etik,
         ];
 
         return view('pages.data_pelanggaran.input_kasus.input',$data);
@@ -47,9 +82,10 @@ class KasusController extends Controller
 
     public function storeKasus(Request $request)
     {
+        $wujud_perbuatan = WujudPerbuatan::where('jenis_wp',$request->jenis_wp)->where('keterangan_wp',$request->wujud_perbuatan)->first();
         $no_pengaduan = "123456"; //generate otomatis
-        // dd($request->all());
         $DP = DataPelanggar::create([
+            // Pelapor
             'no_nota_dinas' => $request->no_nota_dinas,
             'no_pengaduan' => $no_pengaduan,
             'perihal_nota_dinas' => $request->perihal_nota_dinas,
@@ -62,11 +98,14 @@ class KasusController extends Controller
             'agama' => $request->agama,
             'alamat' => $request->alamat,
             'no_identitas' => $request->no_identitas,
+            'no_telp' => $request->no_telp,
             'jenis_identitas' => $request->jenis_identitas,
+            //Terlapor
             'terlapor' => $request->terlapor,
             'nrp' => $request->nrp,
             'jabatan' => $request->jabatan,
             'kesatuan' => $request->kesatuan,
+            'wilayah_hukum' => $request->wilayah_hukum,
             'tempat_kejadian' => $request->tempat_kejadian,
             'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
             'kronologi' => $request->kronologis,
@@ -96,18 +135,17 @@ class KasusController extends Controller
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
         $agama = Agama::get();
-        
+        $pangkat = Pangkat::get();
+        $wujud_perbuatan = WujudPerbuatan::get();
+
         $data = [
             'kasus' => $kasus,
             'status' => $status,
             'process' =>  $process,
-            'agala' => $agama,
+            'agama' => $agama,
+            'pangkat' => $pangkat,
+            'wujud_perbuatan' => $wujud_perbuatan,
         ];
-
-        // if ($kasus->status_id == 3)
-        // {
-
-        // }
 
         return view('pages.data_pelanggaran.detail', $data);
     }
@@ -134,9 +172,11 @@ class KasusController extends Controller
             'no_identitas' => $request->no_identitas,
             'jenis_identitas' => $request->jenis_identitas,
             'terlapor' => $request->terlapor,
+            'pangkat' => $request->pangkat,
             'nrp' => $request->nrp,
             'jabatan' => $request->jabatan,
             'kesatuan' => $request->kesatuan,
+            'wilayah_hukum' => $request->wilayah_hukum,
             'tempat_kejadian' => $request->tempat_kejadian,
             'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
             'kronologi' => $request->kronologis,
@@ -151,12 +191,19 @@ class KasusController extends Controller
     {
         if ($request->disposisi_tujuan != 3)
         {
-            DataPelanggar::where('id', $request->kasus_id)
-            ->update([
-                'status_id' => $request->disposisi_tujuan
-            ]);
-
-            return redirect()->back();
+            $data = DataPelanggar::where('id', $request->kasus_id)->first();
+            $disposisi = DisposisiHistory::where('data_pelanggar_id',$data->id)->where('tipe_disposisi',3)->first();
+            if ($disposisi && isset($disposisi->limpah_unit)) {
+                $data->update([
+                    'status_id' => $request->disposisi_tujuan
+                ]);
+    
+                return redirect()->back();
+            } elseif ($disposisi && !isset($disposisi->limpah_unit)) {
+                return redirect()->route('kasus.detail',['id'=>$data->id])->with('error','Limpah Unit (Penyelidik) belum ditentukan');
+            } {
+                return redirect()->route('kasus.detail',['id'=>$data->id])->with('error','Disposisi Ka. Den A belum dibuat');
+            }
         } 
         return $this->limpahToPolda($request);
     }
@@ -189,6 +236,26 @@ class KasusController extends Controller
     {
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
+
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
+        if ($disposisi->limpah_unit == '1') {
+            $unit = "UNIT I";
+        } elseif ($disposisi->limpah_unit == '2') {
+            $unit = "UNIT II";
+        } elseif ($disposisi->limpah_unit == '3') {
+            $unit = "UNIT III";
+        } else {
+            $unit = "MIN DEN A";
+        }
+
+        $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
+        $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
+
+        $penyidik[0] = $katim_penyidik;
+        foreach ($anggota_penyidik as $key => $value) {
+            $penyidik[$key+1] = $value;
+        }
+
         $data = [
             'kasus' => $kasus,
             'status' => $status,
@@ -196,6 +263,8 @@ class KasusController extends Controller
             'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first(),
             'ndPG' => NdPermohonanGelar::where('data_pelanggar_id', $id)->first(),
             'ndHGP' => NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $id)->first(),
+            'unit' => $unit,
+            'penyidik' => $penyidik,
         ];
 
         return view('pages.data_pelanggaran.proses.gelar_penyelidikan', $data);
@@ -260,6 +329,31 @@ class KasusController extends Controller
         $agama = Agama::get();
         $jenis_identitas = JenisIdentitas::get();
         $jenis_kelamin = JenisKelamin::get();
+        $pangkat = Pangkat::get();
+        $wujud_perbuatan = WujudPerbuatan::get();
+        $disposisi[0] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',1)->first();
+        $disposisi[1] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',2)->first();
+        $disposisi[2] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
+        $disposisi_kadena = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
+
+        $i_dis = 0;
+        $i_ke = 0;
+        foreach ($wujud_perbuatan as $key => $value) {
+            if ($value->jenis_wp == 'disiplin') {
+                $disiplin[$i_dis] = $value->keterangan_wp;
+                $id_disiplin[$i_dis] = $value->id;
+                $i_dis++;
+            } else {
+                $kode_etik[$i_ke] = $value->keterangan_wp;
+                $id_kode_etik[$i_ke] = $value->id;
+                $i_ke++;
+            }
+        }
+
+        $disiplin = implode('|',$disiplin);
+        $id_disiplin = implode('|',$id_disiplin);
+        $kode_etik = implode('|',$kode_etik);
+        $id_kode_etik = implode('|',$id_kode_etik);
 
         $data = [
             'kasus' => $kasus,
@@ -267,7 +361,15 @@ class KasusController extends Controller
             'process' =>  $process,
             'agama' => $agama,
             'jenis_identitas' => $jenis_identitas,
-            'jenis_kelamin' => $jenis_kelamin
+            'jenis_kelamin' => $jenis_kelamin,
+            'pangkat' => $pangkat,
+            'wujud_perbuatan' => $wujud_perbuatan,
+            'disiplin' => $disiplin,
+            'id_disiplin' => $id_disiplin,
+            'kode_etik' => $kode_etik,
+            'id_kode_etik' => $id_kode_etik,
+            'disposisi' => $disposisi,
+            'disposisi_kadena' => $disposisi_kadena,
         ];
 
         return view('pages.data_pelanggaran.proses.diterima', $data);
@@ -276,14 +378,35 @@ class KasusController extends Controller
     private function viewPulbaket($id)
     {
         $kasus = DataPelanggar::find($id);
-        // $status = Process::find($kasus->status_id);
-        // $process = Process::where('sort', '<=', $status->id)->get();
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
+        if ($disposisi->limpah_unit == '1') {
+            $unit = "UNIT I";
+        } elseif ($disposisi->limpah_unit == '2') {
+            $unit = "UNIT II";
+        } elseif ($disposisi->limpah_unit == '3') {
+            $unit = "UNIT III";
+        } else {
+            $unit = "MIN DEN A";
+        }
+
+        $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
+        $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
+
+        $penyidik[0] = $katim_penyidik;
+        foreach ($anggota_penyidik as $key => $value) {
+            $penyidik[$key+1] = $value;
+        }
+
+        $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
 
         $data = [
             'kasus' => $kasus,
             'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
             'uuk' => UukHistory::where('data_pelanggar_id', $id)->first(),
             'sp2hp_awal' => Sp2hp2Hisory::where('data_pelanggar_id', $id)->first(),
+            'penyidik' => $penyidik,
+            'unit' => $unit,
+            'lhp' => $lhp,
         ];
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }

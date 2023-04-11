@@ -47,11 +47,11 @@
             <div class="card border-dark">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-8">
+                        <div class="col-lg-7">
                             <table>
                                 <tr>
-                                    <td> No. Permohonan Gelar Penyelidikan </td>
-                                    <td>:</td>
+                                    <td> ND Permohonan Gelar Penyelidikan </td>
+                                    <td> : </td>
                                     <td>
                                         @if (isset($ndPG))
                                             R/ND-{{ $ndPG->no_surat }}/II/WAS.2.4./2023/Den A
@@ -66,28 +66,28 @@
                                     <td>{{ $kasus->pelapor }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Terlapor</td>
+                                    <td>Terduga Pelapor</td>
                                     <td>:</td>
                                     <td>{{ $kasus->terlapor }}</td>
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-5">
                             <table>
                                 <tr>
                                     <td>Perihal</td>
                                     <td>:</td>
-                                    <td>Perihal</td>
+                                    <td>{{ $kasus->perihal_nota_dinas}}</td>
                                 </tr>
                                 <tr>
                                     <td>Unit Pelaksana</td>
                                     <td>:</td>
-                                    <td>{{ $kasus->pelapor }}</td>
+                                    <td>{{ $unit }}</td>
                                 </tr>
                                 <tr>
                                     <td>Ketua Tim</td>
                                     <td>:</td>
-                                    <td>{{ $kasus->terlapor }}</td>
+                                    <td>{{ $penyidik[0]->name }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -106,11 +106,6 @@
                     <tr>
                         <th scope="col"> Nama Kegiatan</th>
                         <th scope="col">Action</th>
-                        {{-- <th scope="col">Pelapor</th>
-                        <th scope="col">Terlapor</th>
-                        <th scope="col">Pangkat</th>
-                        <th scope="col">Nama Korban</th>
-                        <th scope="col">Status</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -172,18 +167,6 @@
                             </td>
                         </tr>
                     @endif
-                    {{-- <tr>
-                        <td>Berita Acara Intograsi</td>
-                        <td><button type="button" class="btn btn-primary">Buat Dokumen BAI</button></td>
-                    </tr>
-                    <tr>
-                        <td>Laporan Hasil Penyelidikan</td>
-                        <td><button type="button" class="btn btn-primary">Buat Dokumen</button></td>
-                    </tr>
-                    <tr>
-                        <td>ND Permohonan Gelar Perkara</td>
-                        <td><button type="button" class="btn btn-primary">Buat Dokumen</button></td>
-                    </tr> --}}
                 </tbody>
             </table>
         </div>

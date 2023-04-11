@@ -318,7 +318,7 @@
                 "positionClass": "toast-bottom-right",
                 "preventDuplicates": true,
                 "onclick": null,
-                "showDuration": "500",
+                "showDuration": "700",
                 "hideDuration": "1000",
                 "timeOut": "5000",
                 "extendedTimeOut": "1000",

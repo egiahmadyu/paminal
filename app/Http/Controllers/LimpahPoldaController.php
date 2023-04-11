@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataPelanggar;
+use App\Models\DisposisiHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -19,33 +22,144 @@ class LimpahPoldaController extends Controller
         return $pdf->download('limpah-polda.pdf');
     }
 
-    public function generateDisposisi(Request $request)
+    public function generateDisposisi(Request $request, $kasus_id)
     {
-        // return view('pages.data_pelanggaran.generate.lembar-disposisi');
-        $data = [
-            'tanggal' => $request->tanggal,
-            'surat_dati' => $request->surat_dari,
-            'nomor_surat' => $request->nomor_surat,
-            'perihal' => $request->perihal,
-            'nomor_agenda' => $request->nomor_agenda
-        ];
-        // dd($data);
-        $pdf =  PDF::setOptions(['isRemoteEnabled' => TRUE])
-        ->setPaper('A4', 'potrait')
-        ->loadView('pages.data_pelanggaran.generate.lembar-disposisi', $data);
+        $kasus = DataPelanggar::find($kasus_id);
+        $data = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',$request->tipe_disposisi)->first();
 
-        return $pdf->download('itsolutionstuff.pdf');
+        $status = true;
+        if ($request->tipe_disposisi == 3 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',2)->first())) {
+            $message = 'Distribusi Binpam belum dibuat !';
+            $status = false;
+        } if ($request->tipe_disposisi == 2 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',1)->first())) {
+            $message = 'Disposisi Karo/Sesro belum dibuat !';
+            $status = false;
+        }
+
+        if ($status == false) {
+            return redirect()->back()->with('error',$message);
+            // return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error',$message);
+        }
+        
+        if (!$data) {
+            if ($request->tipe_disposisi == '3') {
+                $data = DisposisiHistory::create([
+                    'data_pelanggar_id' => $kasus_id,
+                    'klasifikasi' => $request->klasifikasi,
+                    'derajat' => $request->derajat,
+                    'no_agenda' => $request->nomor_agenda,
+                    'tipe_disposisi' => $request->tipe_disposisi,
+                    'limpah_unit' => $request->limpah_unit,
+                ]);
+            } else {
+                $data = DisposisiHistory::create([
+                    'data_pelanggar_id' => $kasus_id,
+                    'klasifikasi' => $request->klasifikasi,
+                    'derajat' => $request->derajat,
+                    'no_agenda' => $request->nomor_agenda,
+                    'tipe_disposisi' => $request->tipe_disposisi,
+                ]);
+            }
+        } elseif ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
+            $data->update([
+                'limpah_unit' => $request->limpah_unit
+            ]);
+            return redirect()->back()->with('message','Limpah unit telah ditentukan.');
+        }
+
+        if ($request->tipe_disposisi == 1) {
+            $template_filename = 'template_disposisi_karopaminal';
+            $filename = 'surat-disposisi-karopaminal';
+        } elseif ($request->tipe_disposisi == 2) {
+            $template_filename = 'template_disposisi_kabagbinpam';
+            $filename = 'surat-distribusi-kabagbinpam';
+        } else { 
+            $template_filename = 'template_disposisi_kadena';
+            $filename = 'surat-disposisi-ka-den-a';
+        }
+
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/'. $template_filename .'.docx'));
+
+        $template_document->setValues(array(
+            'klasifikasi' => $data->klasifikasi ,
+            'derajat' => $data->derajat,
+            'nomor_agenda' => $data->no_agenda,
+            'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+            'tahun_agenda' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+            'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
+            'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
+            'surat_dari' => 'BagYanduan',
+            'no_nota_dinas' => $kasus->no_nota_dinas,
+            'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+            'perihal' => $kasus->perihal_nota_dinas,
+            'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
+        ));
+
+        $template_document->saveAs(storage_path('template_surat/'. $filename .'.docx'));
+
+        return response()->download(storage_path('template_surat/'. $filename .'.docx'))->deleteFileAfterSend(true);
     }
 
 
     public function downloadDisposisi($type)
     {
-        if ($type == 1) $template_document = new TemplateProcessor(storage_path('template_surat/lembar_disposisi_kabagbinpam.docx'));
-        elseif ($type == 2) $template_document = new TemplateProcessor(storage_path('template_surat/lembar_disposisi_kabagbinpam.docx'));
-        elseif ($type == 3) $template_document = new TemplateProcessor(storage_path('template_surat/lembar_disposisi_kabagbinpam.docx'));
+        if ($type == 1) {
+            $template_document = new TemplateProcessor(storage_path('template_surat/template_disposisi_karopaminal.docx'));
+            $template_document->saveAs(storage_path('template_surat/surat-disposisi_karopaminal.docx'));
 
-        $template_document->saveAs(storage_path('template_surat/surat-disposisi.docx'));
+            return response()->download(storage_path('template_surat/surat-disposisi_karopaminal.docx'))->deleteFileAfterSend(true);
+        } elseif ($type == 2) {
+            $template_document = new TemplateProcessor(storage_path('template_surat/template_disposisi_kabagbinpam.docx'));
+            $template_document->saveAs(storage_path('template_surat/surat-distribusi_kabagbinpam.docx'));
 
-        return response()->download(storage_path('template_surat/surat-disposisi.docx'))->deleteFileAfterSend(true);
+            return response()->download(storage_path('template_surat/surat-template_disposisi_kabagbinpam.docx'))->deleteFileAfterSend(true);
+        } elseif ($type == 3) {
+            $template_document = new TemplateProcessor(storage_path('template_surat/template_disposisi_kadena.docx'));
+            $template_document->saveAs(storage_path('template_surat/surat-template_disposisi_kadena.docx'));
+
+            return response()->download(storage_path('template_surat/surat-template_disposisi_kadena.docx'))->deleteFileAfterSend(true);
+        }
+    }
+
+    private function getRomawi($bln)
+    {
+        switch ($bln){
+            case 1: 
+                return "I";
+                break;
+            case 2:
+                return "II";
+                break;
+            case 3:
+                return "III";
+                break;
+            case 4:
+                return "IV";
+                break;
+            case 5:
+                return "V";
+                break;
+            case 6:
+                return "VI";
+                break;
+            case 7:
+                return "VII";
+                break;
+            case 8:
+                return "VIII";
+                break;
+            case 9:
+                return "IX";
+                break;
+            case 10:
+                return "X";
+                break;
+            case 11:
+                return "XI";
+                break;
+            case 12:
+                return "XII";
+                break;
+        }
     }
 }

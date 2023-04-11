@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penyidiks', function (Blueprint $table) {
+        Schema::create('l_h_p_histories', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('data_pelanggar_id')->nullable();
-            $table->string('name');
-            $table->string('nrp');
-            $table->string('pangkat');
-            $table->string('jabatan');
-            $table->string('tim');
-            $table->string('unit')->nullable();
+            $table->bigInteger('data_pelanggar_id');
+            $table->string('no_lhp')->nullable();
+            $table->string('hasil_penyelidikan');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penyidiks');
+        Schema::dropIfExists('l_h_p_histories');
     }
 };

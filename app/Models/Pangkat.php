@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penyidik extends Model
+class Pangkat extends Model
 {
     use HasFactory;
-    protected $fillable = [ 'data_pelanggar_id' ,'name', 'nrp', 'pangkat', 'jabatan', 'tim', 'unit' ];
+    protected $fillable = [ 'name' ];
 }
