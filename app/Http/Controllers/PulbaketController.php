@@ -11,6 +11,7 @@ use App\Models\HistorySprin;
 use App\Models\LHPHistory;
 use App\Models\NdPermohonanGelar;
 use App\Models\Pangkat;
+use App\Models\PengantarSprinHistory;
 use App\Models\Penyidik;
 use App\Models\Saksi;
 use App\Models\Sp2hp2Hisory;
@@ -40,31 +41,6 @@ class PulbaketController extends Controller
                 // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
 
-            // if ($request->nama_penyelidik_ketua)
-            // {
-            //     Penyidik::create([
-            //         'data_pelanggar_id' => $kasus_id,
-            //         'name' => $request->nama_penyelidik_ketua,
-            //         'nrp' => $request->nrp_ketua,
-            //         'pangkat' => $request->pangkat_ketua,
-            //         'jabatan' => $request->jabatan_ketua
-            //     ]);
-
-            //     if ($request->nama_penyelidik_anggota)
-            //     {
-            //         for ($i=0; $i < count($request->nama_penyelidik_anggota); $i++) {
-            //             Penyidik::create([
-            //                 'data_pelanggar_id' => $kasus_id,
-            //                 'name' => $request->nama_penyelidik_anggota[$i],
-            //                 'nrp' => $request->nrp_anggota[$i],
-            //                 'pangkat' => $request->pangkat_anggota[$i],
-            //                 'jabatan' => $request->jabatan_anggota[$i]
-            //             ]);
-            //         }
-            //     }
-
-            // }
-
         }
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
@@ -93,6 +69,7 @@ class PulbaketController extends Controller
             'kesatuan' => $kasus->kesatuan,
             'wilayah_hukum' => $kasus->wilayah_hukum,
             'tanggal_ttd' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
+
             'ketua' => $ketua_penyidik->name ?? '',
             'pangkat_ketua' => $ketua_penyidik->pangkat ?? '',
             'nrp_ketua' => $ketua_penyidik->nrp ?? '',
@@ -129,16 +106,28 @@ class PulbaketController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
+        $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
+
+        if (!$data = PengantarSprinHistory::where('data_pelanggar_id', $kasus_id)->first())
+        {
+            $data = PengantarSprinHistory::create([
+                'data_pelanggar_id' => $kasus_id,
+                'no_pengantar_sprin' => null,
+            ]);
+        }
+
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/pengantar_sprin.docx'));
         $template_document->setValues(array(
             'nama' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
-            'pangkat' => $kasus->pangkat,
+            'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'kronologi' => $kasus->kronologi,
             'tanggal' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
-            'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y')
+            'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+            'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+            'tahun_pengantar_sprin' => Carbon::parse($data->created_at)->translatedFormat('Y'),
         ));
 
         $template_document->saveAs(storage_path('template_surat/surat-pengantar-sprin.docx'));
@@ -193,6 +182,7 @@ class PulbaketController extends Controller
     public function sp2hp2Awal($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
         if (!$data = Sp2hp2Hisory::where('data_pelanggar_id', $kasus_id)->first())
         {
             $data = Sp2hp2Hisory::create([
@@ -217,6 +207,9 @@ class PulbaketController extends Controller
             'tanggal' => Carbon::parse($kasus->created_at)->translatedFormat('d F Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'perihal' => $kasus->perihal_nota_dinas,
+            'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+            'tahun_sp2hp2' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+            'klasifikasi' => strtoupper($disposisi->klasifikasi),
         ));
 
         $template_document->saveAs(storage_path('template_surat/surat-sp2hp2_awal.docx'));
@@ -577,6 +570,7 @@ class PulbaketController extends Controller
             ]);
         }
 
+        $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
 
         if ($data->jenis_undangan == 1) {
@@ -623,7 +617,7 @@ class PulbaketController extends Controller
                 'pelapor' => $kasus->pelapor,
                 'alamat_pelapor' => $kasus->alamat,
                 'terlapor' => $kasus->terlapor,
-                'pangkat_terlapor' => $kasus->pangkat,
+                'pangkat_terlapor' => $pangkat->name,
                 'nrp_terlapor' => $kasus->nrp,
                 'jabatan_terlapor' =>$kasus->jabatan,
                 'kesatuan_terlapor' => $kasus->kesatuan,
@@ -661,6 +655,8 @@ class PulbaketController extends Controller
     public function viewNextData($id)
     {
         $kasus = DataPelanggar::find($id);
+        $ndPG = NdPermohonanGelar::where('data_pelanggar_id', $id)->first();
+        $bulan_romawi_ndPG = isset($ndPG) ? $this->getRomawi(Carbon::parse($ndPG->created_at)->translatedFormat('m')) : '';
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
         if ($disposisi->limpah_unit == '1') {
             $unit = "UNIT I";
@@ -673,6 +669,8 @@ class PulbaketController extends Controller
         }
 
         $lhp = LHPHistory::where('data_pelanggar_id',$kasus->id)->first();
+        $bai_pelapor = BaiPelapor::where('data_pelanggar_id',$kasus->id)->first();
+        $bai_terlapor = BaiTerlapor::where('data_pelanggar_id',$kasus->id)->first();
 
         $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
         $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
@@ -684,11 +682,13 @@ class PulbaketController extends Controller
 
         $data = [
             'kasus' => $kasus,
-            'bai_terlapor' => BaiPelapor::where('data_pelanggar_id', $id)->first(),
-            'nd_pgp' => NdPermohonanGelar::where('data_pelanggar_id', $id)->first(),
+            'nd_pgp' => $ndPG,
+            'bulan_romawi_ndPG' => $bulan_romawi_ndPG,
             'unit' => $unit,
             'lhp' => $lhp,
             'penyidik' => $penyidik,
+            'bai_pelapor' => $bai_pelapor,
+            'bai_terlapor' => $bai_terlapor,
         ];
         return view('pages.data_pelanggaran.proses.pulbaket-next', $data);
     }

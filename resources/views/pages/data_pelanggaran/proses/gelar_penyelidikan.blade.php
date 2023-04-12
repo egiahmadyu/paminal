@@ -54,7 +54,7 @@
                                     <td> : </td>
                                     <td>
                                         @if (isset($ndPG))
-                                            R/ND-{{ $ndPG->no_surat }}/II/WAS.2.4./2023/Den A
+                                            R/ND-{{ $ndPG->no_surat }}/{{ $bulan_romawi_ndPG }}/WAS.2.4./{{ Carbon\Carbon::parse($ndPG->created_at)->translatedFormat('Y') }}/Den A
                                         @else
                                             -
                                         @endif

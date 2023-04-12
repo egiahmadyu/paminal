@@ -21,14 +21,14 @@ class DataPelanggarSeed extends Seeder
             'tanggal_nota_dinas' => '2023-02-01',
             'no_telp' => '085720966872',
             'kewarganegaraan' => 'Indonesia',
-            'perihal_nota_dinas' => 'Pengaduan masyarakat',
+            'perihal_nota_dinas' => 'Pelimpahan Pengaduan Masyarakat a.n. Ahmad',
             'no_pengaduan' => "123456",
             'pelapor' => "Ahmad",
             'umur' => 24,
             'jenis_kelamin' => 1,
-            'pekerjaan' => 'swasta',
+            'pekerjaan' => 'Karyawan Swasta',
             'agama' => 1,
-            'alamat' => 'Cianjur',
+            'alamat' => 'Jl. Cianjur wetan No. 666',
             'no_identitas' => 123456789,
             'jenis_identitas' => 1,
             'terlapor' => 'Rizky',
@@ -41,7 +41,7 @@ class DataPelanggarSeed extends Seeder
             'status_id' => 1,
             'nrp' => '12345',
             'tanggal_kejadian' => '2023-01-20',
-            'jabatan' => 'Sekretaris'
+            'jabatan' => 'KANIT POLDA METRO JAYA'
         ]);
     }
 }

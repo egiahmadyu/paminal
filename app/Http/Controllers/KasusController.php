@@ -237,6 +237,9 @@ class KasusController extends Controller
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
 
+        $ndPG = NdPermohonanGelar::where('data_pelanggar_id', $id)->first();
+        $bulan_romawi_ndPG = $this->getRomawi(Carbon::parse($ndPG->created_at)->translatedFormat('m'));
+
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
         if ($disposisi->limpah_unit == '1') {
             $unit = "UNIT I";
@@ -261,7 +264,8 @@ class KasusController extends Controller
             'status' => $status,
             'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
             'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first(),
-            'ndPG' => NdPermohonanGelar::where('data_pelanggar_id', $id)->first(),
+            'ndPG' => $ndPG,
+            'bulan_romawi_ndPG' => $bulan_romawi_ndPG,
             'ndHGP' => NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $id)->first(),
             'unit' => $unit,
             'penyidik' => $penyidik,
@@ -409,5 +413,47 @@ class KasusController extends Controller
             'lhp' => $lhp,
         ];
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
+    }
+
+    private function getRomawi($bln)
+    {
+        switch ($bln){
+            case 1: 
+                return "I";
+                break;
+            case 2:
+                return "II";
+                break;
+            case 3:
+                return "III";
+                break;
+            case 4:
+                return "IV";
+                break;
+            case 5:
+                return "V";
+                break;
+            case 6:
+                return "VI";
+                break;
+            case 7:
+                return "VII";
+                break;
+            case 8:
+                return "VIII";
+                break;
+            case 9:
+                return "IX";
+                break;
+            case 10:
+                return "X";
+                break;
+            case 11:
+                return "XI";
+                break;
+            case 12:
+                return "XII";
+                break;
+        }
     }
 }
