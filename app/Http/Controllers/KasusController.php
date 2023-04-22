@@ -125,6 +125,12 @@ class KasusController extends Controller
                 // return $query->no_nota_dinas;
                 return '<a href="/data-kasus/detail/'.$query->id.'">'.$query->no_nota_dinas.'</a>';
             })
+            ->addColumn('pangkat', function($query) {
+                $pangkat = Pangkat::where('id',$query->pangkat)->first();
+                $pangkat = $pangkat->name;
+
+                return $pangkat;
+            })
             ->rawColumns(['no_nota_dinas'])
             ->make(true);
     }
@@ -259,6 +265,12 @@ class KasusController extends Controller
             $penyidik[$key+1] = $value;
         }
 
+        $pangkat = Pangkat::get();
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
+        $today = Carbon::now();
+        $usia_dumas = $tgl_dumas->diffInDays($today);
+
         $data = [
             'kasus' => $kasus,
             'status' => $status,
@@ -269,6 +281,8 @@ class KasusController extends Controller
             'ndHGP' => NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $id)->first(),
             'unit' => $unit,
             'penyidik' => $penyidik,
+            'pangkat' => $pangkat,
+            'usia_dumas' => $usia_dumas,
         ];
 
         return view('pages.data_pelanggaran.proses.gelar_penyelidikan', $data);
@@ -280,10 +294,16 @@ class KasusController extends Controller
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
 
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
+        $today = Carbon::now();
+        $usia_dumas = $tgl_dumas->diffInDays($today);
+
         $data = [
             'kasus' => $kasus,
             'status' => $status,
-            'process' =>  $process
+            'process' =>  $process,
+            'usia_dumas' => $usia_dumas,
         ];
         $data['limpahPolda'] = LimpahPolda::where('data_pelanggar_id', $id)->first();
 
@@ -402,6 +422,10 @@ class KasusController extends Controller
         }
 
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
+        $today = Carbon::now();
+        $usia_dumas = $tgl_dumas->diffInDays($today);
 
         $data = [
             'kasus' => $kasus,
@@ -411,6 +435,7 @@ class KasusController extends Controller
             'penyidik' => $penyidik,
             'unit' => $unit,
             'lhp' => $lhp,
+            'usia_dumas' => $usia_dumas . ' hari',
         ];
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }

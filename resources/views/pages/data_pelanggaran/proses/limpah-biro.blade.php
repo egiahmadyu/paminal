@@ -88,6 +88,9 @@
                                 </tr>
                             </table>
                         </div>
+                        <div class="col-lg-12">
+                            <p>Usia Dumas : {{ $usia_dumas }}</p>
+                        </div>
                     </div>
 
                 </div>

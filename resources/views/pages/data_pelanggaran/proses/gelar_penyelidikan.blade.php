@@ -62,7 +62,7 @@
                                 </tr>
                                 <tr>
                                     <td>Pelapor</td>
-                                    <td>:</td>
+                                    <td> : </td>
                                     <td>{{ $kasus->pelapor }}</td>
                                 </tr>
                                 <tr>
@@ -90,6 +90,9 @@
                                     <td>{{ $penyidik[0]->name }}</td>
                                 </tr>
                             </table>
+                        </div>
+                        <div class="col-lg-12">
+                            <p>Usia Dumas : {{ $usia_dumas }}</p>
                         </div>
                     </div>
 
@@ -230,8 +233,15 @@
                         <div class="col-lg-3">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="pangkat_pimpinan" id="pangkat_pimpinan" placeholder="Pangkat Pimpinan" required>
-                                    <label for="pangkat_pimpinan">Pangkat Pimpinan</label>
+                                    <select class="form-select border-dark" aria-label="Default select example" name="pangkat_pimpinan" id="pangkat_pimpinan" required>
+                                        <option value="">-- Pilih Pangkat Pimpinan Gelar --</option>
+                                        @if (isset($pangkat))
+                                            @foreach ($pangkat as $key => $p)
+                                                <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <label for="pangkat_pimpinan" class="form-label">Pangkat Pimpinan Gelar</label>
                                 </div>
                             </div>
                         </div>
@@ -240,7 +250,7 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark" name="nama_pimpinan" id="nama_pimpinan" placeholder="Nama Pimpinan" required>
-                                    <label for="nama_pimpinan">Nama Pimpinan</label>
+                                    <label for="nama_pimpinan">Nama Pimpinan Gelar</label>
                                 </div>
                             </div>
                         </div>
@@ -249,7 +259,7 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark" name="jabatan_pimpinan" id="jabatan_pimpinan" placeholder="Jabatan Pimpinan" required>
-                                    <label for="jabatan_pimpinan">Jabatan Pimpinan</label>
+                                    <label for="jabatan_pimpinan">Jabatan Pimpinan Gelar</label>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +268,7 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark" name="nrp_pimpinan" id="nrp_pimpinan" placeholder="NRP Pimpinan" required>
-                                    <label for="nrp_pimpinan">NRP Pimpinan</label>
+                                    <label for="nrp_pimpinan">NRP Pimpinan Gelar</label>
                                 </div>
                             </div>
                         </div>

@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
+use App\Models\LHPHistory;
 use App\Models\NDHasilGelarPenyelidikanHistory;
 use App\Models\NdPermohonanGelar;
+use App\Models\Pangkat;
 use App\Models\SprinHistory;
+use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -15,12 +18,12 @@ class GelarPerkaraController extends Controller
 {
     public function printUGP($kasus_id, Request $request)
     {
+        $kasus = DataPelanggar::find($kasus_id);
         $nd_permohonan_gelar = NdPermohonanGelar::where('data_pelanggar_id',$kasus_id)->first();
         if (!isset($nd_permohonan_gelar)) {
             return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','ND Permohonan Gelar Penyelidikan belum dibuat');
         }
 
-        $kasus = DataPelanggar::find($kasus_id);
         if (!$data = GelarPerkaraHistory::where('data_pelanggar_id', $kasus_id)->first())
         {
             $data = GelarPerkaraHistory::create([
@@ -35,25 +38,35 @@ class GelarPerkaraController extends Controller
             ]);
         }
 
+        $pangkat_pimpinan = Pangkat::where('id',$data->pangkat_pimpinan)->first();
+        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
+
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_undangan_gelar_perkara.docx'));
 
         $template_document->setValues(array(
             'tgl_ttd_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_ttd' => Carbon::parse($data->created_at)->translatedFormat('Y'),
-            'no_surat_nd_permohonan_gp' => $nd_permohonan_gelar->no_surat,
+            'no_surat_nd_permohonan_gp' => $nd_permohonan_gelar->no_surat.'/'.$this->getRomawi(Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('m')).'/WAS.2.4/'.Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('T').'/Den A',
             'tgl_nd_permohonan_gp' => Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('d F Y'),
             'hari_gp' => Carbon::parse($data->tanggal)->translatedFormat('l'),
             'tanggal_gp' => Carbon::parse($data->tanggal)->translatedFormat('d F Y'),
             'waktu' => Carbon::parse($data->waktu)->format('H:i'),
             'tempat' => $data->tempat,
             'pimpinan' => $data->pimpinan,
-            'pangkat_pimpinan' => $data->pangkat_pimpinan,
+            'pangkat_pimpinan' => $pangkat_pimpinan->name,
             'jabatan_pimpinan' => $data->jabatan_pimpinan,
             'tanggal_ugp' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
             'penangan' => $data->penangan,
             'dihubungi' => $data->dihubungi,
             'jabatan_dihubungi' => $data->jabatan_dihubungi,
-            'telp_dihubungi' => $data->telp_dihubungi
+            'telp_dihubungi' => $data->telp_dihubungi,
+            'pangkat_terlapor' => $pangkat_terlapor->name,
+            'terlapor' => strtoupper($kasus->terlapor),
+            'nrp_terlapor' => $kasus->nrp,
+            'jabatan_terlapor' => $kasus->jabatan,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'kronologi' => $kasus->kronologi,
         ));
 
         $template_document->saveAs(storage_path("template_surat/UGP-$kasus->id.docx"));
@@ -67,22 +80,27 @@ class GelarPerkaraController extends Controller
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
 
+        $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
+        $pangkat_pimpinan = Pangkat::where('id',$gelar_perkara->pangkat_pimpinan)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
+
         $template_document->setValues(array(
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'pangkat' => $kasus->pangkat,
+            'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
             'kwn' => $kasus->kewarganegaraan,
             'nama' => $kasus->terlapor,
-            'wujud_perbuatan' => $kasus->wujud_perbuatan,
-            'terlapor' => $kasus->terlapor,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'terlapor' => strtoupper($kasus->terlapor),
             'nrp' => $kasus->nrp,
             'jabatan' => $kasus->jabatan,
             'kesatuan' => $kasus->kesatuan,
             'pelapor' => $kasus->pelapor,
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
             'tgl_gp' => Carbon::parse($gelar_perkara->created_at)->translatedFormat('F Y'),
-            'pimpinan_gp' => $gelar_perkara->pangkat_pimpinan .' '. $gelar_perkara->pimpinan,
+            'pimpinan_gp' => $pangkat_pimpinan->name .' '. $gelar_perkara->pimpinan,
+            'nrp_gp' => $gelar_perkara->nrp_pimpinan,
         ));
         $template_document->saveAs(storage_path('template_surat/dokumen-notulen_gelar_perkara.docx'));
 
@@ -96,6 +114,7 @@ class GelarPerkaraController extends Controller
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $nd_permohonan_gelar = NdPermohonanGelar::where('data_pelanggar_id', $kasus->id)->first();
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
 
         if (!$data = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus_id)->first())
         {
@@ -105,16 +124,19 @@ class GelarPerkaraController extends Controller
             ]);
         }
 
+        $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
+
         $template_document->setValues(array(
             'tahun_ttd' => Carbon::parse($gelar_perkara->created_at)->translatedFormat('Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'pangkat' => $kasus->pangkat,
+            'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
             'kwn' => $kasus->kewarganegaraan,
             'nama' => $kasus->terlapor,
-            'wujud_perbuatan' => $kasus->wujud_perbuatan,
-            'terlapor' => $kasus->terlapor,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'terlapor' => strtoupper($kasus->terlapor),
             'nrp' => $kasus->nrp,
             'jabatan' => $kasus->jabatan,
             'kesatuan' => $kasus->kesatuan,
@@ -133,6 +155,7 @@ class GelarPerkaraController extends Controller
             'dugaan' => '*masih belum*',
             'bulan_ttd_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_ttd' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+            'hasil_penyelidikan' => $lhp->hasil_penyelidikan == '1' ? 'Ditemukan' : 'Belum ditemukan',
         ));
         $template_document->saveAs(storage_path('template_surat/dokumen-laporan_hasil_gelar.docx'));
 
@@ -147,14 +170,17 @@ class GelarPerkaraController extends Controller
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
         $nd_hasil_gelar = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus->id)->first();
 
+        $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
+
         $template_document->setValues(array(
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'pangkat' => $kasus->pangkat,
+            'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
             'kwn' => $kasus->kewarganegaraan,
             'terlapor' => $kasus->terlapor,
-            'wujud_perbuatan' => $kasus->wujud_perbuatan,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'terlapor' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
             'jabatan' => $kasus->jabatan,

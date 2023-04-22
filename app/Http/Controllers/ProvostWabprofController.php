@@ -6,7 +6,9 @@ use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
 use App\Models\LimpahBiro;
 use App\Models\LimpahBiroHistory;
+use App\Models\Pangkat;
 use App\Models\SprinHistory;
+use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -21,6 +23,10 @@ class ProvostWabprofController extends Controller
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus_id)->first();
         $template_document = new TemplateProcessor(storage_path('template_surat/template_nd_tindak_lanjut_hasil_penyelidikan.docx'));
 
+        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+        $pangkat_pimpinan = Pangkat::where('id',$gelar_perkara->pangkat_pimpinan)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
+
         $template_document->setValues(array(
             'tgl_ttd_romawi' => $this->getRomawi(Carbon::now()->month),
             'tahun_ttd' => Carbon::now()->year,
@@ -30,15 +36,15 @@ class ProvostWabprofController extends Controller
             'perihal_nd_yanduan' => $kasus->perihal_nota_dinas,
             'no_sprin' => 'Sprin/',$sprin->no_sprin,'/',$this->getRomawi(Carbon::parse($sprin->created_at)->translatedFormat('m')),'/HUK.6.6./',Carbon::parse($sprin->created_at)->translatedFormat('Y'),
             'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
-            'wujud_perbuatan' => $kasus->wujud_perbuatan,
-            'pangkat_terlapor' => $kasus->pangkat,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'pangkat_terlapor' => $pangkat_terlapor->name,
             'nama_terlapor' => $kasus->terlapor,
             'jabatan_terlapor' => $kasus->jabatan,
             'dugaan_pelanggaran' => $limpah_biro->jenis_limpah == 1 ? 'Disiplin' : 'Kode Etik Profesi Polri',
             'tgl_gelar_perkara' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y'),
             'tempat_gelar_perkara' => $gelar_perkara->tempat,
             'pemimpin_gelar_perkara' => $gelar_perkara->pimpinan,
-            'pangkat_pemimpin_gelar' => $gelar_perkara->pangkat_pimpinan,
+            'pangkat_pemimpin_gelar' => $pangkat_pimpinan->name,
             'jabatan_pemimpin_gelar' => $gelar_perkara->jabatan_pimpinan,
             'tgl_ttd' => Carbon::now()->format('F Y'),
         ));
@@ -68,6 +74,9 @@ class ProvostWabprofController extends Controller
         
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus_id)->first();
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
+        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+        $pangkat_pimpinan = Pangkat::where('id',$gelar_perkara->pangkat_pimpinan)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
 
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat\template_nd_tindak_lanjut_hasil_penyelidikan.docx'));
         $template_document->setValues(array(
@@ -79,15 +88,15 @@ class ProvostWabprofController extends Controller
             'perihal_nd_yanduan' => $kasus->perihal_nota_dinas,
             'no_sprin' => 'Sprin/',$sprin->no_sprin,'/',$this->getRomawi(Carbon::parse($sprin->created_at)->translatedFormat('m')),'/HUK.6.6./',Carbon::parse($sprin->created_at)->translatedFormat('Y'),
             'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
-            'wujud_perbuatan' => $kasus->wujud_perbuatan,
-            'pangkat_terlapor' => $kasus->pangkat,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'pangkat_terlapor' => $pangkat_terlapor->name,
             'nama_terlapor' => $kasus->terlapor,
             'jabatan_terlapor' => $kasus->jabatan,
             'dugaan_pelanggaran' => $request->jenis_limpah == 1 ? 'Disiplin' : 'Kode Etik Profesi Polri',
             'tgl_gelar_perkara' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y'),
             'tempat_gelar_perkara' => $gelar_perkara->tempat,
             'pemimpin_gelar_perkara' => $gelar_perkara->pimpinan,
-            'pangkat_pemimpin_gelar' => $gelar_perkara->pangkat_pimpinan,
+            'pangkat_pemimpin_gelar' => $pangkat_pimpinan->name,
             'jabatan_pemimpin_gelar' => $gelar_perkara->jabatan_pimpinan,
             'tgl_ttd' => Carbon::now()->locale('id')->format('F Y'),
         ));
