@@ -97,9 +97,9 @@ class PulbaketController extends Controller
 
         ));
 
-        $template_document->saveAs(storage_path('template_surat/surat-perintah.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-surat-perintah.docx'));
 
-        return response()->download(storage_path('template_surat/surat-perintah.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-surat-perintah.docx'))->deleteFileAfterSend(true);
     }
 
     public function printSuratPengantarSprin($kasus_id)
@@ -130,9 +130,9 @@ class PulbaketController extends Controller
             'tahun_pengantar_sprin' => Carbon::parse($data->created_at)->translatedFormat('Y'),
         ));
 
-        $template_document->saveAs(storage_path('template_surat/surat-pengantar-sprin.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-surat-pengantar-sprin.docx'));
 
-        return response()->download(storage_path('template_surat/surat-pengantar-sprin.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-surat-pengantar-sprin.docx'))->deleteFileAfterSend(true);
     }
 
     public function printUUK($kasus_id, Request $request)
@@ -174,9 +174,9 @@ class PulbaketController extends Controller
             'tahun_uuk' => Carbon::parse($data->created_at)->translatedFormat('Y')
         ));
 
-        $template_document->saveAs(storage_path('template_surat/surat-uuk.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-surat-uuk.docx'));
 
-        return response()->download(storage_path('template_surat/surat-uuk.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-surat-uuk.docx'))->deleteFileAfterSend(true);
     }
 
     public function sp2hp2Awal($kasus_id, Request $request)
@@ -212,9 +212,9 @@ class PulbaketController extends Controller
             'klasifikasi' => strtoupper($disposisi->klasifikasi),
         ));
 
-        $template_document->saveAs(storage_path('template_surat/surat-sp2hp2_awal.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-surat-sp2hp2_awal.docx'));
 
-        return response()->download(storage_path('template_surat/surat-sp2hp2_awal.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-surat-sp2hp2_awal.docx'))->deleteFileAfterSend(true);
     }
 
     public function printBaiSipil($kasus_id, Request $request)
@@ -308,9 +308,9 @@ class PulbaketController extends Controller
             'jabatan_5' => $penyidik[5]['jabatan'] ?? '',
         ));
 
-        $template_document->saveAs(storage_path('template_surat/surat-bai-pelapor.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-surat-bai-pelapor.docx'));
         Redirect::away("bai-sipil/".$kasus_id);
-        return response()->download(storage_path('template_surat/surat-bai-pelapor.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-surat-bai-pelapor.docx'))->deleteFileAfterSend(true);
     }
 
     public function printBaiAnggota($kasus_id, Request $request)
@@ -400,9 +400,9 @@ class PulbaketController extends Controller
             'jabatan_5' => $penyidik[4]['jabatan'] ?? '',
         ));
 
-        $template_document->saveAs(storage_path('template_surat/surat-bai-anggota.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-surat-bai-anggota.docx'));
 
-        return response()->download(storage_path('template_surat/surat-bai-anggota.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-surat-bai-anggota.docx'))->deleteFileAfterSend(true);
 
     }
 
@@ -485,9 +485,9 @@ class PulbaketController extends Controller
             'hasil_penyelidikan' => $data->hasil_penyelidikan == "1" ? 'Ditemukan' : 'Belum ditemukan',
         ));
 
-        $template_document->saveAs(storage_path('template_surat/dokumen-lhp.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-dokumen-lhp.docx'));
 
-        return response()->download(storage_path('template_surat/dokumen-lhp.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-dokumen-lhp.docx'))->deleteFileAfterSend(true);
     }
 
     public function ndPG($kasus_id, Request $request)
@@ -542,9 +542,9 @@ class PulbaketController extends Controller
             'nrp_kadena' => $kadena->nrp,
         ));
 
-        $template_document->saveAs(storage_path('template_surat/dokumen-nd_permohonan_gelar.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-dokumen-nd_permohonan_gelar.docx'));
 
-        return response()->download(storage_path('template_surat/dokumen-nd_permohonan_gelar.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-dokumen-nd_permohonan_gelar.docx'))->deleteFileAfterSend(true);
     }
     
     public function printUndanganKlarifikasi($kasus_id, Request $request)
@@ -603,9 +603,9 @@ class PulbaketController extends Controller
                 'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
             ));
         
-            $template_document->saveAs(storage_path('template_surat/dokumen-undangan_klarifikasi_sipil.docx'));
+            $template_document->saveAs(storage_path('template_surat/pendumas-dokumen-undangan_klarifikasi_sipil.docx'));
         
-            return response()->download(storage_path('template_surat/dokumen-undangan_klarifikasi_sipil.docx'))->deleteFileAfterSend(true);
+            return response()->download(storage_path('template_surat/pendumas-dokumen-undangan_klarifikasi_sipil.docx'))->deleteFileAfterSend(true);
         } else {
             $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_personel.docx'));
 
@@ -647,9 +647,9 @@ class PulbaketController extends Controller
     public function undanganGelarPerkara($kasus_id)
     {
         $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_gelar_perkara.docx'));
-        $template_document->saveAs(storage_path('template_surat/dokumen-template_undangan_gelar_perkara.docx'));
+        $template_document->saveAs(storage_path('template_surat/pendumas-dokumen-template_undangan_gelar_perkara.docx'));
 
-        return response()->download(storage_path('template_surat/dokumen-template_undangan_gelar_perkara.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/pendumas-dokumen-template_undangan_gelar_perkara.docx'))->deleteFileAfterSend(true);
     }
 
     public function viewNextData($id)

@@ -199,8 +199,19 @@
 
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="wilayah_hukum" id="wilayah_hukum" placeholder="Mabes/Polda" value="{{ isset($kasus) ? $kasus->wilayah_hukum : '' }}" required>
-                                <label for="wilayah_hukum">Mabes/Polda</label>
+                                <div class="form-floating">
+                                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
+                                        <option value="">-- Mabes/Polda --</option>
+                                        @if (isset($wilayah_hukum))
+                                            @foreach ($wilayah_hukum as $key => $wh)
+                                                <option value="{{ $wh->id }}">
+                                                    {{ $wh->name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <label for="pangkat" class="form-label">Mabes/Polda</label>
+                                </div>
                             </div>
                         </div>
 

@@ -238,8 +238,19 @@
 
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="wilayah_hukum" id="wilayah_hukum" placeholder="Mabes/Polda" value="{{ isset($kasus) ? $kasus->wilayah_hukum : '' }}" required>
-                                <label for="wilayah_hukum">Mabes/Polda</label>
+                                <div class="form-floating">
+                                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
+                                        <option value="">-- Mabes/Polda --</option>
+                                        @if (isset($wilayah_hukum))
+                                            @foreach ($wilayah_hukum as $key => $wh)
+                                                <option value="{{ $wh->id }}" {{ $kasus->wilayah_hukum == $wh->id ? 'selected' : ''}}>
+                                                    {{ $wh->name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <label for="pangkat" class="form-label">Mabes/Polda</label>
+                                </div>
                             </div>
                         </div>
 
@@ -380,7 +391,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-floating mb-3" id="form_agenda">
-                        <input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp"
+                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp"
                             name="nomor_agenda" placeholder="Nomor Agenda :" required>
                         <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
                     </div>

@@ -15,6 +15,7 @@ use App\Models\NDHasilGelarPenyelidikanHistory;
 use App\Models\NdPermohonanGelar;
 use App\Models\Pangkat;
 use App\Models\Penyidik;
+use App\Models\Polda;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
@@ -43,6 +44,8 @@ class KasusController extends Controller
         $jenis_kelamin = JenisKelamin::get();
         $pangkat = Pangkat::get();
         $wujud_perbuatan = WujudPerbuatan::get();
+        $polda = Polda::get();
+        $wilayah_hukum = $polda;
         
         $i_dis = 0;
         $i_ke = 0;
@@ -75,6 +78,7 @@ class KasusController extends Controller
             'id_disiplin' => $id_disiplin,
             'kode_etik' => $kode_etik,
             'id_kode_etik' => $id_kode_etik,
+            'wilayah_hukum' => $wilayah_hukum,
         ];
 
         return view('pages.data_pelanggaran.input_kasus.input',$data);
@@ -360,6 +364,9 @@ class KasusController extends Controller
         $disposisi[2] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
         $disposisi_kadena = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
 
+        $polda = Polda::get();
+        $wilayah_hukum = $polda;
+
         $i_dis = 0;
         $i_ke = 0;
         foreach ($wujud_perbuatan as $key => $value) {
@@ -394,6 +401,7 @@ class KasusController extends Controller
             'id_kode_etik' => $id_kode_etik,
             'disposisi' => $disposisi,
             'disposisi_kadena' => $disposisi_kadena,
+            'wilayah_hukum' => $wilayah_hukum,
         ];
 
         return view('pages.data_pelanggaran.proses.diterima', $data);

@@ -33,7 +33,7 @@ class DataPelanggarSeed extends Seeder
             'jenis_identitas' => 1,
             'terlapor' => 'Rizky',
             'kesatuan' => 'Propam',
-            'wilayah_hukum' => 'Mabes Polri',
+            'wilayah_hukum' => '1',
             'tempat_kejadian' => 'Tebet',
             'kronologi' => 'Jatuh Bangun',
             'pangkat' => '15',
