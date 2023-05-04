@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('data_pelanggar_id');
             $table->date('tanggal_limpah');
             $table->integer('jenis_limpah');
+            $table->string('limpah_polda')->nullable();
             $table->timestamps();
         });
     }

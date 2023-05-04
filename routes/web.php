@@ -76,12 +76,13 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi']);
     Route::post('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi']);
     // Route::get('/lembar-disposisi/{id}/{type}', [LimpahPoldaController::class, 'downloadDisposisi']);
-    Route::post('/surat-limpah-polda', [LimpahPoldaController::class, 'generateLimpahPolda']);
+    Route::post('/surat-limpah-polda/{id}', [LimpahPoldaController::class, 'generateLimpahPolda']);
     Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::get('/surat-perintah-pengantar/{id}', [PulbaketController::class, 'printSuratPengantarSprin']);
     Route::post('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::get('/surat-uuk/{id}', [PulbaketController::class, 'printUUK']);
     Route::get('/surat-sp2hp2-awal/{id}', [PulbaketController::class, 'sp2hp2Awal']);
+    Route::get('/surat-sp2hp2-akhir/{id}', [PulbaketController::class, 'sp2hp2Akhir']);
     Route::get('/gelar-perkara-undangan/{id}', [GelarPerkaraController::class, 'printUGP']);
     Route::get('/notulen-gelar-perkara/{id}', [GelarPerkaraController::class, 'notulenHasilGelar']);
     Route::get('/nd-hasil-gelar-perkara/{id}', [GelarPerkaraController::class, 'laporanHasilGelar']);

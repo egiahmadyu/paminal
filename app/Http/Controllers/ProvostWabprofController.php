@@ -7,6 +7,7 @@ use App\Models\GelarPerkaraHistory;
 use App\Models\LimpahBiro;
 use App\Models\LimpahBiroHistory;
 use App\Models\Pangkat;
+use App\Models\Polda;
 use App\Models\SprinHistory;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
@@ -26,11 +27,20 @@ class ProvostWabprofController extends Controller
         $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
         $pangkat_pimpinan = Pangkat::where('id',$gelar_perkara->pangkat_pimpinan)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
+        $polda = isset($limpah_biro->limpah_polda) ? Polda::where('id',$limpah_biro->limpah_polda)->first() : '';
+
+        if ($limpah_biro->jenis_limpah == 1) {
+            $jenis_limpah = "Kepala Biro Provos";
+        } elseif ($limpah_biro->jenis_limpah == 2) {
+            $jenis_limpah = "Kepala Biro Pertanggungjawaban Profesi";
+        } else {
+            $jenis_limpah = "Kepala BID PROPAM ".$polda->name;
+        }
 
         $template_document->setValues(array(
             'tgl_ttd_romawi' => $this->getRomawi(Carbon::now()->month),
             'tahun_ttd' => Carbon::now()->year,
-            'yth_kabiro' => $limpah_biro->jenis_limpah == 1 ? 'Kepala Biro Provos' : 'Kepala Kepala Biro Pertanggungjawaban Profesi',
+            'yth_kabiro' => $jenis_limpah,
             'no_nd_yanduan' => $kasus->no_nota_dinas,
             'tgl_no_nd_yanduan' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'perihal_nd_yanduan' => $kasus->perihal_nota_dinas,
@@ -49,27 +59,38 @@ class ProvostWabprofController extends Controller
             'tgl_ttd' => Carbon::now()->format('F Y'),
         ));
 
-        $template_document->saveAs(storage_path('template_surat/nd_tindak_lanjut_hasil_penyelidikan.docx'));
+        $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-nd_tindak_lanjut_hasil_penyelidikan.docx'));
 
-        return response()->download(storage_path('template_surat/nd_tindak_lanjut_hasil_penyelidikan.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-nd_tindak_lanjut_hasil_penyelidikan.docx'))->deleteFileAfterSend(true);
     }
 
     public function simpanData($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
 
-        if (!$data = LimpahBiroHistory::where('data_pelanggar_id', $kasus_id)->first())
+        if (!$data = LimpahBiro::where('data_pelanggar_id', $kasus_id)->first())
         {
-            LimpahBiro::create([
+            $data = LimpahBiro::create([
                 'data_pelanggar_id' => $kasus_id,
                 'jenis_limpah' => $request->jenis_limpah,
-                'tanggal_limpah' => Carbon::now()
+                'tanggal_limpah' => Carbon::now(),
+                'limpah_polda' => $request->limpah_polda,
             ]);
 
-            $data = LimpahBiroHistory::create([
+            LimpahBiroHistory::create([
                 'data_pelanggar_id' => $kasus_id,
             ]);
+        } elseif ( ($data->jenis_limpah === 3) && ( is_null($data->limpah_polda) ) ) {
+            $data->update(['limpah_polda' => $request->limpah_polda]);
+        }
+        $polda = Polda::where('id',$data->limpah_polda)->first();
 
+        if ($data->jenis_limpah == 1) {
+            $jenis_limpah = "Kepala Biro Provos";
+        } elseif ($data->jenis_limpah == 2) {
+            $jenis_limpah = "Kepala Biro Pertanggungjawaban Profesi";
+        } else {
+            $jenis_limpah = "Kepala BID PROPAM ".$polda->name;
         }
         
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus_id)->first();
@@ -82,7 +103,7 @@ class ProvostWabprofController extends Controller
         $template_document->setValues(array(
             'tgl_ttd_romawi' => $this->getRomawi(Carbon::now()->month),
             'tahun_ttd' => Carbon::now()->year,
-            'yth_kabiro' => $request->jenis_limpah == 1 ? 'Kepala Biro Provos' : 'Kepala Kepala Biro Pertanggungjawaban Profesi',
+            'yth_kabiro' => $jenis_limpah,
             'no_nd_yanduan' => $kasus->no_nota_dinas,
             'tgl_no_nd_yanduan' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'perihal_nd_yanduan' => $kasus->perihal_nota_dinas,
@@ -101,9 +122,9 @@ class ProvostWabprofController extends Controller
             'tgl_ttd' => Carbon::now()->locale('id')->format('F Y'),
         ));
 
-        $template_document->saveAs(storage_path('template_surat/nd_tindak_lanjut_hasil_penyelidikan.docx'));
+        $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-nd_tindak_lanjut_hasil_penyelidikan.docx'));
 
-        return response()->download(storage_path('template_surat/nd_tindak_lanjut_hasil_penyelidikan.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-nd_tindak_lanjut_hasil_penyelidikan.docx'))->deleteFileAfterSend(true);
     }
 
     private function getRomawi($bln)

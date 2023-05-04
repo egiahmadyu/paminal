@@ -11,15 +11,15 @@ use PhpOffice\PhpWord\TemplateProcessor;
 
 class LimpahPoldaController extends Controller
 {
-    public function generateLimpahPolda(Request $request)
+    public function generateLimpahPolda(Request $request, $kasus_id)
     {
-        // dd($request->all());
+        $kasus = DataPelanggar::find($kasus_id);
         $data['ticketDesc'] = $request->ticketDesc;
         $pdf =  PDF::setOptions(['isRemoteEnabled' => TRUE])
         ->setPaper('A4', 'potrait')
         ->loadView('pages.data_pelanggaran.generate.limpah-polda', $data);
 
-        return $pdf->download('limpah-polda.pdf');
+        return $pdf->download($kasus->pelapor.'-dokumen-limpah-polda.pdf');
     }
 
     public function generateDisposisi(Request $request, $kasus_id)
@@ -69,13 +69,13 @@ class LimpahPoldaController extends Controller
 
         if ($request->tipe_disposisi == 1) {
             $template_filename = 'template_disposisi_karopaminal';
-            $filename = 'surat-disposisi-karopaminal';
+            $filename = $kasus->pelapor.'-surat-disposisi-karopaminal';
         } elseif ($request->tipe_disposisi == 2) {
             $template_filename = 'template_disposisi_kabagbinpam';
-            $filename = 'surat-distribusi-kabagbinpam';
+            $filename = $kasus->pelapor.'-surat-distribusi-kabagbinpam';
         } else { 
             $template_filename = 'template_disposisi_kadena';
-            $filename = 'surat-disposisi-ka-den-a';
+            $filename = $kasus->pelapor.'-surat-disposisi-ka-den-a';
         }
 
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/'. $template_filename .'.docx'));

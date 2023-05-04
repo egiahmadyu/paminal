@@ -181,7 +181,7 @@
             resize: vertical;
             overflow: auto;
             line-height: 1.5;
-            background-color: #fafafa;
+            /* background-color: #fafafa; */
             background-image: none;
             border: 0;
             border-bottom: 1px solid #3b8dbd;

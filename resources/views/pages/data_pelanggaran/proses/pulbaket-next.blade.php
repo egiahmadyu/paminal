@@ -1,30 +1,22 @@
 <!--Informasi Pulbaket-->
-<div class="card ">
+<div class="card border-dark">
     <div class="card-header">
         <div class="row">
             <div class="col-lg-4">
-                <div class="row">
-                    <div class="form-buat-surat col-lg-6 mb-3">
-                        <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Sipil</label>
-                        <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
-                            aria-describedby="emailHelp"
-                            value="{{ isset($bai_pelapor) ? Carbon\Carbon::parse($bai_pelapor->created_at)->translatedFormat('d-m-Y') : '' }}"
-                            readonly>
-                    </div>
-                    <div class="form-buat-surat col-lg-6 mb-3">
-                        <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Personel</label>
-                        <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
-                            aria-describedby="emailHelp"
-                            value="{{ isset($bai_terlapor) ? Carbon\Carbon::parse($bai_terlapor->created_at)->translatedFormat('d-m-Y') : '' }}"
-                            readonly>
-                    </div>
+                <div class="form-buat-surat col-lg-12 mb-3">
+                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Sipil</label>
+                    <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
+                        aria-describedby="emailHelp"
+                        value="{{ isset($bai_pelapor) ? Carbon\Carbon::parse($bai_pelapor->created_at)->translatedFormat('d-m-Y') : '' }}"
+                        readonly>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-buat-surat col-lg-12 mb-3">
-                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Hasil Penyelidikan</label>
-                    <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
-                        value="{{ isset($lhp) ? ($lhp->hasil_penyelidikan == 1 ? 'Ditemukan Cukup Bukti' : 'Belum Ditemukan Cukup Bukti') : '' }}"
+                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Personel</label>
+                    <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
+                        aria-describedby="emailHelp"
+                        value="{{ isset($bai_terlapor) ? Carbon\Carbon::parse($bai_terlapor->created_at)->translatedFormat('d-m-Y') : '' }}"
                         readonly>
                 </div>
             </div>
@@ -33,6 +25,14 @@
                     <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Permohonan Gelar Perkara</label>
                     <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
                         value="{{ isset($nd_pgp) ? Carbon\Carbon::parse($nd_pgp->created_at)->translatedFormat('d-m-Y') : '' }}"
+                        readonly>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-buat-surat col-lg-12 mb-3">
+                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Hasil Penyelidikan</label>
+                    <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
+                        value="{{ isset($lhp) ? ($lhp->hasil_penyelidikan == 1 ? 'Ditemukan Cukup Bukti' : 'Belum Ditemukan Cukup Bukti') : '' }}"
                         readonly>
                 </div>
             </div>

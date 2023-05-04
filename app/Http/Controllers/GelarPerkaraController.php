@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataPelanggar;
+use App\Models\DisposisiHistory;
 use App\Models\GelarPerkaraHistory;
 use App\Models\LHPHistory;
+use App\Models\LimpahBiro;
+use App\Models\LimpahBiroHistory;
+use App\Models\LitpersHistory;
 use App\Models\NDHasilGelarPenyelidikanHistory;
 use App\Models\NdPermohonanGelar;
 use App\Models\Pangkat;
+use App\Models\PasalPelanggaran;
+use App\Models\Penyidik;
 use App\Models\SprinHistory;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
@@ -69,8 +75,8 @@ class GelarPerkaraController extends Controller
             'kronologi' => $kasus->kronologi,
         ));
 
-        $template_document->saveAs(storage_path("template_surat/UGP-$kasus->id.docx"));
-        return response()->download(storage_path("template_surat/UGP-$kasus->id.docx"))->deleteFileAfterSend(true);
+        $template_document->saveAs(storage_path("template_surat/".$kasus->pelapor."-UGP-$kasus->id.docx"));
+        return response()->download(storage_path("template_surat/".$kasus->pelapor."-UGP-$kasus->id.docx"))->deleteFileAfterSend(true);
     }
 
     public function notulenHasilGelar($kasus_id)
@@ -102,9 +108,9 @@ class GelarPerkaraController extends Controller
             'pimpinan_gp' => $pangkat_pimpinan->name .' '. $gelar_perkara->pimpinan,
             'nrp_gp' => $gelar_perkara->nrp_pimpinan,
         ));
-        $template_document->saveAs(storage_path('template_surat/dokumen-notulen_gelar_perkara.docx'));
+        $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-notulen_gelar_perkara.docx'));
 
-        return response()->download(storage_path('template_surat/dokumen-notulen_gelar_perkara.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-notulen_gelar_perkara.docx'))->deleteFileAfterSend(true);
     }
 
     public function laporanHasilGelar($kasus_id, Request $request)
@@ -116,6 +122,27 @@ class GelarPerkaraController extends Controller
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
 
+        if (!$limpah_biro = LimpahBiro::where('data_pelanggar_id', $kasus_id)->first())
+        {
+            $limpah_biro = LimpahBiro::create([
+                'data_pelanggar_id' => $kasus_id,
+                'jenis_limpah' => $request->limpah_biro,
+                'tanggal_limpah' => Carbon::now()
+            ]);
+
+            LimpahBiroHistory::create([
+                'data_pelanggar_id' => $kasus_id,
+            ]);
+        }
+
+        if ($limpah_biro->jenis_limpah == 1) {
+            $jenis_limpah = "ROPROVOS";
+        } elseif ($limpah_biro->jenis_limpah == 2) {
+            $jenis_limpah = "ROWABPROF";
+        } else {
+            $jenis_limpah = "BID PROPAM POLDA";
+        }
+
         if (!$data = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus_id)->first())
         {
             $data = NDHasilGelarPenyelidikanHistory::create([
@@ -126,6 +153,18 @@ class GelarPerkaraController extends Controller
 
         $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
+        
+        if ($disposisi->limpah_unit == '1') {
+            $unit = "UNIT I";
+        } elseif ($disposisi->limpah_unit == '2') {
+            $unit = "UNIT II";
+        } elseif ($disposisi->limpah_unit == '3') {
+            $unit = "UNIT III";
+        } else {
+            $unit = "MIN DEN A";
+        }
+        $penyidik = Penyidik::where('jabatan','KADEN A')->orwhere('unit', $unit)->get();
 
         $template_document->setValues(array(
             'tahun_ttd' => Carbon::parse($gelar_perkara->created_at)->translatedFormat('Y'),
@@ -151,24 +190,58 @@ class GelarPerkaraController extends Controller
             'jabatan_pimpinan_gelar' => $gelar_perkara->jabatan_pimpinan,
             'no_nd_permohonan_gelar' => 'R/ND - '. $nd_permohonan_gelar->no_surat . '/'. $this->getRomawi(Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('m')) .'/WAS.2.4./'.Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('Y').'/Den A',
             'tgl_nd_permohonan_gelar' => Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('d F Y'),
-            'perihal_nd_permohonan_gelar' => '*masih belum*', //belum dibuat
-            'dugaan' => '*masih belum*',
+            'dugaan' => $wujud_perbuatan->keterangan_wp,
             'bulan_ttd_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_ttd' => Carbon::parse($data->created_at)->translatedFormat('Y'),
             'hasil_penyelidikan' => $lhp->hasil_penyelidikan == '1' ? 'Ditemukan' : 'Belum ditemukan',
+            'jumlah_penyidik' => count($penyidik).' ('.$this->getTerbilang(count($penyidik)).')',
+            'katim_penyidik' => $penyidik[0]['pangkat'].' '.$penyidik[0]['name'].' jabatan '. $penyidik[0]['jabatan'],
+            'jenis_wp' => $wujud_perbuatan->jenis_wp == 'disiplin' ? 'DISIPLIN' : 'KEPP',
+            'jenis_limpah' => $jenis_limpah
         ));
-        $template_document->saveAs(storage_path('template_surat/dokumen-laporan_hasil_gelar.docx'));
+        $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-laporan_hasil_gelar.docx'));
 
-        return response()->download(storage_path('template_surat/dokumen-laporan_hasil_gelar.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-laporan_hasil_gelar.docx'))->deleteFileAfterSend(true);
     }
 
-    public function baglitpers($kasus_id)
+    public function baglitpers(Request $request, $kasus_id)
     {
         $template_document = new TemplateProcessor(storage_path('template_surat/BAGLITPERS.docx'));
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
         $nd_hasil_gelar = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus->id)->first();
+
+        $data = LitpersHistory::where('data_pelanggar_id', $kasus_id)->first();
+        $pasal_pelanggaran = PasalPelanggaran::where('data_pelanggar_id', $kasus_id)->first();
+
+        if (!isset($nd_hasil_gelar)) {
+            return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error','ND Laporan Hasil Gelar Penyelidikan belum dibuat');
+        }
+
+        if (!$data && !$pasal_pelanggaran)
+        {
+            $data = LitpersHistory::create([
+                'data_pelanggar_id' => $kasus_id,
+            ]);
+
+            $pasal_pelanggaran = PasalPelanggaran::create([
+                'data_pelanggar_id' => $kasus_id,
+                'pasal' => $request->pasal,
+                'ayat' => $request->ayat,
+                'bunyi_pasal' => $request->bunyi_pasal,
+            ]);
+        }
+
+        $limpah_biro = LimpahBiro::where('data_pelanggar_id', $kasus->id)->first();
+
+        if ($limpah_biro->jenis_limpah == 1) {
+            $jenis_limpah = "ROPROVOS";
+        } elseif ($limpah_biro->jenis_limpah == 2) {
+            $jenis_limpah = "ROWABPROF";
+        } else {
+            $jenis_limpah = "BID PROPAM POLDA";
+        }
 
         $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
@@ -189,16 +262,21 @@ class GelarPerkaraController extends Controller
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
             'no_surat_nd_hasil_gelar' => 'R/ND-'. $nd_hasil_gelar->no_surat .'/'. $this->getRomawi(Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('m')) .'/WAS.2.4./'. Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('Y') .'/Ropaminal',
             'tgl_nd_surat_hasil_gelar' => Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('d F Y'),
-            'dugaan' => '*masih belum*', //masih belum
-            'hari_gelar' => Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('l'),
-            'tgl_gelar' => Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('d F Y'),
+            'dugaan' => $wujud_perbuatan->keterangan_wp, //masih belum
+            'hari_gelar' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('l'),
+            'tgl_gelar' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y'),
             'tgl_ttd' => Carbon::now()->translatedFormat('F Y'),
             'bulan_ttd_romawi' => $this->getRomawi(Carbon::now()->translatedFormat('m')),
             'tahun_ttd' => Carbon::now()->translatedFormat('Y'),
+            'pasal' => $pasal_pelanggaran->pasal,
+            'ayat' => $pasal_pelanggaran->ayat,
+            'bunyi_pasal' => $pasal_pelanggaran->bunyi_pasal,
+            'jenis_wp' => $wujud_perbuatan->jenis_wp == 'disiplin' ? 'DISIPLIN' : 'KEPP',
+            'jenis_limpah' => $jenis_limpah,
         ));
-        $template_document->saveAs(storage_path('template_surat/dokumen-BAGLITPERS.docx'));
+        $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-BAGLITPERS.docx'));
 
-        return response()->download(storage_path('template_surat/dokumen-BAGLITPERS.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-BAGLITPERS.docx'))->deleteFileAfterSend(true);
     }
 
     private function getRomawi($bln)
@@ -239,6 +317,42 @@ class GelarPerkaraController extends Controller
                 break;
             case 12:
                 return "XII";
+                break;
+        }
+    }
+
+    private function getTerbilang($number)
+    {
+        switch ($number){
+            case 1: 
+                return "satu";
+                break;
+            case 2:
+                return "dua";
+                break;
+            case 3:
+                return "tiga";
+                break;
+            case 4:
+                return "empat";
+                break;
+            case 5:
+                return "lima";
+                break;
+            case 6:
+                return "enam";
+                break;
+            case 7:
+                return "tujuh";
+                break;
+            case 8:
+                return "delapan";
+                break;
+            case 9:
+                return "sembilan";
+                break;
+            case 10:
+                return "sepuluh";
                 break;
         }
     }

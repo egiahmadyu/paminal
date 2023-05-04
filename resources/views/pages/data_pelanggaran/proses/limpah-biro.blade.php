@@ -47,11 +47,11 @@
                         <div class="col-lg-6">
                             <table>
                                 <tr>
-                                    <td> No. Gelar Penyelidikan </td>
+                                    <td> No. SPRIN </td>
                                     <td>:</td>
                                     <td>
-                                        @if (isset($ugp))
-                                            Sprin/{{ $ugp->no_surat }}/HUK.6.6./2023
+                                        @if (isset($sprin))
+                                            SPRIN/{{ $sprin->no_sprin }}/HUK.6.6./2023
                                         @else 
                                             -
                                         @endif
@@ -59,13 +59,23 @@
                                 </tr>
                                 <tr>
                                     <td>Pelapor</td>
-                                    <td>:</td>
-                                    <td>{{ $kasus->pelapor }}</td>
+                                    <td> : </td>
+                                    <td>{{ strtoupper($kasus->pelapor) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Terlapor</td>
+                                    <td>Terduga Pelapor</td>
                                     <td>:</td>
-                                    <td>{{ $kasus->terlapor }}</td>
+                                    <td>{{ strtoupper($terlapor) }} / {{ $kasus->nrp }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pelimpahan Biro</td>
+                                    <td>:</td>
+                                    <td>{{ $jenis_limpah }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Usia Dumas</td>
+                                    <td>:</td>
+                                    <td>{{ $usia_dumas }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -79,20 +89,31 @@
                                 <tr>
                                     <td>Unit Pelaksana</td>
                                     <td>:</td>
-                                    <td>{{ $kasus->pelapor }}</td>
+                                    <td>{{ $unit }}</td>
                                 </tr>
                                 <tr>
                                     <td>Ketua Tim</td>
                                     <td>:</td>
-                                    <td>{{ $kasus->terlapor }}</td>
+                                    <td>{{ $penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pimpinan Gelar Perkara</td>
+                                    <td>:</td>
+                                    <td>{{ $pimpinan_gelar }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Gelar Perkara</td>
+                                    <td>:</td>
+                                    <td>{{ Carbon\Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tempat Gelar Perkara</td>
+                                    <td>:</td>
+                                    <td>{{ $gelar_perkara->tempat }}</td>
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-lg-12">
-                            <p>Usia Dumas : {{ $usia_dumas }}</p>
-                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -106,21 +127,34 @@
                     <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
                     <form action="/limpah-biro/{{ $kasus->id }}" method="post">
                         @csrf
-                        @if (!isset($limpah_biro))
-                            <div class="form-buat-surat col-lg-12 mb-3 mt-3">
-                                {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
-                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_limpah" id="jenis_limpah" required>
-                                        <option value="" class="text-center">-- Pilih Limpah Biro --</option>
-                                        <option value="1" class="text-center">Provos</option>
-                                        <option value="2" class="text-center">Wabprof</option>
-                                </select>
-                            </div>
-                            <div class="form-buat-surat col-lg-12 mb-3">
-                                <button type="submit" class="form-control btn btn-outline-primary text-primary">
-                                    <h6 class="p-0 m-0">Submit</h6>
-                                </button>
-                                {{-- <button type="submit" class="btn btn-outline-primary border-dark">Submit</button> --}}
-                            </div>
+                        @if ($limpah_biro->jenis_limpah == 3)
+                            @if (!is_null($limpah_biro->limpah_polda))
+                                <div class="form-buat-surat col-lg-12">
+                                    <label for="download_laporan_limpah_biro" class="form-label">Laporan Limpah Biro :</label>
+                                    <a href="/laporan-hasil-limpah-biro/{{ $kasus->id }}"
+                                        class="form-control btn btn-outline-primary text-primary">
+                                        <h6 class="p-0 m-0"><i class="far fa-download"></i> Dokumen</h6>
+                                    </a>
+                                </div>
+                            @else
+                                <div class="form-buat-surat col-lg-12 mb-3 mt-3">
+                                    {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
+                                    <select class="form-select border-dark" aria-label="Default select example" name="limpah_polda" id="limpah_polda" required>
+                                            <option value="" class="text-center">-- Pilih Limpah Polda --</option>
+                                            @if (isset($polda))
+                                                @foreach ($polda as $p)
+                                                    <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                                @endforeach
+                                            @endif
+                                    </select>
+                                </div>
+                                <div class="form-buat-surat col-lg-12 mb-3">
+                                    <button type="submit" class="form-control btn btn-outline-primary text-primary">
+                                        <h6 class="p-0 m-0">Submit</h6>
+                                    </button>
+                                </div>
+                            @endif
+                            
                         @else
                             <div class="form-buat-surat col-lg-12">
                                 <label for="download_laporan_limpah_biro" class="form-label">Laporan Limpah Biro :</label>

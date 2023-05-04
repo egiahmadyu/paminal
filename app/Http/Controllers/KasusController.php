@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agama;
+use App\Models\BaiPelapor;
+use App\Models\BaiTerlapor;
 use App\Models\DataPelanggar;
 use App\Models\DisposisiHistory;
 use App\Models\GelarPerkaraHistory;
 use App\Models\JenisIdentitas;
 use App\Models\JenisKelamin;
 use App\Models\LHPHistory;
+use App\Models\LimpahBiro;
 use App\Models\LimpahBiroHistory;
 use App\Models\LimpahPolda;
+use App\Models\LitpersHistory;
 use App\Models\NDHasilGelarPenyelidikanHistory;
 use App\Models\NdPermohonanGelar;
 use App\Models\Pangkat;
@@ -232,11 +236,56 @@ class KasusController extends Controller
     {
         $kasus = DataPelanggar::find($id);
         $status = Process::find($kasus->status_id);
+        $polda = Polda::get();
+        $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
+
+        $pangkat = Pangkat::get();
+        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
+        $today = Carbon::now()->addDays();
+        $usia_dumas = $tgl_dumas->diffInDays($today);
+
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
+        if ($disposisi->limpah_unit == '1') {
+            $unit = "UNIT I";
+        } elseif ($disposisi->limpah_unit == '2') {
+            $unit = "UNIT II";
+        } elseif ($disposisi->limpah_unit == '3') {
+            $unit = "UNIT III";
+        } else {
+            $unit = "MIN DEN A";
+        }
+
+        $penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->orwhere('unit',$unit)->get();
+
+        $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $pangkat_pimpinan_gelar = Pangkat::where('id',$gelar_perkara->pangkat_pimpinan)->first();
+
+        $limpah_biro = LimpahBiro::where('data_pelanggar_id', $id)->first();
+        if ($limpah_biro->jenis_limpah == 1) {
+            $jenis_limpah = "ROPROVOS";
+        } elseif ($limpah_biro->jenis_limpah == 2) {
+            $jenis_limpah = "ROWABPROF";
+        } else {
+            $jenis_limpah = "BID PROPAM POLDA";
+        }
+
         $data = [
             'kasus' => $kasus,
             'status' => $status,
-            'limpah_biro' => LimpahBiroHistory::where('data_pelanggar_id', $id)->first(),
-            'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first()
+            'limpah_biro' => $limpah_biro,
+            'ugp' => $gelar_perkara,
+            'polda' => $polda,
+            'usia_dumas' => $usia_dumas.' hari',
+            'terlapor' => $pangkat_terlapor->name.' '. $kasus->terlapor,
+            'sprin' => $sprin,
+            'unit' => $unit,
+            'penyidik' => $penyidik,
+            'gelar_perkara' => $gelar_perkara,
+            'pimpinan_gelar' => $pangkat_pimpinan_gelar->name.' '. $gelar_perkara->pimpinan.' / '.$gelar_perkara->nrp_pimpinan,
+            'jenis_limpah' => $jenis_limpah,
         ];
 
         return view('pages.data_pelanggaran.proses.limpah-biro', $data);
@@ -261,32 +310,63 @@ class KasusController extends Controller
             $unit = "MIN DEN A";
         }
 
-        $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
-        $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
-
-        $penyidik[0] = $katim_penyidik;
-        foreach ($anggota_penyidik as $key => $value) {
-            $penyidik[$key+1] = $value;
-        }
+        $penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->orwhere('unit',$unit)->get();
 
         $pangkat = Pangkat::get();
+        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+        
         $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
-        $today = Carbon::now();
+        $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
+        
+        $lhp = LHPHistory::where('data_pelanggar_id',$kasus->id)->first();
+        $bai_pelapor = BaiPelapor::where('data_pelanggar_id',$kasus->id)->first();
+        $bai_terlapor = BaiTerlapor::where('data_pelanggar_id',$kasus->id)->first();
+        $ugp = GelarPerkaraHistory::where('data_pelanggar_id', $id)->first();
+        $sprin = SprinHistory::where('data_pelanggar_id', $id)->first();
+        $litpers = LitpersHistory::where('data_pelanggar_id', $id)->first();
+        $sp2hp2_akhir = Sp2hp2Hisory::where('data_pelanggar_id', $id)->where('tipe','akhir')->first();
+        $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $id)->first();
+        $pangkat_pimpinan_gelar = isset($gelar_perkara) ? Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first() : '';
+        
+        $limpah_biro = LimpahBiro::where('data_pelanggar_id', $id)->first();
+
+        if (isset($limpah_biro)) {
+            if ($limpah_biro->jenis_limpah == 1) {
+                $limpah_biro = "ROPROVOS";
+            } elseif ($limpah_biro->jenis_limpah == 2) {
+                $limpah_biro = "ROWABPROF";
+            } else {
+                $limpah_biro = "BID PROPAM POLDA";
+            }
+        }
+        
 
         $data = [
             'kasus' => $kasus,
             'status' => $status,
-            'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
-            'ugp' => GelarPerkaraHistory::where('data_pelanggar_id', $id)->first(),
+            'sprin' => $sprin,
+            'ugp' => $ugp,
             'ndPG' => $ndPG,
+            'litpers' => $litpers,
+            'sp2hp2_akhir' => $sp2hp2_akhir,
+            'lhp' => $lhp,
             'bulan_romawi_ndPG' => $bulan_romawi_ndPG,
+            'gelar_perkara' => $gelar_perkara,
+            'pangkat_pimpinan_gelar' => isset($gelar_perkara) ? $pangkat_pimpinan_gelar->name : '',
+            'limpah_biro' => isset($limpah_biro) ? $limpah_biro : '',
             'ndHGP' => NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $id)->first(),
             'unit' => $unit,
             'penyidik' => $penyidik,
             'pangkat' => $pangkat,
-            'usia_dumas' => $usia_dumas,
+            'usia_dumas' => $usia_dumas . ' hari',
+            'terlapor' => $pangkat_terlapor->name.' '. $kasus->terlapor,
+            'tgl_bai_pelapor' => Carbon::parse($bai_pelapor->created_at)->translatedFormat('d F Y'),
+            'tgl_bai_terlapor' => Carbon::parse($bai_terlapor->created_at)->translatedFormat('d F Y'),
+            'tgl_nd_pg' => Carbon::parse($ndPG->created_at)->translatedFormat('d F Y'),
+            'hasil_lhp' => $lhp->hasil_penyelidikan == 1 ? 'Ditemukan Cukup Bukti' : 'Belum Ditemukan cukup bukti',
+            'tgl_ugp' => isset($ugp) ? Carbon::parse($ugp->tanggal)->translatedFormat('d F Y') : '',
         ];
 
         return view('pages.data_pelanggaran.proses.gelar_penyelidikan', $data);
@@ -302,14 +382,19 @@ class KasusController extends Controller
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
         $today = Carbon::now();
         $usia_dumas = $tgl_dumas->diffInDays($today);
+        $limpahPolda = LimpahPolda::where('data_pelanggar_id', $id)->first();
+
+        $polda = Polda::get();
 
         $data = [
             'kasus' => $kasus,
             'status' => $status,
             'process' =>  $process,
             'usia_dumas' => $usia_dumas,
+            'polda' => $polda,
+            'limpahPolda' => $limpahPolda,
+            'tgl_limpah' => Carbon::parse($limpahPolda->tanggal_limpah)->translatedFormat('d F Y'),
         ];
-        $data['limpahPolda'] = LimpahPolda::where('data_pelanggar_id', $id)->first();
 
         return view('pages.data_pelanggaran.proses.limpah_polda', $data);
     }
@@ -423,6 +508,7 @@ class KasusController extends Controller
 
         $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
         $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
+        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
 
         $penyidik[0] = $katim_penyidik;
         foreach ($anggota_penyidik as $key => $value) {
@@ -432,7 +518,7 @@ class KasusController extends Controller
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
         $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
-        $today = Carbon::now();
+        $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
 
         $data = [
@@ -444,6 +530,7 @@ class KasusController extends Controller
             'unit' => $unit,
             'lhp' => $lhp,
             'usia_dumas' => $usia_dumas . ' hari',
+            'terlapor' => $pangkat_terlapor->name.' '. $kasus->terlapor,
         ];
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }

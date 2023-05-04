@@ -47,10 +47,10 @@
             <div class="card border-dark">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
                             <table>
                                 <tr>
-                                    <td> ND Permohonan Gelar Penyelidikan </td>
+                                    <td> ND Permohonan Gelar </td>
                                     <td> : </td>
                                     <td>
                                         @if (isset($ndPG))
@@ -63,16 +63,36 @@
                                 <tr>
                                     <td>Pelapor</td>
                                     <td> : </td>
-                                    <td>{{ $kasus->pelapor }}</td>
+                                    <td>{{ strtoupper($kasus->pelapor) }}</td>
                                 </tr>
                                 <tr>
                                     <td>Terduga Pelapor</td>
                                     <td>:</td>
-                                    <td>{{ $kasus->terlapor }}</td>
+                                    <td>{{ strtoupper($terlapor) }} / {{ $kasus->nrp }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal BAI Pelapor</td>
+                                    <td>:</td>
+                                    <td>{{ $tgl_bai_terlapor }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal BAI Terduga Pelanggar</td>
+                                    <td>:</td>
+                                    <td>{{ $tgl_bai_pelapor }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Hasil Penyelidikan</td>
+                                    <td>:</td>
+                                    <td>{{ $hasil_lhp }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Usia Dumas</td>
+                                    <td>:</td>
+                                    <td>{{ $usia_dumas }}</td>
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-6">
                             <table>
                                 <tr>
                                     <td>Perihal</td>
@@ -87,12 +107,14 @@
                                 <tr>
                                     <td>Ketua Tim</td>
                                     <td>:</td>
-                                    <td>{{ $penyidik[0]->name }}</td>
+                                    <td>{{ $penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Permohonan Gelar</td>
+                                    <td>:</td>
+                                    <td>{{ $tgl_nd_pg }}</td>
                                 </tr>
                             </table>
-                        </div>
-                        <div class="col-lg-12">
-                            <p>Usia Dumas : {{ $usia_dumas }}</p>
                         </div>
                     </div>
 
@@ -102,79 +124,142 @@
     </div>
 
     <!-- Isi Form -->
-    <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
-                <thead class="text-muted table-light">
-                    <tr>
-                        <th scope="col"> Nama Kegiatan</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Undangan Gelar Perkara Penyelidikan</td>
-                        <td>
+    <div class="card border-dark">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-buat-surat col-lg-12 mb-3">
+                        <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Gelar Perkara Penyelidikan</label>
+                        <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
+                            aria-describedby="emailHelp"
+                            value="{{ isset($tgl_ugp) ? $tgl_ugp : '' }}"
+                            readonly>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-buat-surat col-lg-12 mb-3">
+                        <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Pembuatan SP2HP2 Akhir</label>
+                        <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
+                            value="{{ isset($sp2hp2_akhir) ? Carbon\Carbon::parse($sp2hp2_akhir->created_at)->translatedFormat('d F Y') : '' }}"
+                            readonly>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-buat-surat col-lg-12 mb-3">
+                        <label for="pimpinan_gelar" class="form-label">Pimpinan Gelar Perkara Penyelidikan</label>
+                        <input type="text" class="form-control border-dark" id="pimpinan_gelar"
+                            aria-describedby="emailHelp"
+                            value="{{ isset($gelar_perkara) ? $pangkat_pimpinan_gelar.' '.$gelar_perkara->pimpinan.' / '.$gelar_perkara->nrp_pimpinan : ''}}"
+                            readonly>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-buat-surat col-lg-12 mb-3">
+                        <label for="tgl_pembuatan_surat_perintah" class="form-label">Pelimpahan biro</label>
+                        <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
+                            value="{{ isset($limpah_biro) ? $limpah_biro : '' }}"
+                            readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
+                        <thead class="text-muted table-light">
+                            <tr>
+                                <th scope="col"> Nama Kegiatan</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Undangan Gelar Perkara Penyelidikan</td>
+                                <td>
+                                    @if (!empty($ugp))
+                                        <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
+                                            <button type="button" class="btn btn-outline-primary text-primary">
+                                                <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Undangan</h6>
+                                            </button>
+                                        </a>
+                                    @else
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#modal_undangan_gelar_perkara">
+                                            <button type="button" class="btn btn-outline-primary text-primary">
+                                                <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen Undangan</h6>
+                                            </button>
+                                        </a>
+                                    @endif
+                                </td>
+                            </tr>
                             @if (!empty($ugp))
-                                <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
-                                    <button type="button" class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Undangan</h6>
-                                    </button>
-                                </a>
-                            @else
-                                <a href="" data-bs-toggle="modal" data-bs-target="#modal_undangan_gelar_perkara">
-                                    <button type="button" class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen Undangan</h6>
-                                    </button>
-                                </a>
-                            @endif
-                        </td>
-                    </tr>
-                    @if (!empty($ugp))
-                        <tr>
-                            <td>Notulen Hasil Gelar Perkara</td>
-                            <td>
-                                <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
-                                    <button type="button" class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Notulen</h6>
-                                    </button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
-                            <td>
-                                @if (isset($ndHGP))
-                                    <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
-                                        <button type="button" class="btn btn-outline-primary text-primary">
-                                            <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Laporan</h6>
-                                        </button>
-                                    </a>
-                                @else
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal_nd_laporan_hasil_gelar">
-                                        <button type="button" class="btn btn-outline-primary text-primary">
-                                            <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Laporan</h6>
-                                        </button>
-                                    </a>
+                                <tr>
+                                    <td>Notulen Hasil Gelar Perkara</td>
+                                    <td>
+                                        <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
+                                            <button type="button" class="btn btn-outline-primary text-primary">
+                                                <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Notulen</h6>
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
+                                    <td>
+                                        @if (isset($ndHGP))
+                                            <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
+                                                <button type="button" class="btn btn-outline-primary text-primary">
+                                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Laporan</h6>
+                                                </button>
+                                            </a>
+                                        @else
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#modal_nd_laporan_hasil_gelar">
+                                                <button type="button" class="btn btn-outline-primary text-primary">
+                                                    <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Laporan</h6>
+                                                </button>
+                                            </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SP2HP2 Akhir</td>
+                                    <td>
+                                        <a href="/surat-sp2hp2-akhir/{{ $kasus->id }}">
+                                            <button type="button" class="btn btn-outline-primary text-primary">
+                                                <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen SP2HP2 Akhir</h6>
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @if ($lhp->hasil_penyelidikan == '1')
+                                    <tr>
+                                        <td>Nota Dinas Ka. LITPERS</td>
+                                        <td>
+                                            @if (isset($litpers))
+                                                <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
+                                                    <button type="button" class="btn btn-outline-primary text-primary">
+                                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Ka. LITPERS</h6>
+                                                    </button>
+                                                </a>
+                                            @else
+                                                <a href="" data-bs-toggle="modal" data-bs-target="#modal_litpers">
+                                                    <button type="button" class="btn btn-outline-primary text-primary">
+                                                        <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Ka. LITPERS</h6>
+                                                    </button>
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Nota Dinas Ka. LITPERS</td>
-                            <td>
-                                <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
-                                    <button type="button" class="btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Ka. LITPERS</h6>
-                                    </button>
-                                </a>
-                            </td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-    @if (isset($kasus) & ($kasus->status_id === 5))
+    @if (isset($kasus) & ($kasus->status_id === 5) & ($lhp->hasil_penyelidikan === '1'))
         <div class="row mt-3">
             <div class="col-lg-12">
                 @if (!empty($ugp))
@@ -298,10 +383,69 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" name="no_surat"
+                                <div class="form-floating ">
+                                    <input type="text" class="form-control border-dark" name="no_surat"
                                 placeholder="Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan" required>
                                     <label for="no_nd_gelar_penyelidikan">Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan</label>
+                                </div>
+                            </div>
+                            <div class="form-outline mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select border-dark" aria-label="Default select example" name="limpah_biro" id="limpah_biro" required>
+                                        <option value="" >-- Pilih Limpah Biro --</option>
+                                        <option value="1" >Provos</option>
+                                        <option value="2" >Wabprof</option>
+                                        <option value="3" >Bid Propam Polda</option>
+                                    </select>
+                                    <label for="limpah_biro" class="form-label">Limpah Biro</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <button type="submit" class="form-control btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ND Laporan Hasil Gelar Penyelidikan -->
+<div class="modal fade" id="modal_litpers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Undangan Gelar Perkara</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(5)"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/gelar-perkara-baglitpers/{{ $kasus->id }}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <div class="form-floating ">
+                                    <input type="text" class="form-control border-dark" name="pasal"
+                                placeholder="Masukan Pasal Pelanggaran" required>
+                                    <label for="pasal">Masukan Pasal Pelanggaran</label>
+                                </div>
+                            </div>
+                            <div class="form-outline mb-3">
+                                <div class="form-floating ">
+                                    <input type="text" class="form-control border-dark" name="ayat"
+                                placeholder="Masukan Ayat Pelanggaran" required>
+                                    <label for="ayat">Masukan Ayat Pelanggaran</label>
+                                </div>
+                            </div>
+                            <div class="form-outline mb-3">
+                                <div class="form-floating ">
+                                    {{-- <input type="text" class="form-control border-dark" name="bunyi_pasal"
+                                placeholder="Masukan Bunyi Pasal Pelanggaran" required> --}}
+                                    <textarea class="form-control border-dark" name="bunyi_pasal" id="bunyi_pasal" placeholder="Masukan Bunyi Pasal Pelanggaran" style="height: 100px" required></textarea>
+                                    <label for="bunyi_pasal">Masukan Bunyi Pasal Pelanggaran</label>
                                 </div>
                             </div>
                         </div>

@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('data_pelanggar_id');
             $table->string('penangan')->nullable();
+            $table->string('pangkat_dihubungi')->nullable();
             $table->string('dihubungi')->nullable();
             $table->string('jabatan_dihubungi')->nullable();
             $table->string('telp_dihubungi')->nullable();
             $table->string('hasil_keputusan')->nullable();
+            $table->string('tipe')->nullable();
             $table->bigInteger('created_by');
             $table->timestamps();
         });

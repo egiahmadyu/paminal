@@ -10,6 +10,6 @@ class LimpahBiro extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data_pelanggar_id', 'tanggal_limpah', 'jenis_limpah' ,'created_by', 'isi_surat'
+        'data_pelanggar_id', 'tanggal_limpah', 'jenis_limpah' ,'created_by', 'isi_surat', 'limpah_polda'
     ];
 }

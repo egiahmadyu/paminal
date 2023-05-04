@@ -47,7 +47,7 @@
     <!-- Isi Form -->
     <div class="row">
         <div class="col-lg-12 mt-4">
-            <div class="row">
+            <div class="row mv-3">
                 <div class="col-lg-12">
                     <!--Informasi Pulbaket-->
                     <div class="card border-dark">
@@ -60,9 +60,9 @@
                                             <td>:</td>
                                             <td>
                                                 @if (isset($sprin))
-                                                    Sprin/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                                    SPRIN/{{ $sprin->no_sprin }}/HUK.6.6./2023
                                                 @else
-                                                    Sprin/____/HUK.6.6./2023
+                                                    SPRIN/____/HUK.6.6./2023
                                                 @endif
                                             </td>
                                         </tr>
@@ -74,7 +74,12 @@
                                         <tr>
                                             <td>Pelapor</td>
                                             <td>:</td>
-                                            <td>{{ $kasus->pelapor }}</td>
+                                            <td>{{ strtoupper($kasus->pelapor) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Usia Dumas</td>
+                                            <td>:</td>
+                                            <td>{{ $usia_dumas }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -83,7 +88,7 @@
                                         <tr>
                                             <td>Terduga Pelaku</td>
                                             <td>:</td>
-                                            <td>{{ $kasus->terlapor }}</td>
+                                            <td>{{ strtoupper($terlapor) }} / {{ $kasus->nrp }}</td>
                                         </tr>
                                         {{-- <tr>
                                             <td>Perihal</td>
@@ -98,12 +103,10 @@
                                         <tr>
                                             <td>Ketua Tim</td>
                                             <td>:</td>
-                                            <td>{{ $penyidik[0]->name }}</td>
+                                            <td>{{ $penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
                                         </tr>
+                                        
                                     </table>
-                                </div>
-                                <div class="col-lg-12">
-                                    <p>Usia Dumas : {{ $usia_dumas }}</p>
                                 </div>
                             </div>
 
@@ -221,11 +224,10 @@
                 </div>
             </div>
             <hr>
+            <div id="viewNext">
+
+            </div>
         </div>
-    </div>
-
-    <div id="viewNext">
-
     </div>
 </div>
 
@@ -412,6 +414,11 @@
                         <input type="text" class="form-control" name="penangan" aria-describedby="emailHelp"
                             placeholder="Unit yang Menangani" value="{{ isset($unit) ? $unit : ''}}" required>
                         <label for="exampleInputEmail1" class="form-label">Unit yang Menangani</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="pangkat_dihubungi"
+                            placeholder="Pangkat yang dihubungi" value="{{ isset($penyidik) ? $penyidik[1]->pangkat : ''}}" required>
+                        <label for="exampleInputPassword1" class="form-label">Pangkat yang dihubungi</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="dihubungi"
