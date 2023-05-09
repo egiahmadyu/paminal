@@ -335,7 +335,7 @@
                         <div class="col-lg-12 mb-3">
                             <label for="exampleInputEmail1" class="form-label">Status</label>
                             <select class="form-select border-dark" aria-label="Default select example"
-                                name="disposisi_tujuan" onchange="getPolda()" id="disposisi-tujuan"  {{ $kasus->status_id > 4 ? 'disabled' : '' }}>
+                                name="disposisi_tujuan" onchange="getPolda()" id="disposisi-tujuan"  {{ $kasus->status_id > 4 ? 'disabled' : '' }} required>
                                 <option value="" class="text-center"> 
                                     @if ($kasus->status_id < 3)
                                         -- Pilih Status --
