@@ -67,7 +67,7 @@ class PulbaketController extends Controller
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'perihal' => $kasus->perihal_nota_dinas,
             'kesatuan' => $kasus->kesatuan,
-            'wilayah_hukum' => $kasus->wilayah_hukum,
+            'wilayah_hukum' => $kasus->wilayahHukum->name,
             'tanggal_ttd' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
 
             'ketua' => $ketua_penyidik->name ?? '',
@@ -262,6 +262,8 @@ class PulbaketController extends Controller
             'no_sprin' => 'SPRIN/'. $sprin->no_sprin .'/I/HUK.6.6./2023',
             'tgl_sprin'=> Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
             'terlapor' => $pangkat_terlapor->name.' '.$kasus->terlapor.' jabatan '.$kasus->jabatan,
+            'kesatuan' => $kasus->kesatuan,
+            'wilayah_hukum' => $kasus->wilayahHukum->name,
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'hasil_penyelidikan' => $lhp->hasil_penyelidikan == 1 ? 'Ditemukan cukup bukti' : 'Belum ditemukan cukup bukti',
             'tgl_gelar' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y'),
@@ -417,6 +419,7 @@ class PulbaketController extends Controller
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
         $template_document->setValues(array(
             'no_nota_dinas' => $kasus->no_nota_dinas,
+            'perihal' => $kasus->perihal_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
@@ -679,7 +682,7 @@ class PulbaketController extends Controller
                 'jabatan_terlapor' =>$kasus->jabatan,
                 'kesatuan_terlapor' => $kasus->kesatuan,
                 'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
-                'wilayah_hukum' => $kasus->wilayah_hukum,
+                'wilayah_hukum' => $kasus->wilayahHukum->name,
                 'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
                 'no_nota_dinas' => $kasus->no_nota_dinas,
                 'perihal' => $kasus->perihal_nota_dinas,
@@ -692,7 +695,7 @@ class PulbaketController extends Controller
                 'nama_penyelidik' => $sp2hp->dihubungi,
                 'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
                 'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
-                'wilayah_hukum' => $kasus->wilayah_hukum,
+                'wilayah_hukum' => $kasus->wilayahHukum->name,
             ));
         
             $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-undangan_klarifikasi_personel.docx'));

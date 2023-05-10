@@ -30,4 +30,9 @@ class DataPelanggar extends Model
     {
         return $this->hasOne(JenisIdentitas::class, 'id', 'jenis_identitas');
     }
+
+    public function wilayahHukum()
+    {
+        return $this->hasOne(Polda::class, 'id', 'wilayah_hukum');
+    }
 }

@@ -95,6 +95,8 @@ class GelarPerkaraController extends Controller
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
+            'kesatuan' => $kasus->kesatuan,
+            'wilayah_hukum' => $kasus->wilayahHukum->name,
             'kwn' => $kasus->kewarganegaraan,
             'nama' => $kasus->terlapor,
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
