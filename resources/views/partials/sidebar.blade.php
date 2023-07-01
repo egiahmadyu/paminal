@@ -44,9 +44,23 @@
 
                 <li class="nav-item">
                     <a href="{{ route('kasus.input') }}"
-                        class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}"> <i
-                            class="bi bi-clipboard-data"></i> <span data-key="t-dashboard">Input Dumas</span>
+                        class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
+                        <i class="bi bi-person-fill-add"></i> <span data-key="t-dashboard">Input Dumas</span>
                     </a>
+                </li>
+
+                <li class="nav-item has-submenu">
+                    <a class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="bi bi-unity"></i> <span data-key="t-dashboard">Datasemen</span>
+                    </a>
+                    <ul class="submenu collapse" id="collapseExample">
+                        <a href="{{ route('tambah.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
+                            <i class="bi bi-plus-square-fill"> <span data-key="t-dashboard">Tambah Datasemen</span>
+                        </a>
+                        <a href="{{ route('list.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
+                            <i class="bi bi-card-list"></i> <span data-key="t-dashboard">List Datasemen</span>
+                        </a>
+                    </ul>
                 </li>
 
                 <li class="nav-item">

@@ -6,6 +6,7 @@ use App\Models\Agama;
 use App\Models\BaiPelapor;
 use App\Models\BaiTerlapor;
 use App\Models\DataPelanggar;
+use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
 use App\Models\GelarPerkaraHistory;
 use App\Models\JenisIdentitas;
@@ -448,6 +449,8 @@ class KasusController extends Controller
         $disposisi[1] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',2)->first();
         $disposisi[2] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
         $disposisi_kadena = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
+        
+        $tim_disposisi = Datasemen::get();
 
         $polda = Polda::get();
         $wilayah_hukum = $polda;
@@ -487,6 +490,7 @@ class KasusController extends Controller
             'disposisi' => $disposisi,
             'disposisi_kadena' => $disposisi_kadena,
             'wilayah_hukum' => $wilayah_hukum,
+            'tim_disposisi' => $tim_disposisi,
         ];
 
         return view('pages.data_pelanggaran.proses.diterima', $data);

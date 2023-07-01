@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DatasemenController;
 use App\Http\Controllers\GelarPerkaraController;
 use App\Http\Controllers\KasusController;
 use App\Http\Controllers\LimpahPoldaController;
@@ -62,6 +63,15 @@ Route::middleware(['auth'])->group(function (){
     Route::get('input-data-kasus', [KasusController::class, 'inputKasus'])->name('kasus.input');
     Route::post('input-data-kasus/store', [KasusController::class, 'storeKasus'])->name('kasus.store.kasus');
     // End View Kasus
+
+    // Datasemen
+    Route::get('list-datasemen', [DatasemenController::class, 'listDatasemen'])->name('list.datasemen');
+    Route::get('tambah-datasemen', [DatasemenController::class, 'tambahDatasemen'])->name('tambah.datasemen');
+    Route::post('store-datasemen', [DatasemenController::class, 'storeDatasemen'])->name('store.datasemen');
+    Route::get('edit-datasemen/{id}', [DatasemenController::class, 'editDatasemen'])->name('edit.datasemen');
+    Route::post('update-datasemen/{id}', [DatasemenController::class, 'updateDatasemen'])->name('update.datasemen');
+    Route::post('delete-datasemen/{id}', [DatasemenController::class, 'deleteDatasemen'])->name('delete.datasemen');
+    // End Datasemen
 
     // Tambah Saksi
     Route::post('/tambah-saksi/{id}',[PulbaketController::class, 'tambahSaksi'])->name('tambah.saksi');

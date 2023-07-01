@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('disposisi_histories', function (Blueprint $table) {
+        Schema::create('datasemens', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('data_pelanggar_id');
-            $table->bigInteger('no_agenda');
-            $table->string('klasifikasi');
-            $table->string('derajat');
-            $table->integer('tipe_disposisi');
-            $table->string('limpah_unit')->nullable();
-            $table->string('limpah_den')->nullable();
+            $table->string('name');
+            $table->string('kaden');
+            $table->string('pangkat_kaden');
+            $table->string('nrp_kaden');
+            $table->string('jabatan_kaden');
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('disposisi_histories');
+        Schema::dropIfExists('datasemens');
     }
 };

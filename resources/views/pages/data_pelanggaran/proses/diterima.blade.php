@@ -301,7 +301,12 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <label for="exampleFormControlInput1" class="form-label">Distribusi Binpam</label>
-                                    @if (isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2)
+                                    @if ((isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2 && is_null($disposisi[1]->limpah_den)))
+                                        <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal"
+                                            data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
+                                            <i class="far fa-plus-square"></i> Buat
+                                        </button>
+                                    @elseif (isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2)
                                         <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal"
                                             data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
                                             <i class="far fa-download"></i> Download
@@ -314,7 +319,7 @@
                                     @endif
                                 </div>
                                 <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Disposisi Ka. Den A</label>
+                                    <label for="exampleFormControlInput1" class="form-label">Disposisi</label>
                                     @if (isset($disposisi[2]) && $disposisi[2]->tipe_disposisi == 3)
                                         <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal"
                                             data-bs-target="#modal_disposisi_kadena" id="kadena" type="button">
@@ -379,7 +384,7 @@
     </div>
 </div>
 
-<!-- Modal Disposisi Karo/Sesro-->
+<!-- Modal Disposisi Karo/Sesro & Binpam-->
 <div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -426,9 +431,18 @@
                         <input type="text" class="form-control border-dark" id="perihal" name="perihal" placeholder="Perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" disabled>
                         <label for="perihal" class="form-label">Perihal</label>
                     </div>
-                    <div class="form-floating mb-3" id="limpah_unit">
-                        
+                    <div class="form-floating mb-3">
+                        @if (isset($tim_disposisi) && $disposisi[1]->tipe_disposisi == 2 && is_null($disposisi[1]->limpah_den))
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="limpah_den" id="limpah_den" {{ isset($disposisi[1]) ? (isset($disposisi[1]->limpah_den) ? 'disabled' : '') : '' }} required>
+                                <option value="">-- Pilih Limpah Datasemen --</option>
+                                @foreach ($tim_disposisi as $key => $tim)
+                                    <option value="{{ $tim->id }}" >{{ $tim->name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="limpah_unit" class="form-label">Limpah Datasemen</label>
+                        @endif
                     </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Generate</button>
@@ -438,12 +452,12 @@
     </div>
 </div>
 
-<!-- Modal Disposisi Ka. Den A-->
+<!-- Modal Disposisi Datasemen-->
 <div class="modal fade" id="modal_disposisi_kadena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title_modal_disposisi">Disposisi Karo/Sesro</h5>
+                <h5 class="modal-title" id="title_modal_disposisi">Disposisi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(1)"></button>
             </div>
             <form action="/lembar-disposisi/{{ $kasus->id }}" method="post">

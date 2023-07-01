@@ -31,7 +31,14 @@ class LimpahPoldaController extends Controller
         if ($request->tipe_disposisi == 3 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',2)->first())) {
             $message = 'Distribusi Binpam belum dibuat !';
             $status = false;
-        } if ($request->tipe_disposisi == 2 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',1)->first())) {
+        } elseif ($request->tipe_disposisi == 3 && ($distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',2)->first())) {
+            if (is_null($distribusi_binpam->limpah_den)) {
+                $message = 'Limpah Datasemen belum ditentukan !';
+                $status = false;
+            }
+        }
+        
+        if ($request->tipe_disposisi == 2 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',1)->first())) {
             $message = 'Disposisi Karo/Sesro belum dibuat !';
             $status = false;
         }
