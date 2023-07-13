@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Datasemen extends Model
+class DataAnggota extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','kaden','wakaden'];
+    protected $fillable = ['nama','pangkat', 'nrp', 'jabatan ','unit','datasemen'];
 }

@@ -98,7 +98,7 @@
                                         <tr>
                                             <td>Unit Pelaksana</td>
                                             <td>:</td>
-                                            <td>Den A {{ $unit }}</td>
+                                            <td> {{ $den.' '.$unit }}</td>
                                         </tr>
                                         <tr>
                                             <td>Ketua Tim</td>

@@ -17,10 +17,20 @@ class DatasemenSeeder extends Seeder
     {
         Datasemen::create([
             'name' => 'Den A',
-            'kaden' => 'DWI SAMAYO SATIADY,SIK',
-            'pangkat_kaden' => 'KOMBES POL',
-            'nrp_kaden' => '78050947',
-            'jabatan_kaden' => 'Kaden A',
+            'kaden' => '1',
+            'wakaden' => '2',
+        ]);
+
+        Datasemen::create([
+            'name' => 'Den B',
+            'kaden' => '1',
+            'wakaden' => '2',
+        ]);
+
+        Datasemen::create([
+            'name' => 'Den C',
+            'kaden' => '1',
+            'wakaden' => '2',
         ]);
     }
 }

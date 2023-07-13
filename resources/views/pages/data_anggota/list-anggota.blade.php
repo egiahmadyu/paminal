@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Datasemen</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">Anggota</h4>
 
                 </div><!-- end card header -->
 
@@ -20,10 +20,12 @@
                         <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
                             <thead class="text-muted table-light">
                                 <tr>
-                                    <th scope="col">Datasemen</th>
-                                    <th scope="col">Kepala Datasemen</th>
-                                    <th scope="col">Wakil Kepala Datasemen</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Pangkat</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">NRP</th>
+                                    <th scope="col">Jabatan</th>
+                                    {{-- <th scope="col">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -49,7 +51,7 @@
                 serverSide: true,
                 searching: false,
                 ajax: {
-                    url: "{{ route('get.datasemen') }}",
+                    url: "{{ route('get.anggota') }}",
                     method: "post",
                     data: function(data) {
                         data._token = '{{ csrf_token() }}'
@@ -57,21 +59,31 @@
                 },
                 columns: [
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
                     },
                     {
-                        data: 'kaden',
-                        name: 'kaden'
+                        data: 'pangkat',
+                        name: 'pangkat'
                     },
                     {
-                        data: 'wakaden',
-                        name: 'wakaden'
+                        data: 'nama',
+                        name: 'nama'
                     },
                     {
-                        data: 'action',
-                        name: 'action'
+                        data: 'nrp',
+                        name: 'nrp'
                     },
+                    {
+                        data: 'jabatan',
+                        name: 'jabatan'
+                    },
+                    // {
+                    //     data: 'action',
+                    //     name: 'action'
+                    // },
                 ]
             });
             $('#kt_search').on('click', function(e) {

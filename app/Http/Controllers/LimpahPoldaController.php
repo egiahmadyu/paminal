@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataAnggota;
 use App\Models\DataPelanggar;
+use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
+use App\Models\Penyidik;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
@@ -50,6 +53,7 @@ class LimpahPoldaController extends Controller
         
         if (!$data) {
             if ($request->tipe_disposisi == '3') {
+                $distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',2)->first();
                 $data = DisposisiHistory::create([
                     'data_pelanggar_id' => $kasus_id,
                     'klasifikasi' => $request->klasifikasi,
@@ -57,6 +61,7 @@ class LimpahPoldaController extends Controller
                     'no_agenda' => $request->nomor_agenda,
                     'tipe_disposisi' => $request->tipe_disposisi,
                     'limpah_unit' => $request->limpah_unit,
+                    'limpah_den' => $distribusi_binpam->limpah_den,
                 ]);
             } else {
                 $data = DisposisiHistory::create([
@@ -67,10 +72,43 @@ class LimpahPoldaController extends Controller
                     'tipe_disposisi' => $request->tipe_disposisi,
                 ]);
             }
+        } elseif ($data && $data->tipe_disposisi == 2 && !isset($data->limpah_den)) {
+            $data->update([
+                'limpah_den' => $request->limpah_den
+            ]);
+            return redirect()->back()->with('message','Limpah Datasemen telah ditentukan.');
         } elseif ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
             $data->update([
                 'limpah_unit' => $request->limpah_unit
             ]);
+
+            // Create katim
+            $datasemen = Datasemen::where('id',$data->limpah_den)->first();
+            $katim = DataAnggota::where('id',$datasemen->kaden)->first();
+            Penyidik::create([
+                'data_pelanggar_id' => $kasus->id,
+                'name' => $katim->nama,
+                'nrp' => $katim->nrp,
+                'pangkat' => $katim->pangkat,
+                'jabatan' => $katim->jabatan,
+                'datasemen' => $katim->datasemen,
+                'unit' => '',
+            ]);
+
+            // Create anggota tim
+            $anggota = DataAnggota::where('unit',$data->limpah_unit)->where('datasemen',$data->limpah_den)->get();
+            foreach ($anggota as $key => $valAnggota) {
+                # code...
+                Penyidik::create([
+                    'data_pelanggar_id' => $kasus->id,
+                    'name' => $valAnggota->nama,
+                    'nrp' => $valAnggota->nrp,
+                    'pangkat' => $valAnggota->pangkat,
+                    'jabatan' => $valAnggota->jabatan,
+                    'datasemen' => $valAnggota->datasemen,
+                    'unit' => $valAnggota->unit,
+                ]);
+            }
             return redirect()->back()->with('message','Limpah unit telah ditentukan.');
         }
 

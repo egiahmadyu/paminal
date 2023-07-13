@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nrp');
             $table->string('pangkat');
             $table->string('jabatan');
-            $table->string('tim');
+            $table->string('datasemen');
             $table->string('unit')->nullable();
             $table->timestamps();
         });

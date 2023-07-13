@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('datasemens', function (Blueprint $table) {
+        Schema::create('data_anggotas', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('kaden');
-            $table->string('wakaden');
+            $table->string('nama');
+            $table->string('pangkat');
+            $table->string('nrp');
+            $table->string('jabatan');
+            $table->string('unit');
+            $table->string('datasemen');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datasemens');
+        Schema::dropIfExists('data_anggotas');
     }
 };

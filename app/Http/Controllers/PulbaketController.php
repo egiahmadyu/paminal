@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BaiPelapor;
 use App\Models\BaiTerlapor;
+use App\Models\DataAnggota;
 use App\Models\DataPelanggar;
+use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
 use App\Models\GelarPerkaraHistory;
 use App\Models\HistorySprin;
@@ -18,6 +20,7 @@ use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UndanganKlarifikasiHistory;
 use App\Models\UndanganKlarifikasiSipilHistory;
+use App\Models\Unit;
 use App\Models\UukHistory;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
@@ -44,18 +47,15 @@ class PulbaketController extends Controller
         }
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
 
-        $penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get()->toArray();
-        $ketua_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
+        }
+        // $penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get()->toArray();
+        // $ketua_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
 
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_sprin.docx'));
         $template_document->setValues(array(
@@ -70,30 +70,35 @@ class PulbaketController extends Controller
             'wilayah_hukum' => $kasus->wilayahHukum->name,
             'tanggal_ttd' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
 
-            'ketua' => $ketua_penyidik->name ?? '',
-            'pangkat_ketua' => $ketua_penyidik->pangkat ?? '',
-            'nrp_ketua' => $ketua_penyidik->nrp ?? '',
-            'jabatan_ketua' => $ketua_penyidik->jabatan ?? '',
-            'anggota_1' => $penyidik[0]['name'] ?? '',
-            'pangkat_1' => $penyidik[0]['pangkat'] ?? '',
-            'nrp_1' => $penyidik[0]['nrp'] ?? '',
-            'jabatan_1' => $penyidik[0]['jabatan'] ?? '',
-            'anggota_2' => $penyidik[1]['name'] ?? '',
-            'pangkat_2' => $penyidik[1]['pangkat'] ?? '',
-            'nrp_2' => $penyidik[1]['nrp'] ?? '',
-            'jabatan_2' => $penyidik[1]['jabatan'] ?? '',
-            'anggota_3' => $penyidik[2]['name'] ?? '',
-            'pangkat_3' => $penyidik[2]['pangkat'] ?? '',
-            'nrp_3' => $penyidik[2]['nrp'] ?? '',
-            'jabatan_3' => $penyidik[2]['jabatan'] ?? '',
-            'anggota_4' => $penyidik[3]['name'] ?? '',
-            'pangkat_4' => $penyidik[3]['pangkat'] ?? '',
-            'nrp_4' => $penyidik[3]['nrp'] ?? '',
-            'jabatan_4' => $penyidik[3]['jabatan'] ?? '',
-            'anggota_5' => $penyidik[4]['name'] ?? '',
-            'pangkat_5' => $penyidik[4]['pangkat'] ?? '',
-            'nrp_5' => $penyidik[4]['nrp'] ?? '',
-            'jabatan_5' => $penyidik[4]['jabatan'] ?? '',
+            'ketua' => $penyidik[0]['name'] ?? '',
+            'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
+            'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
+            'jabatan_ketua' => $penyidik[0]['jabatan'] ?? '',
+
+            'anggota_1' => $penyidik[1]['name'] ?? '',
+            'pangkat_1' => $penyidik[1]['pangkat'] ?? '',
+            'nrp_1' => $penyidik[1]['nrp'] ?? '',
+            'jabatan_1' => $penyidik[1]['jabatan'] ?? '',
+
+            'anggota_2' => $penyidik[2]['name'] ?? '',
+            'pangkat_2' => $penyidik[2]['pangkat'] ?? '',
+            'nrp_2' => $penyidik[2]['nrp'] ?? '',
+            'jabatan_2' => $penyidik[2]['jabatan'] ?? '',
+
+            'anggota_3' => $penyidik[3]['name'] ?? '',
+            'pangkat_3' => $penyidik[3]['pangkat'] ?? '',
+            'nrp_3' => $penyidik[3]['nrp'] ?? '',
+            'jabatan_3' => $penyidik[3]['jabatan'] ?? '',
+
+            'anggota_4' => $penyidik[4]['name'] ?? '',
+            'pangkat_4' => $penyidik[4]['pangkat'] ?? '',
+            'nrp_4' => $penyidik[4]['nrp'] ?? '',
+            'jabatan_4' => $penyidik[4]['jabatan'] ?? '',
+
+            'anggota_5' => $penyidik[5]['name'] ?? '',
+            'pangkat_5' => $penyidik[5]['pangkat'] ?? '',
+            'nrp_5' => $penyidik[5]['nrp'] ?? '',
+            'jabatan_5' => $penyidik[5]['jabatan'] ?? '',
 
         ));
 
@@ -147,15 +152,8 @@ class PulbaketController extends Controller
         }
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
 
         $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
@@ -170,6 +168,7 @@ class PulbaketController extends Controller
             'tanggal' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
             'kronologi' => $kasus->kronologi,
             'unit' => $unit,
+            'den' => $den,
             'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_uuk' => Carbon::parse($data->created_at)->translatedFormat('Y')
         ));
@@ -298,24 +297,14 @@ class PulbaketController extends Controller
             ]);
         }
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
 
-        $ketua_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
-        $penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get()->toArray();
-
-        $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
-        $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
-        $penyidik[0] = $katim_penyidik;
-        foreach ($anggota_penyidik as $key => $value) {
-            $penyidik[$key+1] = $value;
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
         }
 
         $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
@@ -397,21 +386,14 @@ class PulbaketController extends Controller
             ]);
         }
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
 
-        $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
-        $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
-        $penyidik[0] = $katim_penyidik;
-        foreach ($anggota_penyidik as $key => $value) {
-            $penyidik[$key+1] = $value;
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
         }
 
         $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
@@ -443,7 +425,7 @@ class PulbaketController extends Controller
             'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
             'anggota_1' => $penyidik[1]['name'] ?? '',
             'pangkat_1' => $penyidik[1]['pangkat'] ?? '',
-            'jabatan_1' => $penyidik[0]['jabatan'] ?? '',
+            'jabatan_1' => $penyidik[1]['jabatan'] ?? '',
             'nrp_1' => $penyidik[1]['nrp'] ?? '',
             'anggota_2' => $penyidik[2]['name'] ?? '',
             'pangkat_2' => $penyidik[2]['pangkat'] ?? '',
@@ -454,10 +436,13 @@ class PulbaketController extends Controller
             'anggota_4' => $penyidik[4]['name'] ?? '',
             'pangkat_4' => $penyidik[4]['pangkat'] ?? '',
             'nrp_4' => $penyidik[4]['nrp'] ?? '',
-            'jabatan_2' => $penyidik[1]['jabatan'] ?? '',
-            'jabatan_3' => $penyidik[2]['jabatan'] ?? '',
-            'jabatan_4' => $penyidik[3]['jabatan'] ?? '',
-            'jabatan_5' => $penyidik[4]['jabatan'] ?? '',
+            'anggota_5' => $penyidik[5]['name'] ?? '',
+            'pangkat_5' => $penyidik[5]['pangkat'] ?? '',
+            'nrp_5' => $penyidik[5]['nrp'] ?? '',
+            'jabatan_2' => $penyidik[2]['jabatan'] ?? '',
+            'jabatan_3' => $penyidik[3]['jabatan'] ?? '',
+            'jabatan_4' => $penyidik[4]['jabatan'] ?? '',
+            'jabatan_5' => $penyidik[5]['jabatan'] ?? '',
         ));
 
         $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-surat-bai-anggota.docx'));
@@ -482,20 +467,18 @@ class PulbaketController extends Controller
         }
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
+
         $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
 
-        $ketua_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
-        $penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get()->toArray();
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
+        }
 
         $template_document->setValues(array(
             'tgl_lhp' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
@@ -515,30 +498,30 @@ class PulbaketController extends Controller
             'pelapor' => $kasus->pelapor,
             'tanggal_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
-            'ketua' => $ketua_penyidik->name ?? '',
-            'pangkat_ketua' => $ketua_penyidik->pangkat ?? '',
-            'nrp_ketua' => $ketua_penyidik->nrp ?? '',
-            'jabatan_ketua' => $ketua_penyidik->jabatan ?? '',
-            'anggota_1' => $penyidik[0]['name'] ?? '',
-            'pangkat_1' => $penyidik[0]['pangkat'] ?? '',
-            'nrp_1' => $penyidik[0]['nrp'] ?? '',
-            'jabatan_1' => $penyidik[0]['jabatan'] ?? '',
-            'anggota_2' => $penyidik[1]['name'] ?? '',
-            'pangkat_2' => $penyidik[1]['pangkat'] ?? '',
-            'nrp_2' => $penyidik[1]['nrp'] ?? '',
-            'jabatan_2' => $penyidik[1]['jabatan'] ?? '',
-            'anggota_3' => $penyidik[2]['name'] ?? '',
-            'pangkat_3' => $penyidik[2]['pangkat'] ?? '',
-            'nrp_3' => $penyidik[2]['nrp'] ?? '',
-            'jabatan_3' => $penyidik[2]['jabatan'] ?? '',
-            'anggota_4' => $penyidik[3]['name'] ?? '',
-            'pangkat_4' => $penyidik[3]['pangkat'] ?? '',
-            'nrp_4' => $penyidik[3]['nrp'] ?? '',
-            'jabatan_4' => $penyidik[3]['jabatan'] ?? '',
-            'anggota_5' => $penyidik[4]['name'] ?? '',
-            'pangkat_5' => $penyidik[4]['pangkat'] ?? '',
-            'nrp_5' => $penyidik[4]['nrp'] ?? '',
-            'jabatan_5' => $penyidik[4]['jabatan'] ?? '',
+            'ketua' => $penyidik[0]['name'] ?? '',
+            'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
+            'jabatan_ketua' => $penyidik[0]['jabatan'] ?? '',
+            'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
+            'anggota_1' => $penyidik[1]['name'] ?? '',
+            'pangkat_1' => $penyidik[1]['pangkat'] ?? '',
+            'jabatan_1' => $penyidik[1]['jabatan'] ?? '',
+            'nrp_1' => $penyidik[1]['nrp'] ?? '',
+            'anggota_2' => $penyidik[2]['name'] ?? '',
+            'pangkat_2' => $penyidik[2]['pangkat'] ?? '',
+            'nrp_2' => $penyidik[2]['nrp'] ?? '',
+            'anggota_3' => $penyidik[3]['name'] ?? '',
+            'pangkat_3' => $penyidik[3]['pangkat'] ?? '',
+            'nrp_3' => $penyidik[3]['nrp'] ?? '',
+            'anggota_4' => $penyidik[4]['name'] ?? '',
+            'pangkat_4' => $penyidik[4]['pangkat'] ?? '',
+            'nrp_4' => $penyidik[4]['nrp'] ?? '',
+            'anggota_5' => $penyidik[5]['name'] ?? '',
+            'pangkat_5' => $penyidik[5]['pangkat'] ?? '',
+            'nrp_5' => $penyidik[5]['nrp'] ?? '',
+            'jabatan_2' => $penyidik[2]['jabatan'] ?? '',
+            'jabatan_3' => $penyidik[3]['jabatan'] ?? '',
+            'jabatan_4' => $penyidik[4]['jabatan'] ?? '',
+            'jabatan_5' => $penyidik[5]['jabatan'] ?? '',
             'no_lhp' => $data->no_lhp,
             'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_no_lhp' => Carbon::parse($data->created_at)->translatedFormat('Y'),
@@ -565,19 +548,15 @@ class PulbaketController extends Controller
         }
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first();
+        $den_name = explode(" ",$den->name);
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
+
         $pangkat = Pangkat::where('id',$kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id',$kasus->wujud_perbuatan)->first();
 
-        $kadena = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
+        $anggota = DataAnggota::where('id',$den->kaden)->first();
+        $kadena = Penyidik::where('datasemen',$anggota->datasemen)->where('jabatan',$anggota->jabatan)->first();
 
         $template_document->setValues(array(
             'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
@@ -598,8 +577,10 @@ class PulbaketController extends Controller
             'pelapor' => $kasus->pelapor,
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
             'kadena' => $kadena->name,
-            'pangkat_kadena' => $kadena->pangkat,
+            'pangkat_kadena' => Pangkat::where('id',$kadena->pangkat)->first()->name,
             'nrp_kadena' => $kadena->nrp,
+            'den' => 'Detasemen '. $den_name[1],
+            'DEN' => 'DETASEMEN '. $den_name[1],
         ));
 
         $template_document->saveAs(storage_path('template_surat/'.$kasus->pelapor.'-dokumen-nd_permohonan_gelar.docx'));
@@ -719,26 +700,17 @@ class PulbaketController extends Controller
         $ndPG = NdPermohonanGelar::where('data_pelanggar_id', $id)->first();
         $bulan_romawi_ndPG = isset($ndPG) ? $this->getRomawi(Carbon::parse($ndPG->created_at)->translatedFormat('m')) : '';
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
 
         $lhp = LHPHistory::where('data_pelanggar_id',$kasus->id)->first();
         $bai_pelapor = BaiPelapor::where('data_pelanggar_id',$kasus->id)->first();
         $bai_terlapor = BaiTerlapor::where('data_pelanggar_id',$kasus->id)->first();
 
-        $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
-        $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
-
-        $penyidik[0] = $katim_penyidik;
-        foreach ($anggota_penyidik as $key => $value) {
-            $penyidik[$key+1] = $value;
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
         }
 
         $data = [
@@ -746,6 +718,7 @@ class PulbaketController extends Controller
             'nd_pgp' => $ndPG,
             'bulan_romawi_ndPG' => $bulan_romawi_ndPG,
             'unit' => $unit,
+            'den' => $den,
             'lhp' => $lhp,
             'penyidik' => $penyidik,
             'bai_pelapor' => $bai_pelapor,

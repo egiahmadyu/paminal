@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DatasemenController;
@@ -64,14 +65,22 @@ Route::middleware(['auth'])->group(function (){
     Route::post('input-data-kasus/store', [KasusController::class, 'storeKasus'])->name('kasus.store.kasus');
     // End View Kasus
 
-    // Datasemen
+    // Datasemen & Unit
     Route::get('list-datasemen', [DatasemenController::class, 'listDatasemen'])->name('list.datasemen');
+    Route::post('get-datasemen', [DatasemenController::class, 'getDatasemen'])->name('get.datasemen');
+    Route::get('unit-datasemen', [DatasemenController::class, 'unitDatasemen'])->name('unit.datasemen');
+    Route::post('get-unit', [DatasemenController::class, 'getUnit'])->name('get.unit');
     Route::get('tambah-datasemen', [DatasemenController::class, 'tambahDatasemen'])->name('tambah.datasemen');
     Route::post('store-datasemen', [DatasemenController::class, 'storeDatasemen'])->name('store.datasemen');
     Route::get('edit-datasemen/{id}', [DatasemenController::class, 'editDatasemen'])->name('edit.datasemen');
     Route::post('update-datasemen/{id}', [DatasemenController::class, 'updateDatasemen'])->name('update.datasemen');
-    Route::post('delete-datasemen/{id}', [DatasemenController::class, 'deleteDatasemen'])->name('delete.datasemen');
+    Route::get('delete-datasemen/{id}', [DatasemenController::class, 'deleteDatasemen'])->name('delete.datasemen');
     // End Datasemen
+
+    // Anggota
+    Route::get('list-anggota', [AnggotaController::class, 'listAnggota'])->name('list.anggota');
+    Route::post('get-anggota', [AnggotaController::class, 'getAnggota'])->name('get.anggota');
+    // End Anggota
 
     // Tambah Saksi
     Route::post('/tambah-saksi/{id}',[PulbaketController::class, 'tambahSaksi'])->name('tambah.saksi');

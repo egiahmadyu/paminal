@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Datasemen</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">Unit Datasemen</h4>
 
                 </div><!-- end card header -->
 
@@ -20,10 +20,9 @@
                         <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
                             <thead class="text-muted table-light">
                                 <tr>
+                                    <th scope="col">Unit</th>
                                     <th scope="col">Datasemen</th>
-                                    <th scope="col">Kepala Datasemen</th>
-                                    <th scope="col">Wakil Kepala Datasemen</th>
-                                    <th scope="col">Action</th>
+                                    {{-- <th scope="col">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -47,9 +46,9 @@
             var table = $('#data-data').DataTable({
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true,
                 ajax: {
-                    url: "{{ route('get.datasemen') }}",
+                    url: "{{ route('get.unit') }}",
                     method: "post",
                     data: function(data) {
                         data._token = '{{ csrf_token() }}'
@@ -57,21 +56,18 @@
                 },
                 columns: [
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'unit',
+                        name: 'unit'
                     },
                     {
-                        data: 'kaden',
-                        name: 'kaden'
+                        data: 'datasemen',
+                        name: 'datasemen'
                     },
-                    {
-                        data: 'wakaden',
-                        name: 'wakaden'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action'
-                    },
+                    
+                    // {
+                    //     data: 'action',
+                    //     name: 'action'
+                    // },
                 ]
             });
             $('#kt_search').on('click', function(e) {

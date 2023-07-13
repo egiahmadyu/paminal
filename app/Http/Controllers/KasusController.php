@@ -24,6 +24,7 @@ use App\Models\Polda;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
+use App\Models\Unit;
 use App\Models\UukHistory;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
@@ -38,7 +39,7 @@ class KasusController extends Controller
         $data['diterima'] = $data['kasuss']->where('status_id',1);
         $data['diproses'] = $data['kasuss']->where('status_id','>',1)->where('status_id','<',6);
         $data['selesai'] = $data['kasuss']->where('status_id',6);
-        // dd($data['k']);
+
         return view('pages.data_pelanggaran.index', $data);
     }
 
@@ -249,17 +250,15 @@ class KasusController extends Controller
         $usia_dumas = $tgl_dumas->diffInDays($today);
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
 
-        $penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->orwhere('unit',$unit)->get();
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
+        }
 
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
         $pangkat_pimpinan_gelar = Pangkat::where('id',$gelar_perkara->pangkat_pimpinan)->first();
@@ -301,17 +300,15 @@ class KasusController extends Controller
         $bulan_romawi_ndPG = $this->getRomawi(Carbon::parse($ndPG->created_at)->translatedFormat('m'));
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
 
-        $penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->orwhere('unit',$unit)->get();
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
+        }
 
         $pangkat = Pangkat::get();
         $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
@@ -448,9 +445,11 @@ class KasusController extends Controller
         $disposisi[0] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',1)->first();
         $disposisi[1] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',2)->first();
         $disposisi[2] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
+
         $disposisi_kadena = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
         
         $tim_disposisi = Datasemen::get();
+        $unit = $disposisi[1] ?  Unit::where('datasemen',$disposisi[1]['limpah_den'])->get() : array();
 
         $polda = Polda::get();
         $wilayah_hukum = $polda;
@@ -491,6 +490,7 @@ class KasusController extends Controller
             'disposisi_kadena' => $disposisi_kadena,
             'wilayah_hukum' => $wilayah_hukum,
             'tim_disposisi' => $tim_disposisi,
+            'unit' => $unit,
         ];
 
         return view('pages.data_pelanggaran.proses.diterima', $data);
@@ -500,23 +500,16 @@ class KasusController extends Controller
     {
         $kasus = DataPelanggar::find($id);
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        if ($disposisi->limpah_unit == '1') {
-            $unit = "UNIT I";
-        } elseif ($disposisi->limpah_unit == '2') {
-            $unit = "UNIT II";
-        } elseif ($disposisi->limpah_unit == '3') {
-            $unit = "UNIT III";
-        } else {
-            $unit = "MIN DEN A";
-        }
-
-        $katim_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
-        $anggota_penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get();
+        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
+        
         $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
 
-        $penyidik[0] = $katim_penyidik;
-        foreach ($anggota_penyidik as $key => $value) {
-            $penyidik[$key+1] = $value;
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
         }
 
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
@@ -532,6 +525,7 @@ class KasusController extends Controller
             'sp2hp_awal' => Sp2hp2Hisory::where('data_pelanggar_id', $id)->first(),
             'penyidik' => $penyidik,
             'unit' => $unit,
+            'den' => $den,
             'lhp' => $lhp,
             'usia_dumas' => $usia_dumas . ' hari',
             'terlapor' => $pangkat_terlapor->name.' '. $kasus->terlapor,
