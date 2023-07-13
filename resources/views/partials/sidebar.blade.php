@@ -43,7 +43,6 @@
                         <i class="bi bi-person-fill-add"></i> <span data-key="t-dashboard">Input Dumas</span>
                     </a>
                 </li>
-<<<<<<< HEAD
 
                 <li class="nav-item">
                     <a href="{{ route('list.anggota') }}"
@@ -67,22 +66,6 @@
                             <i class="bi bi-unity"></i> <span data-key="t-dashboard">Unit Datasemen</span>
                         </a>
                     </ul>
-=======
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#customization" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="customization">
-                        <i class="bi bi-unity"></i> <span>Datasemen</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="customization">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('tambah.datasemen') }}" class="nav-link">Tambah Datasemen</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('list.datasemen') }}" class="nav-link">List Datasemen</a>
-                            </li>
-                        </ul>
-                    </div>
->>>>>>> 5fcc0eafc0e53a497ee952cbef453551ab9c6d03
                 </li>
 
                 <li class="nav-item">
