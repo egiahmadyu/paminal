@@ -17,8 +17,7 @@
                 <img src="/assets/images/logo/Paminal_v5.png" alt="" height="60">
             </span>
         </a>
-        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-            id="vertical-hover">
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
             <i class="ri-record-circle-line"></i>
         </button>
     </div>
@@ -32,35 +31,32 @@
 
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
-                    <a href="/" class="nav-link menu-link {{ Request::segment(1) == '' ? 'active' : '' }}"> <i
-                            class="bi bi-speedometer2"></i> <span data-key="t-dashboard">Dashboard</span> </a>
+                    <a href="/" class="nav-link menu-link {{ Request::segment(1) == '' ? 'active' : '' }}"> <i class="bi bi-speedometer2"></i> <span data-key="t-dashboard">Dashboard</span> </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('kasus.index') }}"
-                        class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i
-                            class="bi bi-card-list"></i> <span data-key="t-dashboard">Data Pelanggar</span> </a>
+                    <a href="{{ route('kasus.index') }}" class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i class="bi bi-card-list"></i> <span data-key="t-dashboard">Data Pelanggar</span> </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('kasus.input') }}"
-                        class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
+                    <a href="{{ route('kasus.input') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
                         <i class="bi bi-person-fill-add"></i> <span data-key="t-dashboard">Input Dumas</span>
                     </a>
                 </li>
-
-                <li class="nav-item has-submenu">
-                    <a class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        <i class="bi bi-unity"></i> <span data-key="t-dashboard">Datasemen</span>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#customization" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="customization">
+                        <i class="bi bi-unity"></i> <span>Datasemen</span>
                     </a>
-                    <ul class="submenu collapse" id="collapseExample">
-                        <a href="{{ route('tambah.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="bi bi-plus-square-fill"> <span data-key="t-dashboard">Tambah Datasemen</span>
-                        </a>
-                        <a href="{{ route('list.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="bi bi-card-list"></i> <span data-key="t-dashboard">List Datasemen</span>
-                        </a>
-                    </ul>
+                    <div class="collapse menu-dropdown" id="customization">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('tambah.datasemen') }}" class="nav-link">Tambah Datasemen</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('list.datasemen') }}" class="nav-link">List Datasemen</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
                 <li class="nav-item">
@@ -69,17 +65,17 @@
                     </a>
                 </li>
                 @can('manage-auth')
-                    <li class="menu-title"><span data-key="t-menu">Settings</span></li>
-                    <li class="nav-item">
-                        <a href="/user" class="nav-link menu-link {{ Request::segment(1) == 'user' ? 'active' : '' }}">
-                            <i class="fas fa-users"></i> <span data-key="t-dashboard">User</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/role" class="nav-link menu-link {{ Request::segment(1) == 'role' ? 'active' : '' }}">
-                            <i class="far fa-user-tag"></i> <span data-key="t-dashboard">Role</span>
-                        </a>
-                    </li>
+                <li class="menu-title"><span data-key="t-menu">Settings</span></li>
+                <li class="nav-item">
+                    <a href="/user" class="nav-link menu-link {{ Request::segment(1) == 'user' ? 'active' : '' }}">
+                        <i class="fas fa-users"></i> <span data-key="t-dashboard">User</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/role" class="nav-link menu-link {{ Request::segment(1) == 'role' ? 'active' : '' }}">
+                        <i class="far fa-user-tag"></i> <span data-key="t-dashboard">Role</span>
+                    </a>
+                </li>
                 @endcan
 
             </ul>
