@@ -429,7 +429,7 @@
     </div>
 </div>
 
-<!-- <form action="/lembar-disposisi/{{ $kasus->id }}" method="post" id="form_dis_karo_binpam">
+<form action="/lembar-disposisi/{{ $kasus->id }}" method="post" id="form_dis_karo_binpam">
     @csrf
     <input type="hidden" name="limpah_den" id="limpah_den_input" value="">
     <input type="hidden" name="limpah_unit" id="limpah_unit_input" value="">
@@ -440,7 +440,7 @@
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Generate</button>
     </div>
-</form> -->
+</form>
 
 <!-- Modal Disposisi Karo/Sesro & Binpam-->
 <div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
