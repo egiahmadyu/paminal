@@ -52,7 +52,7 @@ class KasusController extends Controller
         $wujud_perbuatan = WujudPerbuatan::get();
         $polda = Polda::get();
         $wilayah_hukum = $polda;
-        
+
         $i_dis = 0;
         $i_ke = 0;
         foreach ($wujud_perbuatan as $key => $value) {
@@ -213,14 +213,14 @@ class KasusController extends Controller
                 $data->update([
                     'status_id' => $request->disposisi_tujuan
                 ]);
-    
+
                 return redirect()->back();
             } elseif ($disposisi && !isset($disposisi->limpah_unit)) {
                 return redirect()->route('kasus.detail',['id'=>$data->id])->with('error','Limpah Unit (Penyelidik) belum ditentukan');
             } {
                 return redirect()->route('kasus.detail',['id'=>$data->id])->with('error','Disposisi Ka. Den A belum dibuat');
             }
-        } 
+        }
         return $this->limpahToPolda($request);
     }
 
@@ -297,6 +297,10 @@ class KasusController extends Controller
         $status = Process::find($kasus->status_id);
 
         $ndPG = NdPermohonanGelar::where('data_pelanggar_id', $id)->first();
+        if (!$ndPG->created_at) {
+            $ndPG->created_at = date('Y-m-d H:i:s');
+            $ndPG->save();
+        }
         $bulan_romawi_ndPG = $this->getRomawi(Carbon::parse($ndPG->created_at)->translatedFormat('m'));
 
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
@@ -312,12 +316,12 @@ class KasusController extends Controller
 
         $pangkat = Pangkat::get();
         $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
-        
+
         $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
         $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
-        
+
         $lhp = LHPHistory::where('data_pelanggar_id',$kasus->id)->first();
         $bai_pelapor = BaiPelapor::where('data_pelanggar_id',$kasus->id)->first();
         $bai_terlapor = BaiTerlapor::where('data_pelanggar_id',$kasus->id)->first();
@@ -327,7 +331,7 @@ class KasusController extends Controller
         $sp2hp2_akhir = Sp2hp2Hisory::where('data_pelanggar_id', $id)->where('tipe','akhir')->first();
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $id)->first();
         $pangkat_pimpinan_gelar = isset($gelar_perkara) ? Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first() : '';
-        
+
         $limpah_biro = LimpahBiro::where('data_pelanggar_id', $id)->first();
 
         if (isset($limpah_biro)) {
@@ -339,7 +343,7 @@ class KasusController extends Controller
                 $limpah_biro = "BID PROPAM POLDA";
             }
         }
-        
+
 
         $data = [
             'kasus' => $kasus,
@@ -447,7 +451,7 @@ class KasusController extends Controller
         $disposisi[2] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
 
         $disposisi_kadena = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
-        
+
         $tim_disposisi = Datasemen::get();
         $unit = $disposisi[1] ?  Unit::where('datasemen',$disposisi[1]['limpah_den'])->get() : array();
 
@@ -502,7 +506,7 @@ class KasusController extends Controller
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
         $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
         $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
-        
+
         $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
 
         // Get Penyidik
@@ -536,7 +540,7 @@ class KasusController extends Controller
     private function getRomawi($bln)
     {
         switch ($bln){
-            case 1: 
+            case 1:
                 return "I";
                 break;
             case 2:
