@@ -67,7 +67,11 @@
                         </a>
                     </ul>
                 </li>
-
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link menu-link" data-bs-toggle="modal" data-bs-target="#modal_import_yanduan">
+                        <i class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Import Data</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link menu-link">
                         <i class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Logout</span>
@@ -94,3 +98,30 @@
 
     <div class="sidebar-background"></div>
 </div>
+
+<div class="modal fade" id="modal_import_yanduan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Import data dari Yanduan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="import_data">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Tanggal Mulai</label>
+                  <input type="date" class="form-control" name="start">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Tanggal Terakhir</label>
+                  <input type="date" class="form-control" name="end">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

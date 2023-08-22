@@ -133,10 +133,12 @@ class KasusController extends Controller
         return Datatables::of($query)
             ->editColumn('no_nota_dinas', function($query) {
                 // return $query->no_nota_dinas;
+                if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/'.$query->id.'">Edit Data</a>';
                 return '<a href="/data-kasus/detail/'.$query->id.'">'.$query->no_nota_dinas.'</a>';
             })
             ->addColumn('pangkat', function($query) {
                 $pangkat = Pangkat::where('id',$query->pangkat)->first();
+                if(!$pangkat) return '';
                 $pangkat = $pangkat->name;
 
                 return $pangkat;
@@ -297,7 +299,7 @@ class KasusController extends Controller
         $status = Process::find($kasus->status_id);
 
         $ndPG = NdPermohonanGelar::where('data_pelanggar_id', $id)->first();
-        if (!$ndPG->created_at) {
+        if ($ndPG->created_at == null) {
             $ndPG->created_at = date('Y-m-d H:i:s');
             $ndPG->save();
         }

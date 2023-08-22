@@ -38,7 +38,138 @@
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}">
     <style>
+        /* Loader */
+        /* Absolute Center Spinner */
+        .loading {
+            position: fixed;
+            z-index: 9000;
+            height: 2em;
+            width: 2em;
+            overflow: show;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        /* Transparent Overlay */
+        .loading:before {
+            content: '';
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(rgba(20, 20, 20, .8), rgba(0, 0, 0, .8));
+
+            background: -webkit-radial-gradient(rgba(20, 20, 20, .8), rgba(0, 0, 0, .8));
+        }
+
+        /* :not(:required) hides these rules from IE9 and below */
+        .loading:not(:required) {
+            /* hide "loading..." text */
+            font: 0/0 a;
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: 0;
+        }
+
+        .loading:not(:required):after {
+            content: '';
+            display: block;
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            margin-top: -0.5em;
+            -webkit-animation: spinner 150ms infinite linear;
+            -moz-animation: spinner 150ms infinite linear;
+            -ms-animation: spinner 150ms infinite linear;
+            -o-animation: spinner 150ms infinite linear;
+            animation: spinner 150ms infinite linear;
+            border-radius: 0.5em;
+            -webkit-box-shadow: rgba(1, 240, 5, 0.75) 1.5em 0 0 0, rgba(1, 240, 5, 0.75) 1.1em 1.1em 0 0, rgba(1, 240, 5, 0.75) 0 1.5em 0 0, rgba(1, 240, 5, 0.75) -1.1em 1.1em 0 0, rgba(1, 240, 5, 0.75) -1.5em 0 0 0, rgba(1, 240, 5, 0.75) -1.1em -1.1em 0 0, rgba(1, 240, 5, 0.75) 0 -1.5em 0 0, rgba(1, 240, 5, 0.75) 1.1em -1.1em 0 0;
+            box-shadow: rgba(1, 240, 5, 0.75) 1.5em 0 0 0, rgba(1, 240, 5, 0.75) 1.1em 1.1em 0 0, rgba(1, 240, 5, 0.75) 0 1.5em 0 0, rgba(1, 240, 5, 0.75) -1.1em 1.1em 0 0, rgba(1, 240, 5, 0.75) -1.5em 0 0 0, rgba(1, 240, 5, 0.75) -1.1em -1.1em 0 0, rgba(1, 240, 5, 0.75) 0 -1.5em 0 0, rgba(1, 240, 5, 0.75) 1.1em -1.1em 0 0;
+        }
+
+        /* Animation */
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
         .loader-view {
             margin-left: auto;
             margin-right: auto;
@@ -199,9 +330,11 @@
             box-shadow: none;
             outline: 0 none;
         }
+
     </style>
 
     @stack('styles')
+    <style></style>
 </head>
 
 <body>
@@ -214,6 +347,7 @@
             document.getElementById('current-time').innerHTML = time;
         }, 1000);
     </script> --}}
+
     <div id="layout-wrapper">
         <div class="top-tagbar">
             <div class="w-100">
@@ -246,6 +380,7 @@
 
             <div class="page-content">
                 <div class="container-fluid">
+                    <div class="loading" style="display: none">Loading&#8230;</div>
                     @yield('content')
                 </div>
             </div>
@@ -271,6 +406,32 @@
         @include('partials.theme')
 
         @include('partials.javascript')
+        <script>
+            $("#import_data").submit(function(event){
+                event.preventDefault();
+                $('.loading').css('display', 'block')
+                var form = $('#import_data').serialize()
+                $.ajax('/api/yanduan', {
+                    type: 'POST',  // http method
+                    data: form,
+                    dataType: 'json', // type of response data
+                    success: function (data,status,xhr) {   // success callback function
+                        if(data.status == 200) {
+                            $('#modal_import_yanduan').modal('hide')
+                            $('.loading').css('display', 'none')
+                            Swal.fire(
+                                'Selesai!',
+                                data.total_import+ ' Data berhasil ditambahkan',
+                                'success'
+                                )
+                        }
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) { // error callback
+                        $('p').append('Error: ' + errorMessage);
+                    }
+                });
+            });
+        </script>
 
         @yield('scripts')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -283,7 +444,7 @@
             }
                     toastr.success("{{ session('message') }}");
             @endif
-          
+
             @if(Session::has('error'))
             toastr.options =
             {
@@ -292,7 +453,7 @@
             }
                     toastr.error("{{ session('error') }}");
             @endif
-          
+
             @if(Session::has('info'))
             toastr.options =
             {
@@ -301,7 +462,7 @@
             }
                     toastr.info("{{ session('info') }}");
             @endif
-          
+
             @if(Session::has('warning'))
             toastr.options =
             {
