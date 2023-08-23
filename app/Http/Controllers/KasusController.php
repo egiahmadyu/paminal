@@ -36,9 +36,9 @@ class KasusController extends Controller
     public function index()
     {
         $data['kasuss'] = DataPelanggar::get();
-        $data['diterima'] = $data['kasuss']->where('status_id',1);
-        $data['diproses'] = $data['kasuss']->where('status_id','>',1)->where('status_id','<',6);
-        $data['selesai'] = $data['kasuss']->where('status_id',6);
+        $data['diterima'] = $data['kasuss']->where('status_id', 1);
+        $data['diproses'] = $data['kasuss']->where('status_id', '>', 1)->where('status_id', '<', 6);
+        $data['selesai'] = $data['kasuss']->where('status_id', 6);
 
         return view('pages.data_pelanggaran.index', $data);
     }
@@ -67,10 +67,10 @@ class KasusController extends Controller
             }
         }
 
-        $disiplin = implode('|',$disiplin);
-        $id_disiplin = implode('|',$id_disiplin);
-        $kode_etik = implode('|',$kode_etik);
-        $id_kode_etik = implode('|',$id_kode_etik);
+        $disiplin = implode('|', $disiplin);
+        $id_disiplin = implode('|', $id_disiplin);
+        $kode_etik = implode('|', $kode_etik);
+        $id_kode_etik = implode('|', $id_kode_etik);
 
         // dd($id_kode_etik);
 
@@ -87,12 +87,12 @@ class KasusController extends Controller
             'wilayah_hukum' => $wilayah_hukum,
         ];
 
-        return view('pages.data_pelanggaran.input_kasus.input',$data);
+        return view('pages.data_pelanggaran.input_kasus.input', $data);
     }
 
     public function storeKasus(Request $request)
     {
-        $wujud_perbuatan = WujudPerbuatan::where('jenis_wp',$request->jenis_wp)->where('keterangan_wp',$request->wujud_perbuatan)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('jenis_wp', $request->jenis_wp)->where('keterangan_wp', $request->wujud_perbuatan)->first();
         $no_pengaduan = "123456"; //generate otomatis
         $DP = DataPelanggar::create([
             // Pelapor
@@ -123,7 +123,7 @@ class KasusController extends Controller
             'nama_korban' => $request->nama_korban,
             'status_id' => 1
         ]);
-        return redirect()->route('kasus.detail',['id'=>$DP->id]);
+        return redirect()->route('kasus.detail', ['id' => $DP->id]);
     }
 
     public function data(Request $request)
@@ -131,14 +131,14 @@ class KasusController extends Controller
         $query = DataPelanggar::orderBy('id', 'desc')->with('status');
 
         return Datatables::of($query)
-            ->editColumn('no_nota_dinas', function($query) {
+            ->editColumn('no_nota_dinas', function ($query) {
                 // return $query->no_nota_dinas;
-                if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/'.$query->id.'">Edit Data</a>';
-                return '<a href="/data-kasus/detail/'.$query->id.'">'.$query->no_nota_dinas.'</a>';
+                if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '">Edit Data</a>';
+                return '<a href="/data-kasus/detail/' . $query->id . '">' . $query->no_nota_dinas . '</a>';
             })
-            ->addColumn('pangkat', function($query) {
-                $pangkat = Pangkat::where('id',$query->pangkat)->first();
-                if(!$pangkat) return '';
+            ->addColumn('pangkat', function ($query) {
+                $pangkat = Pangkat::where('id', $query->pangkat)->first();
+                if (!$pangkat) return '';
                 $pangkat = $pangkat->name;
 
                 return $pangkat;
@@ -202,15 +202,13 @@ class KasusController extends Controller
             'nama_korban' => $request->nama_korban,
         ]);
         return redirect()->back();
-
     }
 
     public function updateStatus(Request $request)
     {
-        if ($request->disposisi_tujuan != 3)
-        {
+        if ($request->disposisi_tujuan != 3) {
             $data = DataPelanggar::where('id', $request->kasus_id)->first();
-            $disposisi = DisposisiHistory::where('data_pelanggar_id',$data->id)->where('tipe_disposisi',3)->first();
+            $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id)->where('tipe_disposisi', 3)->first();
             if ($disposisi && isset($disposisi->limpah_unit)) {
                 $data->update([
                     'status_id' => $request->disposisi_tujuan
@@ -218,15 +216,15 @@ class KasusController extends Controller
 
                 return redirect()->back();
             } elseif ($disposisi && !isset($disposisi->limpah_unit)) {
-                return redirect()->route('kasus.detail',['id'=>$data->id])->with('error','Limpah Unit (Penyelidik) belum ditentukan');
+                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Limpah Unit (Penyelidik) belum ditentukan');
             } {
-                return redirect()->route('kasus.detail',['id'=>$data->id])->with('error','Disposisi Ka. Den A belum dibuat');
+                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Disposisi Ka. Den A belum dibuat');
             }
         }
         return $this->limpahToPolda($request);
     }
 
-    public function viewProcess($kasus_id,$status_id)
+    public function viewProcess($kasus_id, $status_id)
     {
         if ($status_id == 1) return $this->viewDiterima($kasus_id);
         elseif ($status_id == 2) return $this->viewDisposisi($kasus_id);
@@ -244,26 +242,26 @@ class KasusController extends Controller
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
 
         $pangkat = Pangkat::get();
-        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+        $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
 
-        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
         $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
 
-        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
-        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+        $den = Datasemen::where('id', $disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
         foreach ($penyidik as $key => $value) {
-            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
         }
 
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
-        $pangkat_pimpinan_gelar = Pangkat::where('id',$gelar_perkara->pangkat_pimpinan)->first();
+        $pangkat_pimpinan_gelar = Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first();
 
         $limpah_biro = LimpahBiro::where('data_pelanggar_id', $id)->first();
         if ($limpah_biro->jenis_limpah == 1) {
@@ -280,13 +278,13 @@ class KasusController extends Controller
             'limpah_biro' => $limpah_biro,
             'ugp' => $gelar_perkara,
             'polda' => $polda,
-            'usia_dumas' => $usia_dumas.' hari',
-            'terlapor' => $pangkat_terlapor->name.' '. $kasus->terlapor,
+            'usia_dumas' => $usia_dumas . ' hari',
+            'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
             'sprin' => $sprin,
             'unit' => $unit,
             'penyidik' => $penyidik,
             'gelar_perkara' => $gelar_perkara,
-            'pimpinan_gelar' => $pangkat_pimpinan_gelar->name.' '. $gelar_perkara->pimpinan.' / '.$gelar_perkara->nrp_pimpinan,
+            'pimpinan_gelar' => $pangkat_pimpinan_gelar->name . ' ' . $gelar_perkara->pimpinan . ' / ' . $gelar_perkara->nrp_pimpinan,
             'jenis_limpah' => $jenis_limpah,
         ];
 
@@ -305,32 +303,32 @@ class KasusController extends Controller
         }
         $bulan_romawi_ndPG = $this->getRomawi(Carbon::parse($ndPG->created_at)->translatedFormat('m'));
 
-        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
-        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+        $den = Datasemen::where('id', $disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
         foreach ($penyidik as $key => $value) {
-            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
         }
 
         $pangkat = Pangkat::get();
-        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+        $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
 
-        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
         $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
 
-        $lhp = LHPHistory::where('data_pelanggar_id',$kasus->id)->first();
-        $bai_pelapor = BaiPelapor::where('data_pelanggar_id',$kasus->id)->first();
-        $bai_terlapor = BaiTerlapor::where('data_pelanggar_id',$kasus->id)->first();
+        $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $bai_pelapor = BaiPelapor::where('data_pelanggar_id', $kasus->id)->first();
+        $bai_terlapor = BaiTerlapor::where('data_pelanggar_id', $kasus->id)->first();
         $ugp = GelarPerkaraHistory::where('data_pelanggar_id', $id)->first();
         $sprin = SprinHistory::where('data_pelanggar_id', $id)->first();
         $litpers = LitpersHistory::where('data_pelanggar_id', $id)->first();
-        $sp2hp2_akhir = Sp2hp2Hisory::where('data_pelanggar_id', $id)->where('tipe','akhir')->first();
+        $sp2hp2_akhir = Sp2hp2Hisory::where('data_pelanggar_id', $id)->where('tipe', 'akhir')->first();
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $id)->first();
         $pangkat_pimpinan_gelar = isset($gelar_perkara) ? Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first() : '';
 
@@ -365,7 +363,7 @@ class KasusController extends Controller
             'penyidik' => $penyidik,
             'pangkat' => $pangkat,
             'usia_dumas' => $usia_dumas . ' hari',
-            'terlapor' => $pangkat_terlapor->name.' '. $kasus->terlapor,
+            'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
             'tgl_bai_pelapor' => Carbon::parse($bai_pelapor->created_at)->translatedFormat('d F Y'),
             'tgl_bai_terlapor' => Carbon::parse($bai_terlapor->created_at)->translatedFormat('d F Y'),
             'tgl_nd_pg' => Carbon::parse($ndPG->created_at)->translatedFormat('d F Y'),
@@ -382,7 +380,7 @@ class KasusController extends Controller
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
 
-        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
         $today = Carbon::now();
         $usia_dumas = $tgl_dumas->diffInDays($today);
@@ -414,13 +412,12 @@ class KasusController extends Controller
             'created_by' => auth()->user()->id,
             'isi_surat' => '<ol><li>Rujukan :&nbsp;<br><b>a</b>.&nbsp;Undang-Undang Nomor 2 Tahun 2022 tentang Kepolisian Negara Republik Indonesia.<br><b>b</b>.&nbsp;Peraturan Kepolisian Negara Republik Indonesia Nomor 7 Tahun 2022 tentang Kode Etik Profesi&nbsp; &nbsp; &nbsp;dan Komisi Kode Etik Polri.<br><b>c</b>.&nbsp;Peraturan Kepala Kepolisian Negara Republik Indonesia Nomor 13 Tahun 2016 tentang Pengamanan Internal di Lingkungan Polri<br><b>d</b>.&nbsp;Nota Dinas Kepala Bagian Pelayanan Pengaduan Divpropam Polri Nomor: R/ND-2766-b/XII/WAS.2.4/2022/Divpropam tanggal 16 Desember 2022 perihal pelimpahan Dumas BRIPKA JAMALUDDIN ASYARI.</li></ol>'
         ]);
-         if ($limpah)
-         {
+        if ($limpah) {
             $data->status_id = $request->disposisi_tujuan;
             $data->save();
-         }
+        }
 
-         return redirect()->back();
+        return redirect()->back();
     }
 
     private function viewDisposisi($id)
@@ -448,14 +445,14 @@ class KasusController extends Controller
         $jenis_kelamin = JenisKelamin::get();
         $pangkat = Pangkat::get();
         $wujud_perbuatan = WujudPerbuatan::get();
-        $disposisi[0] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',1)->first();
-        $disposisi[1] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',2)->first();
-        $disposisi[2] = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
+        $disposisi[0] = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
+        $disposisi[1] = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 2)->first();
+        $disposisi[2] = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
 
-        $disposisi_kadena = DisposisiHistory::where('data_pelanggar_id',$kasus->id)->where('tipe_disposisi',3)->first();
+        $disposisi_kadena = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
 
         $tim_disposisi = Datasemen::get();
-        $unit = $disposisi[1] ?  Unit::where('datasemen',$disposisi[1]['limpah_den'])->get() : array();
+        $unit = $disposisi[1] ?  Unit::where('datasemen', $disposisi[1]['limpah_den'])->get() : array();
 
         $polda = Polda::get();
         $wilayah_hukum = $polda;
@@ -474,10 +471,10 @@ class KasusController extends Controller
             }
         }
 
-        $disiplin = implode('|',$disiplin);
-        $id_disiplin = implode('|',$id_disiplin);
-        $kode_etik = implode('|',$kode_etik);
-        $id_kode_etik = implode('|',$id_kode_etik);
+        $disiplin = implode('|', $disiplin);
+        $id_disiplin = implode('|', $id_disiplin);
+        $kode_etik = implode('|', $kode_etik);
+        $id_kode_etik = implode('|', $id_kode_etik);
 
         $data = [
             'kasus' => $kasus,
@@ -505,21 +502,21 @@ class KasusController extends Controller
     private function viewPulbaket($id)
     {
         $kasus = DataPelanggar::find($id);
-        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',3)->first();
-        $den = Datasemen::where('id',$disposisi->limpah_den)->first()->name;
-        $unit = Unit::where('id',$disposisi->limpah_unit)->first()->unit;
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+        $den = Datasemen::where('id', $disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
-        $pangkat_terlapor = Pangkat::where('id',$kasus->pangkat)->first();
+        $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id',$kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
         foreach ($penyidik as $key => $value) {
-            $pangkat = Pangkat::where('id',$value->pangkat)->first();
+            $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
         }
 
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
-        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi',1)->first();
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
         $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
@@ -534,14 +531,14 @@ class KasusController extends Controller
             'den' => $den,
             'lhp' => $lhp,
             'usia_dumas' => $usia_dumas . ' hari',
-            'terlapor' => $pangkat_terlapor->name.' '. $kasus->terlapor,
+            'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
         ];
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }
 
     private function getRomawi($bln)
     {
-        switch ($bln){
+        switch ($bln) {
             case 1:
                 return "I";
                 break;

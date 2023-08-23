@@ -109,6 +109,7 @@
                                     <th scope="col">Pangkat</th>
                                     <th scope="col">Nama Korban</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Ticket ID</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -179,6 +180,10 @@
                     {
                         data: 'status.name',
                         name: 'status.name'
+                    },
+                    {
+                        data: 'ticket_id',
+                        name: 'ticket_id'
                     },
                 ]
             });
