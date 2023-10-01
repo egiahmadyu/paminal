@@ -74,11 +74,11 @@
                             <label for="check-box">Tipe Pelanggaran</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="disiplin" value="1" onchange="disiplinChange(this);" {{ isset($kasus) AND !is_null($kasus->wujud_perbuatan) ? ($wujud_perbuatan[$kasus->wujud_perbuatan-1]->jenis_wp == 'disiplin' ? 'checked' : 'disabled') : '' }} required>
-                            <label class="form-check-label " for="disiplin">Disiplin</label>
+                            <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="disiplin" value="1" onchange="disiplinChange(this);" {{ $kasus->wujud_perbuatan ? ($wujud_perbuatan[$kasus->wujud_perbuatan]->jenis_wp == 'disiplin' ? 'checked' : 'disabled') : '' }} required>
+                            <label class="form-check-label" for="disiplin">Disiplin</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="kode_etik" value="2" onchange="kodeEtikChange(this);" {{ isset($kasus) AND !is_null($kasus->wujud_perbuatan)? ($wujud_perbuatan[$kasus->wujud_perbuatan-1]->jenis_wp == 'kode etik' ? 'checked' : 'disabled') : '' }} required>
+                            <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="kode_etik" value="2" onchange="kodeEtikChange(this);" {{ $kasus->wujud_perbuatan ? ($wujud_perbuatan[$kasus->wujud_perbuatan]->jenis_wp == 'kode etik' ? 'checked' : 'disabled') : '' }} required>
                             <label class="form-check-label" for="kode_etik">Kode Etik</label>
                         </div>
                     </center>

@@ -37,7 +37,7 @@ Route::get('/pdf-test', [LimpahPoldaController::class, 'generateDocumen']);
 Route::post('login', [AuthController::class, 'loginAction'])->name('login-action');
 
 
-Route::middleware(['auth'])->group(function (){
+Route::middleware(['auth'])->group(function () {
     // Route::get('/', function () {
     //     return view('pages.dashboard.index');
     // });
@@ -49,7 +49,12 @@ Route::middleware(['auth'])->group(function (){
     Route::get('role/permission/{id}/save', [RoleController::class, 'savePermission']);
 
     //Dashboard
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::prefix('/')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->name('dashboard');
+        Route::get('/get-chart/{tipe}', [DashboardController::class, 'getDataChart'])->name('dashboard')->name('get.chart');
+        Route::get('/get-data-dumas/{tipe}', [DashboardController::class, 'getDataDumas'])->name('dashboard')->name('get.data.dumas');
+        Route::get('/get-data/{tipe}', [DashboardController::class, 'getData'])->name('dashboard')->name('get.data');
+    });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
     // View Kasus
@@ -83,7 +88,7 @@ Route::middleware(['auth'])->group(function (){
     // End Anggota
 
     // Tambah Saksi
-    Route::post('/tambah-saksi/{id}',[PulbaketController::class, 'tambahSaksi'])->name('tambah.saksi');
+    Route::post('/tambah-saksi/{id}', [PulbaketController::class, 'tambahSaksi'])->name('tambah.saksi');
 
     // View Kasus
     Route::get('data-kasus/view/{kasus_id}/{id}', [KasusController::class, 'viewProcess'])->name('kasus.proses.view');
@@ -112,13 +117,14 @@ Route::middleware(['auth'])->group(function (){
     Route::post('/laporan-hasil-penyelidikan/{id}', [PulbaketController::class, 'lhp'])->name('generate-lhp');
     Route::get('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
     Route::post('/nd-permohonan-gerlar/{id}', [PulbaketController::class, 'ndPG']);
-    Route::get('/undangan-klarifikasi/{id}',[PulbaketController::class, 'printUndanganKlarifikasi']);
-    Route::post('/undangan-klarifikasi/{id}',[PulbaketController::class, 'printUndanganKlarifikasi']);
-    Route::get('/laporan-hasil-limpah-biro/{id}',[ProvostWabprofController::class, 'printLimpahBiro']);
-   
+    Route::get('/undangan-klarifikasi/{id}', [PulbaketController::class, 'printUndanganKlarifikasi']);
+    Route::post('/undangan-klarifikasi/{id}', [PulbaketController::class, 'printUndanganKlarifikasi']);
+    Route::get('/laporan-hasil-limpah-biro/{id}', [ProvostWabprofController::class, 'printLimpahBiro']);
 
 
     Route::post('/limpah-biro/{id}', [ProvostWabprofController::class, 'simpanData']);
+
+
 
     // Route::group(['middleware' => ['role:super-admin']], function () {
     //     Route::get('/user',[UserController::class, 'index'])->name('user-index');

@@ -31,50 +31,50 @@
 
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
-                    <a href="/" class="nav-link menu-link {{ Request::segment(1) == '' ? 'active' : '' }}"> <i class="bi bi-speedometer2"></i> <span data-key="t-dashboard">Dashboard</span> </a>
+                    <a href="/" class="nav-link menu-link {{ Request::segment(1) == '' ? 'active' : '' }}"> <i class="far fa-tachometer-alt"></i> <span data-key="t-dashboard">Dashboard</span> </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('kasus.index') }}" class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i class="bi bi-card-list"></i> <span data-key="t-dashboard">Data Pelanggar</span> </a>
+                    <a href="{{ route('kasus.index') }}" class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i class="far fa-list-alt"></i> <span data-key="t-dashboard">Data Pelanggar</span> </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('kasus.input') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                        <i class="bi bi-person-fill-add"></i> <span data-key="t-dashboard">Input Dumas</span>
+                        <i class="far fa-user-plus"></i> <span data-key="t-dashboard">Input Dumas</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('list.anggota') }}"
                         class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                        <i class="bi bi-person-lines-fill"></i> <span data-key="t-dashboard">Anggota</span>
+                        <i class="far fa-address-card"></i> <span data-key="t-dashboard">Anggota</span>
                     </a>
                 </li>
 
                 <li class="nav-item has-submenu">
                     <a class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        <i class="bi bi-building-fill"></i> <span data-key="t-dashboard">Datasemen</span>
+                        <i class="far fa-building"></i> <span data-key="t-dashboard">Datasemen</span>
                     </a>
                     <ul class="submenu collapse" id="collapseExample">
                         <a href="{{ route('tambah.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="bi bi-plus-square-fill"></i> <span data-key="t-dashboard">Tambah Datasemen</span>
+                            <i class="far fa-plus-square"></i> <span data-key="t-dashboard">Tambah Datasemen</span>
                         </a>
                         <a href="{{ route('list.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="bi bi-card-list"></i> <span data-key="t-dashboard">List Datasemen</span>
+                            <i class="fas fa-list-ol"></i> <span data-key="t-dashboard">List Datasemen</span>
                         </a>
                         <a href="{{ route('unit.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="bi bi-unity"></i> <span data-key="t-dashboard">Unit Datasemen</span>
+                            <i class="fab fa-unity"></i> <span data-key="t-dashboard">Unit Datasemen</span>
                         </a>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link menu-link" data-bs-toggle="modal" data-bs-target="#modal_import_yanduan">
-                        <i class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Import Data</span>
+                        <i class="far fa-file-import"></i> <span data-key="t-dashboard">Import Data</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link menu-link">
-                        <i class="bi bi-box-arrow-right"></i> <span data-key="t-dashboard">Logout</span>
+                        <i class="far fa-sign-out-alt"></i> <span data-key="t-dashboard">Logout</span>
                     </a>
                 </li>
                 @can('manage-auth')

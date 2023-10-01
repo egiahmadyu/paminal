@@ -45,7 +45,6 @@
 
                     </div>
                     <div id="viewProses">
-
                     </div>
                 </div>
             </div>
