@@ -44,29 +44,27 @@
 
     <!-- Isi -->
     <div class="col-lg-12">
-        <form action="/data-kasus/update" method="post">
+        <form action="/data-kasus/update" method="post" id="form_input_data">
             @csrf
             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
             <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="form-floating">
+                        <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" disabled required>
+                            <option value="1" {{ isset($kasus) ? ($kasus->tipe_data == '1' ? 'selected' : '') : '' }}>Aduan Masyarakat</option>
+                            <option value="2" {{ isset($kasus) ? ($kasus->tipe_data == '2' ? 'selected' : '') : '' }}>Info Khusus</option>
+                            <option value="3" {{ isset($kasus) ? ($kasus->tipe_data == '3' ? 'selected' : '') : '' }}>Laporan Informasi</option>
+                        </select>
+                        <label for="tipe_data" class="form-label">Tipe Aduan</label>
+                    </div>
+                </div>
                 <div class="col-lg-6 mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" required>
                         <label for="no_nota_dinas">No. Nota Dinas</label>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="perihal_nota_dinas" id="perihal_nota_dinas" placeholder="Perihal Nota Dinas" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" required>
-                        <label for="perihal_nota_dinas">Perihal Nota Dinas</label>
-                    </div>
-                </div>
-
-                <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" required>
-                        <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
-                    </div>
-                </div>
+                
 
                 <div class="col-lg-6 mb-0">
                     <center>
@@ -90,6 +88,19 @@
                             <option value="">-- Pilih Wujud Perbuatan --</option>
                         </select>
                         <label for="jenis_identitas" class="form-label">Wujud Perbuatan</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" required>
+                        <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-dark" name="perihal_nota_dinas" id="perihal_nota_dinas" placeholder="Perihal Nota Dinas" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" required>
+                        <label for="perihal_nota_dinas">Perihal Nota Dinas</label>
                     </div>
                 </div>
                 <hr>
@@ -304,38 +315,43 @@
                                 <div class="col-lg-12">
                                     <label for="exampleFormControlInput1" class="form-label">Distribusi Binpam</label>
                                     @if ((isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2 && is_null($disposisi[1]->limpah_den)))
-                                    <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
-                                        <i class="far fa-download"></i> Download
-                                    </button>
+                                        <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
+                                            <i class="far fa-download"></i> Download
+                                        </button>
                                     @elseif ((isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2 && $disposisi[1]->limpah_den))
-                                    <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
-                                        <i class="far fa-download"></i> Download
-                                    </button>
+                                        <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
+                                            <i class="far fa-download"></i> Download
+                                        </button>
                                     @else
-                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
-                                        <i class="far fa-plus-square"></i> Buat
-                                    </button>
+                                        <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="binpam" onclick="onClickModal(this)" type="button">
+                                            <i class="far fa-plus-square"></i> Buat
+                                        </button>
                                     @endif
 
                                     <div class="form-floating mb-3 mt-3">
                                         @if (isset($disposisi[1]))
-                                        @if (isset($tim_disposisi) && $disposisi[1]->tipe_disposisi == 2 && is_null($disposisi[1]->limpah_den))
-                                        <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="limpah_den" id="limpah_den" {{ isset($disposisi[1]) ? (isset($disposisi[1]->limpah_den) ? 'disabled' : '') : '' }} required>
-                                            <option value="">-- Pilih Limpah Datasemen --</option>
-                                            @foreach ($tim_disposisi as $key => $tim)
-                                            <option value="{{ $tim->id }}" {{ isset($disposisi[1]->limpah_den) ? ($disposisi[1]->limpah_den == $tim->id ? 'selected' : '')  : '' }}>{{ $tim->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <label for="limpah_unit" class="form-label">Limpah Datasemen</label>
-                                        @elseif (isset($tim_disposisi) && $disposisi[1]->tipe_disposisi == 2 && $disposisi[1]->limpah_den)
-                                        <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="limpah_den" id="limpah_den" {{ isset($disposisi[1]) ? (isset($disposisi[1]->limpah_den) ? 'disabled' : '') : '' }} required>
-                                            <option value="">-- Pilih Limpah Datasemen --</option>
-                                            @foreach ($tim_disposisi as $key => $tim)
-                                            <option value="{{ $tim->id }}" {{ isset($disposisi[1]->limpah_den) ? ($disposisi[1]->limpah_den == $tim->id ? 'selected' : '')  : '' }}>{{ $tim->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <label for="limpah_unit" class="form-label">Limpah Datasemen</label>
-                                        @endif
+                                            @if (isset($tim_disposisi) && $disposisi[1]->tipe_disposisi == 2 && is_null($disposisi[1]->limpah_den))
+                                                <select class="form-select border-dark mb-3" data-live-search="true" aria-label="Default select example" name="limpah_den" id="limpah_den" {{ isset($disposisi[1]) ? (isset($disposisi[1]->limpah_den) ? 'disabled' : '') : '' }} {{ $kasus->status_id == 3 ? 'disabled' : '' }} required>
+                                                    <option value="">-- Pilih Limpah Datasemen --</option>
+                                                    @foreach ($tim_disposisi as $key => $tim)
+                                                        <option value="{{ $tim->id }}" {{ isset($disposisi[1]->limpah_den) ? ($disposisi[1]->limpah_den == $tim->id ? 'selected' : '')  : '' }}>{{ $tim->name }}</option>
+                                                    @endforeach
+                                                    <option value="7" {{ $kasus->status_id == 3 ? 'selected' : '' }}>Limpah POLDA</option>
+                                                </select>
+                                                <label for="limpah_unit" class="form-label">Limpah Datasemen</label>
+                                            @elseif (isset($tim_disposisi) && $disposisi[1]->tipe_disposisi == 2 && $disposisi[1]->limpah_den)
+                                                <select class="form-select border-dark mb-3" data-live-search="true" aria-label="Default select example" name="limpah_den" id="limpah_den" {{ isset($disposisi[1]) ? (isset($disposisi[1]->limpah_den) ? 'disabled' : '') : '' }} {{ $kasus->status_id == 3 ? 'disabled' : '' }} required>
+                                                    <option value="">-- Pilih Limpah Datasemen --</option>
+                                                    @foreach ($tim_disposisi as $key => $tim)
+                                                        <option value="{{ $tim->id }}" {{ isset($disposisi[1]->limpah_den) ? ($disposisi[1]->limpah_den == $tim->id ? 'selected' : '')  : '' }}>{{ $tim->name }}</option>
+                                                    @endforeach
+                                                    <option value="7" {{ $kasus->status_id == 3 ? 'selected' : '' }}>Limpah POLDA</option>
+                                                </select>
+                                                <label for="limpah_unit" class="form-label">Limpah Datasemen</label>
+                                            @endif
+                                            <div class="col-lg-12 mb-3" id="limpah-polda">
+
+                                            </div>
                                         @endif
                                     </div>
 
@@ -343,66 +359,44 @@
 
 
                                 <!--Disposisi Den-->
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" id="disposisi_kadena">
                                     <label for="exampleFormControlInput1" class="form-label">Disposisi</label>
                                     @if (isset($disposisi[2]) && $disposisi[2]->tipe_disposisi == 3)
-                                    <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi_kadena" id="kadena" type="button">
-                                        <i class="far fa-download"></i> Download
-                                    </button>
+                                        <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi_kadena" id="kadena" type="button">
+                                            <i class="far fa-download"></i> Download
+                                        </button>
                                     @else
-                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi_kadena" id="kadena" type="button">
-                                        <i class="far fa-plus-square"></i> Buat
-                                    </button>
+                                        <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi_kadena" id="kadena" type="button">
+                                            <i class="far fa-plus-square"></i> Buat
+                                        </button>
                                     @endif
 
                                     <div class="form-floating mb-3 mt-3">
                                         @if (isset($disposisi[2]))
-                                        @if (isset($unit) && $disposisi[2]->tipe_disposisi == 3 && is_null($disposisi[2]->limpah_unit))
-                                        <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="limpah_unit" id="limpah_unit" {{ isset($disposisi[2]) ? (isset($disposisi[2]->limpah_unit) ? 'disabled' : '') : '' }} required>
-                                            <option value="">-- Pilih Limpah Unit --</option>
-                                            @foreach ($unit as $key => $u)
-                                            <option value="{{ $u->id }}" {{ isset($unit) ? ($u->id == $disposisi[2]['limpah_unit'] ? 'selected' : '') : '' }}>{{ $u->unit }}</option>
-                                            @endforeach
-                                        </select>
-                                        <label for="limpah_unit" class="form-label">Limpah Unit</label>
 
-                                        @elseif (isset($unit) && $disposisi[2]->tipe_disposisi == 3 && $disposisi[2]->limpah_unit)
-                                        <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="limpah_unit" id="limpah_unit" {{ isset($disposisi[2]) ? (isset($disposisi[2]->limpah_unit) ? 'disabled' : '') : '' }} required>
-                                            <option value="">-- Pilih Limpah Unit --</option>
-                                            @foreach ($unit as $key => $u)
-                                            <option value="{{ $u->id }}" {{ isset($unit) ? ($u->id == $disposisi[2]['limpah_unit'] ? 'selected' : '') : '' }}>{{ $u->unit }}</option>
-                                            @endforeach
-                                        </select>
-                                        <label for="limpah_unit" class="form-label">Limpah Unit</label>
-                                        @endif
+                                            @if (isset($unit) && $disposisi[2]->tipe_disposisi == 3 && is_null($disposisi[2]->limpah_unit))
+                                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="limpah_unit" id="limpah_unit" {{ isset($disposisi[2]) ? (isset($disposisi[2]->limpah_unit) ? 'disabled' : '') : '' }} required>
+                                                <option value="">-- Pilih Limpah Unit --</option>
+                                                @foreach ($unit as $key => $u)
+                                                <option value="{{ $u->id }}" {{ isset($unit) ? ($u->id == $disposisi[2]['limpah_unit'] ? 'selected' : '') : '' }}>{{ $u->unit }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="limpah_unit" class="form-label">Limpah Unit</label>
+
+                                            @elseif (isset($unit) && $disposisi[2]->tipe_disposisi == 3 && $disposisi[2]->limpah_unit)
+                                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="limpah_unit" id="limpah_unit" {{ isset($disposisi[2]) ? (isset($disposisi[2]->limpah_unit) ? 'disabled' : '') : '' }} required>
+                                                <option value="">-- Pilih Limpah Unit --</option>
+                                                @foreach ($unit as $key => $u)
+                                                <option value="{{ $u->id }}" {{ isset($unit) ? ($u->id == $disposisi[2]['limpah_unit'] ? 'selected' : '') : '' }}>{{ $u->unit }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="limpah_unit" class="form-label">Limpah Unit</label>
+                                            @endif
 
                                         @endif
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- <input type="text" class="form-control" value="{{ $kasus->terlapor }}" > --}}
-                        </div>
-
-                        <!--Ubah status-->
-                        <div class="col-lg-12 mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Status</label>
-                            <select class="form-select border-dark" aria-label="Default select example" name="disposisi_tujuan" onchange="getPolda()" id="disposisi-tujuan" {{ $kasus->status_id > 4 ? 'disabled' : '' }} required>
-                                <option value="" class="text-center">
-                                    @if ($kasus->status_id < 3) -- Pilih Status -- @elseif ($kasus->status_id > 4)
-                                        @if ($kasus->status_id == 5)
-                                        Gelar Penyelidikan
-                                        @else
-                                        Limpah Biro
-                                        @endif
-                                        @endif
-                                </option>
-                                <option value="4" class="text-center" {{ $kasus->status_id == 4 ? 'selected' : '' }}>Pulbaket</option>
-                                <option value="3" class="text-center" {{ $kasus->status_id == 3 ? 'selected' : '' }}>Limpah POLDA</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mb-3" id="limpah-polda">
-
                         </div>
                     </div>
                 </div>
@@ -415,11 +409,6 @@
                         <div class="col-6">
                             <button class="btn btn-update-diterima btn-success" type="submit" value="update_data" name="type_submit">
                                 <i class="far fa-upload"></i> Update Data
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-update-diterima btn-primary" type="submit" value="update_status" name="type_submit" {{ $kasus->status_id > 1 ? 'disabled' : '' }}>
-                                <i class="far fa-upload"></i> Update Status
                             </button>
                         </div>
                     </div>
@@ -437,9 +426,9 @@
     <input type="hidden" name="klasifikasi" value="{{ isset($disposisi[1]) ? $disposisi[1]['klasifikasi'] : null }}">
     <input type="hidden" name="derajat" value="{{ isset($disposisi[1]) ? $disposisi[1]['derajat'] : null }}">
     <input type="hidden" name="tipe_disposisi" id="tipe_disposisi" value="">
-    <div class="modal-footer">
+    {{-- <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Generate</button>
-    </div>
+    </div> --}}
 </form>
 
 <!-- Modal Disposisi Karo/Sesro & Binpam-->
@@ -562,7 +551,9 @@
 
 <script>
     $(document).ready(function() {
+        checkStatusID()
         getPolda()
+
         if ($('#disiplin').is(':checked')) {
             document.getElementById("wujud_perbuatan").removeAttribute("disabled");
             document.getElementById("kode_etik").setAttribute("disabled", "disabled");
@@ -575,9 +566,14 @@
 
         $('#limpah_den').on('change', function() {
             let valLimpahDen = this.value;
-            $('#limpah_den_input').val(valLimpahDen);
-            $('#tipe_disposisi').val(2);
-            $('#form_dis_karo_binpam').submit();
+            if (valLimpahDen == 7) {
+                getPolda(3)
+            } else {
+                $('#limpah_den_input').val(valLimpahDen);
+                $('#tipe_disposisi').val(2);
+                $('#form_dis_karo_binpam').submit();
+            }
+            
         });
         $('#limpah_unit').on('change', function() {
             let valLimpahUnit = this.value;
@@ -587,7 +583,20 @@
             $('#tipe_disposisi').val(3);
             $('#form_dis_karo_binpam').submit();
         });
+
+
     });
+
+    function checkStatusID() {
+        let status_id = `{{ $kasus->status_id }}`
+        if (status_id == 3) {
+            $('#disposisi_kadena').hide();
+        }
+    }
+
+    function limpahPolda() {
+        $('#form_input_data').submit();
+    }
 
     function onClickModal(modal) {
         let is_disabled = false;
@@ -726,6 +735,7 @@
         }
         $('#wujud_perbuatan').html(html_wp);
     }
+
     $(function() {
         $("#datepicker").datepicker({
             autoclose: true,
@@ -741,13 +751,14 @@
         });
     });
 
-    function getPolda() {
-        let disposisi = $('#disposisi-tujuan').val()
+    function getPolda(val) {
+        let disposisi = $('#disposisi-tujuan').val() ? $('#disposisi-tujuan').val() : val
         if (disposisi == '3') {
             $.ajax({
                 url: "/api/all-polda",
                 method: "get"
             }).done(function(data) {
+                console.log(data)
                 $("#limpah-polda").html(data)
             });
         } else $("#limpah-polda").html("")

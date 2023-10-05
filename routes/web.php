@@ -85,6 +85,9 @@ Route::middleware(['auth'])->group(function () {
     // Anggota
     Route::get('list-anggota', [AnggotaController::class, 'listAnggota'])->name('list.anggota');
     Route::post('get-anggota', [AnggotaController::class, 'getAnggota'])->name('get.anggota');
+    Route::post('tambah-anggota', [AnggotaController::class, 'tambahAnggota'])->name('tambah.anggota');
+    Route::post('edit-anggota/{id}', [AnggotaController::class, 'editAnggota'])->name('edit.anggota');
+    Route::get('delete-anggota/{id}', [AnggotaController::class, 'deleteAnggota'])->name('delete.anggota');
     // End Anggota
 
     // Tambah Saksi

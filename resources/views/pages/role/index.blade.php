@@ -19,10 +19,10 @@
         <div class="card">
             <div class="card-header d-flex align-items-center">
                 <h5 class="card-title flex-grow-1 mb-0">Roles</h5>
-                {{-- <div class="d-flex gap-1 flex-wrap">
+                <div class="d-flex gap-1 flex-wrap">
                     <button type="button" class="btn btn-success create-btn" data-bs-toggle="modal"
-                        data-bs-target="#add_user"><i class="ri-add-line align-bottom me-1"></i>Add User</button>
-                </div> --}}
+                        data-bs-target="#add_role"><i class="ri-add-line align-bottom me-1"></i>Add Role</button>
+                </div>
             </div>
 
             <div class="card-body">
@@ -64,39 +64,28 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="add_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="add_role" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Buat User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Buat Role</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/user/save" method="POST">
+                <form action="/role/save" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Name</label>
+                            <label for="exampleFormControlInput1" class="form-label">Name Role</label>
                             <input type="text" class="form-control" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Jabatan</label>
-                            <input type="text" class="form-control" name="jabatan">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Role</label>
+                            <label for="exampleFormControlInput1" class="form-label">Permission</label>
                             <select class="form-select" aria-label="Default select example" name="role">
-                                <option selected>Open this select menu</option>
-                                @foreach ($roles as $value)
-                                    <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                @endforeach
+                                <option selected>Pilih Permission</option>
+                                <option>Pilih Permission</option>
+                                <option>Pilih Permission</option>
+                                <option>Pilih Permission</option>
+                                <option>Pilih Permission</option>
                             </select>
                         </div>
                     </div>

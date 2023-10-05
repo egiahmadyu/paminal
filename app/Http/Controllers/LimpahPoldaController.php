@@ -6,6 +6,7 @@ use App\Models\DataAnggota;
 use App\Models\DataPelanggar;
 use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
+use App\Models\LimpahPolda;
 use App\Models\Penyidik;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,41 +20,55 @@ class LimpahPoldaController extends Controller
         $kasus = DataPelanggar::find($kasus_id);
         $data['ticketDesc'] = $request->ticketDesc;
         $pdf =  PDF::setOptions(['isRemoteEnabled' => TRUE])
-        ->setPaper('A4', 'potrait')
-        ->loadView('pages.data_pelanggaran.generate.limpah-polda', $data);
+            ->setPaper('A4', 'potrait')
+            ->loadView('pages.data_pelanggaran.generate.limpah-polda', $data);
 
-        return $pdf->download($kasus->pelapor.'-dokumen-limpah-polda.pdf');
+        return $pdf->download($kasus->pelapor . '-dokumen-limpah-polda.pdf');
     }
 
     public function generateDisposisi(Request $request, $kasus_id)
     {
         $kasus = DataPelanggar::find($kasus_id);
-        $data = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',$request->tipe_disposisi)->first();
+
+        if ($request->limpah_den == 7) {
+            $limpah = LimpahPolda::create([
+                'data_pelanggar_id' => $request->kasus_id,
+                'polda_id' => $request->polda,
+                'tanggal_limpah' => date('Y-m-d'),
+                'created_by' => auth()->user()->id,
+                'isi_surat' => '<ol><li>Rujukan :&nbsp;<br><b>a</b>.&nbsp;Undang-Undang Nomor 2 Tahun 2022 tentang Kepolisian Negara Republik Indonesia.<br><b>b</b>.&nbsp;Peraturan Kepolisian Negara Republik Indonesia Nomor 7 Tahun 2022 tentang Kode Etik Profesi&nbsp; &nbsp; &nbsp;dan Komisi Kode Etik Polri.<br><b>c</b>.&nbsp;Peraturan Kepala Kepolisian Negara Republik Indonesia Nomor 13 Tahun 2016 tentang Pengamanan Internal di Lingkungan Polri<br><b>d</b>.&nbsp;Nota Dinas Kepala Bagian Pelayanan Pengaduan Divpropam Polri Nomor: R/ND-2766-b/XII/WAS.2.4/2022/Divpropam tanggal 16 Desember 2022 perihal pelimpahan Dumas BRIPKA JAMALUDDIN ASYARI.</li></ol>'
+            ]);
+            if ($limpah) {
+                $kasus->status_id = $request->limpah_den;
+                $kasus->save();
+            }
+        }
+
+        $data = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', $request->tipe_disposisi)->first();
 
         $status = true;
-        if ($request->tipe_disposisi == 3 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',2)->first())) {
+        if ($request->tipe_disposisi == 3 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->first())) {
             $message = 'Distribusi Binpam belum dibuat !';
             $status = false;
-        } elseif ($request->tipe_disposisi == 3 && ($distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',2)->first())) {
+        } elseif ($request->tipe_disposisi == 3 && ($distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->first())) {
             if (is_null($distribusi_binpam->limpah_den)) {
                 $message = 'Limpah Datasemen belum ditentukan !';
                 $status = false;
             }
         }
-        
-        if ($request->tipe_disposisi == 2 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',1)->first())) {
+
+        if ($request->tipe_disposisi == 2 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->first())) {
             $message = 'Disposisi Karo/Sesro belum dibuat !';
             $status = false;
         }
 
         if ($status == false) {
-            return redirect()->back()->with('error',$message);
+            return redirect()->back()->with('error', $message);
             // return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error',$message);
         }
-        
         if (!$data) {
             if ($request->tipe_disposisi == '3') {
-                $distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi',2)->first();
+                $distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->first();
                 $data = DisposisiHistory::create([
                     'data_pelanggar_id' => $kasus_id,
                     'klasifikasi' => $request->klasifikasi,
@@ -76,15 +91,15 @@ class LimpahPoldaController extends Controller
             $data->update([
                 'limpah_den' => $request->limpah_den
             ]);
-            return redirect()->back()->with('message','Limpah Datasemen telah ditentukan.');
+            return redirect()->back()->with('message', 'Limpah Datasemen telah ditentukan.');
         } elseif ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
             $data->update([
                 'limpah_unit' => $request->limpah_unit
             ]);
 
             // Create katim
-            $datasemen = Datasemen::where('id',$data->limpah_den)->first();
-            $katim = DataAnggota::where('id',$datasemen->kaden)->first();
+            $datasemen = Datasemen::where('id', $data->limpah_den)->first();
+            $katim = DataAnggota::where('id', $datasemen->kaden)->first();
             Penyidik::create([
                 'data_pelanggar_id' => $kasus->id,
                 'name' => $katim->nama,
@@ -96,7 +111,7 @@ class LimpahPoldaController extends Controller
             ]);
 
             // Create anggota tim
-            $anggota = DataAnggota::where('unit',$data->limpah_unit)->where('datasemen',$data->limpah_den)->get();
+            $anggota = DataAnggota::where('unit', $data->limpah_unit)->where('datasemen', $data->limpah_den)->get();
             foreach ($anggota as $key => $valAnggota) {
                 # code...
                 Penyidik::create([
@@ -109,24 +124,34 @@ class LimpahPoldaController extends Controller
                     'unit' => $valAnggota->unit,
                 ]);
             }
-            return redirect()->back()->with('message','Limpah unit telah ditentukan.');
+            return redirect()->back()->with('message', 'Limpah unit telah ditentukan.');
+        } else {
+
+            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
+                'klasifikasi' => $request->klasifikasi,
+                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+                'tipe_disposisi' => $request->tipe_disposisi,
+            ]);
+            $kasus->status_id = 4;
+            $kasus->save();
         }
 
         if ($request->tipe_disposisi == 1) {
             $template_filename = 'template_disposisi_karopaminal';
-            $filename = $kasus->pelapor.'-surat-disposisi-karopaminal';
+            $filename = $kasus->pelapor . '-surat-disposisi-karopaminal';
         } elseif ($request->tipe_disposisi == 2) {
             $template_filename = 'template_disposisi_kabagbinpam';
-            $filename = $kasus->pelapor.'-surat-distribusi-kabagbinpam';
-        } else { 
+            $filename = $kasus->pelapor . '-surat-distribusi-kabagbinpam';
+        } else {
             $template_filename = 'template_disposisi_kadena';
-            $filename = $kasus->pelapor.'-surat-disposisi-ka-den-a';
+            $filename = $kasus->pelapor . '-surat-disposisi-ka-den-a';
         }
 
-        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/'. $template_filename .'.docx'));
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename . '.docx'));
 
         $template_document->setValues(array(
-            'klasifikasi' => $data->klasifikasi ,
+            'klasifikasi' => $data->klasifikasi,
             'derajat' => $data->derajat,
             'nomor_agenda' => $data->no_agenda,
             'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
@@ -140,9 +165,9 @@ class LimpahPoldaController extends Controller
             'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
         ));
 
-        $template_document->saveAs(storage_path('template_surat/'. $filename .'.docx'));
+        $template_document->saveAs(storage_path('template_surat/' . $filename . '.docx'));
 
-        return response()->download(storage_path('template_surat/'. $filename .'.docx'))->deleteFileAfterSend(true);
+        return response()->download(storage_path('template_surat/' . $filename . '.docx'))->deleteFileAfterSend(true);
     }
 
 
@@ -168,8 +193,8 @@ class LimpahPoldaController extends Controller
 
     private function getRomawi($bln)
     {
-        switch ($bln){
-            case 1: 
+        switch ($bln) {
+            case 1:
                 return "I";
                 break;
             case 2:

@@ -14,10 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('data_pelanggars', function (Blueprint $table) {
-            $table->string('no_nota_dinas')->nullable()->change();
-            $table->string('no_pengaduan')->nullable()->change();
-            $table->date('tanggal_nota_dinas')->nullable()->change();
-            $table->string('ticket_id')->nullable();
+            $table->char('tipe_data', 2)->nullable();
         });
     }
 
@@ -29,10 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('data_pelanggars', function (Blueprint $table) {
-            $table->dropColumn('no_nota_dinas');
-            $table->dropColumn('no_pengaduan');
-            $table->dropColumn('tanggal_nota_dinas');
-            $table->dropColumn('ticket_id');
+            $table->dropColumn('tipe_data');
         });
     }
 };

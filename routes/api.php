@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HelperController;
 use App\Http\Controllers\PoldaController;
 use App\Http\Controllers\YanduanController;
 use Illuminate\Http\Request;
@@ -21,5 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('all-polda', [PoldaController::class, 'getAllPolda']);
+Route::get('all-pangkat', [HelperController::class, 'getAllPangkat']);
+Route::get('get-unit/{bag_den}', [HelperController::class, 'getUnit']);
 
 Route::post('yanduan', [YanduanController::class, 'getData']);

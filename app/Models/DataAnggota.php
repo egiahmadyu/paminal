@@ -9,5 +9,5 @@ class DataAnggota extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama','pangkat', 'nrp', 'jabatan ','unit','datasemen'];
+    protected $fillable = ['nama', 'pangkat', 'nrp', 'jabatan', 'unit', 'datasemen'];
 }

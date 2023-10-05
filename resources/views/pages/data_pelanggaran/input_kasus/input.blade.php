@@ -10,26 +10,36 @@
 @endprepend
 
 @section('content')
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb d-flex justify-content-end">
+            <li class="breadcrumb-item active"><a href="{{route('kasus.input')}}">Input Data</a></li>
+        </ol>
+    </nav>
     <div class="row form-control">
         <div class="form-control text-center border-0">
-            <h3>Form Input Dumas</h3>
+            <h3>Form Input Data</h3>
         </div>
         <form action="/input-data-kasus/store" method="post">
             @csrf
             <div class="row">
                 <div class="col-lg-6 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" required>
-                        <label for="no_nota_dinas">No. Nota Dinas</label>
+                        <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" required>
+                            <option value="">-- Pilih Tipe Aduan --</option>
+                            <option value="1">Aduan Masyarakat</option>
+                            <option value="2">Info Khusus</option>
+                            <option value="3">Laporan Informasi</option>
+                        </select>
+                        <label for="tipe_data" class="form-label">Tipe Aduan</label>
                     </div>
                 </div>
                 <div class="col-lg-6 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="perihal_nota_dinas" id="perihal_nota_dinas" placeholder="Perihal Nota Dinas" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" required>
-                        <label for="perihal_nota_dinas">Perihal Nota Dinas</label>
+                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" disabled required>
+                        <label for="no_nota_dinas">No. Nota Dinas</label>
                     </div>
                 </div>
-
+                
                 <div class="col-lg-6 mb-0">
                     <center>
                         <div class="form-label">
@@ -55,10 +65,36 @@
                     </div>
                 </div>
 
-                <div class="col-lg-12 mb-3">
+                <div class="col-lg-6 mb-3">
                     <div class="form-floating">
                         <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" required>
                         <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control border-dark" name="perihal_nota_dinas" id="perihal_nota_dinas" placeholder="Perihal Nota Dinas" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" required>
+                        <label for="perihal_nota_dinas">Perihal Nota Dinas</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    <div class="form-floating" id="den_bag" hidden>
+                        <select class="form-select border-dark" aria-label="Default select example" name="den_bag" required>
+                            <option value="">-- Pilih Bag / Detasemen --</option>
+                            @foreach ($bag_den as $bd)
+                                <option value="{{ $bd->id }}">{{ $bd->name }}</option>
+                            @endforeach
+                        </select>
+                        <label for="den_bag" class="form-label">Bag / Detasemen</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    <div class="form-floating" id="unit_den_bag" hidden>
+                        {{-- <select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" required>
+                        </select>
+                        <label for="unit_den_bag" class="form-label">Unit</label> --}}
                     </div>
                 </div>
                 <hr>
@@ -292,11 +328,52 @@
                 getValKodeEtik()
             }
 
-            $('#wujud_perbuatan').on('change', function() {
-                // alert( this.value );
-                console.log(this);
+            $('#tipe_data').on('change', function() {
+                console.log(this.value)
+                if (this.value == 1) {
+                    $('#no_nota_dinas').removeAttr('disabled')
+                    $('#den_bag').prop('hidden', true)
+                } else {
+                    $('#no_nota_dinas').prop('disabled', true)
+                    $('#den_bag').removeAttr('hidden')
+                    
+                }
             });
-
+            
+            $('#den_bag').on('change', function() {
+                let val = $('#den_bag').find(":selected").val()
+                $.ajax({
+                    url : 'api/get-unit/'+val,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $('.loading').css('display', 'block')
+                    }, 
+                    success: function (data, status, xhr) {
+                        $('.loading').css('display', 'none')
+                        let unit = Object.values(data.data.unit)
+                        let option = ''
+                        unit.forEach(element => {
+                            let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
+                            option += opt
+                        });
+                        console.log(option)
+                        let html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">-- Pilih Unit --</option>`+option+`</select><label for="unit_den_bag" class="form-label">Unit</label>`
+                        $('#unit_den_bag').removeAttr('hidden')
+                        $('#unit_den_bag').append(html)
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) { // error callback
+                        $('.loading').css('display', 'none')
+                        var option = {
+                            title: 'Error',
+                            text: 'Terjadi Kesalahan Sistem...',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }
+                        Swal.fire(option) 
+                    }
+                })
+            });
         });
 
         function disiplinChange(checkbox) {

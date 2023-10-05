@@ -72,8 +72,8 @@ class KasusController extends Controller
         $kode_etik = implode('|', $kode_etik);
         $id_kode_etik = implode('|', $id_kode_etik);
 
-        // dd($id_kode_etik);
-
+        $bag_den = Datasemen::get();
+        $unit_bag_den = Unit::get();
         $data = [
             'agama' => $agama,
             'jenis_identitas' => $jenis_identitas,
@@ -85,6 +85,8 @@ class KasusController extends Controller
             'kode_etik' => $kode_etik,
             'id_kode_etik' => $id_kode_etik,
             'wilayah_hukum' => $wilayah_hukum,
+            'bag_den' => $bag_den,
+            'unit_bag_den' => $unit_bag_den,
         ];
 
         return view('pages.data_pelanggaran.input_kasus.input', $data);
@@ -93,7 +95,9 @@ class KasusController extends Controller
     public function storeKasus(Request $request)
     {
         $wujud_perbuatan = WujudPerbuatan::where('jenis_wp', $request->jenis_wp)->where('keterangan_wp', $request->wujud_perbuatan)->first();
-        $no_pengaduan = "123456"; //generate otomatis
+        $no_pengaduan = null; //generate otomatis
+
+        // dd($request->all());
         $DP = DataPelanggar::create([
             // Pelapor
             'no_nota_dinas' => $request->no_nota_dinas,
@@ -121,8 +125,32 @@ class KasusController extends Controller
             'kronologi' => $request->kronologis,
             'pangkat' => $request->pangkat,
             'nama_korban' => $request->nama_korban,
-            'status_id' => 1
+            'status_id' => 1,
+            'tipe_data' => $request->tipe_data,
         ]);
+
+        if ($DP->tipe_data) {
+
+            DisposisiHistory::create([
+                'data_pelanggar_id' => $DP->id,
+                'tipe_disposisi' => 1,
+            ]);
+
+
+            DisposisiHistory::create([
+                'data_pelanggar_id' => $DP->id,
+                'tipe_disposisi' => 2,
+                'limpah_den' => $request->bag_den,
+            ]);
+
+            DisposisiHistory::create([
+                'data_pelanggar_id' => $DP->id,
+                'tipe_disposisi' => 3,
+                'limpah_den' => $request->bag_den,
+                'limpah_unit' => $request->unit_bag_den,
+            ]);
+        }
+
         return redirect()->route('kasus.detail', ['id' => $DP->id]);
     }
 
@@ -149,7 +177,9 @@ class KasusController extends Controller
 
     public function detail($id)
     {
+
         $kasus = DataPelanggar::find($id);
+
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
         $agama = Agama::get();
@@ -403,7 +433,6 @@ class KasusController extends Controller
 
     private function limpahToPolda(Request $request)
     {
-        // dd(auth()->user()->id);
         $data = DataPelanggar::find($request->kasus_id);
         $limpah = LimpahPolda::create([
             'data_pelanggar_id' => $request->kasus_id,
@@ -496,7 +525,13 @@ class KasusController extends Controller
             'unit' => $unit,
         ];
 
-        return view('pages.data_pelanggaran.proses.diterima', $data);
+        if ($kasus->tipe_data == 2 || $kasus->tipe_data == 3) {
+            $den_bag = Datasemen::where('id', $disposisi[3]['limpah_den'])->first();
+            $data['den_bag_pemohon'] =  $den_bag;
+            return view('pages.data_pelanggaran.proses.diterima_li_infosus', $data);
+        } else {
+            return view('pages.data_pelanggaran.proses.diterima', $data);
+        }
     }
 
     private function viewPulbaket($id)

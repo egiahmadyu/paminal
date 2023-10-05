@@ -40,30 +40,30 @@
 
                 <li class="nav-item">
                     <a href="{{ route('kasus.input') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                        <i class="far fa-user-plus"></i> <span data-key="t-dashboard">Input Dumas</span>
+                        <i class="far fa-user-plus"></i> <span data-key="t-dashboard">Input Data</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('list.anggota') }}"
-                        class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
+                        class="nav-link menu-link {{ Request::segment(1) == 'list-anggota' ? 'active' : '' }}">
                         <i class="far fa-address-card"></i> <span data-key="t-dashboard">Anggota</span>
                     </a>
                 </li>
 
                 <li class="nav-item has-submenu">
-                    <a class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        <i class="far fa-building"></i> <span data-key="t-dashboard">Datasemen</span>
+                    <a class="nav-link menu-link {{ Request::segment(1) == 'tambah-datasemen' || Request::segment(1) == 'list-datasemen' || Request::segment(1) == 'unit-datasemen' ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="far fa-building"></i> <span data-key="t-dashboard">Bag / Detasemen</span>
                     </a>
                     <ul class="submenu collapse" id="collapseExample">
-                        <a href="{{ route('tambah.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="far fa-plus-square"></i> <span data-key="t-dashboard">Tambah Datasemen</span>
+                        <a href="{{ route('tambah.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'tambah-datasemen' ? 'active' : '' }}">
+                            <i class="far fa-plus-square"></i> <span data-key="t-dashboard">Tambah Bag / Detasemen</span>
                         </a>
-                        <a href="{{ route('list.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="fas fa-list-ol"></i> <span data-key="t-dashboard">List Datasemen</span>
+                        <a href="{{ route('list.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'list-datasemen' ? 'active' : '' }}">
+                            <i class="fas fa-list-ol"></i> <span data-key="t-dashboard">List Bag / Detasemen</span>
                         </a>
-                        <a href="{{ route('unit.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="fab fa-unity"></i> <span data-key="t-dashboard">Unit Datasemen</span>
+                        <a href="{{ route('unit.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'unit-datasemen' ? 'active' : '' }}">
+                            <i class="far fa-users"></i> <span data-key="t-dashboard">Unit Bag / Detasemen</span>
                         </a>
                     </ul>
                 </li>

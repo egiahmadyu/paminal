@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('disposisi_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
-            $table->bigInteger('no_agenda');
-            $table->string('klasifikasi');
-            $table->string('derajat');
-            $table->integer('tipe_disposisi');
+            $table->bigInteger('no_agenda')->nullable();
+            $table->string('klasifikasi')->nullable();
+            $table->string('derajat')->nullable();
+            $table->integer('tipe_disposisi')->nullable();
             $table->string('limpah_unit')->nullable();
             $table->string('limpah_den')->nullable();
             $table->timestamps();
