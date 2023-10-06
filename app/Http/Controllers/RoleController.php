@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Facades\DataTables;
 
 class RoleController extends Controller
 {
@@ -29,6 +30,8 @@ class RoleController extends Controller
         return redirect()->back()->with('success', 'Success!');
     }
 
+
+
     public function permission($id)
     {
         $data['role'] = Role::find($id);
@@ -41,6 +44,7 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         $role->syncPermissions($request->permissions);
+
         return redirect()->back()->with('success', 'Update Permission Success!');
         return redirect()->back();
     }

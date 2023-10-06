@@ -7,6 +7,7 @@ use App\Http\Controllers\DatasemenController;
 use App\Http\Controllers\GelarPerkaraController;
 use App\Http\Controllers\KasusController;
 use App\Http\Controllers\LimpahPoldaController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProvostWabprofController;
 use App\Http\Controllers\PulbaketController;
 use App\Http\Controllers\RoleController;
@@ -44,15 +45,23 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('user', [UserController::class, 'index']);
     Route::post('user/save', [UserController::class, 'store']);
+
     Route::get('role', [RoleController::class, 'index']);
+    Route::post('role/save', [RoleController::class, 'save']);
     Route::get('role/permission/{id}', [RoleController::class, 'permission']);
-    Route::get('role/permission/{id}/save', [RoleController::class, 'savePermission']);
+    Route::post('role/permission/{id}/save', [RoleController::class, 'savePermission']);
+
+    Route::get('permission', [PermissionController::class, 'index']);
+    Route::post('get-permission', [PermissionController::class, 'getPermission'])->name('get.permission');
+    Route::post('permission/store', [PermissionController::class, 'storePermission'])->name('store.permission');
+    Route::get('permission/delete/{id}', [PermissionController::class, 'deletePermission'])->name('delete.permission');
+
 
     //Dashboard
     Route::prefix('/')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->name('dashboard');
-        Route::get('/get-chart/{tipe}', [DashboardController::class, 'getDataChart'])->name('dashboard')->name('get.chart');
-        Route::get('/get-data-dumas/{tipe}', [DashboardController::class, 'getDataDumas'])->name('dashboard')->name('get.data.dumas');
+        Route::get('/get-chart/{tipe}', [DashboardController::class, 'getDataChart'])->name('get.chart');
+        Route::get('/get-data-dumas/{tipe}', [DashboardController::class, 'getDataDumas'])->name('get.data.dumas');
         Route::get('/get-data/{tipe}', [DashboardController::class, 'getData'])->name('dashboard')->name('get.data');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
@@ -66,7 +75,7 @@ Route::middleware(['auth'])->group(function () {
     // End View Kasus
 
     // Create Kasus
-    Route::get('input-data-kasus', [KasusController::class, 'inputKasus'])->name('kasus.input');
+    Route::get('input-data-kasus', [KasusController::class, 'inputKasus'])->name('kasus.input')->middleware('auth');
     Route::post('input-data-kasus/store', [KasusController::class, 'storeKasus'])->name('kasus.store.kasus');
     // End View Kasus
 

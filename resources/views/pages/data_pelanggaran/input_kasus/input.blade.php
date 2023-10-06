@@ -27,8 +27,11 @@
                         <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" required>
                             <option value="">-- Pilih Tipe Aduan --</option>
                             <option value="1">Aduan Masyarakat</option>
-                            <option value="2">Info Khusus</option>
-                            <option value="3">Laporan Informasi</option>
+                            @can('infosus-li')
+                                <option value="2">Info Khusus</option>
+                                <option value="3">Laporan Informasi</option>
+                            @endcan
+                            
                         </select>
                         <label for="tipe_data" class="form-label">Tipe Aduan</label>
                     </div>
@@ -351,15 +354,24 @@
                     }, 
                     success: function (data, status, xhr) {
                         $('.loading').css('display', 'none')
+
                         let unit = Object.values(data.data.unit)
                         let option = ''
-                        unit.forEach(element => {
-                            let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
-                            option += opt
-                        });
-                        console.log(option)
-                        let html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">-- Pilih Unit --</option>`+option+`</select><label for="unit_den_bag" class="form-label">Unit</label>`
+                        let html = ''
+                        console.log(unit.length)
+                        if (unit.length == 0) {
+                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="">-- Unit Belum Tersedia --</option></select><label for="unit_den_bag" class="form-label">Unit</label>`
+                        } else {
+                            unit.forEach(element => {
+                                let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
+                                option += opt
+                            });
+                            console.log(option)
+                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">-- Pilih Unit --</option>`+option+`</select><label for="unit_den_bag" class="form-label">Unit</label>`
+                        }
+                        
                         $('#unit_den_bag').removeAttr('hidden')
+                        $('#unit_den_bag').empty()
                         $('#unit_den_bag').append(html)
                     },
                     error: function (jqXhr, textStatus, errorMessage) { // error callback

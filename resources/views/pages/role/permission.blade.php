@@ -21,7 +21,7 @@
                 <h5 class="card-title flex-grow-1 mb-0">Permission untuk Role {{ $role->name }}</h5>
                 {{-- <div class="d-flex gap-1 flex-wrap">
                     <button type="button" class="btn btn-success create-btn" data-bs-toggle="modal"
-                        data-bs-target="#add_user"><i class="ri-add-line align-bottom me-1"></i>Add User</button>
+                        data-bs-target="#add_permission"><i class="ri-add-line align-bottom me-1"></i>Add Permission</button>
                 </div> --}}
             </div>
 
@@ -42,6 +42,31 @@
                             @endforeach
                             <button type="submit" class="btn btn-primary mt-4 ">Update</button>
                         </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal permission -->
+    <div class="modal fade" id="add_role" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Buat Role</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/role/save" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Name Role</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>

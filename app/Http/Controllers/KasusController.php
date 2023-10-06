@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agama;
 use App\Models\BaiPelapor;
 use App\Models\BaiTerlapor;
+use App\Models\DataAnggota;
 use App\Models\DataPelanggar;
 use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
@@ -97,7 +98,6 @@ class KasusController extends Controller
         $wujud_perbuatan = WujudPerbuatan::where('jenis_wp', $request->jenis_wp)->where('keterangan_wp', $request->wujud_perbuatan)->first();
         $no_pengaduan = null; //generate otomatis
 
-        // dd($request->all());
         $DP = DataPelanggar::create([
             // Pelapor
             'no_nota_dinas' => $request->no_nota_dinas,
@@ -140,15 +140,42 @@ class KasusController extends Controller
             DisposisiHistory::create([
                 'data_pelanggar_id' => $DP->id,
                 'tipe_disposisi' => 2,
-                'limpah_den' => $request->bag_den,
+                'limpah_den' => $request->den_bag,
             ]);
 
             DisposisiHistory::create([
                 'data_pelanggar_id' => $DP->id,
                 'tipe_disposisi' => 3,
-                'limpah_den' => $request->bag_den,
-                'limpah_unit' => $request->unit_bag_den,
+                'limpah_den' => $request->den_bag,
+                'limpah_unit' => $request->unit_den_bag,
             ]);
+
+            // Create katim
+            $datasemen = Datasemen::where('id', (int)$request->den_bag)->first();
+            $katim = DataAnggota::where('id', $datasemen->kaden)->first();
+            Penyidik::create([
+                'data_pelanggar_id' => $DP->id,
+                'name' => $katim->nama,
+                'nrp' => $katim->nrp,
+                'pangkat' => $katim->pangkat,
+                'jabatan' => $katim->jabatan,
+                'datasemen' => $katim->datasemen,
+                'unit' => '',
+            ]);
+
+            $penyidik = DataAnggota::where('unit', (int)$request->unit_den_bag)->get();
+
+            foreach ($penyidik as $key => $value) {
+                Penyidik::create([
+                    'data_pelanggar_id' => $DP->id,
+                    'name' => $value->nama,
+                    'nrp' => $value->nrp,
+                    'pangkat' => $value->pangkat,
+                    'jabatan' => $value->jabatan,
+                    'datasemen' => $value->unit,
+                    'unit' => $value->datasemen,
+                ]);
+            }
         }
 
         return redirect()->route('kasus.detail', ['id' => $DP->id]);
@@ -526,7 +553,7 @@ class KasusController extends Controller
         ];
 
         if ($kasus->tipe_data == 2 || $kasus->tipe_data == 3) {
-            $den_bag = Datasemen::where('id', $disposisi[3]['limpah_den'])->first();
+            $den_bag = Datasemen::where('id', $disposisi[2]['limpah_den'])->first();
             $data['den_bag_pemohon'] =  $den_bag;
             return view('pages.data_pelanggaran.proses.diterima_li_infosus', $data);
         } else {

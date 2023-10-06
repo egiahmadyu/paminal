@@ -64,6 +64,8 @@
             </div>
         </div>
     </div>
+
+    
     <div class="modal fade" id="add_role" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -77,16 +79,6 @@
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Name Role</label>
                             <input type="text" class="form-control" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Permission</label>
-                            <select class="form-select" aria-label="Default select example" name="role">
-                                <option selected>Pilih Permission</option>
-                                <option>Pilih Permission</option>
-                                <option>Pilih Permission</option>
-                                <option>Pilih Permission</option>
-                                <option>Pilih Permission</option>
-                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
