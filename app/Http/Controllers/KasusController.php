@@ -129,7 +129,7 @@ class KasusController extends Controller
             'tipe_data' => $request->tipe_data,
         ]);
 
-        if ($DP->tipe_data) {
+        if ($DP->tipe_data != 1) {
 
             DisposisiHistory::create([
                 'data_pelanggar_id' => $DP->id,
@@ -172,8 +172,8 @@ class KasusController extends Controller
                     'nrp' => $value->nrp,
                     'pangkat' => $value->pangkat,
                     'jabatan' => $value->jabatan,
-                    'datasemen' => $value->unit,
-                    'unit' => $value->datasemen,
+                    'datasemen' => $value->datasemen,
+                    'unit' => $value->unit,
                 ]);
             }
         }
@@ -204,7 +204,6 @@ class KasusController extends Controller
 
     public function detail($id)
     {
-
         $kasus = DataPelanggar::find($id);
 
         $status = Process::find($kasus->status_id);

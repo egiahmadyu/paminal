@@ -12,7 +12,9 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Datasemen</h4>
-
+                    <a type="button" class="btn btn-success" href="/tambah-datasemen">
+                        Tambah Datasemen
+                    </a>
                 </div><!-- end card header -->
 
                 <div class="card-body">
@@ -78,6 +80,57 @@
                 e.preventDefault();
                 table.table().draw();
             });
+        }
+
+        function deleteDatasemen(id) {
+            Swal.fire({
+                title: 'Yakin menghapus data?',
+                text: "Data akan terhapus permanen",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus data!',
+                cancelButtonText: 'Tidak, batalkan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url : 'delete-datasemen/'+id,
+                        type: 'GET',
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $('.loading').css('display', 'block')
+                        }, 
+                        success: function (data, status, xhr) {
+                            $('.loading').css('display', 'none')
+
+                            Swal.fire({
+                                title: 'Terhapus',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload()
+                                }
+                            })
+                            
+                        },
+                        error: function (jqXhr, textStatus, errorMessage) { // error callback
+                            $('.loading').css('display', 'none')
+                            console.log('error message: ',errorMessage)
+                            var option = {
+                                    title: 'Error',
+                                    text: 'Terjadi Kesalahan Sistem...',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                            }
+                            Swal.fire(option) 
+                        }
+                    })
+                }
+            })
+            
         }
     </script>
 @endsection

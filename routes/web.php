@@ -82,20 +82,29 @@ Route::middleware(['auth'])->group(function () {
     // Datasemen & Unit
     Route::get('list-datasemen', [DatasemenController::class, 'listDatasemen'])->name('list.datasemen');
     Route::post('get-datasemen', [DatasemenController::class, 'getDatasemen'])->name('get.datasemen');
-    Route::get('unit-datasemen', [DatasemenController::class, 'unitDatasemen'])->name('unit.datasemen');
-    Route::post('get-unit', [DatasemenController::class, 'getUnit'])->name('get.unit');
     Route::get('tambah-datasemen', [DatasemenController::class, 'tambahDatasemen'])->name('tambah.datasemen');
     Route::post('store-datasemen', [DatasemenController::class, 'storeDatasemen'])->name('store.datasemen');
     Route::get('edit-datasemen/{id}', [DatasemenController::class, 'editDatasemen'])->name('edit.datasemen');
     Route::post('update-datasemen/{id}', [DatasemenController::class, 'updateDatasemen'])->name('update.datasemen');
     Route::get('delete-datasemen/{id}', [DatasemenController::class, 'deleteDatasemen'])->name('delete.datasemen');
+
+    Route::get('unit-datasemen', [DatasemenController::class, 'unitDatasemen'])->name('unit.datasemen');
+    Route::get('detail-unit/{id}', [DatasemenController::class, 'detailUnit'])->name('detail.unit');
+    Route::post('get-detail-unit/{id}', [DatasemenController::class, 'getDetailUnit'])->name('get.detail.unit');
+    Route::post('get-unit', [DatasemenController::class, 'getUnit'])->name('get.unit');
+    Route::post('tambah-anggota-unit/{id}', [DatasemenController::class, 'tambahAnggotaUnit'])->name('tambah.anggota.unit');
+    Route::post('store-unit', [DatasemenController::class, 'storeunit'])->name('store.unit');
+    Route::get('edit-unit/{id}', [DatasemenController::class, 'editUnit'])->name('edit.unit');
+    Route::post('update-unit/{id}', [DatasemenController::class, 'updateUnit'])->name('update.unit');
+    Route::get('delete-unit/{id}', [DatasemenController::class, 'deleteUnit'])->name('delete.unit');
     // End Datasemen
 
     // Anggota
     Route::get('list-anggota', [AnggotaController::class, 'listAnggota'])->name('list.anggota');
     Route::post('get-anggota', [AnggotaController::class, 'getAnggota'])->name('get.anggota');
     Route::post('tambah-anggota', [AnggotaController::class, 'tambahAnggota'])->name('tambah.anggota');
-    Route::post('edit-anggota/{id}', [AnggotaController::class, 'editAnggota'])->name('edit.anggota');
+    Route::get('edit-anggota/{id}', [AnggotaController::class, 'editAnggota'])->name('edit.anggota');
+    Route::post('update-anggota/{id}', [AnggotaController::class, 'updateAnggota'])->name('update.anggota');
     Route::get('delete-anggota/{id}', [AnggotaController::class, 'deleteAnggota'])->name('delete.anggota');
     // End Anggota
 

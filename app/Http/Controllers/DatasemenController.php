@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\DataAnggota;
 use App\Models\Datasemen;
 use App\Models\Pangkat;
-use App\Models\Penyidik;
 use App\Models\Unit;
 use Illuminate\Http\Request;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class DatasemenController extends Controller
 {
@@ -17,69 +16,44 @@ class DatasemenController extends Controller
         return view('pages.datasemen.list-datasemen');
     }
 
-    public function unitDatasemen()
-    {
-        $datasemen = Datasemen::get();
-        $units = array();
-        $data = [
-            'datasemen' => $datasemen,
-            'unit' => $units,
-        ];
-        return view('pages.datasemen.unit-datasemen',$data);
-    }
-
     public function getDatasemen()
     {
         $query = Datasemen::get();
 
         return DataTables::of($query)
-            ->editColumn('kaden', function($query) {
-                $anggota = DataAnggota::where('id',$query->kaden)->first();
-                $pangkat = Pangkat::where('id',$anggota->pangkat)->first();
-                $kaden = $pangkat->name.' '.$anggota->nama;
+            ->editColumn('kaden', function ($query) {
+                $anggota = DataAnggota::where('id', $query->kaden)->first();
+                $pangkat = Pangkat::where('id', $anggota->pangkat)->first();
+                if ($pangkat) {
+                    $kaden = $pangkat->name . ' ' . $anggota->nama;
+                } else {
+                    $kaden = $anggota->nama;
+                }
+
                 return $kaden;
             })
-            ->editColumn('wakaden', function($query) {
-                $anggota = DataAnggota::where('id',$query->wakaden)->first();
-                $pangkat = Pangkat::where('id',$anggota->pangkat)->first();
-                $wakaden = $pangkat->name.' '.$anggota->nama;
+            ->editColumn('wakaden', function ($query) {
+                $anggota = DataAnggota::where('id', $query->wakaden)->first();
+                $pangkat = Pangkat::where('id', $anggota->pangkat)->first();
+                if ($pangkat) {
+                    $wakaden = $pangkat->name . ' ' . $anggota->nama;
+                } else {
+                    $wakaden = $anggota->nama;
+                }
+
                 return $wakaden;
             })
-            ->addColumn('action', function($query){
-                $edit_url = route('edit.datasemen',$query->id);
-                $delete_url = route('delete.datasemen',$query->id);
+            ->addColumn('action', function ($query) {
+                $edit_url = route('edit.datasemen', $query->id);
+                $btn_delete = '<button type="button" class="btn" onclick="deleteDatasemen(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
                 $button = '';
                 $button .= '<div class="btn-group" role="group">';
-                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
-                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                $button .= '<a class="btn" href="' . $edit_url . '"><i class="fa fa-edit text-warning"></i></a>';
+                $button .= $btn_delete;
                 $button .= '</div>';
                 return $button;
             })
-            ->rawColumns(['kaden','wakaden','action'])
-            ->make(true);
-    }
-
-    public function getUnit()
-    {
-        $query = Unit::get();
-
-        return DataTables::of($query)
-            ->editColumn('datasemen', function($query) {
-                $datasemen = Datasemen::where('id',$query->datasemen)->first();
-                $datasemen = $datasemen->name;
-                return $datasemen;
-            })
-            // ->addColumn('action', function($query){
-            //     $edit_url = route('edit.datasemen',$query->id);
-            //     $delete_url = route('delete.datasemen',$query->id);
-            //     $button = '';
-            //     $button .= '<div class="btn-group" role="group">';
-            //     $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
-            //     $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
-            //     $button .= '</div>';
-            //     return $button;
-            // })
-            ->rawColumns(['datasemen'])
+            ->rawColumns(['kaden', 'wakaden', 'action'])
             ->make(true);
     }
 
@@ -93,22 +67,22 @@ class DatasemenController extends Controller
             'pangkat' => $pangkat,
             'url' => $url,
         ];
-        return view('pages.datasemen.tambah-datasemen',$data);
+        return view('pages.datasemen.tambah-datasemen', $data);
     }
 
     public function storeDatasemen(Request $request)
     {
-        $den = explode(' ',$request->name);
-        $pangkat = Pangkat::where('id',$request->pangkat)->first();
+        $den = explode(' ', $request->name);
+        $pangkat = Pangkat::where('id', $request->pangkat)->first();
         $datasemen = Datasemen::get();
         foreach ($datasemen as $key => $valDatasemen) {
             if ($valDatasemen->name == $request->name) {
-                return redirect()->back()->withInput()->with('error','Nama Datasemen sudah dibuat !');
+                return redirect()->back()->withInput()->with('error', 'Nama Datasemen sudah dibuat !');
             }
         }
 
         if ($request->kaden == $request->wakaden) {
-            return redirect()->back()->withInput()->with('error','Kepala Datasemen tidak boleh sama dengan Wakil Datasemen !');
+            return redirect()->back()->withInput()->with('error', 'Kepala Datasemen tidak boleh sama dengan Wakil Datasemen !');
         }
 
         Datasemen::create([
@@ -116,17 +90,25 @@ class DatasemenController extends Controller
             'kaden' => $request->kaden,
             'wakaden' => $request->wakaden
         ]);
-        return redirect()->route('list.datasemen')->with('success','Berhasil Dibuat !');
+
+        DataAnggota::where('id', $request->kaden)->update([
+            'jabatan' => 'KADEN ' . $den[1]
+        ]);
+
+        DataAnggota::where('id', $request->wakaden)->update([
+            'jabatan' => 'WAKADEN ' . $den[1]
+        ]);
+        return redirect()->route('list.datasemen')->with('success', 'Berhasil Dibuat !');
     }
 
     public function editDatasemen($id)
     {
-        $datasemen = Datasemen::where('id',$id)->first();
-        $kaden = DataAnggota::where('id',$datasemen->kaden)->first();
-        $wakaden = DataAnggota::where('id',$datasemen->wakaden)->first();
+        $datasemen = Datasemen::where('id', $id)->first();
+        $kaden = DataAnggota::where('id', $datasemen->kaden)->first();
+        $wakaden = DataAnggota::where('id', $datasemen->wakaden)->first();
         $anggota = DataAnggota::get();
         $pangkat = Pangkat::get();
-        $url = route('update.datasemen',['id'=>$id]);
+        $url = route('update.datasemen', ['id' => $id]);
         $data = [
             'datasemen' => $datasemen,
             'pangkat' => $pangkat,
@@ -135,41 +117,198 @@ class DatasemenController extends Controller
             'anggota' => $anggota,
             'url' => $url,
         ];
-        return view('pages.datasemen.tambah-datasemen',$data);
+        return view('pages.datasemen.tambah-datasemen', $data);
     }
 
     public function updateDatasemen(Request $request, $id)
     {
         if ($request->kaden == $request->wakaden) {
-            return redirect()->back()->withInput()->with('error','Kepala Datasemen tidak boleh sama dengan Wakil Datasemen !');
+            return redirect()->back()->withInput()->with('error', 'Kepala Datasemen tidak boleh sama dengan Wakil Datasemen !');
         }
 
-        $den = explode(' ',$request->nama_datasemen);
-        $kaden = DataAnggota::where('id',$request->kaden)->first();
+        $den = explode(' ', $request->nama_datasemen);
+        $kaden = DataAnggota::where('id', $request->kaden)->first();
         if ($kaden) {
-            $kaden->jabatan = 'KADEN '.$den[1];
+            $kaden->jabatan = 'KADEN ' . $den[1];
             $kaden->update();
         }
 
-        $wakaden = DataAnggota::where('id',$request->wakaden)->first();
+        $wakaden = DataAnggota::where('id', $request->wakaden)->first();
         if ($wakaden) {
-            $wakaden->jabatan = 'WAKADEN '.$den[1];
+            $wakaden->jabatan = 'WAKADEN ' . $den[1];
             $wakaden->update();
         }
 
-        $datasemen = Datasemen::where('id',$id)->first();
+        $datasemen = Datasemen::where('id', $id)->first();
         $datasemen->update([
             'name' => $request->nama_datasemen,
             'kaden' => $kaden->id,
             'wakaden' => $wakaden->id,
         ]);
 
-        return redirect()->route('list.datasemen')->with('success','Berhasil Diupdate !');
+        return redirect()->route('list.datasemen')->with('success', 'Berhasil Diupdate !');
     }
 
     public function deleteDatasemen($id)
     {
-        Datasemen::where('id',$id)->delete();
-        return redirect()->route('list.datasemen')->with('success','Berhasil Dihapus !');
+        Datasemen::find($id)->delete();
+
+        $result = response()->json([
+            'status' => 200,
+            'success' => true,
+            'message' => 'Berhasil dihapus !'
+        ]);
+
+        return $result;
+    }
+
+    public function unitDatasemen()
+    {
+        $datasemen = Datasemen::all();
+        $units = Unit::all();
+        $data = [
+            'datasemen' => $datasemen,
+            'unit' => $units,
+        ];
+        return view('pages.datasemen.unit-datasemen', $data);
+    }
+
+    public function getUnit()
+    {
+        $query = Unit::get();
+
+        return DataTables::of($query)
+            ->editColumn('datasemen', function ($query) {
+                $datasemen = Datasemen::where('id', $query->datasemen)->first();
+                $datasemen = $datasemen->name;
+                return $datasemen;
+            })
+            ->addColumn('action', function ($query) {
+                $btn_detail = '<a type="button" class="btn" href="/detail-unit/' . $query->id . '"><i class="far fa-eye text-info"></i></a>';
+                $btn_edit = '<button type="button" class="btn" onclick="editUnit(' . $query->id . ')"><i class="fa fa-edit text-warning"></i></button>';
+                $btn_delete = '<button type="button" class="btn" onclick="deleteUnit(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
+
+                $button = '<div class="btn-group" role="group">';
+                $button .= $btn_detail;
+                $button .= $btn_edit;
+                $button .= $btn_delete;
+                $button .= '</div>';
+                return $button;
+            })
+            ->rawColumns(['datasemen', 'action'])
+            ->make(true);
+    }
+
+    public function storeUnit(Request $request)
+    {
+        $units = Unit::get();
+        foreach ($units as $key => $val) {
+            $datasemen = Datasemen::where('id', $val->datasemen)->first();
+            if ($val->unit == $request->nama && $val->datasemen == $request->datasemen) {
+                return redirect()->back()->withInput()->with('error', $val->name . ' ' . $datasemen->name . ' sudah dibuat !');
+            }
+        }
+
+        Unit::create([
+            'unit' => $request->nama,
+            'datasemen' => $request->datasemen,
+        ]);
+        return redirect()->route('unit.datasemen')->with('success', 'Berhasil Dibuat !');
+    }
+
+    public function editUnit($id)
+    {
+        $unit = Unit::where('id', $id)->first();
+        $datasemen = Datasemen::all();
+
+        $result = response()->json([
+            'status' => 200,
+            'unit' => $unit,
+            'datasemen' => $datasemen,
+        ]);
+
+        return $result;
+    }
+
+    public function updateUnit(Request $request, $id)
+    {
+        Unit::where('id', $id)->update([
+            'unit' => $request->nama,
+            'datasemen' => $request->datasemen,
+        ]);
+        return redirect()->route('unit.datasemen')->with('success', 'Berhasil Diupdate !');
+    }
+
+    public function detailUnit($id)
+    {
+        $anggota = DataAnggota::where('unit', ' ')->where('datasemen', ' ')->get();
+        $unit = Unit::find($id);
+        $datasemen = Datasemen::find($unit->datasemen);
+        $data = [
+            'datasemen' => $datasemen,
+            'unit' => $unit,
+            'anggota' => $anggota,
+            'id_unit' => $id
+        ];
+        return view('pages.datasemen.detail-unit', $data);
+    }
+
+    public function tambahAnggotaUnit(Request $request, $id)
+    {
+        $anggota = DataAnggota::find($request->anggota);
+
+        $unit = Unit::find($id);
+        $datasemen = Datasemen::find($unit->datasemen);
+
+        $anggota->update([
+            'unit' => $id,
+            'datasemen' => $datasemen->id
+        ]);
+
+        $data = [
+            'datasemen' => $datasemen,
+            'unit' => $unit,
+            'anggota' => $anggota,
+            'id_unit' => $id
+        ];
+        return redirect()->route('get.detail.unit', ['id' => $unit->id]);
+    }
+
+    public function getDetailUnit($id)
+    {
+        $query = DataAnggota::where('unit', $id);
+
+        return DataTables::of($query)
+            ->editColumn('nama', function ($query) {
+                $pangkat = Pangkat::where('id', $query->pangkat)->first();
+                $pangkat = $pangkat->name;
+                return $pangkat . ' ' . $query->nama;
+            })
+            // ->addColumn('action', function ($query) {
+            //     $btn_edit = '<button type="button" class="btn" onclick="editAnggota(' . $query->id . ')"><i class="fa fa-edit text-warning"></i></button>';
+            //     $btn_delete = '<button type="button" class="btn" onclick="deleteAnggota(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
+
+
+            //     $button = '<div class="btn-group" role="group">';
+            //     $button .= $btn_edit;
+            //     $button .= $btn_delete;
+            //     $button .= '</div>';
+            //     return $button;
+            // })
+            ->rawColumns(['nama'])
+            ->make(true);
+    }
+
+    public function deleteUnit($id)
+    {
+        $unit = Unit::find($id);
+        $unit->delete();
+
+        $result = response()->json([
+            'status' => 200,
+            'success' => true,
+        ]);
+
+        return $result;
     }
 }

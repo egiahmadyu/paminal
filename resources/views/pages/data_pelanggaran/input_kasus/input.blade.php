@@ -83,7 +83,7 @@
 
                 <div class="col-lg-6 mb-3">
                     <div class="form-floating" id="den_bag" hidden>
-                        <select class="form-select border-dark" aria-label="Default select example" name="den_bag" required>
+                        <select class="form-select border-dark" aria-label="Default select example" name="den_bag">
                             <option value="">-- Pilih Bag / Detasemen --</option>
                             @foreach ($bag_den as $bd)
                                 <option value="{{ $bd->id }}">{{ $bd->name }}</option>
@@ -338,6 +338,7 @@
                     $('#den_bag').prop('hidden', true)
                 } else {
                     $('#no_nota_dinas').prop('disabled', true)
+                    $('#no_nota_dinas').prop('required', true)
                     $('#den_bag').removeAttr('hidden')
                     
                 }
