@@ -12,24 +12,25 @@ class UserController extends Controller
     {
         $data['users'] = User::all();
         $data['roles'] = Role::all();
+
         return view('pages.user.index', $data);
     }
 
     public function store(Request $request)
     {
         try {
-        $role = Role::find($request->role);
-        $user = User::create([
-            'name' => $request->name,
-            'username' => strtolower($request->username),
-            'password' => bcrypt($request->password),
-            'jabata' => $request->jabatan
-        ]);
-        $user->assignRole($role);
+            $role = Role::find($request->role);
+            $user = User::create([
+                'name' => $request->name,
+                'username' => strtolower($request->username),
+                'password' => bcrypt($request->password),
+                'jabatan' => $request->jabatan
+            ]);
+            $user->assignRole($role);
 
-        return redirect()->back()->with('success', 'Success Create User');
+            return redirect()->back()->with('success', 'Success Create User');
         } catch (\Throwable $th) {
-        return redirect()->back()->with('error', 'Failed Create User');
+            return redirect()->back()->with('error', 'Failed Create User');
         }
     }
 

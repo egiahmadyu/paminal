@@ -92,11 +92,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('detail-unit/{id}', [DatasemenController::class, 'detailUnit'])->name('detail.unit');
     Route::post('get-detail-unit/{id}', [DatasemenController::class, 'getDetailUnit'])->name('get.detail.unit');
     Route::post('get-unit', [DatasemenController::class, 'getUnit'])->name('get.unit');
-    Route::post('tambah-anggota-unit/{id}', [DatasemenController::class, 'tambahAnggotaUnit'])->name('tambah.anggota.unit');
     Route::post('store-unit', [DatasemenController::class, 'storeunit'])->name('store.unit');
     Route::get('edit-unit/{id}', [DatasemenController::class, 'editUnit'])->name('edit.unit');
     Route::post('update-unit/{id}', [DatasemenController::class, 'updateUnit'])->name('update.unit');
     Route::get('delete-unit/{id}', [DatasemenController::class, 'deleteUnit'])->name('delete.unit');
+    Route::post('tambah-anggota-unit/{id}', [DatasemenController::class, 'tambahAnggotaUnit'])->name('tambah.anggota.unit');
+    Route::get('edit-anggota-unit/{id}', [DatasemenController::class, 'editAnggotaUnit'])->name('edit.anggota.unit');
+    Route::get('delete-anggota-unit/{id}', [DatasemenController::class, 'deleteAnggotaUnit'])->name('delete.anggota.unit');
     // End Datasemen
 
     // Anggota

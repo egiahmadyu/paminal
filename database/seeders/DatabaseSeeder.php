@@ -28,14 +28,15 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'manage-auth']);
         $adminRole = Role::create(['name' => 'admin']);
         $permission = Permission::where('name', 'manage-auth')->first();
+
         $adminRole->givePermissionTo($permission);
         $user = User::create([
             'name' => 'Super Admin',
             'username' => 'admin',
             'password' => bcrypt('123456')
         ]);
-
         $user->assignRole($adminRole);
+
         $adminRole = Role::create(['name' => 'operator']);
         $user = User::create([
             'name' => 'egi',
@@ -79,7 +80,7 @@ class DatabaseSeeder extends Seeder
             DatasemenSeeder::class,
             UnitSeeder::class,
             DataAnggotaSeeder::class,
-          ]);
+        ]);
 
         // Process::create([
         //     'name' => 'Diterima'

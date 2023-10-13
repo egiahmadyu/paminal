@@ -315,7 +315,23 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3">
+                        <div class="col-lg-12">
+                            <div class="form-outline mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select border-dark" data-choices name="pimpinan" id="pimpinan" required>
+                                        <option value="">-- Pilih Pimpinan Gelar --</option>
+                                        @if (isset($pimpinans))
+                                            @foreach ($pimpinans as $key => $pim)
+                                                <option value="{{ $pim->id }}">{{ $pim->nama }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <label for="pimpinan" class="form-label">Pimpinan Gelar</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- <div class="col-lg-3">
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <select class="form-select border-dark" aria-label="Default select example" name="pangkat_pimpinan" id="pangkat_pimpinan" required>
@@ -356,7 +372,7 @@
                                     <label for="nrp_pimpinan">NRP Pimpinan Gelar</label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
                                 <button type="submit" class="form-control btn btn-primary">Simpan</button>
@@ -375,7 +391,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Undangan Gelar Perkara</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Nota Dinas Laporan Hasil Gelar Penyelidikan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(5)"></button>
             </div>
             <div class="modal-body">

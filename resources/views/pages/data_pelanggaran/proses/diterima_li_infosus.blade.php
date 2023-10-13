@@ -6,7 +6,7 @@
             <div>
 
                 @if ($kasus->status_id > 1)
-                <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya <i class="far fa-arrow-right"></i></button>
+                <button type="button" class="btn btn-primary" onclick="getViewProcess(4)">Selanjutnya <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
@@ -76,7 +76,7 @@
             </div>
 
             <!-- Submit data / Update status button -->
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-lg-6">
                     <div class="row">
                         <div class="col-6">
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </form>
     </div>
 </div>
@@ -120,19 +120,14 @@
                         <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" required>
-                            <option value="">-- Pilih Klasifikasi --</option>
-                            <option value="Biasa">Biasa</option>
-                            <option value="Sangat Rahasia">Sangat Rahasia</option>
+                        <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" disabled required>
+                            <option value="rahasia" selected> Rahasia</option>
                         </select>
                         <label for="klasifikasi" class="form-label">Klafisikasi</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select border-dark" aria-label="Default select example" name="derajat" id="derajat" required>
-                            <option value="">-- Pilih Derajat --</option>
-                            <option value="Biasa">Biasa</option>
-                            <option value="Segera">Segera</option>
-                            <option value="Kilat">Kilat</option>
+                        <select class="form-select border-dark" aria-label="Default select example" name="derajat" id="derajat" disabled required>
+                            <option value="Segera" selected>Segera</option>
                         </select>
                         <label for="derajat" class="form-label">Derajat</label>
                     </div>
@@ -187,37 +182,16 @@
 
             if (id_disposisi > 0) {
                 let no_agenda = `{{ isset($disposisi[0]) ? $disposisi[0]['no_agenda'] : ''}}`;
-                let klasifikasi = `{{isset($disposisi[0]) ?  $disposisi[0]->klasifikasi : ''}}`;
-                let derajat = `{{ isset($disposisi[0]) ? $disposisi[0]->derajat : '' }}`;
-                let selected_k = klasifikasi == '' ? 'true' : ''
-                let selected_d = derajat == '' ? 'true' : ''
                 
                 let htmlNoAgenda = `<input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp"
                                 name="nomor_agenda" placeholder="Nomor Agenda :" value="` + no_agenda + `" required>
                             <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>`;
 
-                if (selected_k) {
-                    let htmlKlasifikasi = `<option value="">-- Pilih Klasifikasi --</option><option value="Biasa">Biasa</option><option value="Sangat Rahasia">Sangat Rahasia</option>`;
-                } else {
-                    let htmlKlasifikasi = `<option value="` + klasifikasi + `" selected>` + klasifikasi + `</option>`;
-                }
-
-                if (selected_d) {
-                    let htmlDerajat = `<option value="">-- Pilih Derajat --</option><option value="Biasa">Biasa</option><option value="Segera">Segera</option><option value="Kilat">Kilat</option>`;
-                } else {
-                    let htmlDerajat = `<option value="` + derajat + `" selected>` + derajat + `</option>`;
-                }
-
                 $('#form_agenda').html(htmlNoAgenda);
-                $('#klasifikasi').html(htmlKlasifikasi);
-                $('#derajat').html(htmlDerajat);
             }
         }
         if (is_disabled) {
             document.getElementById("nomor_agenda").setAttribute("disabled", "disabled");
-            document.getElementById("klasifikasi").setAttribute("disabled", "disabled");
-            document.getElementById("derajat").setAttribute("disabled", "disabled");
-
         }
     }
 

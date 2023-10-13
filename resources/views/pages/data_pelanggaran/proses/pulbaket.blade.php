@@ -417,17 +417,17 @@
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="pangkat_dihubungi"
-                            placeholder="Pangkat yang dihubungi" value="{{ isset($penyidik) ? $penyidik[1]->pangkat : ''}}" required>
+                            placeholder="Pangkat yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->pangkat : ''}}" required>
                         <label for="exampleInputPassword1" class="form-label">Pangkat yang dihubungi</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="dihubungi"
-                            placeholder="Nama yang dihubungi" value="{{ isset($penyidik) ? $penyidik[1]->name : ''}}" required>
+                            placeholder="Nama yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->name : ''}}" required>
                         <label for="exampleInputPassword1" class="form-label">Nama yang dihubungi</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="jabatan_dihubungi"
-                            placeholder="Jabatan yang dihubungi" value="{{ isset($penyidik) ? $penyidik[1]->jabatan : ''}}" required>
+                            placeholder="Jabatan yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->jabatan : ''}}" required>
                         <label for="exampleInputPassword1" class="form-label">Jabatan yang dihubungi</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -463,8 +463,8 @@
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="jenis_undangan" id="jenis_undangan" required>
                             <option value="">Pilih Jenis Undangan</option>
-                            <option value="1">Sipil</option>
-                            <option value="2">Personel</option>
+                            <option value="1">Pelapor</option>
+                            <option value="2">Terlapor</option>
                         </select>
                         <label for="jenis_undangan" class="form-label">-- Pilih Jenis Undangan --</label>
                     </div>

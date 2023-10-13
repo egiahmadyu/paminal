@@ -15,13 +15,16 @@
                     <a type="button" class="btn btn-success" id="tambah_anggota">
                         Tambah Anggota Unit
                     </a>
+                    <a type="button" class="btn btn-info ms-3" href="/list-anggota">
+                        Tambah Anggota
+                    </a>
                 </div>
                 <div class="card-header" id="form_tambah_anggota" hidden>
                     <form action="/tambah-anggota-unit/{{$id_unit}}" method="post">
                         @csrf
                         <div class="row" id="isi_form">
                             <div class="col-lg-6 mb-3">
-                                <select class="form-select border-dark" data-choices name="anggota" id="anggota">
+                                <select class="form-select border-dark" data-choices name="anggota" id="anggota" required>
                                     <option value="">-- Pilih Anggota --</option>
                                     @if (isset($anggota))
                                         @foreach ($anggota as $item)
@@ -32,7 +35,7 @@
                             </div>
                             <div class="col-lg-3 mb-3">
                                 <button type="submit" class="btn btn-primary">
-                                    Sumbit
+                                    Submit
                                 </button>
                             </div>
                             {{-- <div class="col-lg-3 mb-3">
@@ -56,7 +59,7 @@
                                     <th scope="col">Nama</th>
                                     <th scope="col">NRP</th>
                                     <th scope="col">Jabatan</th>
-                                    {{-- <th scope="col">Action</th> --}}
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -106,10 +109,10 @@
                         data: 'jabatan',
                         name: 'jabatan'
                     },
-                    // {
-                    //     data: 'action',
-                    //     name: 'action'
-                    // },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    },
                 ]
             });
             $('#kt_search').on('click', function(e) {
@@ -118,8 +121,78 @@
             });
         }
 
-        function tambahAnggotaUnit(params) {
-            
+        function editAnggotaUnit(id) {
+            $.ajax({
+                url : 'edit-anggota-unit/'+id,
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function () {
+                    $('.loading').css('display', 'block')
+                }, 
+                success: function (data, status, xhr) {
+                    $('.loading').css('display', 'none')
+                    
+                },
+                error: function (jqXhr, textStatus, errorMessage) { // error callback
+                    $('.loading').css('display', 'none')
+                        var option = {
+                            title: 'Error',
+                            text: 'Terjadi Kesalahan Sistem...',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }
+                    Swal.fire(option) 
+                }
+            })
+        }
+
+        function deleteAnggotaUnit(id) {
+            Swal.fire({
+                title: 'Yakin menghapus anggota Unit?',
+                text: "Data akan terhapus permanen",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus data!',
+                cancelButtonText: 'Tidak, batalkan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url : '/delete-anggota-unit/'+id,
+                        type: 'GET',
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $('.loading').css('display', 'block')
+                        }, 
+                        success: function (data, status, xhr) {
+                            $('.loading').css('display', 'none')
+
+                            Swal.fire({
+                                title: 'Terhapus',
+                                text: 'Data berhasil terhapus...',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload()
+                                }
+                            })
+                        },
+                        error: function (jqXhr, textStatus, errorMessage) { // error callback
+                            $('.loading').css('display', 'none')
+                            console.log('error message: ',errorMessage)
+                            var option = {
+                                    title: 'Error',
+                                    text: 'Terjadi Kesalahan Sistem...',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                            }
+                            Swal.fire(option) 
+                        }
+                    })
+                }
+            })
         }
         
     </script>

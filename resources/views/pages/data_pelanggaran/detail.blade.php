@@ -30,7 +30,7 @@
                         Data No Nota Dinas {{ $kasus->no_nota_dinas }}
                         ({{ $kasus->status->name }})
                         @if ($kasus->status->ticket_id)
-                            <span class="badge bg-warning">Data dari Yanduan dengan Ticket ID : {{ $kasus->ticket_id }}</span>
+                            <span class="badge bg-warning">Data dari Yanduan dengan ID : {{ $kasus->ticket_id }}</span>
                         @endif
                     </h4>
 
@@ -53,19 +53,9 @@
 @endsection
 
 @section('scripts')
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/decoupled-document/ckeditor.js"></script> --}}
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/inline/ckeditor.js"></script> --}}
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
-    {{-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-
-
-
-    {{-- <script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script> --}}
 
     <script type="text/javascript">
         $(document).ready(function() {

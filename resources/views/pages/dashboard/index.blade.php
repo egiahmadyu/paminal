@@ -33,7 +33,7 @@
 
     <div class="row mb-3">
         <div class="col-lg-4 col-sm-6">
-            <div class="card-box bg-blue">
+            <div class="card-box" style="background: #011a7d">
                 <div class="inner">
                     <h1> {{ isset($pelanggar) ? count($pelanggar) : 0 }} </h1>
                     <h5> Total Dumas </h5>
@@ -46,7 +46,7 @@
         </div>
         
         <div class="col-lg-4 col-sm-6">
-            <div class="card-box bg-orange">
+            <div class="card-box" style="background: #fab005">
                 <div class="inner">
                     <h1> {{ $pengaduan_diproses }} </h1>
                     <h5> Total Pengaduan Diproses </h5>
@@ -59,7 +59,7 @@
         </div>
 
         <div class="col-lg-4 col-sm-6">
-            <div class="card-box bg-red">
+            <div class="card-box" style="background: #fa3605">
                 <div class="inner">
                     <h1> {{ isset($poldas) ? count($poldas) : 0 }} </h1>
                     <h5> Jumlah POLDA </h5>
@@ -83,7 +83,7 @@
                             <h4 class="fs-22 fw-bold mb-3"><span class="counter-value" data-target="{{$dumas_terbukti}}">0</span></h4>
                         </div>
                         <div class="avatar-sm flex-grow-0">
-                            <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #86ac75">
+                            <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #011a7d">
                                 <i class="far fa-clipboard-list text-dark"></i>
                             </span>
                         </div>
@@ -117,7 +117,7 @@
                             <h4 class="fs-22 fw-bold mb-3"><span class="counter-value" data-target="{{$limpah_polda}}">0</span></h4>
                         </div>
                         <div class="avatar-sm flex-grow-0">
-                            <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #e26d3a">
+                            <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #fab005">
                                 <i class="far fa-landmark text-dark"></i>
                             </span>
                         </div>
@@ -150,7 +150,7 @@
                             <h4 class="fs-22 fw-bold mb-3"><span class="counter-value" data-target="{{ $pelimpahan }}">0</span></h4>
                         </div>
                         <div class="avatar-sm flex-grow-0">
-                            <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #D9534F">
+                            <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #fa3605">
                                 <i class="far fa-share-square text-dark"></i>
                             </span>
                         </div>
@@ -175,7 +175,7 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <!-- card -->
             <div class="card card-animate">
                 <div class="card-body">
@@ -190,7 +190,7 @@
             <!-- end card -->
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <!-- card -->
             <div class="card card-animate">
                 <div class="card-body">
@@ -214,7 +214,7 @@
     <div class="row mb-3">
         
 
-        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h2>Grafik Dumas</h2>
@@ -225,7 +225,7 @@
             </div>
         </div>
 
-        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h2>Statistik Perbulan</h2>
@@ -236,6 +236,16 @@
             </div>
         </div>
 
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Dumas Selesai</h2>
+                </div>
+                <div class="card-body">
+                    <div id="chartKolomPenyelesaian"></div>
+                </div>
+            </div>
+        </div>
         
     </div>
     
@@ -531,6 +541,7 @@
             var options = {
                 series: value,
                 labels: label,
+                colors: ['#011a7d', '#016f7d','#fab005' ,'#fa3605'],
                 noData: {
                     text: 'Loading...'
                 },
@@ -541,7 +552,7 @@
                 },
                 legend: {
                     position: 'bottom',
-                    horizontalAlign: 'center',
+                    horizontalAlign: 'left',
                     floating: false,
                 },
                 responsive: [{
@@ -619,7 +630,7 @@
                 tooltip: {
                     y: {
                         formatter: function (val) {
-                            return "$ " + val + " thousands"
+                            return val
                         }
                     }
                 }

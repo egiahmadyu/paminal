@@ -230,6 +230,19 @@ class DatasemenController extends Controller
         return $result;
     }
 
+    public function deleteUnit($id)
+    {
+        $unit = Unit::find($id);
+        $unit->delete();
+
+        $result = response()->json([
+            'status' => 200,
+            'success' => true,
+        ]);
+
+        return $result;
+    }
+
     public function updateUnit(Request $request, $id)
     {
         Unit::where('id', $id)->update([
@@ -253,6 +266,30 @@ class DatasemenController extends Controller
         return view('pages.datasemen.detail-unit', $data);
     }
 
+    public function getDetailUnit($id)
+    {
+        $query = DataAnggota::where('unit', $id);
+
+        return DataTables::of($query)
+            ->editColumn('nama', function ($query) {
+                $pangkat = Pangkat::where('id', $query->pangkat)->first();
+                $pangkat = $pangkat->name;
+                return $pangkat . ' ' . $query->nama;
+            })
+            ->addColumn('action', function ($query) {
+                $btn_edit = '<button type="button" class="btn" onclick="editAnggotaUnit(' . $query->id . ')"><i class="fa fa-edit text-warning"></i></button>';
+                $btn_delete = '<button type="button" class="btn" onclick="deleteAnggotaUnit(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
+
+                $button = '<div class="btn-group" role="group">';
+                // $button .= $btn_edit;
+                $button .= $btn_delete;
+                $button .= '</div>';
+                return $button;
+            })
+            ->rawColumns(['nama', 'action'])
+            ->make(true);
+    }
+
     public function tambahAnggotaUnit(Request $request, $id)
     {
         $anggota = DataAnggota::find($request->anggota);
@@ -265,44 +302,31 @@ class DatasemenController extends Controller
             'datasemen' => $datasemen->id
         ]);
 
-        $data = [
-            'datasemen' => $datasemen,
+        return redirect()->route('detail.unit', ['id' => $unit->id]);
+    }
+
+    public function editAnggotaUnit($id)
+    {
+        $unit = Unit::where('id', $id)->first();
+        $datasemen = Datasemen::all();
+
+        $result = response()->json([
+            'status' => 200,
             'unit' => $unit,
-            'anggota' => $anggota,
-            'id_unit' => $id
-        ];
-        return redirect()->route('get.detail.unit', ['id' => $unit->id]);
+            'datasemen' => $datasemen,
+        ]);
+
+        return $result;
     }
 
-    public function getDetailUnit($id)
+    public function deleteAnggotaUnit($id)
     {
-        $query = DataAnggota::where('unit', $id);
+        $anggota = DataAnggota::find($id);
 
-        return DataTables::of($query)
-            ->editColumn('nama', function ($query) {
-                $pangkat = Pangkat::where('id', $query->pangkat)->first();
-                $pangkat = $pangkat->name;
-                return $pangkat . ' ' . $query->nama;
-            })
-            // ->addColumn('action', function ($query) {
-            //     $btn_edit = '<button type="button" class="btn" onclick="editAnggota(' . $query->id . ')"><i class="fa fa-edit text-warning"></i></button>';
-            //     $btn_delete = '<button type="button" class="btn" onclick="deleteAnggota(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
-
-
-            //     $button = '<div class="btn-group" role="group">';
-            //     $button .= $btn_edit;
-            //     $button .= $btn_delete;
-            //     $button .= '</div>';
-            //     return $button;
-            // })
-            ->rawColumns(['nama'])
-            ->make(true);
-    }
-
-    public function deleteUnit($id)
-    {
-        $unit = Unit::find($id);
-        $unit->delete();
+        $anggota->update([
+            'unit' => ' ',
+            'datasemen' => ' ',
+        ]);
 
         $result = response()->json([
             'status' => 200,
@@ -310,5 +334,14 @@ class DatasemenController extends Controller
         ]);
 
         return $result;
+    }
+
+    public function updateAnggotaUnit(Request $request, $id)
+    {
+        Unit::where('id', $id)->update([
+            'unit' => $request->nama,
+            'datasemen' => $request->datasemen,
+        ]);
+        return redirect()->route('unit.datasemen')->with('success', 'Berhasil Diupdate !');
     }
 }

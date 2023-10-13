@@ -3,6 +3,7 @@
 @prepend('styles')
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> --}}
 @endprepend
 
 
@@ -118,8 +119,8 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function() {
             getData();
@@ -162,7 +163,7 @@
             var table = $('#data-data').DataTable({
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true,
                 ajax: {
                     url: "{{ route('get.anggota') }}",
                     method: "post",
@@ -193,10 +194,11 @@
                     },
                 ]
             });
-            $('#kt_search').on('click', function(e) {
-                e.preventDefault();
-                table.table().draw();
-            });
+
+            // $('#kt_search').on('click', function(e) {
+            //     e.preventDefault();
+            //     table.table().draw();
+            // });
         }
 
         function editAnggota(id) {

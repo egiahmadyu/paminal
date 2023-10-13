@@ -50,7 +50,7 @@
 
             <div class="row">
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card-box bg-blue">
+                    <div class="card-box" style="background: #011a7d">
                         <div class="inner">
                             <h1> {{ isset($diterima) ? count($diterima) : 0 }} </h1>
                             <h5> Pengaduan Diterima </h5>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card-box bg-orange">
+                    <div class="card-box" style="background: #fab005">
                         <div class="inner">
                             <h1> {{ isset($diproses) ? count($diproses) : 0 }} </h1>
                             <h5> Pengaduan Diproses </h5>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card-box bg-red">
+                    <div class="card-box" style="background: #fa3605">
                         <div class="inner">
                             <h1> {{ isset($selesai) ? count($selesai) : 0 }} </h1>
                             <h5> Pengaduan Selesai </h5>
@@ -109,7 +109,7 @@
                                     <th scope="col">Pangkat</th>
                                     <th scope="col">Nama Korban</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Ticket ID</th>
+                                    <th scope="col">ID Yanduan</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
