@@ -122,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
     // Generate
     Route::get('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi']);
     Route::post('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi']);
+    Route::get('/surat-li_infosus/{id}', [LimpahPoldaController::class, 'generateLiInfosus']);
     // Route::get('/lembar-disposisi/{id}/{type}', [LimpahPoldaController::class, 'downloadDisposisi']);
     Route::post('/surat-limpah-polda/{id}', [LimpahPoldaController::class, 'generateLimpahPolda']);
     Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
@@ -144,8 +145,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/undangan-klarifikasi/{id}', [PulbaketController::class, 'printUndanganKlarifikasi']);
     Route::get('/laporan-hasil-limpah-biro/{id}', [ProvostWabprofController::class, 'printLimpahBiro']);
 
-
     Route::post('/limpah-biro/{id}', [ProvostWabprofController::class, 'simpanData']);
+
 
 
 

@@ -30,13 +30,31 @@ use App\Models\UukHistory;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use DataTables;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
+use Yajra\DataTables\Facades\DataTables;
+
+use function PHPUnit\Framework\isNull;
 
 class KasusController extends Controller
 {
     public function index()
     {
+        // $user = Auth::getUser();
+        // $role = $user->roles->first();
+
+        // $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+        //     ->where('dh.limpah_unit', '=', $user->unit)
+        //     ->where('dh.limpah_den', $user->datasemen)
+        //     ->where('dh.tipe_disposisi', '=', 3)
+        //     ->orderBy('data_pelanggars.id', 'desc')->with('status');
+
+        // $test = [];
+        // foreach ($query as $key => $value) {
+        //     $test[$key] = $value->id;
+        // }
+        // dd($query->get());
+
         $data['kasuss'] = DataPelanggar::get();
         $data['diterima'] = $data['kasuss']->where('status_id', 1);
         $data['diproses'] = $data['kasuss']->where('status_id', '>', 1)->where('status_id', '<', 6);
@@ -220,9 +238,25 @@ class KasusController extends Controller
 
     public function data(Request $request)
     {
-        $query = DataPelanggar::orderBy('id', 'desc')->with('status');
+        $user = Auth::getUser();
+        $role = $user->roles->first();
 
-        return Datatables::of($query)
+        if (!$user->unit && !$user->datasemen) {
+            $query = DataPelanggar::orderBy('id', 'desc')->with('status');
+        } elseif (!$user->unit && $user->datasemen) {
+            $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                ->where('dh.limpah_den', $user->datasemen)
+                ->where('dh.tipe_disposisi', '=', 3)
+                ->orderBy('data_pelanggars.id', 'desc')->with('status');
+        } else {
+            $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                ->where('dh.limpah_unit', '=', $user->unit)
+                ->where('dh.limpah_den', $user->datasemen)
+                ->where('dh.tipe_disposisi', '=', 3)
+                ->orderBy('data_pelanggars.id', 'desc')->with('status');
+        }
+
+        return DataTables::of($query->get())
             ->editColumn('no_nota_dinas', function ($query) {
                 // return $query->no_nota_dinas;
                 if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '">Edit Data</a>';

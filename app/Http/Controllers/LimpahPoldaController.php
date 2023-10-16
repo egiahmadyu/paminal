@@ -8,6 +8,8 @@ use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
 use App\Models\LimpahPolda;
 use App\Models\Penyidik;
+use App\Models\Polda;
+use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PDF;
@@ -179,6 +181,40 @@ class LimpahPoldaController extends Controller
             'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'perihal' => $kasus->perihal_nota_dinas,
             'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
+        ));
+
+        $template_document->saveAs(storage_path('template_surat/' . $filename . '.docx'));
+
+        return response()->download(storage_path('template_surat/' . $filename . '.docx'))->deleteFileAfterSend(true);
+    }
+
+    public function generateLiInfosus($kasus_id)
+    {
+        $kasus = DataPelanggar::find($kasus_id);
+
+        if ($kasus->tipe_data == '3') {
+            $template_filename = 'dokumen_li';
+            $filename = $kasus->pelapor . '-Surat-Laporan-Informasi';
+        } else {
+            $template_filename = 'dokumen_infosus';
+            $filename = $kasus->pelapor . '-Surat-Informasi-Khusus';
+        }
+
+        $wujud_perbuatan = WujudPerbuatan::find($kasus->wujud_perbuatan);
+        $wilayah_hukum = Polda::find($kasus->wilayah_hukum);
+
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename . '.docx'));
+
+        $template_document->setValues(array(
+            'pelapor' => $kasus->pelapor,
+            'wilayah_hukum' => $wilayah_hukum->name,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'bulan_romawi' => $this->getRomawi(Carbon::now()->translatedFormat('m')),
+            'tahun' => Carbon::now()->translatedFormat('Y'),
+            'tgl_kejadian' => Carbon::parse($kasus->tanggal_kejadian)->translatedFormat('d F Y'),
+            'perihal' => $kasus->perihal_nota_dinas,
+            'kronologis' => $kasus->kronologi,
+            'tgl_pelaporan' => Carbon::parse($kasus->created_at)->translatedFormat('d F Y')
         ));
 
         $template_document->saveAs(storage_path('template_surat/' . $filename . '.docx'));

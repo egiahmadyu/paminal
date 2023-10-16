@@ -13,9 +13,11 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Unit Datasemen</h4>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahUnit">
-                        Tambah Unit
-                    </button>
+                    @can('manage-auth')
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahUnit">
+                            Tambah Unit
+                        </button>
+                    @endcan
                 </div><!-- end card header -->
 
                 <div class="card-body">

@@ -124,7 +124,7 @@
     </div>
 
     <!-- Isi Form -->
-    <div class="card border-dark">
+    <div class="card border-0">
         <div class="card-header">
             <div class="row">
                 <div class="col-lg-6">
@@ -164,117 +164,124 @@
             </div>
         </div>
 
-        <div class="card-body">
-            <div class="row mt-4">
-                <div class="col-lg-12">
-                    <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
-                        <thead class="text-muted table-light">
-                            <tr>
-                                <th scope="col"> Nama Kegiatan</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Undangan Gelar Perkara Penyelidikan</td>
-                                <td>
-                                    @if (!empty($ugp))
-                                        <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
-                                            <button type="button" class="btn btn-outline-primary text-primary">
-                                                <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Undangan</h6>
-                                            </button>
-                                        </a>
-                                    @else
-                                        <a href="" data-bs-toggle="modal" data-bs-target="#modal_undangan_gelar_perkara">
-                                            <button type="button" class="btn btn-outline-primary text-primary">
-                                                <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen Undangan</h6>
-                                            </button>
-                                        </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @if (!empty($ugp))
+        @can('edit-gelar_perkara')
+            <div class="card-body">
+                <div class="row mt-4">
+                    <div class="col-lg-12">
+                        <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
+                            <thead class="text-muted table-light">
                                 <tr>
-                                    <td>Notulen Hasil Gelar Perkara</td>
-                                    <td>
-                                        <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
-                                            <button type="button" class="btn btn-outline-primary text-primary">
-                                                <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Notulen</h6>
-                                            </button>
-                                        </a>
-                                    </td>
+                                    <th scope="col"> Nama Kegiatan</th>
+                                    <th scope="col">Action</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr>
-                                    <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
+                                    <td>Undangan Gelar Perkara Penyelidikan</td>
                                     <td>
-                                        @if (isset($ndHGP))
-                                            <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
+                                        @if (!empty($ugp))
+                                            <a href="/gelar-perkara-undangan/{{ $kasus->id }}">
                                                 <button type="button" class="btn btn-outline-primary text-primary">
-                                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Laporan</h6>
+                                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Undangan</h6>
                                                 </button>
                                             </a>
                                         @else
-                                            <a href="" data-bs-toggle="modal" data-bs-target="#modal_nd_laporan_hasil_gelar">
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#modal_undangan_gelar_perkara">
                                                 <button type="button" class="btn btn-outline-primary text-primary">
-                                                    <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Laporan</h6>
+                                                    <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen Undangan</h6>
                                                 </button>
                                             </a>
                                         @endif
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>SP2HP2 Akhir</td>
-                                    <td>
-                                        <a href="/surat-sp2hp2-akhir/{{ $kasus->id }}">
-                                            <button type="button" class="btn btn-outline-primary text-primary">
-                                                <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen SP2HP2 Akhir</h6>
-                                            </button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @if ($lhp->hasil_penyelidikan == '1')
+                                @if (!empty($ugp))
                                     <tr>
-                                        <td>Nota Dinas Ka. LITPERS</td>
+                                        <td>Notulen Hasil Gelar Perkara</td>
                                         <td>
-                                            @if (isset($litpers))
-                                                <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
+                                            <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
+                                                <button type="button" class="btn btn-outline-primary text-primary">
+                                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen Notulen</h6>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nota Dinas Laporan Hasil Gelar Penyelidikan</td>
+                                        <td>
+                                            @if (isset($ndHGP))
+                                                <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
                                                     <button type="button" class="btn btn-outline-primary text-primary">
-                                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Ka. LITPERS</h6>
+                                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Laporan</h6>
                                                     </button>
                                                 </a>
                                             @else
-                                                <a href="" data-bs-toggle="modal" data-bs-target="#modal_litpers">
+                                                <a href="" data-bs-toggle="modal" data-bs-target="#modal_nd_laporan_hasil_gelar">
                                                     <button type="button" class="btn btn-outline-primary text-primary">
-                                                        <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Ka. LITPERS</h6>
+                                                        <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Laporan</h6>
                                                     </button>
                                                 </a>
                                             @endif
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>SP2HP2 Akhir</td>
+                                        <td>
+                                            <a href="/surat-sp2hp2-akhir/{{ $kasus->id }}">
+                                                <button type="button" class="btn btn-outline-primary text-primary">
+                                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen SP2HP2 Akhir</h6>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @if ($lhp->hasil_penyelidikan == '1')
+                                        <tr>
+                                            <td>Nota Dinas Ka. LITPERS</td>
+                                            <td>
+                                                @if (isset($litpers))
+                                                    <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
+                                                        <button type="button" class="btn btn-outline-primary text-primary">
+                                                            <h6 class="p-0 m-0"><i class="fas fa-print"></i> Dokumen ND Ka. LITPERS</h6>
+                                                        </button>
+                                                    </a>
+                                                @else
+                                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal_litpers">
+                                                        <button type="button" class="btn btn-outline-primary text-primary">
+                                                            <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND Ka. LITPERS</h6>
+                                                        </button>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endif
-                            @endif
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endcan
+        
     </div>
-    @if (isset($kasus) & ($kasus->status_id === 5) & ($lhp->hasil_penyelidikan === '1'))
-        <div class="row mt-3">
-            <div class="col-lg-12">
-                @if (!empty($ugp))
-                    <form action="/data-kasus/update" method="post">
-                        @csrf
-                        <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
-                        <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" hidden>
-                        <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }}
-                            value="update_status">Lanjutkan
-                            ke Provos / Wabprof</button>
-                    </form>
-                @endif
+
+    @can('edit-gelar_perkara')
+        @if (isset($kasus) & ($kasus->status_id === 5) & ($lhp->hasil_penyelidikan === '1'))
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    @if (!empty($ugp))
+                        <form action="/data-kasus/update" method="post">
+                            @csrf
+                            <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
+                            <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" hidden>
+                            <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }}
+                                value="update_status">Lanjutkan
+                                ke Provos / Wabprof</button>
+                        </form>
+                    @endif
+                </div>
             </div>
-        </div>
-    @endif
+        @endif
+    @endcan
+    
 </div>
 
 <!-- Modal undangan gelar penyelidikan -->

@@ -67,24 +67,42 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Name</label>
+                            <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Username</label>
+                            <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" name="username" required>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Jabatan</label>
-                            <input type="text" class="form-control" name="jabatan">
+                            <label for="datasemen" class="form-label">Bag / Detasemen</label>
+                            <select class="form-select" id="datasemen" data-choices name="datasemen" required>
+                                <option value="">Pilih Datasemen</option>
+                                @foreach ($datasemens as $datasemen)
+                                    <option value="{{ $datasemen->id }}">{{ $datasemen->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3" id="unit">
+                            <label for="unit" class="form-label">UNIT</label>
+                            <select class="form-select" data-choice aria-label="Default select example" name="unit">
+                                <option selected>Pilih Unit</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{$unit->id}}">{{ $unit->unit }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Password</label>
+                            <label for="jabatan" class="form-label">Jabatan</label>
+                            <input type="text" class="form-control" name="jabatan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" name="password" required>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Role</label>
-                            <select class="form-select" aria-label="Default select example" name="role">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select" aria-label="Default select example" name="role" required>
                                 <option selected>Open this select menu</option>
                                 @foreach ($roles as $value)
                                     <option value="{{ $value->id }}">{{ $value->name }}</option>
@@ -103,4 +121,63 @@
 @endsection
 
 @section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#datasemen').on('change', function() {
+            let val = $('#datasemen').find(":selected").val()
+            if (val != 0) {
+                $.ajax({
+                    url : 'api/get-unit/'+val,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $('.loading').css('display', 'block')
+                    }, 
+                    success: function (data, status, xhr) {
+                        $('.loading').css('display', 'none')
+                        console.log(data)
+
+                        let unit = Object.values(data.data.unit)
+                        let option = '<option value="">Pilih Unit</option>'
+                        let html = ''
+                        console.log(unit.length)
+                        if (unit.length == 0) {
+                            html = `<label for="unit" class="form-label">UNIT</label>
+                                <select class="form-select" data-choices aria-label="Default select example" name="unit" disabled>
+                                    <option value="">-- Unit Belum Tersedia --</option>
+                                </select>`
+                        } else {
+                            option += `<option value="">KABAG / KADEN</option>`
+                            unit.forEach(element => {
+                                let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
+                                option += opt
+                            });
+                            
+                            console.log(option)
+                            html = `<label for="unit" class="form-label">UNIT</label>
+                                <select class="form-select" data-choices aria-label="Default select example" name="unit">
+                                    `+option+`
+                                </select>`
+                            // html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">-- Pilih Unit --</option>`+option+`</select><label for="unit_den_bag" class="form-label">Unit</label>`
+                        }
+                        
+                        $('#unit').empty()
+                        $('#unit').append(html)
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) { // error callback
+                        $('.loading').css('display', 'none')
+                        var option = {
+                            title: 'Error',
+                            text: 'Terjadi Kesalahan Sistem...',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }
+                        Swal.fire(option) 
+                    }
+                })
+            }
+            
+        });
+    });
+</script>
 @endsection

@@ -65,7 +65,7 @@
                         <i class="far fa-building"></i> <span data-key="t-dashboard">Bag / Detasemen</span>
                     </a>
                     <ul class="submenu collapse" id="collapseExample">
-                        @can('tambah-bag_detasemen')
+                        @can('manage-auth')
                         <a href="{{ route('tambah.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'tambah-datasemen' ? 'active' : '' }}">
                             <i class="far fa-plus-square"></i> <span data-key="t-dashboard">Tambah Bag / Detasemen</span>
                         </a>

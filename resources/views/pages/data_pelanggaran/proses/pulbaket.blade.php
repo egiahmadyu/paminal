@@ -127,24 +127,27 @@
                                 value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) . ' WIB' : '' }}"
                                 readonly>
                         </div>
-                        @if (!empty($sprin))
-                            <div class="row">
-                                <div class="col-4">
-                                    <a href="/surat-perintah/{{ $kasus->id }}">
-                                        <i class="far fa-download"></i> SPRIN
-                                    </a>
+                        @can('edit-pulbaket')
+                            @if (!empty($sprin))
+                                <div class="row">
+                                    <div class="col-4">
+                                        <a href="/surat-perintah/{{ $kasus->id }}">
+                                            <i class="far fa-download"></i> SPRIN
+                                        </a>
+                                    </div>
+                                    <div class="col-8">
+                                        <a href="/surat-perintah-pengantar/{{ $kasus->id }}">
+                                            <i class="far fa-download"></i> ND Pengantar SPRIN
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <a href="/surat-perintah-pengantar/{{ $kasus->id }}">
-                                        <i class="far fa-download"></i> ND Pengantar SPRIN
-                                    </a>
-                                </div>
-                            </div>
-                        @else
-                            <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sprin">
-                                <i class="far fa-file-plus"></i> SPRIN
-                            </a>
-                        @endif
+                            @else
+                                <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sprin">
+                                    <i class="far fa-file-plus"></i> SPRIN
+                                </a>
+                            @endif
+                        @endcan
+                        
                     </form>
                 </div>
                 <div class="col-lg-4 mb-3">
@@ -155,9 +158,11 @@
                                 value="{{ !empty($uuk) ? date('d-m-Y H:i', strtotime($uuk->created_at)) : '' }}"
                                 readonly aria-describedby="emailHelp">
                         </div>
-                        <a href="/surat-uuk/{{ $kasus->id }}">
-                            <i class="far fa-download"></i> UUK
-                        </a>
+                        @can('edit-pulbaket')
+                            <a href="/surat-uuk/{{ $kasus->id }}">
+                                <i class="far fa-download"></i> UUK
+                            </a>
+                        @endcan
                     </form>
                 </div>
                 <div class="col-lg-4 mb-3">
@@ -170,57 +175,23 @@
                                     value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
                                     readonly>
                             </div>
-                            @if (!empty($sp2hp_awal))
-                                <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                                    <i class="far fa-download"></i> Surat
-                                </a>
-                            @else
-                                <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sp2hp2_awal">
-                                    <i class="far fa-file-plus"></i> SP2HP2
-                                </a>
-                            @endif
+                            @can('edit-pulbaket')
+                                @if (!empty($sp2hp_awal))
+                                    <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
+                                        <i class="far fa-download"></i> Surat
+                                    </a>
+                                @else
+                                    <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sp2hp2_awal">
+                                        <i class="far fa-file-plus"></i> SP2HP2
+                                    </a>
+                                @endif
+                            @endcan
+                            
                             @if($errors->any())
                                 <h4>{{$errors->first()}}</h4>
                             @endif
                         </div>
                     </form>
-
-                    {{-- <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <div class="form-label">
-                                    <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Awal</label>
-                                </div>
-
-                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp"
-                                    value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
-                                    readonly>
-                            </div>
-                            @if (!empty($sp2hp_awal))
-                                <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                                    Surat <i class="far fa-download"></i>
-                                </a>
-                            @else
-                                <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sp2hp2_awal">
-                                    Buat Surat <i class="far fa-file-plus"></i>
-                                </a>
-                            @endif
-
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <div class="form-label">
-                                    <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2 Akhir</label>
-                                </div>
-
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            </div>
-                            <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
-                                Buat Surat <i class="far fa-file-plus"></i>
-                            </a>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
             <hr>
@@ -292,68 +263,10 @@
                         </div>
                     </div>
 
-                    <!-- Input data penyidik -->
-                    <!--<div class="card card-data-penyidik border-dark">
-                        <div class="card-header border-dark">Input Data Penyelidik</div>
-                        <div class="card-body">
-                            <div class="mb-3" id="form_input_anggota">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control border-dark" name="pangkat_ketua"
-                                                id="pangkat_ketua" placeholder="Pangkat Penyelidik" required>
-                                            <label for="pangkat_ketua" class="form-label">Pangkat Penyelidik</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control border-dark" name="nama_penyelidik_ketua"
-                                                id="nama_penyidik" placeholder="Nama Penyelidik" required>
-                                            <label for="nama_penyelidik_ketua" class="form-label">Nama Penyelidik</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control border-dark" name="nrp_ketua"
-                                                id="nrp" placeholder="NRP" required>
-                                            <label for="nrp_ketua" class="form-label">NRP</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control border-dark" name="jabatan_ketua"
-                                                id="jabatan" placeholder="Jabatan Penyelidik" required>
-                                            <label for="jabatan_ketua" class="form-label">Jabatan Penyelidik</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <div class="form-floating mb-3">
-                                            <select name="tipe_tim_ketua" id="tipe_tim" class="form-control border-dark"
-                                                disabeled>
-                                                <option value="1" class="text-center" selected>Ketua</option>
-                                            </select>
-                                            <label for="tipe_tim" class="form-label">Jabatan TIM : </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <hr class="border-dark">
-                                </div>
-                            </div>
-
-                            <div class="row mb-3" class="d-flex justify-content-end">
-                                <a href="#" onclick="tambahAnggota()"> <i class="far fa-plus-square"></i>
-                                    Anggota </a>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div class="form-outline mb-3">
-                        <button type="submit" class="form-control btn btn-primary">Buat SPRIN</button>
+                        @can('edit-pulbaket')
+                            <button type="submit" class="form-control btn btn-primary">Buat SPRIN</button>
+                        @endcan
                     </div>
                 </form>
             </div>
@@ -435,7 +348,9 @@
                         <label for="telp_dihubungi" class="form-label">No. Telepon yang dihubungi</label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
+                    @can('edit-pulbaket')
+                        <button type="submit" class="btn btn-primary">Buat Surat</button>
+                    @endcan
                 </form>
             </div>
             {{-- <div class="modal-footer">
@@ -500,7 +415,9 @@
                     </div>
 
                     <div class="form-outline mb-3">
-                        <button type="submit" class="form-control btn btn-primary">Buat Undangan</button>
+                        @can('edit-pulbaket')
+                            <button type="submit" class="form-control btn btn-primary">Buat Undangan</button>
+                        @endcan
                     </div>
                 </form>
             </div>

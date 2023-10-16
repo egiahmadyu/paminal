@@ -16,7 +16,7 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $permission = [
-            'dashboard', 'data-pelanggar', 'input-data', 'anggota', 'tambah-bag_detasemen', 'list-bag_den', 'list-unit', 'import-data', 'view-diterima', 'edit-diterima', 'view-pulbaket', 'edit-pulbaket', 'view-gelar_perkara', 'edit-gelar_perkara', 'view-limpah_biro', 'edit-limpah_biro', 'infosus-li'
+            'dashboard', 'data-pelanggar', 'input-data', 'anggota', 'tambah-bag_detasemen', 'list-bag_den', 'list-unit', 'import-data', 'view-diterima', 'edit-diterima', 'view-pulbaket', 'edit-pulbaket', 'view-gelar_perkara', 'edit-gelar_perkara', 'view-limpah_biro', 'edit-limpah_biro', 'infosus-li',
         ];
 
         foreach ($permission as $key => $value) {

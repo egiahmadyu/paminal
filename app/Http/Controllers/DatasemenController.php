@@ -7,6 +7,7 @@ use App\Models\Datasemen;
 use App\Models\Pangkat;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class DatasemenController extends Controller
@@ -44,11 +45,19 @@ class DatasemenController extends Controller
                 return $wakaden;
             })
             ->addColumn('action', function ($query) {
-                $edit_url = route('edit.datasemen', $query->id);
-                $btn_delete = '<button type="button" class="btn" onclick="deleteDatasemen(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
+                $user = Auth::getUser();
+                $role = $user->roles->first();
+                if ($role->name == 'admin') {
+                    $btn_edit = '<a class="btn" href="' . route('edit.datasemen', $query->id) . '"><i class="fa fa-edit text-warning"></i></a>';
+                    $btn_delete = '<button type="button" class="btn" onclick="deleteDatasemen(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
+                } else {
+                    $btn_edit = '';
+                    $btn_delete = '';
+                }
+
                 $button = '';
                 $button .= '<div class="btn-group" role="group">';
-                $button .= '<a class="btn" href="' . $edit_url . '"><i class="fa fa-edit text-warning"></i></a>';
+                $button .= $btn_edit;
                 $button .= $btn_delete;
                 $button .= '</div>';
                 return $button;

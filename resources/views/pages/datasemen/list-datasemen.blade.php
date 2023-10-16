@@ -12,9 +12,11 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Datasemen</h4>
-                    <a type="button" class="btn btn-success" href="/tambah-datasemen">
-                        Tambah Datasemen
-                    </a>
+                    @can('manage-auth')
+                        <a type="button" class="btn btn-success" href="/tambah-datasemen">
+                            Tambah Datasemen
+                        </a>
+                    @endcan
                 </div><!-- end card header -->
 
                 <div class="card-body">

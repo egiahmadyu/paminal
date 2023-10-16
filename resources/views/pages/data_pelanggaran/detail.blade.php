@@ -27,7 +27,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">
-                        Data No Nota Dinas {{ $kasus->no_nota_dinas }}
+                        {{ $kasus->no_nota_dinas ? 'Data No Nota Dinas '. $kasus->no_nota_dinas : ($kasus->tipe_data == '2' ? 'Data Informasi Khusus' : 'Data Laporan Informasi')}}
                         ({{ $kasus->status->name }})
                         @if ($kasus->status->ticket_id)
                             <span class="badge bg-warning">Data dari Yanduan dengan ID : {{ $kasus->ticket_id }}</span>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Datasemen;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -10,8 +12,16 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data['users'] = User::all();
-        $data['roles'] = Role::all();
+        $datasemens = Datasemen::all();
+        $units = Unit::where('datasemen', 1)->get();
+
+        $data = [
+            'users' => User::all(),
+            'roles' => Role::all(),
+            'datasemens' => $datasemens,
+            'units' => $units,
+        ];
+
 
         return view('pages.user.index', $data);
     }
@@ -24,7 +34,9 @@ class UserController extends Controller
                 'name' => $request->name,
                 'username' => strtolower($request->username),
                 'password' => bcrypt($request->password),
-                'jabatan' => $request->jabatan
+                'jabatan' => $request->jabatan,
+                'datasemen' => $request->datasemen,
+                'unit' => $request->unit
             ]);
             $user->assignRole($role);
 

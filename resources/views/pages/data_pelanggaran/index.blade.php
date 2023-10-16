@@ -50,39 +50,39 @@
 
             <div class="row">
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card-box" style="background: #011a7d">
+                    <div class="card-box" style="background: #011a7d;">
                         <div class="inner">
-                            <h1> {{ isset($diterima) ? count($diterima) : 0 }} </h1>
-                            <h5> Pengaduan Diterima </h5>
+                            <h1 style="color: white"> {{ isset($diterima) ? count($diterima) : 0 }} </h1>
+                            <h5 style="color: white"> Pengaduan Diterima </h5>
                         </div>
                         <div class="icon">
                             <i class="fa fa-gavel f-left" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="card-box-footer"><h6>Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
+                        <a href="#" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
                     <div class="card-box" style="background: #fab005">
                         <div class="inner">
-                            <h1> {{ isset($diproses) ? count($diproses) : 0 }} </h1>
-                            <h5> Pengaduan Diproses </h5>
+                            <h1 style="color: white"> {{ isset($diproses) ? count($diproses) : 0 }} </h1>
+                            <h5 style="color: white"> Pengaduan Diproses </h5>
                         </div>
                         <div class="icon">
                             <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                        <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
                     <div class="card-box" style="background: #fa3605">
                         <div class="inner">
-                            <h1> {{ isset($selesai) ? count($selesai) : 0 }} </h1>
-                            <h5> Pengaduan Selesai </h5>
+                            <h1 style="color: white"> {{ isset($selesai) ? count($selesai) : 0 }} </h1>
+                            <h5 style="color: white"> Pengaduan Selesai </h5>
                         </div>
                         <div class="icon">
                             <i class="fad fa-clipboard-check fa-swap-opacity"></i>
                         </div>
-                        <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                        <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
                     </div>
                 </div>
             </div>

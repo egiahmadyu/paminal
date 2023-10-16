@@ -5,9 +5,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard | Paminal</title>
+    <title>Paminal | {{ isset($title) ? $title : '' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Dashboard Paminal" name="description" />
+    <meta content="Paminal" name="description" />
     <!-- App favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/icon/paminal.ico') }}">
 

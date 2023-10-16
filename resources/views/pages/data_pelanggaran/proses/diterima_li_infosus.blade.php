@@ -48,7 +48,6 @@
             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
             
             <div class="row">
-
                 <!--Disposisi Button-->
                 <div class="col-lg-12">
                     <div class="card p-2">
@@ -57,24 +56,46 @@
 
                                 <!--Disposisi Karo/Sesro-->
                                 <div class="col-lg-12 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Permohonan penomoran surat {{ $kasus->tipe_data == 2 ? 'Informasi Khusus' : 'Laporan Informasi' }} kepada Karo/Sesro</label>
-                                    @if (isset($disposisi[0]) && $disposisi[0]->tipe_disposisi == 1)
-                                    <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="karosesro" onclick="onClickModal(this)" type="button">
+                                    <label class="form-label">Dokumen {{ $kasus->tipe_data == "2" ? 'Informasi Khusus' : 'Laporan Informasi' }}</label>
+                                    <a href="/surat-li_infosus/{{ $kasus->id }}" class="btn btn-success" style="width: 100%">
                                         <i class="far fa-download"></i> Download
-                                    </button>
-                                    @else
-                                    <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="karosesro" onclick="onClickModal(this)" type="button">
-                                        <i class="far fa-plus-square"></i> Buat
-                                    </button>
-                                    @endif
+                                    </a>
                                 </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+
+                <!--Disposisi Button-->
+                @can('edit-diterima')
+                    <div class="col-lg-12">
+                        <div class="card p-2">
+                            <div class="col-lg-12 mb-3">
+                                <div class="row">
+
+                                    <!--Disposisi Karo/Sesro-->
+                                    <div class="col-lg-12 mb-3">
+                                        <label class="form-label">Permohonan penomoran surat {{ $kasus->tipe_data == 2 ? 'Informasi Khusus' : 'Laporan Informasi' }} kepada Karo/Sesro</label>
+                                        @if (isset($disposisi[0]) && $disposisi[0]->tipe_disposisi == 1)
+                                        <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="karosesro" onclick="onClickModal(this)" type="button">
+                                            <i class="far fa-download"></i> Download
+                                        </button>
+                                        @else
+                                        <button class="btn btn-primary" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="karosesro" onclick="onClickModal(this)" type="button">
+                                            <i class="far fa-plus-square"></i> Buat
+                                        </button>
+                                        @endif
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endcan
+                
+            </div>
             <!-- Submit data / Update status button -->
             {{-- <div class="row">
                 <div class="col-lg-6">
@@ -105,7 +126,7 @@
 </form>
 
 <!-- Modal Disposisi Karo/Sesro & Binpam-->
-<div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="modal_disposisi" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

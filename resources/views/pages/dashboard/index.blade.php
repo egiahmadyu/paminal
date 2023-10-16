@@ -35,39 +35,39 @@
         <div class="col-lg-4 col-sm-6">
             <div class="card-box" style="background: #011a7d">
                 <div class="inner">
-                    <h1> {{ isset($pelanggar) ? count($pelanggar) : 0 }} </h1>
-                    <h5> Total Dumas </h5>
+                    <h1 style="color: white"> {{ isset($pelanggar) ? count($pelanggar) : 0 }} </h1>
+                    <h5 style="color: white"> Total Dumas </h5>
                 </div>
                 <div class="icon">
                     <i class="fa fa-gavel f-left" aria-hidden="true"></i>
                 </div>
-                <a href="/data-kasus" class="card-box-footer"><h6>Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
+                <a href="/data-kasus" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
             </div>
         </div>
         
         <div class="col-lg-4 col-sm-6">
             <div class="card-box" style="background: #fab005">
                 <div class="inner">
-                    <h1> {{ $pengaduan_diproses }} </h1>
-                    <h5> Total Pengaduan Diproses </h5>
+                    <h1 style="color: white"> {{ $pengaduan_diproses }} </h1>
+                    <h5 style="color: white"> Total Pengaduan Diproses </h5>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
                 </div>
-                <a href="/data-kasus" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                <a href="/data-kasus" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
             </div>
         </div>
 
         <div class="col-lg-4 col-sm-6">
             <div class="card-box" style="background: #fa3605">
                 <div class="inner">
-                    <h1> {{ isset($poldas) ? count($poldas) : 0 }} </h1>
-                    <h5> Jumlah POLDA </h5>
+                    <h1 style="color: white"> {{ isset($poldas) ? count($poldas) : 0 }} </h1>
+                    <h5 style="color: white"> Jumlah POLDA </h5>
                 </div>
                 <div class="icon">
                     <i class="fa fa-landmark"></i>
                 </div>
-                <a href="#" class="card-box-footer"> <h6> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
             </div>
         </div>
     </div>
@@ -84,7 +84,7 @@
                         </div>
                         <div class="avatar-sm flex-grow-0">
                             <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #011a7d">
-                                <i class="far fa-clipboard-list text-dark"></i>
+                                <i class="far fa-clipboard-list"></i>
                             </span>
                         </div>
                     </div>
@@ -95,13 +95,13 @@
                         <option value="diproses">Proses (Mengikuti BAGYANDUAN)</option>
                     </select>
                 </div><!-- end card body -->
-                <div class="animation-effect-6 text-dark opacity-25 fs-18">
+                <div class="animation-effect-6 opacity-25 fs-18">
                     <i class="far fa-star"></i>
                 </div>
-                <div class="animation-effect-4 text-dark opacity-25 fs-18">
+                <div class="animation-effect-4 opacity-25 fs-18">
                     <i class="far fa-thumbtack"></i>
                 </div>
-                <div class="animation-effect-3 text-dark opacity-25 fs-18">
+                <div class="animation-effect-3 opacity-25 fs-18">
                     <i class="far fa-book"></i>
                 </div>
             </div><!-- end card -->
@@ -118,7 +118,7 @@
                         </div>
                         <div class="avatar-sm flex-grow-0">
                             <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #fab005">
-                                <i class="far fa-landmark text-dark"></i>
+                                <i class="far fa-landmark"></i>
                             </span>
                         </div>
                     </div>
@@ -128,13 +128,13 @@
                         @endforeach
                     </select>
                 </div><!-- end card body -->
-                <div class="animation-effect-6 text-dark opacity-25 fs-18">
+                <div class="animation-effect-6 opacity-25 fs-18">
                     <i class="far fa-share-alt"></i>
                 </div>
-                <div class="animation-effect-4 text-dark opacity-25 fs-18">
+                <div class="animation-effect-4 opacity-25 fs-18">
                     <i class="far fa-pencil-alt"></i>
                 </div>
-                <div class="animation-effect-3 text-dark opacity-25 fs-18">
+                <div class="animation-effect-3 opacity-25 fs-18">
                     <i class="fas fa-sync-alt"></i>
                 </div>
             </div><!-- end card -->
@@ -151,7 +151,7 @@
                         </div>
                         <div class="avatar-sm flex-grow-0">
                             <span class="avatar-title bg-gradient border-success rounded fs-3 mb-3" style="background: #fa3605">
-                                <i class="far fa-share-square text-dark"></i>
+                                <i class="far fa-share-square"></i>
                             </span>
                         </div>
                     </div>
@@ -161,13 +161,13 @@
                         @endforeach
                     </select>
                 </div><!-- end card body -->
-                <div class="animation-effect-6 text-dark opacity-25 fs-18">
+                <div class="animation-effect-6 opacity-25 fs-18">
                     <i class="far fa-dice-d6"></i>
                 </div>
-                <div class="animation-effect-4 text-dark opacity-25 fs-18">
+                <div class="animation-effect-4 opacity-25 fs-18">
                     <i class="far fa-toolbox"></i>
                 </div>
-                <div class="animation-effect-3 text-dark opacity-25 fs-18">
+                <div class="animation-effect-3 opacity-25 fs-18">
                     <i class="far fa-fan"></i>
                 </div>
             </div><!-- end card -->
@@ -617,7 +617,7 @@
                     colors: ['transparent']
                 },
                 xaxis: {
-                    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov', 'Des'],
+                    categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov', 'Des'],
                 },
                 yaxis: {
                     title: {

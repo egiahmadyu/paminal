@@ -120,15 +120,43 @@
     </div>
 
     <!-- Isi -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row mv-3">
-                <div class="col-lg-12 mb-3">
-                    <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
-                    <form action="/limpah-biro/{{ $kasus->id }}" method="post">
-                        @csrf
-                        @if ($limpah_biro->jenis_limpah == 3)
-                            @if (!is_null($limpah_biro->limpah_polda))
+    @can('edit-limpah_biro')
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row mv-3">
+                    <div class="col-lg-12 mb-3">
+                        <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
+                        <form action="/limpah-biro/{{ $kasus->id }}" method="post">
+                            @csrf
+                            @if ($limpah_biro->jenis_limpah == 3)
+                                @if (!is_null($limpah_biro->limpah_polda))
+                                    <div class="form-buat-surat col-lg-12">
+                                        <label for="download_laporan_limpah_biro" class="form-label">Laporan Limpah Biro :</label>
+                                        <a href="/laporan-hasil-limpah-biro/{{ $kasus->id }}"
+                                            class="form-control btn btn-outline-primary text-primary">
+                                            <h6 class="p-0 m-0"><i class="far fa-download"></i> Dokumen</h6>
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="form-buat-surat col-lg-12 mb-3 mt-3">
+                                        {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
+                                        <select class="form-select border-dark" aria-label="Default select example" name="limpah_polda" id="limpah_polda" required>
+                                                <option value="" class="text-center">-- Pilih Limpah Polda --</option>
+                                                @if (isset($polda))
+                                                    @foreach ($polda as $p)
+                                                        <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                                    @endforeach
+                                                @endif
+                                        </select>
+                                    </div>
+                                    <div class="form-buat-surat col-lg-12 mb-3">
+                                        <button type="submit" class="form-control btn btn-outline-primary text-primary">
+                                            <h6 class="p-0 m-0">Submit</h6>
+                                        </button>
+                                    </div>
+                                @endif
+                                
+                            @else
                                 <div class="form-buat-surat col-lg-12">
                                     <label for="download_laporan_limpah_biro" class="form-label">Laporan Limpah Biro :</label>
                                     <a href="/laporan-hasil-limpah-biro/{{ $kasus->id }}"
@@ -136,42 +164,19 @@
                                         <h6 class="p-0 m-0"><i class="far fa-download"></i> Dokumen</h6>
                                     </a>
                                 </div>
-                            @else
-                                <div class="form-buat-surat col-lg-12 mb-3 mt-3">
-                                    {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
-                                    <select class="form-select border-dark" aria-label="Default select example" name="limpah_polda" id="limpah_polda" required>
-                                            <option value="" class="text-center">-- Pilih Limpah Polda --</option>
-                                            @if (isset($polda))
-                                                @foreach ($polda as $p)
-                                                    <option value="{{ $p->id }}">{{ $p->name }}</option>
-                                                @endforeach
-                                            @endif
-                                    </select>
-                                </div>
-                                <div class="form-buat-surat col-lg-12 mb-3">
-                                    <button type="submit" class="form-control btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0">Submit</h6>
-                                    </button>
-                                </div>
                             @endif
                             
-                        @else
-                            <div class="form-buat-surat col-lg-12">
-                                <label for="download_laporan_limpah_biro" class="form-label">Laporan Limpah Biro :</label>
-                                <a href="/laporan-hasil-limpah-biro/{{ $kasus->id }}"
-                                    class="form-control btn btn-outline-primary text-primary">
-                                    <h6 class="p-0 m-0"><i class="far fa-download"></i> Dokumen</h6>
-                                </a>
-                            </div>
-                        @endif
-                        
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endcan
+    
 </div>
 
+
+{{-- Modal --}}
 <div class="modal fade" id="modal_sprin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
