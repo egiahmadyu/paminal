@@ -31,15 +31,24 @@
                         <span></span>
                     </span>
                 </button>
+                <div class="logo">
+                    <span class="logo-lg">
+                        <img src="/assets/images/PRESISI-Garbha.png" alt="" height="50">
+                    </span>
+                </div>
                 {{-- <h4 class="px-3 fs-15 text-muted header-item d-none d-md-block">APPPPP</h4> --}}
-                <a href="/"><button type="button"
-                        class="btn btn-sm px-3 fs-15 text-muted header-item d-none d-md-block">
-                        <h4 class="title-nav text-uppercase"> Propam Integrated System </h4>
-                    </button></a>
+                
 
             </div>
+            <a href="/">
+                <button type="button"
+                    class="btn btn-sm px-3 text-muted header-item d-none d-md-block">
+                    <h4 class="title-nav text-uppercase fs-30"> Propam Integrated System </h4>
+                </button>
+            </a>
 
             <div class="d-flex align-items-center">
+                
 
                 <div class="d-md-none topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle"
@@ -486,7 +495,7 @@
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="/assets/images/users/avatar-1.jpg"
+                            <img class="rounded-circle header-profile-user" src="/assets/images/polri-cartoon1.png"
                                 alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span
@@ -498,7 +507,7 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <h6 class="dropdown-header">Welcome {{ auth()->user()->name }}</h6>
-                        <a class="dropdown-item" href="pages-profile.html"><i
+                        <a class="dropdown-item" href="#"><i
                                 class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Profile</span></a>
                         <div class="dropdown-divider"></div>

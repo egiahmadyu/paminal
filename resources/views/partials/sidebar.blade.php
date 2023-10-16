@@ -115,6 +115,12 @@
                 @endcan
 
             </ul>
+            <center>
+                <span class="logo-lg">
+                    <img src="/assets/images/maskot_polri.png" alt="" height="450">
+                </span>
+            </center>
+            
         </div>
         <!-- Sidebar -->
     </div>

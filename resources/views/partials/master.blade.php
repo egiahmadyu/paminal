@@ -43,6 +43,9 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" /> --}}
     
     <style>
+        [data-layout-mode=light] .page-content {
+            background: #ededed;
+        }
         /* Loader */
         /* Absolute Center Spinner */
         .loading {
@@ -337,7 +340,6 @@
     </style>
 
     @stack('styles')
-    <style></style>
 </head>
 
 <body>
@@ -381,10 +383,13 @@
 
         <div class="main-content">
 
-            <div class="page-content">
+            <div class="page-content ">
                 <div class="container-fluid">
                     <div class="loading" style="display: none">Loading&#8230;</div>
                     @yield('content')
+                    <footer class="">
+                        <p class="text-center text-muted">&copy; 2023 Propam Integrated System - Divisi Propam Polri</p>
+                    </footer>
                 </div>
             </div>
         </div>
