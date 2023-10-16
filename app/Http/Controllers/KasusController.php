@@ -40,21 +40,6 @@ class KasusController extends Controller
 {
     public function index()
     {
-        // $user = Auth::getUser();
-        // $role = $user->roles->first();
-
-        // $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
-        //     ->where('dh.limpah_unit', '=', $user->unit)
-        //     ->where('dh.limpah_den', $user->datasemen)
-        //     ->where('dh.tipe_disposisi', '=', 3)
-        //     ->orderBy('data_pelanggars.id', 'desc')->with('status');
-
-        // $test = [];
-        // foreach ($query as $key => $value) {
-        //     $test[$key] = $value->id;
-        // }
-        // dd($query->get());
-
         $data['kasuss'] = DataPelanggar::get();
         $data['diterima'] = $data['kasuss']->where('status_id', 1);
         $data['diproses'] = $data['kasuss']->where('status_id', '>', 1)->where('status_id', '<', 6);
@@ -247,12 +232,14 @@ class KasusController extends Controller
             $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
                 ->where('dh.limpah_den', $user->datasemen)
                 ->where('dh.tipe_disposisi', '=', 3)
+                ->select('*', 'data_pelanggars.id as id')
                 ->orderBy('data_pelanggars.id', 'desc')->with('status');
         } else {
             $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
                 ->where('dh.limpah_unit', '=', $user->unit)
                 ->where('dh.limpah_den', $user->datasemen)
                 ->where('dh.tipe_disposisi', '=', 3)
+                ->select('*', 'data_pelanggars.id as id')
                 ->orderBy('data_pelanggars.id', 'desc')->with('status');
         }
 
