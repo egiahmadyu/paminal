@@ -50,7 +50,7 @@
 
             <div class="row">
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card-box" style="background: #011a7d;">
+                    <div class="card-box bg-gradient" style="background: #011a7d;">
                         <div class="inner">
                             <h1 style="color: white"> {{ isset($diterima) ? count($diterima) : 0 }} </h1>
                             <h5 style="color: white"> Pengaduan Diterima </h5>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card-box" style="background: #fab005">
+                    <div class="card-box bg-gradient" style="background: #fab005">
                         <div class="inner">
                             <h1 style="color: white"> {{ isset($diproses) ? count($diproses) : 0 }} </h1>
                             <h5 style="color: white"> Pengaduan Diproses </h5>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card-box" style="background: #fa3605">
+                    <div class="card-box bg-gradient" style="background: #fa3605">
                         <div class="inner">
                             <h1 style="color: white"> {{ isset($selesai) ? count($selesai) : 0 }} </h1>
                             <h5 style="color: white"> Pengaduan Selesai </h5>

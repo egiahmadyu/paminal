@@ -1,7 +1,7 @@
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
     <div class="navbar-brand-box">
-        <a href="index.html" class="logo logo-dark">
+        <a href="/" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="/assets/images/logo/paminal.png" alt="" height="40">
             </span>
@@ -9,7 +9,7 @@
                 <img src="/assets/images/logo/Paminal_v7.png" alt="" height="60">
             </span>
         </a>
-        <a href="index.html" class="logo logo-light">
+        <a href="/" class="logo logo-light">
             <span class="logo-sm">
                 <img src="/assets/images/logo/paminal.png" alt="" height="40">
             </span>
@@ -115,11 +115,12 @@
                 @endcan
 
             </ul>
-            <center>
-                <span class="logo-lg">
+
+            <div class="logo d-flex justify-content-center align-items-center mt-3">
+                <span class="logo-lg" id="logo-burung">
                     <img src="/assets/images/maskot_polri.png" alt="" height="450">
                 </span>
-            </center>
+            </div>
             
         </div>
         <!-- Sidebar -->

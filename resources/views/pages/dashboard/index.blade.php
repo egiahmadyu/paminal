@@ -39,7 +39,7 @@
 
     <div class="row mb-3">
         <div class="col-lg-4 col-sm-6">
-            <div class="card-box" style="background: #011a7d">
+            <div class="card-box bg-gradient" style="background: #011a7d">
                 <div class="inner">
                     <h1 style="color: white"> {{ isset($pelanggar) ? count($pelanggar) : 0 }} </h1>
                     <h5 style="color: white"> Total Dumas </h5>
@@ -52,7 +52,7 @@
         </div>
         
         <div class="col-lg-4 col-sm-6">
-            <div class="card-box" style="background: #fab005">
+            <div class="card-box bg-gradient" style="background: #fab005">
                 <div class="inner">
                     <h1 style="color: white"> {{ $pengaduan_diproses }} </h1>
                     <h5 style="color: white"> Total Pengaduan Diproses </h5>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="col-lg-4 col-sm-6">
-            <div class="card-box" style="background: #fa3605">
+            <div class="card-box bg-gradient" style="background: #fa3605">
                 <div class="inner">
                     <h1 style="color: white"> {{ isset($poldas) ? count($poldas) : 0 }} </h1>
                     <h5 style="color: white"> Jumlah POLDA </h5>

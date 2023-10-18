@@ -4,7 +4,7 @@
             <div class="d-flex">
                 <!-- LOGO -->
                 <div class="navbar-brand-box horizontal-logo">
-                    <a href="index.html" class="logo logo-dark">
+                    <a href="/" class="logo logo-dark">
                         <span class="logo-sm">
                             <img src="/assets/images/logo-sm.png" alt="" height="22">
                         </span>
@@ -13,7 +13,7 @@
                         </span>
                     </a>
 
-                    <a href="index.html" class="logo logo-light">
+                    <a href="/" class="logo logo-light">
                         <span class="logo-sm">
                             <img src="/assets/images/logo-sm.png" alt="" height="22">
                         </span>
@@ -31,7 +31,7 @@
                         <span></span>
                     </span>
                 </button>
-                <div class="logo">
+                <div class="logo-presisi mt-2">
                     <span class="logo-lg">
                         <img src="/assets/images/PRESISI-Garbha.png" alt="" height="50">
                     </span>
@@ -40,12 +40,7 @@
                 
 
             </div>
-            <a href="/">
-                <button type="button"
-                    class="btn btn-sm px-3 text-muted header-item d-none d-md-block">
-                    <h4 class="title-nav text-uppercase fs-30"> Propam Integrated System </h4>
-                </button>
-            </a>
+            <h4 class="title-nav text-uppercase fs-30"> Propam Integrated System </h4>
 
             <div class="d-flex align-items-center">
                 
@@ -69,7 +64,7 @@
                                     <h6 class="m-0 fw-semibold fs-15"> Browse by Apps </h6>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="#!" class="btn btn-sm btn-soft-info"> View All Apps
+                                    <a href="#" class="btn btn-sm btn-soft-info"> View All Apps
                                         <i class="ri-arrow-right-s-line align-middle"></i></a>
                                 </div>
                             </div>
