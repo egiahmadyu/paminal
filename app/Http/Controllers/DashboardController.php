@@ -18,7 +18,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
         $data['poldas'] = Polda::get();
         $data['pelanggar'] = DataPelanggar::get();
 
@@ -130,50 +129,55 @@ class DashboardController extends Controller
     public function DataTriwulanSemester($tipe)
     {
         Carbon::setLocale('id');
-        if ($tipe == 'q') {
-            $value = array_fill(1, 4, '');
-            $label = array_fill(1, 4, '');
-            $m_temp = 1;
-            for ($i = 1; $i <= 4; $i++) {
-                # code...
-                $m = $i * 3;
-                $from = Carbon::now()->month($m_temp)->firstOfMonth();
-                $to = Carbon::now()->month($m)->lastOfMonth();
-                $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
-                $value[$i] = $res;
-                $label[$i] = 'Q' . $i . ' : ' . $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
-                $m_temp = $m + 1;
-            }
-            $tipe = 'triwulan';
-        } elseif ($tipe == 's') {
-            $value = array_fill(1, 2, '');
-            $label = array_fill(1, 2, '');
-            $s_temp = 1;
-            for ($i = 1; $i <= 2; $i++) {
-                # code...
-                $s = $i * 6;
-                $from = Carbon::now()->month($s_temp)->firstOfMonth();
-                $to = Carbon::now()->month($s)->lastOfMonth();
-                $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
-                $value[$i] = $res;
-                $label[$i] = 'S' . $i . ' : ' . $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
-                $s_temp = $s + 1;
-            }
-            $tipe = 'semester';
-        } else {
-            $value = array_fill(1, 12, '');
-            $label = array_fill(1, 12, '');
-            for ($i = 1; $i <= 12; $i++) {
-                # code...
-                $from = Carbon::now()->month($i)->firstOfMonth();
-                $to = Carbon::now()->month($i)->lastOfMonth();
-                $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
-                $value[$i] = $res;
-                $label[$i] = Carbon::now()->month($i)->isoFormat('MMM');
-            }
-            $tipe = 'tahunan';
-        }
-        $result = [$value, $label, $tipe];
+        $result = $this->getDataTriwulanSemester();
+
+        // if ($tipe == 'q') {
+        //     $value = array_fill(1, 4, '');
+        //     $label = array_fill(1, 4, '');
+        //     $m_temp = 1;
+        //     for ($i = 1; $i <= 4; $i++) {
+        //         # code...
+        //         $m = $i * 3;
+        //         $from = Carbon::now()->month($m_temp)->firstOfMonth();
+        //         $to = Carbon::now()->month($m)->lastOfMonth();
+        //         $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
+        //         $value[$i] = $res;
+        //         $label[$i] = 'Q' . $i . ' : ' . $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
+        //         $m_temp = $m + 1;
+        //     }
+        //     $tipe = 'triwulan';
+        //     $triwulan = [$value, $label, $tipe];
+        // } elseif ($tipe == 's') {
+        //     $value = array_fill(1, 2, '');
+        //     $label = array_fill(1, 2, '');
+        //     $s_temp = 1;
+        //     for ($i = 1; $i <= 2; $i++) {
+        //         # code...
+        //         $s = $i * 6;
+        //         $from = Carbon::now()->month($s_temp)->firstOfMonth();
+        //         $to = Carbon::now()->month($s)->lastOfMonth();
+        //         $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
+        //         $value[$i] = $res;
+        //         $label[$i] = 'S' . $i . ' : ' . $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
+        //         $s_temp = $s + 1;
+        //     }
+        //     $tipe = 'semester';
+        //     $semester = [$value, $label, $tipe];
+        // } else {
+        //     $value = array_fill(1, 12, '');
+        //     $label = array_fill(1, 12, '');
+        //     for ($i = 1; $i <= 12; $i++) {
+        //         # code...
+        //         $from = Carbon::now()->month($i)->firstOfMonth();
+        //         $to = Carbon::now()->month($i)->lastOfMonth();
+        //         $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
+        //         $value[$i] = $res;
+        //         $label[$i] = Carbon::now()->month($i)->isoFormat('MMM');
+        //     }
+        //     $tipe = 'tahunan';
+        //     $tahunan = [$value, $label, $tipe];
+        // }
+
         return $result;
     }
 
@@ -212,16 +216,33 @@ class DashboardController extends Controller
     public function getStatistikBulanan()
     {
         try {
-            $dumas = DataPelanggar::get();
+            $dumas = DataPelanggar::all();
             for ($i = 1; $i < 13; $i++) {
                 $awal = Carbon::now()->month($i)->firstOfMonth();
                 $akhir = Carbon::now()->month($i)->lastOfMonth();
+
                 $diterima = $dumas->whereBetween('created_at', [$awal, $akhir])->where('status_id', 1)->count();
-                $diproses = $dumas->whereBetween('created_at', [$awal, $akhir])->whereBetween('status_id', [2, 5])->count();
-                $selesai = $dumas->whereBetween('created_at', [$awal, $akhir])->where('status_id', 6)->count();
                 $data['diterima'][$i] = $diterima;
+
+                $diproses = DataPelanggar::join('sprin_histories as sh', 'sh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->whereBetween('sh.created_at', [$awal, $akhir])
+                    ->whereBetween('data_pelanggars.status_id', [4, 5])
+                    ->count();
                 $data['diproses'][$i] = $diproses;
-                $data['selesai'][$i] = $selesai;
+
+                $limpah_biro =  DataPelanggar::join('limpah_biro_histories as lbh', 'lbh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->whereBetween('lbh.created_at', [$awal, $akhir])
+                    ->where('data_pelanggars.status_id', 6)
+                    ->count();
+                $limpah_polda = DataPelanggar::join('limpah_poldas as lp', 'lp.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->whereBetween('lp.created_at', [$awal, $akhir])
+                    ->where('data_pelanggars.status_id', 3)
+                    ->count();
+                $rj = DataPelanggar::join('limpah_poldas as lp', 'lp.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->whereBetween('lp.created_at', [$awal, $akhir])
+                    ->where('data_pelanggars.status_id', 7)
+                    ->count();
+                $data['selesai'][$i] = $limpah_biro + $limpah_polda + $rj;
             }
 
             return $data;
@@ -232,5 +253,67 @@ class DashboardController extends Controller
             ];
             return $error;
         }
+    }
+
+    public function getDataTriwulanSemester()
+    {
+        // Triwullan
+        $value = array_fill(1, 4, '');
+        $label = array_fill(1, 4, '');
+        $m_temp = 1;
+        for ($i = 1; $i <= 4; $i++) {
+            # code...
+            $m = $i * 3;
+            $from = Carbon::now()->month($m_temp)->firstOfMonth();
+            $to = Carbon::now()->month($m)->lastOfMonth();
+            $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
+            $value[$i] = $res;
+            $label[$i] = $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
+            $m_temp = $m + 1;
+        }
+        $tipe = 'triwulan';
+        $triwulan = [$value, $label, $tipe];
+        //End Triwulan
+
+        //Semester 
+        $value = array_fill(1, 2, '');
+        $label = array_fill(1, 2, '');
+        $s_temp = 1;
+        for ($i = 1; $i <= 2; $i++) {
+            # code...
+            $s = $i * 6;
+            $from = Carbon::now()->month($s_temp)->firstOfMonth();
+            $to = Carbon::now()->month($s)->lastOfMonth();
+            $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
+            $value[$i] = $res;
+            $label[$i] = 'S' . $i . ' : ' . $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
+            $s_temp = $s + 1;
+        }
+        $tipe = 'semester';
+        $semester = [$value, $label, $tipe];
+        // End Semester
+
+        //Tahunan
+        $value = array_fill(1, 12, '');
+        $label = array_fill(1, 12, '');
+        for ($i = 1; $i <= 12; $i++) {
+            # code...
+            $from = Carbon::now()->month($i)->firstOfMonth();
+            $to = Carbon::now()->month($i)->lastOfMonth();
+            $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
+            $value[$i] = $res;
+            $label[$i] = Carbon::now()->month($i)->isoFormat('MMM');
+        }
+        $tipe = 'tahunan';
+        $tahunan = [$value, $label, $tipe];
+        //End Tahunan
+
+
+        $result = [
+            'triwulan' => $triwulan,
+            'semester' => $semester,
+            'tahunan' => $tahunan,
+        ];
+        return $result;
     }
 }

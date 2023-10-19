@@ -181,32 +181,80 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-lg-12">
-            <!-- card -->
-            <div class="card card-animate">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div class="flex-grow-1">
-                            <div id="chartDumas"></div>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            <!-- end card -->
-        </div>
+        
 
         <div class="col-lg-12">
             <!-- card -->
             <div class="card card-animate">
+                <div class="card-header">
+                    <h3>
+                        Rekap Dumas Triwulan
+                    </h3>
+                </div>
                 <div class="card-body">
-                    <select class="form-select mb-4" id="rekap_dumas" select-one>
+                    {{-- <select class="form-select mb-4" id="rekap_dumas" select-one>
                         <option value="q">Triwulan</option>
                         <option value="s">Semester</option>
-                    </select>
+                    </select> --}}
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="flex-grow-1">
+                                <div id="chartDonatDumas"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="flex-grow-1">
+                                <div id="chartDonatDumas1"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="flex-grow-1">
+                                <div id="chartDonatDumas2"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="flex-grow-1">
+                                <div id="chartDonatDumas3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="card card-animate">
+                <div class="card-header">
+                    <h3>
+                        Rekap Dumas Semester
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="flex-grow-1">
+                                <div id="chartSemester1"></div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="flex-grow-1">
+                                <div id="chartSemester2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end card -->
+        </div>
+        <div class="col-lg-12">
+            <!-- card -->
+            <div class="card card-animate">
+                <div class="card-header">
+                    <h3>Rekap Dumas Tahunan</h3>
+                </div>
+                <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div class="flex-grow-1">
-                            <div id="chartDonatDumas"></div>
+                            <div id="chartDumas"></div>
                         </div>
                     </div>
                     
@@ -221,7 +269,7 @@
         
 
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
+            <div class="card card-animate">
                 <div class="card-header">
                     <h2>Grafik Dumas</h2>
                 </div>
@@ -232,7 +280,7 @@
         </div>
 
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
+            <div class="card card-animate">
                 <div class="card-header">
                     <h2>Statistik Perbulan</h2>
                 </div>
@@ -243,7 +291,7 @@
         </div>
 
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div class="card">
+            <div class="card card-animate">
                 <div class="card-header">
                     <h2>Dumas Selesai</h2>
                 </div>
@@ -268,9 +316,7 @@
     
     <script>
         $(document).ready(function() {
-            // chartDumas()
-            getChartAjax('rekap_dumas', 'q')
-            getChartAjax('rekap_dumas', 't')
+            getChartAjax('rekap_dumas')
             getChartAjax('trend_dumas')
             getChartAjax('statistik_bulanan')
 
@@ -305,17 +351,14 @@
                 }, 
                 success: function (data, status, xhr) {
                     $('.loading').css('display', 'none')
-                    // console.log(data.data)
                     if (tipe == 'trend_dumas') {
                         chartTrend(data.data)
                     } else if (tipe == 'statistik_bulanan') {
                         chartKolom(data.data)
+                        chartKolomPenyelesaian(data.data)
                     } else if (tipe == 'rekap_dumas') {
-                        if (data.data[2] == 'tahunan'){
-                            chartDumas(data.data)
-                        } else {
-                            chartDonatDumas(data.data)
-                        }
+                        chartDumas(data.data.tahunan)
+                        chartDonatDumas(data.data)
                     }
                     
                 },
@@ -538,46 +581,6 @@
             chart.render();
         }
 
-        function chartDonatDumas(data) {
-            $('#chartDonatDumas').html('');
-
-            let value = Object.values(data[0]);
-            let label = Object.values(data[1]);
-
-            var options = {
-                series: value,
-                labels: label,
-                colors: ['#011a7d', '#016f7d','#fab005' ,'#fa3605'],
-                noData: {
-                    text: 'Loading...'
-                },
-                chart: {
-                    type: 'donut',
-                    animate: true,
-                    height: 330
-                },
-                legend: {
-                    position: 'bottom',
-                    horizontalAlign: 'left',
-                    floating: false,
-                },
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        chart: {
-                            width: 200
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }]
-            };
-
-            var chartDonatDumas = new ApexCharts(document.querySelector("#chartDonatDumas"), options);
-            chartDonatDumas.render();
-        }
-
         function chartKolom(data) {
             let res = []
             for (let i in data) {
@@ -644,6 +647,418 @@
 
             var chart = new ApexCharts(document.querySelector("#chartKolom"), options);
             chart.render();
+        }
+
+        function chartKolomPenyelesaian(data) {
+            let res = []
+            for (let i in data) {
+                let res_temp = []
+                for (let x in data[i]) {
+                    res_temp.push(data[i][x]);
+                }
+                res.push(res_temp)
+            }
+
+            let value = Object.values(data.selesai);
+
+            console.log(value)
+            
+            var options = {
+                series: [
+                    {
+                        name: 'Selesai',
+                        data: value
+                    }
+                ],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov', 'Des'],
+                },
+                yaxis: {
+                    title: {
+                        text: 'Jumlah Dumas'
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chartKolomPenyelesaian"), options);
+            chart.render();
+        }
+
+        function chartDonatDumas(data) {
+            $('#chartDonatDumas').html('');
+
+            showSemester(data.semester)
+            showTriwulan(data.triwulan)
+
+        }
+
+        function showSemester(data) {
+
+            let value = Object.values(data[0]);
+            let label = Object.values(data[1]);
+
+            var optSemester1 = {
+                series: [value[0],value[1]],
+                labels: label,
+                colors: ['#fca103','#635b4c'],
+                noData: {
+                    text: 'Loading...'
+                },
+                chart: {
+                    type: 'donut',
+                    animate: true,
+                    height: 500
+                },
+                legend: {
+                    show: false
+                },
+                title: {
+                    text: 'Semester 1',
+                    align: 'center'
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    label:'Total Semeester 1',
+                                    showAlways: true,
+                                    show: true,
+                                    formatter: function () {
+                                        return value[0] == 0 ? 0 : value[0]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+
+            };
+
+            var chartSemester1 = new ApexCharts(document.querySelector("#chartSemester1"), optSemester1);
+            chartSemester1.render();
+
+            var optSemester2 = {
+                series: [value[1],value[0]],
+                labels: label,
+                colors: ['#fca103','#635b4c'],
+                noData: {
+                    text: 'Loading...'
+                },
+                chart: {
+                    type: 'donut',
+                    animate: true,
+                    height: 500
+                },
+                legend: {
+                    show: false
+                },
+                title: {
+                    text: 'Semester 2',
+                    align: 'center'
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    label:'Total Semeester 2',
+                                    showAlways: true,
+                                    show: true,
+                                    formatter: function () {
+                                        return value[1] == 0 ? 0 : value[1]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+
+            };
+            var chartSemester2 = new ApexCharts(document.querySelector("#chartSemester2"), optSemester2);
+            chartSemester2.render();
+        }
+
+        function showTriwulan(data) {
+            let value = Object.values(data[0]);
+            let label = Object.values(data[1]);
+
+            let valQ  = value[0] + value[1] + value[2] + value[3]
+
+            let labelQ1 = [label[0], label[1] +', '+ label[2]+', ' + label[3]]
+            let labelQ2 = [label[1], label[0] +', '+ label[2]+', ' + label[3]]
+            let labelQ3 = [label[2], label[1] +', '+ label[0]+', ' + label[3]]
+            let labelQ4 = [label[3], label[1] +', '+ label[2]+', ' + label[0]]
+
+            var optQ1 = {
+                series: [value[0], valQ-value[0]],
+                labels: labelQ1,
+                colors: ['#036cff','#364559'],
+                noData: {
+                    text: 'Loading...'
+                },
+                chart: {
+                    type: 'donut',
+                    animate: true,
+                    height: 330
+                },
+                title: {
+                    text: 'Triwulan 1',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'left',
+                    floating: false,
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    label:'Total Triwulan 1',
+                                    showAlways: true,
+                                    show: true,
+                                    formatter: function () {
+                                        return value[0] == 0 ? 0 : value[0]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            };
+
+            var optQ2 = {
+                series: [value[1], valQ-value[1]],
+                labels: labelQ2,
+                colors: ['#036cff','#364559'],
+                noData: {
+                    text: 'Loading...'
+                },
+                chart: {
+                    type: 'donut',
+                    animate: true,
+                    height: 330
+                },
+                title: {
+                    text: 'Triwulan 2',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'left',
+                    floating: false,
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    label:'Total Triwulan 2',
+                                    showAlways: true,
+                                    show: true,
+                                    formatter: function () {
+                                        return value[1] == 0 ? 0 : value[1]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            };
+
+            var optQ3 = {
+                series: [value[2], valQ-value[2]],
+                labels: labelQ3,
+                colors: ['#036cff','#364559'],
+                noData: {
+                    text: 'Loading...'
+                },
+                chart: {
+                    type: 'donut',
+                    animate: true,
+                    height: 330
+                },
+                title: {
+                    text: 'Triwulan 3',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'left',
+                    floating: false,
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    label:'Total Triwulan 3',
+                                    showAlways: true,
+                                    show: true,
+                                    formatter: function () {
+                                        return value[2] == 0 ? 0 : value[2]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            };
+
+            var optQ4 = {
+                series: [value[3], valQ-value[3]],
+                labels: labelQ4,
+                colors: ['#036cff','#364559'],
+                noData: {
+                    text: 'Loading...'
+                },
+                chart: {
+                    type: 'donut',
+                    animate: true,
+                    height: 330
+                },
+                title: {
+                    text: 'Triwulan 4',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'left',
+                    floating: false,
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    label:'Total Triwulan 4',
+                                    showAlways: true,
+                                    show: true,
+                                    formatter: function () {
+                                        return value[3] == 0 ? 0 : value[3]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            };
+
+
+            var chartDonatDumas = new ApexCharts(document.querySelector("#chartDonatDumas"), optQ1);
+            chartDonatDumas.render();
+
+            var chartDonatDumas1 = new ApexCharts(document.querySelector("#chartDonatDumas1"), optQ2);
+            chartDonatDumas1.render();
+
+            var chartDonatDumas2 = new ApexCharts(document.querySelector("#chartDonatDumas2"), optQ3);
+            chartDonatDumas2.render();
+
+            var chartDonatDumas3 = new ApexCharts(document.querySelector("#chartDonatDumas3"), optQ4);
+            chartDonatDumas3.render();
         }
 
     </script>
