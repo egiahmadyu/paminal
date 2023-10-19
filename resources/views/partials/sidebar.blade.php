@@ -29,23 +29,23 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
 
-                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                <li class="menu-title"><span data-key="t-menu">MENU</span></li>
                 @can('dashboard')
                     <li class="nav-item">
-                        <a href="/" class="nav-link menu-link {{ Request::segment(1) == '' ? 'active' : '' }}"> <i class="far fa-tachometer-alt"></i> <span data-key="t-dashboard">Dashboard</span> </a>
+                        <a href="/" class="nav-link menu-link {{ Request::segment(1) == '' ? 'active' : '' }}"> <i class="far fa-tachometer-alt"></i> <span data-key="t-dashboard">DASHBOARD</span> </a>
                     </li>
                 @endcan
                 
                 @can('data-pelanggar')
                     <li class="nav-item">
-                        <a href="{{ route('kasus.index') }}" class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i class="far fa-list-alt"></i> <span data-key="t-dashboard">Data Pelanggar</span> </a>
+                        <a href="{{ route('kasus.index') }}" class="nav-link menu-link {{ Request::segment(1) == 'data-kasus' ? 'active' : '' }}"> <i class="far fa-list-alt"></i> <span data-key="t-dashboard">DATA PELANGGAR</span> </a>
                     </li> 
                 @endcan
             
                 @can('input-data')
                     <li class="nav-item">
                         <a href="{{ route('kasus.input') }}" class="nav-link menu-link {{ Request::segment(1) == 'input-data-kasus' ? 'active' : '' }}">
-                            <i class="far fa-user-plus"></i> <span data-key="t-dashboard">Input Data</span>
+                            <i class="far fa-user-plus"></i> <span data-key="t-dashboard">INPUT DATA</span>
                         </a>
                     </li>
                 @endcan
@@ -54,7 +54,7 @@
                     <li class="nav-item">
                         <a href="{{ route('list.anggota') }}"
                             class="nav-link menu-link {{ Request::segment(1) == 'list-anggota' ? 'active' : '' }}">
-                            <i class="far fa-address-card"></i> <span data-key="t-dashboard">Anggota</span>
+                            <i class="far fa-address-card"></i> <span data-key="t-dashboard">ANGGOTA</span>
                         </a>
                     </li>
                 @endcan                
@@ -62,20 +62,20 @@
                 @can('list-bag_den')
                 <li class="nav-item has-submenu">
                     <a class="nav-link menu-link {{ Request::segment(1) == 'tambah-datasemen' || Request::segment(1) == 'list-datasemen' || Request::segment(1) == 'unit-datasemen' ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        <i class="far fa-building"></i> <span data-key="t-dashboard">Bag / Detasemen</span>
+                        <i class="far fa-building"></i> <span data-key="t-dashboard">BAG / DETASEMEN</span>
                     </a>
                     <ul class="submenu collapse" id="collapseExample">
                         @can('manage-auth')
                         <a href="{{ route('tambah.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'tambah-datasemen' ? 'active' : '' }}">
-                            <i class="far fa-plus-square"></i> <span data-key="t-dashboard">Tambah Bag / Detasemen</span>
+                            <i class="far fa-plus-square"></i> <span data-key="t-dashboard">TAMBAH BAG / DETASEMEN</span>
                         </a>
                         @endcan
                         
                         <a href="{{ route('list.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'list-datasemen' ? 'active' : '' }}">
-                            <i class="fas fa-list-ol"></i> <span data-key="t-dashboard">List Bag / Detasemen</span>
+                            <i class="fas fa-list-ol"></i> <span data-key="t-dashboard">LIST BAG / DETASEMEN</span>
                         </a>
                         <a href="{{ route('unit.datasemen') }}" class="nav-link menu-link {{ Request::segment(1) == 'unit-datasemen' ? 'active' : '' }}">
-                            <i class="far fa-users"></i> <span data-key="t-dashboard">Unit Bag / Detasemen</span>
+                            <i class="far fa-users"></i> <span data-key="t-dashboard">UNIT BAG / DETASEMEN</span>
                         </a>
                     </ul>
                 </li>
@@ -84,32 +84,32 @@
                 @can('import-data')
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link menu-link" data-bs-toggle="modal" data-bs-target="#modal_import_yanduan">
-                        <i class="far fa-file-import"></i> <span data-key="t-dashboard">Import Data</span>
+                        <i class="far fa-file-import"></i> <span data-key="t-dashboard">IMPORT DATA</span>
                     </a>
                 </li>
                 @endcan
                 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link menu-link">
                         <i class="far fa-sign-out-alt"></i> <span data-key="t-dashboard">Logout</span>
                     </a>
-                </li>
+                </li> --}}
 
                 @can('manage-auth')
-                <li class="menu-title"><span data-key="t-menu">Settings</span></li>
+                <li class="menu-title"><span data-key="t-menu">SETTING</span></li>
                 <li class="nav-item">
                     <a href="/user" class="nav-link menu-link {{ Request::segment(1) == 'user' ? 'active' : '' }}">
-                        <i class="fas fa-users"></i> <span data-key="t-dashboard">User</span>
+                        <i class="fas fa-users"></i> <span data-key="t-dashboard">USER</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/role" class="nav-link menu-link {{ Request::segment(1) == 'role' ? 'active' : '' }}">
-                        <i class="far fa-user-tag"></i> <span data-key="t-dashboard">Role</span>
+                        <i class="far fa-user-tag"></i> <span data-key="t-dashboard">ROLE</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/permission" class="nav-link menu-link {{ Request::segment(1) == 'permission' ? 'active' : '' }}">
-                        <i class="far fa-lock"></i> <span data-key="t-dashboard">Permission</span>
+                        <i class="far fa-lock"></i> <span data-key="t-dashboard">PERMISSION</span>
                     </a>
                 </li>
                 @endcan
