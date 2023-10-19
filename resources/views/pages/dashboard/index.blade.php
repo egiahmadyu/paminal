@@ -728,7 +728,7 @@
 
             var optSemester1 = {
                 series: [value[0],value[1]],
-                labels: label,
+                labels: [label[0],label[1]],
                 colors: ['#fca103','#635b4c'],
                 noData: {
                     text: 'Loading...'
@@ -781,7 +781,7 @@
 
             var optSemester2 = {
                 series: [value[1],value[0]],
-                labels: label,
+                labels: [label[1],label[0]],
                 colors: ['#fca103','#635b4c'],
                 noData: {
                     text: 'Loading...'
