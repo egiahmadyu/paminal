@@ -58,7 +58,7 @@
                         <div class="icon">
                             <i class="fa fa-gavel f-left" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
+                        {{-- <a href="#" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
@@ -70,7 +70,7 @@
                         <div class="icon">
                             <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                        {{-- <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
@@ -82,7 +82,7 @@
                         <div class="icon">
                             <i class="fad fa-clipboard-check fa-swap-opacity"></i>
                         </div>
-                        <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                        {{-- <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a> --}}
                     </div>
                 </div>
             </div>

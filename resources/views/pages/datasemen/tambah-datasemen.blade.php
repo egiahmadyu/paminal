@@ -20,15 +20,15 @@
                         <div class="row">
                             <div class="col-lg-12 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="nama_datasemen" id="nama_datasemen" placeholder="Nama Datasemen" value="{{ isset($datasemen) ? $datasemen->name : '' }}" required>
+                                    <input type="text" class="form-control border-dark" name="nama_datasemen" id="nama_datasemen" placeholder="Nama Datasemen" value="{{ isset($datasemen) ? $datasemen->name : '' }}" required style="text-transform:uppercase">
                                     <label for="name">Nama Detasemen</label>
                                 </div>
                             </div>
 
                             <!-- Kaden -->
                             <div class="col-lg-6 mb-3">
-                                <div class="form-floating">
-                                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="kaden" id="kaden" required>
+                                <div class="form-control border-dark">
+                                    <select class="form-select border-dark" data-choices data-live-search="true" aria-label="Default select example" name="kaden" id="kaden" required>
                                         <option value="">-- Pilih Kepala Detasemen --</option>
                                         @if (isset($anggota))
                                             @foreach ($anggota as $key => $a)
@@ -38,14 +38,14 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                    <label for="kaden" class="form-label">Kepala Detasemen</label>
+                                    {{-- <label for="kaden" class="form-label">Kepala Detasemen</label> --}}
                                 </div>
                             </div>
 
                             <!--Wakaden-->
                             <div class="col-lg-6 mb-3">
-                                <div class="form-floating">
-                                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wakaden" id="wakaden" required>
+                                <div class="form-control border-dark">
+                                    <select class="form-select border-dark" data-choices data-live-search="true" aria-label="Default select example" name="wakaden" id="wakaden" required>
                                         <option value="">-- Pilih Wakil Kepala Detasemen --</option>
                                         @if (isset($anggota))
                                             @foreach ($anggota as $key => $a)
@@ -55,7 +55,7 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                    <label for="kaden" class="form-label">Wakil Kepala Detasemen</label>
+                                    {{-- <label for="kaden" class="form-label">Wakil Kepala Detasemen</label> --}}
                                 </div>
                             </div>
                             

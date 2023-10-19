@@ -42,8 +42,9 @@ class KasusController extends Controller
     {
         $data['kasuss'] = DataPelanggar::get();
         $data['diterima'] = $data['kasuss']->where('status_id', 1);
-        $data['diproses'] = $data['kasuss']->where('status_id', '>', 1)->where('status_id', '<', 6);
-        $data['selesai'] = $data['kasuss']->where('status_id', 6);
+        $data['diproses'] = DataPelanggar::join('sprin_histories as sh', 'sh.data_pelanggar_id', '=', 'data_pelanggars.id')
+            ->whereBetween('data_pelanggars.status_id', [4, 5])->get();
+        $data['selesai'] = DataPelanggar::where('status_id', 6)->orwhere('status_id', 3)->orwhere('status_id', 7)->get();
 
         return view('pages.data_pelanggaran.index', $data);
     }

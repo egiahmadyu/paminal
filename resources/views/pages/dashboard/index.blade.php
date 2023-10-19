@@ -98,7 +98,7 @@
                         <option value="terbukti">Terbukti</option>
                         <option value="tidak_terbukti">Tidak Terbukti</option>
                         <option value="rj">Restorative Justice</option>
-                        <option value="diproses">Proses (Mengikuti BAGYANDUAN)</option>
+                        <option value="diproses">Diproses</option>
                     </select>
                 </div><!-- end card body -->
                 <div class="animation-effect-6 opacity-25 fs-18">

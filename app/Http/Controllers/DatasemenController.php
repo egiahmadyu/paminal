@@ -68,6 +68,7 @@ class DatasemenController extends Controller
 
     public function tambahDatasemen()
     {
+
         $pangkat = Pangkat::get();
         $anggota = DataAnggota::get();
         $url = route('store.datasemen');
@@ -81,11 +82,14 @@ class DatasemenController extends Controller
 
     public function storeDatasemen(Request $request)
     {
-        $den = explode(' ', $request->name);
-        $pangkat = Pangkat::where('id', $request->pangkat)->first();
         $datasemen = Datasemen::get();
+
+        $valInput = preg_replace('/\s+/', '', $request->nama_datasemen);
+
         foreach ($datasemen as $key => $valDatasemen) {
-            if ($valDatasemen->name == $request->name) {
+            $valDat = preg_replace('/\s+/', '', $valDatasemen->name);
+
+            if (strtoupper($valDat) == strtoupper($valInput)) {
                 return redirect()->back()->withInput()->with('error', 'Nama Datasemen sudah dibuat !');
             }
         }
@@ -101,11 +105,13 @@ class DatasemenController extends Controller
         ]);
 
         DataAnggota::where('id', $request->kaden)->update([
-            'jabatan' => 'KADEN ' . $den[1]
+            'jabatan' => 'KEPALA ' . $request->nama_datasemen,
+            'datasemen' => $request->datasemen
         ]);
 
         DataAnggota::where('id', $request->wakaden)->update([
-            'jabatan' => 'WAKADEN ' . $den[1]
+            'jabatan' => 'WAKIL KEPALA. ' . $request->nama_datasemen,
+            'datasemen' => $request->datasemen
         ]);
         return redirect()->route('list.datasemen')->with('success', 'Berhasil Dibuat !');
     }
@@ -135,16 +141,15 @@ class DatasemenController extends Controller
             return redirect()->back()->withInput()->with('error', 'Kepala Datasemen tidak boleh sama dengan Wakil Datasemen !');
         }
 
-        $den = explode(' ', $request->nama_datasemen);
         $kaden = DataAnggota::where('id', $request->kaden)->first();
         if ($kaden) {
-            $kaden->jabatan = 'KADEN ' . $den[1];
+            $kaden->jabatan = 'KEPALA ' . $request->nama_datasemen;
             $kaden->update();
         }
 
         $wakaden = DataAnggota::where('id', $request->wakaden)->first();
         if ($wakaden) {
-            $wakaden->jabatan = 'WAKADEN ' . $den[1];
+            $wakaden->jabatan = 'WAKIL KEPALA ' . $request->nama_datasemen;
             $wakaden->update();
         }
 

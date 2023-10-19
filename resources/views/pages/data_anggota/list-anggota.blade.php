@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-lg-3 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="Jabatan" required>
+                                <input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="Jabatan">
                                 <label for="jabatan">Jabatan</label>
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                             let opt = `<option value="`+element.id+`">`+element.name+`</option>`
                             option += opt
                         });
-                        let html = `<div class="row"><div class="col-lg-3 mb-3"><div class="form-control border-dark"><select class="form-select" data-choices name="pangkat[]" id="pangkat" aria-placeholder="Pangkat" required><option value="">-- Pilih Pangkat --</option>`+option+`</select></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nama[]" id="nama" placeholder="Nama" required><label for="nama">Nama</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp[]" id="nrp" placeholder="NRP" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="Jabatan" required><label for="jabatan">Jabatan</label></div></div></div>`
+                        let html = `<div class="row"><div class="col-lg-3 mb-3"><div class="form-control border-dark"><select class="form-select" data-choices name="pangkat[]" id="pangkat" aria-placeholder="Pangkat" required><option value="">-- Pilih Pangkat --</option>`+option+`</select></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nama[]" id="nama" placeholder="Nama" required><label for="nama">Nama</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp[]" id="nrp" placeholder="NRP" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="Jabatan"><label for="jabatan">Jabatan</label></div></div></div>`
                         $('.modal-body').append(html)
                     },
                     error: function (jqXhr, textStatus, errorMessage) { // error callback
