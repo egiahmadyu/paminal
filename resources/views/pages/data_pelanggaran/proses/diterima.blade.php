@@ -7,7 +7,7 @@
             <div>
 
                 @if ($kasus->status_id > 1)
-                <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya <i class="far fa-arrow-right"></i></button>
+                <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">SELANJUTNYA <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>
@@ -24,19 +24,19 @@
                 </div>
                 <div class="f1-step active">
                     <div class="f1-step-icon"><i class="fa fa-user"></i></div>
-                    <p>Diterima</p>
+                    <p>DITERIMA</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-home"></i></div>
-                    <p>Pulbaket</p>
+                    <p>PULBAKET</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-key"></i></div>
-                    <p>Gelar Penyelidikan</p>
+                    <p>GELAR PERKARA</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Limpah Biro</p>
+                    <p>LIMPAH BIRO</p>
                 </div>
             </div>
         </div>

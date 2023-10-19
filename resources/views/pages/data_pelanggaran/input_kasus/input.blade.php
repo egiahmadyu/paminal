@@ -17,7 +17,7 @@
     </nav>
     <div class="row form-control">
         <div class="form-control text-center border-0">
-            <h3>Form Input Data</h3>
+            <h3>FORM {{ $title }}</h3>
         </div>
         <form action="/input-data-kasus/store" method="post">
             @csrf

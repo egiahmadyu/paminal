@@ -18,6 +18,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $data['title'] = 'DASHBOARD';
         $data['poldas'] = Polda::get();
         $data['pelanggar'] = DataPelanggar::get();
 

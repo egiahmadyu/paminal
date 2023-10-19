@@ -14,6 +14,7 @@ class AnggotaController extends Controller
     public function listAnggota()
     {
         $data['pangkat'] = Pangkat::orderBy('id')->get();
+        $data['title'] = 'LIST ANGGOTA';
         return view('pages.data_anggota.list-anggota', $data);
     }
 

@@ -53,7 +53,7 @@
                     <div class="card-box bg-gradient" style="background: #011a7d;">
                         <div class="inner">
                             <h1 style="color: white"> {{ isset($diterima) ? count($diterima) : 0 }} </h1>
-                            <h5 style="color: white"> Pengaduan Diterima </h5>
+                            <h5 style="color: white"> PENGADUAN DITERIMA </h5>
                         </div>
                         <div class="icon">
                             <i class="fa fa-gavel f-left" aria-hidden="true"></i>
@@ -65,7 +65,7 @@
                     <div class="card-box bg-gradient" style="background: #fab005">
                         <div class="inner">
                             <h1 style="color: white"> {{ isset($diproses) ? count($diproses) : 0 }} </h1>
-                            <h5 style="color: white"> Pengaduan Diproses </h5>
+                            <h5 style="color: white"> PENGADUAN DIPROSES </h5>
                         </div>
                         <div class="icon">
                             <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
@@ -77,7 +77,7 @@
                     <div class="card-box bg-gradient" style="background: #fa3605">
                         <div class="inner">
                             <h1 style="color: white"> {{ isset($selesai) ? count($selesai) : 0 }} </h1>
-                            <h5 style="color: white"> Pengaduan Selesai </h5>
+                            <h5 style="color: white"> PENGADUAN SELESAI </h5>
                         </div>
                         <div class="icon">
                             <i class="fad fa-clipboard-check fa-swap-opacity"></i>
@@ -93,7 +93,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Data Kasus</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
 
                 </div><!-- end card header -->
 
@@ -102,14 +102,14 @@
                         <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
                             <thead class="text-muted table-light">
                                 <tr>
-                                    <th scope="col">No Nota Dinas</th>
-                                    <th scope="col">Tanggal</th>
-                                    <th scope="col">Pelapor</th>
-                                    <th scope="col">Terlapor</th>
-                                    <th scope="col">Pangkat</th>
-                                    <th scope="col">Nama Korban</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">ID Yanduan</th>
+                                    <th scope="col">NO. NOTA DINAS</th>
+                                    <th scope="col">TANGGAL</th>
+                                    <th scope="col">PELAPOR</th>
+                                    <th scope="col">TERLAPOR</th>
+                                    <th scope="col">PANGKAT</th>
+                                    <th scope="col">NAMA KORBAN</th>
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col">ID YANDUAN</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

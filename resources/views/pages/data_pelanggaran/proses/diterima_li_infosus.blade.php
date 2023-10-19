@@ -56,7 +56,7 @@
 
                                 <!--Disposisi Karo/Sesro-->
                                 <div class="col-lg-12 mb-3">
-                                    <label class="form-label">Dokumen {{ $kasus->tipe_data == "2" ? 'Informasi Khusus' : 'Laporan Informasi' }}</label>
+                                    <label class="form-label">DOKUMEN {{ $kasus->tipe_data == "2" ? 'INFORMASI KHUSUS' : 'LAPORAN INFORMASI' }}</label>
                                     <a href="/surat-li_infosus/{{ $kasus->id }}" class="btn btn-success" style="width: 100%">
                                         <i class="far fa-download"></i> Download
                                     </a>
@@ -77,7 +77,7 @@
 
                                     <!--Disposisi Karo/Sesro-->
                                     <div class="col-lg-12 mb-3">
-                                        <label class="form-label">Permohonan penomoran surat {{ $kasus->tipe_data == 2 ? 'Informasi Khusus' : 'Laporan Informasi' }} kepada Karo/Sesro</label>
+                                        <label class="form-label">PERMOHONAN PENOMORAN SURAT {{ $kasus->tipe_data == 2 ? 'INFORMASI KHUSUS' : 'LAPORAN INFORMASI' }} KEPADA KARO/SESRO</label>
                                         @if (isset($disposisi[0]) && $disposisi[0]->tipe_disposisi == 1)
                                         <button class="btn btn-success" style="width: 100%" data-bs-toggle="modal" data-bs-target="#modal_disposisi" id="karosesro" onclick="onClickModal(this)" type="button">
                                             <i class="far fa-download"></i> Download
@@ -130,41 +130,41 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title_modal_disposisi">Permohonan penomoran surat {{ $kasus->tipe_data == 2 ? 'Informasi Khusus' : 'Laporan Informasi' }} kepada Karo/Sesro</h5>
+                <h5 class="modal-title" id="title_modal_disposisi">PERMOHONAN PENOMORAN SURAT {{ $kasus->tipe_data == 2 ? 'INFORMASI KHUSUS' : 'LAPORAN INFORMASI' }} kepada Karo/Sesro</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(1)"></button>
             </div>
             <form action="/lembar-disposisi/{{ $kasus->id }}" method="post">
                 @csrf
                 <div class="modal-body">
                     <div class="form-floating mb-3" id="form_agenda">
-                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" required>
-                        <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
+                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="NOMOR AGENDA :" required>
+                        <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" disabled required>
                             <option value="rahasia" selected> Rahasia</option>
                         </select>
-                        <label for="klasifikasi" class="form-label">Klafisikasi</label>
+                        <label for="klasifikasi" class="form-label">KLASIFIKASI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="derajat" id="derajat" disabled required>
                             <option value="Segera" selected>Segera</option>
                         </select>
-                        <label for="derajat" class="form-label">Derajat</label>
+                        <label for="derajat" class="form-label">DERAJAT</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="surat_dari" aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :" value="{{ $den_bag_pemohon->name }}" disabled>
-                        <label for="surat_dari" class="form-label">Surat dari :</label>
+                        <input type="text" class="form-control border-dark" id="surat_dari" aria-describedby="emailHelp" name="surat_dari" placeholder="SURAT DARI :" value="{{ $den_bag_pemohon->name }}" disabled>
+                        <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="perihal" name="perihal" placeholder="Perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" disabled>
-                        <label for="perihal" class="form-label">Perihal</label>
+                        <input type="text" class="form-control border-dark" id="perihal" name="perihal" placeholder="PERIHAL" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" disabled>
+                        <label for="perihal" class="form-label">PERIHAL</label>
                     </div>
                     <input type="number" value="3" hidden name="tipe_disposisi">
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Generate</button>
+                    <button type="submit" class="btn btn-primary">GENERATE</button>
                 </div>
             </form>
         </div>

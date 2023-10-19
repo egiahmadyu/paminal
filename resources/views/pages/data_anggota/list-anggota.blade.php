@@ -13,9 +13,9 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">List Anggota</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahAnggota">
-                        Tambah Anggota
+                        TAMBAH ANGGOTA
                     </button>
                 </div>
 
@@ -24,11 +24,11 @@
                         <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
                             <thead class="text-muted table-light">
                                 <tr>
-                                    <th scope="col">Pangkat</th>
-                                    <th scope="col">Nama</th>
+                                    <th scope="col">PANGKAT</th>
+                                    <th scope="col">NAMA</th>
                                     <th scope="col">NRP</th>
-                                    <th scope="col">Jabatan</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">JABATAN</th>
+                                    <th scope="col">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -46,7 +46,7 @@
             <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Anggota</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">TAMBAH ANGGOTA</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="anggota_baru">
@@ -56,7 +56,7 @@
                             <div class="form-control border-dark">
                                 <select class="form-select" data-choices name="pangkat[]" id="pangkat" aria-placeholder="Pangkat" required>
                                     @if (isset($pangkat))
-                                        <option value="">-- Pilih Pangkat --</option>
+                                        <option value="">-- PILIH PANGKAT --</option>
                                         @foreach ($pangkat as $key => $p)
                                             <option value="{{ $p->id }}">
                                                 {{ $p->name }}
@@ -69,7 +69,7 @@
                         <div class="col-lg-3 mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-dark" name="nama[]" id="nama" placeholder="Nama" required>
-                                <label for="nama">Nama</label>
+                                <label for="nama">NAMA</label>
                             </div>
                         </div>
                         <div class="col-lg-3 mb-3">
@@ -81,7 +81,7 @@
                         <div class="col-lg-3 mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="Jabatan">
-                                <label for="jabatan">Jabatan</label>
+                                <label for="jabatan">JABATAN</label>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" type="button" id="tambah"><i class="far fa-user-plus"></i> Tambah Anggota</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary">SIMPAN</button>
                 </div>
             </div>
             </div>
@@ -142,7 +142,7 @@
                             let opt = `<option value="`+element.id+`">`+element.name+`</option>`
                             option += opt
                         });
-                        let html = `<div class="row"><div class="col-lg-3 mb-3"><div class="form-control border-dark"><select class="form-select" data-choices name="pangkat[]" id="pangkat" aria-placeholder="Pangkat" required><option value="">-- Pilih Pangkat --</option>`+option+`</select></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nama[]" id="nama" placeholder="Nama" required><label for="nama">Nama</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp[]" id="nrp" placeholder="NRP" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="Jabatan"><label for="jabatan">Jabatan</label></div></div></div>`
+                        let html = `<div class="row"><div class="col-lg-3 mb-3"><div class="form-control border-dark"><select class="form-select" data-choices name="pangkat[]" id="pangkat" aria-placeholder="Pangkat" required><option value="">-- PILIH PANGKAT --</option>`+option+`</select></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nama[]" id="nama" placeholder="NAMA" required><label for="nama">NAMA</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp[]" id="nrp" placeholder="NRP" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="JABATAN"><label for="jabatan">JABATAN</label></div></div></div>`
                         $('.modal-body').append(html)
                     },
                     error: function (jqXhr, textStatus, errorMessage) { // error callback

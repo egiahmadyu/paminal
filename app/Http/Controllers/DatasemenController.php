@@ -14,7 +14,8 @@ class DatasemenController extends Controller
 {
     public function listDatasemen()
     {
-        return view('pages.datasemen.list-datasemen');
+        $data['title'] = 'LIST DETASEMEN';
+        return view('pages.datasemen.list-datasemen', $data);
     }
 
     public function getDatasemen()
@@ -76,6 +77,7 @@ class DatasemenController extends Controller
             'anggota' => $anggota,
             'pangkat' => $pangkat,
             'url' => $url,
+            'title' => 'TAMBAH DETASEMEN',
         ];
         return view('pages.datasemen.tambah-datasemen', $data);
     }
@@ -131,6 +133,7 @@ class DatasemenController extends Controller
             'wakaden' => $wakaden,
             'anggota' => $anggota,
             'url' => $url,
+            'title' => 'EDIT DETASEMEN',
         ];
         return view('pages.datasemen.tambah-datasemen', $data);
     }
@@ -183,6 +186,7 @@ class DatasemenController extends Controller
         $data = [
             'datasemen' => $datasemen,
             'unit' => $units,
+            'title' => 'UNIT DATASEMEN',
         ];
         return view('pages.datasemen.unit-datasemen', $data);
     }
@@ -275,7 +279,8 @@ class DatasemenController extends Controller
             'datasemen' => $datasemen,
             'unit' => $unit,
             'anggota' => $anggota,
-            'id_unit' => $id
+            'id_unit' => $id,
+            'title' => 'LIST ANGGOTA',
         ];
         return view('pages.datasemen.detail-unit', $data);
     }

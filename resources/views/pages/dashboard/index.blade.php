@@ -42,7 +42,7 @@
             <div class="card-box bg-gradient" style="background: #011a7d">
                 <div class="inner">
                     <h1 style="color: white"> {{ isset($pelanggar) ? count($pelanggar) : 0 }} </h1>
-                    <h5 style="color: white"> Total Dumas </h5>
+                    <h5 style="color: white"> TOTAL DUMAS </h5>
                 </div>
                 <div class="icon">
                     <i class="fa fa-gavel f-left" aria-hidden="true"></i>
@@ -55,7 +55,7 @@
             <div class="card-box bg-gradient" style="background: #fab005">
                 <div class="inner">
                     <h1 style="color: white"> {{ $pengaduan_diproses }} </h1>
-                    <h5 style="color: white"> Total Pengaduan Diproses </h5>
+                    <h5 style="color: white"> TOTAL PENGADUAN DIPROSES </h5>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
@@ -68,7 +68,7 @@
             <div class="card-box bg-gradient" style="background: #fa3605">
                 <div class="inner">
                     <h1 style="color: white"> {{ isset($poldas) ? count($poldas) : 0 }} </h1>
-                    <h5 style="color: white"> Jumlah POLDA </h5>
+                    <h5 style="color: white"> JUMLAH POLDA </h5>
                 </div>
                 <div class="icon">
                     <i class="fa fa-landmark"></i>
@@ -85,7 +85,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div class="flex-grow-1" id="count_status_dumas">
-                            <p class="text-uppercase fw-medium text-muted text-truncate fs-13">Status Dumas</p>
+                            <p class="text-uppercase fw-medium text-muted text-truncate fs-13">STATUS DUMAS</p>
                             <h4 class="fs-22 fw-bold mb-3"><span class="counter-value" data-target="{{$dumas_terbukti}}">0</span></h4>
                         </div>
                         <div class="avatar-sm flex-grow-0">
@@ -95,10 +95,10 @@
                         </div>
                     </div>
                     <select class="form-select" id="status_dumas" data-placeholder="Bulanan" style="border:none;">
-                        <option value="terbukti">Terbukti</option>
-                        <option value="tidak_terbukti">Tidak Terbukti</option>
-                        <option value="rj">Restorative Justice</option>
-                        <option value="diproses">Diproses</option>
+                        <option value="terbukti">TERBUKTI</option>
+                        <option value="tidak_terbukti">TIDAK TERBUKTI</option>
+                        <option value="rj">RESTORATIVE JUSTICE (RJ)</option>
+                        <option value="diproses">DIPROSES</option>
                     </select>
                 </div><!-- end card body -->
                 <div class="animation-effect-6 opacity-25 fs-18">
@@ -119,7 +119,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div class="flex-grow-1" id="count_limpah_polda">
-                            <p class="text-uppercase fw-medium text-muted text-truncate fs-13">Limpah POLDA</p>
+                            <p class="text-uppercase fw-medium text-muted text-truncate fs-13">LIMPAH POLDA</p>
                             <h4 class="fs-22 fw-bold mb-3"><span class="counter-value" data-target="{{$limpah_polda}}">0</span></h4>
                         </div>
                         <div class="avatar-sm flex-grow-0">
@@ -152,7 +152,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div class="flex-grow-1" id="count_limpah_den">
-                            <p class="text-uppercase fw-medium text-muted text-truncate fs-13">Jumlah Pilimpahan</p>
+                            <p class="text-uppercase fw-medium text-muted text-truncate fs-13">JUMLAH PELIMPAHAN</p>
                             <h4 class="fs-22 fw-bold mb-3"><span class="counter-value" data-target="{{ $pelimpahan }}">0</span></h4>
                         </div>
                         <div class="avatar-sm flex-grow-0">
@@ -188,7 +188,7 @@
             <div class="card card-animate">
                 <div class="card-header">
                     <h3>
-                        Rekap Dumas Triwulan
+                        REKAP DUMAS TRIWULAN
                     </h3>
                 </div>
                 <div class="card-body">
@@ -225,7 +225,7 @@
             <div class="card card-animate">
                 <div class="card-header">
                     <h3>
-                        Rekap Dumas Semester
+                        REKAP DUMAS SEMESTER
                     </h3>
                 </div>
                 <div class="card-body">
@@ -249,7 +249,7 @@
             <!-- card -->
             <div class="card card-animate">
                 <div class="card-header">
-                    <h3>Rekap Dumas Tahunan</h3>
+                    <h3>REKAP DUMAS TAHUNAN</h3>
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
@@ -271,7 +271,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card card-animate">
                 <div class="card-header">
-                    <h2>Grafik Dumas</h2>
+                    <h2>GRAFIK DUMAS</h2>
                 </div>
                 <div class="card-body">
                     <div id="chartTrend"></div>
@@ -282,7 +282,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card card-animate">
                 <div class="card-header">
-                    <h2>Statistik Perbulan</h2>
+                    <h2>STATISTIK DUMAS PERBULAN</h2>
                 </div>
                 <div class="card-body">
                     <div id="chartKolom"></div>
@@ -293,7 +293,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card card-animate">
                 <div class="card-header">
-                    <h2>Dumas Selesai</h2>
+                    <h2>GRAFIK PENYELESAIAN DUMAS</h2>
                 </div>
                 <div class="card-body">
                     <div id="chartKolomPenyelesaian"></div>
@@ -486,7 +486,7 @@
                     lineCap: 'butt',
                 },
                 title: {
-                    text: 'Trend Pelanggaran Dumas',
+                    text: 'TREND PELANGGARAN DUMAS',
                     align: 'center'
                 },
                 grid: {
@@ -539,7 +539,7 @@
                     height: 350
                 },
                 title: {
-                    text: 'Rekap Dumas',
+                    text: 'REKAP DUMAS',
                     align: 'center'
                 },
                 plotOptions: {
@@ -594,15 +594,15 @@
             var options = {
                 series: [
                     {
-                        name: 'Diterima',
+                        name: 'DITERIMA',
                         data: res[1]
                     }, 
                     {
-                        name: 'Diproses',
+                        name: 'DIPROSES',
                         data: res[0]
                     }, 
                     {
-                        name: 'Selesai',
+                        name: 'SELESAI',
                         data: res[2]
                     }
                 ],
@@ -630,7 +630,7 @@
                 },
                 yaxis: {
                     title: {
-                        text: 'Jumlah Dumas'
+                        text: 'JUMLAH DUMAS'
                     }
                 },
                 fill: {
@@ -666,7 +666,7 @@
             var options = {
                 series: [
                     {
-                        name: 'Selesai',
+                        name: 'SELESAI',
                         data: value
                     }
                 ],
@@ -694,7 +694,7 @@
                 },
                 yaxis: {
                     title: {
-                        text: 'Jumlah Dumas'
+                        text: 'JUMLAH DUMAS'
                     }
                 },
                 fill: {
@@ -742,7 +742,7 @@
                     show: false
                 },
                 title: {
-                    text: 'Semester 1',
+                    text: 'SEMESTER 1',
                     align: 'center'
                 },
                 responsive: [{
@@ -762,7 +762,7 @@
                             labels: {
                                 show: true,
                                 total: {
-                                    label:'Total Semeester 1',
+                                    label:'TOTAL SEMESTER 1',
                                     showAlways: true,
                                     show: true,
                                     formatter: function () {
@@ -795,7 +795,7 @@
                     show: false
                 },
                 title: {
-                    text: 'Semester 2',
+                    text: 'SEMESTER 2',
                     align: 'center'
                 },
                 responsive: [{
@@ -815,7 +815,7 @@
                             labels: {
                                 show: true,
                                 total: {
-                                    label:'Total Semeester 2',
+                                    label:'TOTAL SEMESTERr 2',
                                     showAlways: true,
                                     show: true,
                                     formatter: function () {
@@ -856,7 +856,7 @@
                     height: 330
                 },
                 title: {
-                    text: 'Triwulan 1',
+                    text: 'TRIWULAN 1',
                     align: 'center'
                 },
                 legend: {
@@ -907,7 +907,7 @@
                     height: 330
                 },
                 title: {
-                    text: 'Triwulan 2',
+                    text: 'TRIWULAN 2',
                     align: 'center'
                 },
                 legend: {
@@ -958,7 +958,7 @@
                     height: 330
                 },
                 title: {
-                    text: 'Triwulan 3',
+                    text: 'TRIWULAN 3',
                     align: 'center'
                 },
                 legend: {
@@ -1009,7 +1009,7 @@
                     height: 330
                 },
                 title: {
-                    text: 'Triwulan 4',
+                    text: 'TRIWULAN 4',
                     align: 'center'
                 },
                 legend: {

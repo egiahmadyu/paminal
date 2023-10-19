@@ -12,7 +12,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Unit Datasemen</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
                     @can('manage-auth')
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahUnit">
                             Tambah Unit

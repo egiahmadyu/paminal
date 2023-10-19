@@ -5,12 +5,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Sign In | DMS PAMINAL</title>
+    <title>DMS PAMINAL | SIGN IN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Minimal Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/icon/paminal.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/icon/Paminal.ico') }}">
 
     <!-- Layout config Js -->
     <script src="{{ asset('assets/js/layout.js') }}"></script>

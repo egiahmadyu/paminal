@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">List Anggota {{ $datasemen->name }} {{ $unit->unit }} </h4>
+                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }} {{ $datasemen->name }} {{ $unit->unit }} </h4>
                     <a type="button" class="btn btn-success" id="tambah_anggota">
                         Tambah Anggota Unit
                     </a>

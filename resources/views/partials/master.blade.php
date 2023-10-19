@@ -5,11 +5,11 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Paminal | {{ isset($title) ? $title : '' }}</title>
+    <title>PAMINAL | {{ isset($title) ? $title : '' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Paminal" name="description" />
+    <meta content="PAMINAL" name="description" />
     <!-- App favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/icon/paminal.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/icon/Paminal.ico') }}">
 
     <!-- jsvectormap css -->
     <link href="{{ asset('assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />

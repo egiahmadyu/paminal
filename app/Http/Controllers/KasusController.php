@@ -40,6 +40,7 @@ class KasusController extends Controller
 {
     public function index()
     {
+        $data['title'] = 'LIST DATA DUMAS';
         $data['kasuss'] = DataPelanggar::get();
         $data['diterima'] = $data['kasuss']->where('status_id', 1);
         $data['diproses'] = DataPelanggar::join('sprin_histories as sh', 'sh.data_pelanggar_id', '=', 'data_pelanggars.id')
@@ -93,6 +94,7 @@ class KasusController extends Controller
             'wilayah_hukum' => $wilayah_hukum,
             'bag_den' => $bag_den,
             'unit_bag_den' => $unit_bag_den,
+            'title' => 'INPUT DUMAS',
         ];
 
         return view('pages.data_pelanggaran.input_kasus.input', $data);
@@ -281,6 +283,7 @@ class KasusController extends Controller
             'pangkat' => $pangkat,
             'wujud_perbuatan' => $wujud_perbuatan,
             'pimpinan' => $pimpinan,
+            'title' => 'DETAIL DATA PELANGGAR',
         ];
 
         return view('pages.data_pelanggaran.detail', $data);
@@ -404,6 +407,7 @@ class KasusController extends Controller
             'gelar_perkara' => $gelar_perkara,
             'pimpinan_gelar' => $pangkat_pimpinan_gelar->name . ' ' . $gelar_perkara->pimpinan . ' / ' . $gelar_perkara->nrp_pimpinan,
             'jenis_limpah' => $jenis_limpah,
+            'title' => 'LIMPAH BIRO',
         ];
 
         return view('pages.data_pelanggaran.proses.limpah-biro', $data);
@@ -463,7 +467,6 @@ class KasusController extends Controller
             }
         }
 
-
         $data = [
             'kasus' => $kasus,
             'status' => $status,
@@ -489,6 +492,7 @@ class KasusController extends Controller
             'tgl_nd_pg' => Carbon::parse($ndPG->created_at)->translatedFormat('d F Y'),
             'hasil_lhp' => $lhp->hasil_penyelidikan == 1 ? 'Ditemukan Cukup Bukti' : 'Belum Ditemukan cukup bukti',
             'tgl_ugp' => isset($ugp) ? Carbon::parse($ugp->tanggal)->translatedFormat('d F Y') : '',
+            'title' => 'GELAR PERKARA',
         ];
 
         return view('pages.data_pelanggaran.proses.gelar_penyelidikan', $data);
@@ -516,6 +520,7 @@ class KasusController extends Controller
             'polda' => $polda,
             'limpahPolda' => $limpahPolda,
             'tgl_limpah' => Carbon::parse($limpahPolda->tanggal_limpah)->translatedFormat('d F Y'),
+            'title' => 'LIMPAH POLDA',
         ];
 
         return view('pages.data_pelanggaran.proses.limpah_polda', $data);
@@ -613,6 +618,7 @@ class KasusController extends Controller
             'wilayah_hukum' => $wilayah_hukum,
             'tim_disposisi' => $tim_disposisi,
             'unit' => $unit,
+            'title' => 'DATA DUMAS',
         ];
 
         if ($kasus->tipe_data == 2 || $kasus->tipe_data == 3) {
@@ -657,6 +663,7 @@ class KasusController extends Controller
             'lhp' => $lhp,
             'usia_dumas' => $usia_dumas . ' hari',
             'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
+            'title' => 'PULBAKET',
         ];
         return view('pages.data_pelanggaran.proses.pulbaket', $data);
     }
