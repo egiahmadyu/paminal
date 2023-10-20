@@ -45,9 +45,9 @@
                     <h5 style="color: white"> TOTAL DUMAS </h5>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-gavel f-left" aria-hidden="true"></i>
+                    <i class="far fa-gavel f-left" aria-hidden="true"></i>
                 </div>
-                <a href="/data-kasus" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a>
+                {{-- <a href="/data-kasus" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a> --}}
             </div>
         </div>
         
@@ -58,9 +58,9 @@
                     <h5 style="color: white"> TOTAL PENGADUAN DIPROSES </h5>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-sync-alt fa-spin" aria-hidden="true"></i>
+                    <i class="far fa-sync-alt fa-spin" aria-hidden="true"></i>
                 </div>
-                <a href="/data-kasus" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                {{-- <a href="/data-kasus" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a> --}}
             </div>
         </div>
 
@@ -71,9 +71,9 @@
                     <h5 style="color: white"> JUMLAH POLDA </h5>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-landmark"></i>
+                    <i class="far fa-landmark"></i>
                 </div>
-                <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a>
+                {{-- <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a> --}}
             </div>
         </div>
     </div>
@@ -197,22 +197,22 @@
                         <option value="s">Semester</option>
                     </select> --}}
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
                             <div class="flex-grow-1">
                                 <div id="chartDonatDumas"></div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
                             <div class="flex-grow-1">
                                 <div id="chartDonatDumas1"></div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
                             <div class="flex-grow-1">
                                 <div id="chartDonatDumas2"></div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
                             <div class="flex-grow-1">
                                 <div id="chartDonatDumas3"></div>
                             </div>
@@ -230,12 +230,12 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-xl-6 col-lg-12">
                             <div class="flex-grow-1">
                                 <div id="chartSemester1"></div>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-xl-6 col-lg-12">
                             <div class="flex-grow-1">
                                 <div id="chartSemester2"></div>
                             </div>
@@ -739,7 +739,9 @@
                     height: 500
                 },
                 legend: {
-                    show: false
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    floating: false,
                 },
                 title: {
                     text: 'SEMESTER 1',
@@ -792,7 +794,9 @@
                     height: 500
                 },
                 legend: {
-                    show: false
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    floating: false,
                 },
                 title: {
                     text: 'SEMESTER 2',
@@ -815,7 +819,7 @@
                             labels: {
                                 show: true,
                                 total: {
-                                    label:'TOTAL SEMESTERr 2',
+                                    label:'TOTAL SEMESTER 2',
                                     showAlways: true,
                                     show: true,
                                     formatter: function () {
@@ -846,7 +850,7 @@
             var optQ1 = {
                 series: [value[0], valQ-value[0]],
                 labels: labelQ1,
-                colors: ['#036cff','#364559'],
+                colors: ['#000f66','#364559'],
                 noData: {
                     text: 'Loading...'
                 },
@@ -881,7 +885,7 @@
                             labels: {
                                 show: true,
                                 total: {
-                                    label:'Total Triwulan 1',
+                                    label:'TOTAL T1',
                                     showAlways: true,
                                     show: true,
                                     formatter: function () {
@@ -897,7 +901,7 @@
             var optQ2 = {
                 series: [value[1], valQ-value[1]],
                 labels: labelQ2,
-                colors: ['#036cff','#364559'],
+                colors: ['#054bfc','#364559'],
                 noData: {
                     text: 'Loading...'
                 },
@@ -932,7 +936,7 @@
                             labels: {
                                 show: true,
                                 total: {
-                                    label:'Total Triwulan 2',
+                                    label:'TOTAL T2',
                                     showAlways: true,
                                     show: true,
                                     formatter: function () {
@@ -948,7 +952,7 @@
             var optQ3 = {
                 series: [value[2], valQ-value[2]],
                 labels: labelQ3,
-                colors: ['#036cff','#364559'],
+                colors: ['#00647d','#364559'],
                 noData: {
                     text: 'Loading...'
                 },
@@ -983,7 +987,7 @@
                             labels: {
                                 show: true,
                                 total: {
-                                    label:'Total Triwulan 3',
+                                    label:'TOTAL T3',
                                     showAlways: true,
                                     show: true,
                                     formatter: function () {
@@ -999,7 +1003,7 @@
             var optQ4 = {
                 series: [value[3], valQ-value[3]],
                 labels: labelQ4,
-                colors: ['#036cff','#364559'],
+                colors: ['#03f7ff','#364559'],
                 noData: {
                     text: 'Loading...'
                 },
@@ -1034,7 +1038,7 @@
                             labels: {
                                 show: true,
                                 total: {
-                                    label:'Total Triwulan 4',
+                                    label:'TOTAL T4',
                                     showAlways: true,
                                     show: true,
                                     formatter: function () {

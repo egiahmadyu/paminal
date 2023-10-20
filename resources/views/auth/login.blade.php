@@ -93,8 +93,16 @@
                                             class="fw-semibold text-secondary text-decoration-underline"> SignUp</a>
                                     </p>
                                 </div> --}}
+                                
                             </div>
+                            
                         </div>
+                        <div class="card-footer">
+                            <footer class="">
+                                <p class="text-center text-muted">&copy; 2023 Propam Integrated System - Divisi Propam Polri</p>
+                            </footer>
+                        </div>
+                        
                         <!-- end card body -->
                     </div>
                     <!-- end card -->

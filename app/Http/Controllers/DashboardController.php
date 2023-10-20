@@ -228,7 +228,7 @@ class DashboardController extends Controller
             $to = Carbon::now()->month($m)->lastOfMonth();
             $res = DataPelanggar::whereBetween('created_at', [$from, $to])->count();
             $value[$i] = $res;
-            $label[$i] = $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
+            $label[$i] = 'T' . $i . ' : ' .  $from->isoFormat('MMMM') . ' - ' . $to->isoFormat('MMMM');
             $m_temp = $m + 1;
         }
         $tipe = 'triwulan';
