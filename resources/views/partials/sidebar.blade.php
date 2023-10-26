@@ -114,13 +114,20 @@
                 </li>
                 @endcan
 
+                <li class="nav-item">
+                    <div class="logo d-flex justify-content-center align-items-center mt-3">
+                        <span class="logo-sm" id="logo-burung">
+                            <img src="/assets/images/maskot_polri.png" alt="" height="100">
+                        </span>
+                        <span class="logo-lg" id="logo-burung">
+                            <img src="/assets/images/maskot_polri.png" alt="" height="450">
+                        </span>
+                    </div>
+                </li>
+                
             </ul>
 
-            <div class="logo d-flex justify-content-center align-items-center mt-3">
-                <span class="logo-lg" id="logo-burung">
-                    <img src="/assets/images/maskot_polri.png" alt="" height="450">
-                </span>
-            </div>
+            
             
         </div>
         <!-- Sidebar -->
