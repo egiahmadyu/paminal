@@ -117,6 +117,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('data-kasus/view/{kasus_id}/{id}', [KasusController::class, 'viewProcess'])->name('kasus.proses.view');
     Route::get('pulbaket/view/next-data/{id}', [PulbaketController::class, 'viewNextData'])->name('kasus.pulbaket.next');
 
+    Route::get('rj/{id}', [KasusController::class, 'RJ'])->name('kasus.rj');
+
     // End View Kasus
 
     // Generate

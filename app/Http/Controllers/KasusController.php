@@ -355,6 +355,15 @@ class KasusController extends Controller
         elseif ($status_id == 6) return $this->viewLimpahBiro($kasus_id);
     }
 
+    public function RJ($kasus_id)
+    {
+        return response()->json([
+            'status' => 200,
+            'success' => true,
+            'message' => 'DUMAS DIHENTIKAN DENGAN STATUS RJ'
+        ]);
+    }
+
     private function viewLimpahBiro($id)
     {
         $kasus = DataPelanggar::find($id);
