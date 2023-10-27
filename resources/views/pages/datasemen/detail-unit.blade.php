@@ -7,11 +7,19 @@
 
 
 @section('content')
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb d-flex justify-content-start">
+            <li class="breadcrumb-item"><a href="/">HOME</a></li>
+            <li class="breadcrumb-item"><a href="/">UNIT DETASEMEN</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> <a href="#"> {{ $title }} {{ $unit->unit }} </a> </li>
+        </ol>
+    </nav>
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }} {{ $datasemen->name }} {{ $unit->unit }} </h4>
+                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }} {{ $unit->unit }} </h4>
                     <a type="button" class="btn btn-success" id="tambah_anggota">
                         Tambah Anggota Unit
                     </a>

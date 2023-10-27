@@ -93,7 +93,7 @@
 
                 <div class="col-lg-6 mb-3">
                     <div class="form-floating">
-                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" required>
+                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" readonly required>
                         <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
                     </div>
                 </div>
@@ -271,7 +271,7 @@
                         </div>
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
-                                <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ isset($kasus) ? $kasus->tanggal_kejadian : '' }}" required>
+                                <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ isset($kasus) ? $kasus->tanggal_kejadian : '' }}" readonly required>
                                 <label for="tempat_kejadian">Tanggal Kejadian</label>
                             </div>
                         </div>

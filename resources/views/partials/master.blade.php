@@ -343,15 +343,6 @@
 </head>
 
 <body>
-    {{-- <script type="text/javascript" charset="utf-8">
-        let a;
-        let time;
-        setInterval(() => {
-            a = new Date();
-            time = a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds();
-            document.getElementById('current-time').innerHTML = time;
-        }, 1000);
-    </script> --}}
 
     <div id="layout-wrapper">
         <div class="top-tagbar">
@@ -359,7 +350,9 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-md-4 col-9">
                         <div class="text-white-50 fs-13">
-                            <i class="bi bi-clock align-middle me-2"></i> <span id="current-time"></span>
+                            <i class="bi bi-clock align-middle me-2"></i>
+                            {{-- <span id="current-time"></span> --}}
+                            <span id="waktu-saat-ini"></span>
                         </div>
                     </div>
                     {{-- <div class="col-md-4 col-6 d-none d-lg-block">
@@ -415,6 +408,32 @@
 
         @include('partials.javascript')
         <script>
+            let a;
+            let date;
+            setInterval(() => {
+                a = new Date();
+                date = getDaysName() +', '+a.getDate() + ' ' + getMonthName(a.getMonth()) + ' ' +a.getFullYear() + ' | ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds()
+                document.getElementById('waktu-saat-ini').innerHTML = date;
+            }, 1000);
+
+            function getMonthName(monthNumber) {
+                const date = new Date();
+                date.setMonth(monthNumber - 1);
+
+                return date.toLocaleString('id-ID', {
+                    month: 'long',
+                });
+            }
+
+            function getDaysName() {
+                const weekday = ["Minggu","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"];
+
+                const d = new Date();
+                let day = weekday[d.getDay()];
+
+                return day
+            }
+
             $("#import_data").submit(function(event){
                 event.preventDefault();
                 $('.loading').css('display', 'block')

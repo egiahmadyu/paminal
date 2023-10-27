@@ -246,7 +246,7 @@ class KasusController extends Controller
                 ->orderBy('data_pelanggars.id', 'desc')->with('status');
         }
 
-        return DataTables::of($query->get())
+        $table = DataTables::of($query->get())
             ->editColumn('no_nota_dinas', function ($query) {
                 // return $query->no_nota_dinas;
                 if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '">Edit Data</a>';
@@ -259,8 +259,9 @@ class KasusController extends Controller
 
                 return $pangkat;
             })
-            ->rawColumns(['no_nota_dinas'])
-            ->make(true);
+            ->rawColumns(['no_nota_dinas']);
+
+        return $table->make(true);
     }
 
     public function detail($id)

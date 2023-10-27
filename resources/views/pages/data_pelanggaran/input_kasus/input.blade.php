@@ -11,10 +11,13 @@
 
 @section('content')
     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-        <ol class="breadcrumb d-flex justify-content-end">
-            <li class="breadcrumb-item active"><a href="{{route('kasus.input')}}">Input Data</a></li>
+        <ol class="breadcrumb d-flex justify-content-start">
+            <li class="breadcrumb-item"><a href="/">HOME</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> <a href="#"> {{ $title }} </a> </li>
         </ol>
     </nav>
+
+    @include('partials.message')
     <div class="row form-control">
         <div class="form-control text-center border-0">
             <h3>FORM {{ $title }}</h3>
@@ -38,7 +41,7 @@
                 </div>
                 <div class="col-lg-6 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" disabled required>
+                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" disabled required>
                         <label for="no_nota_dinas">No. Nota Dinas</label>
                     </div>
                 </div>
@@ -70,7 +73,7 @@
 
                 <div class="col-lg-6 mb-3">
                     <div class="form-floating">
-                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}" required>
+                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}" readonly required>
                         <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
                     </div>
                 </div>
@@ -262,7 +265,7 @@
                         </div>
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
-                                <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" required>
+                                <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" readonly required>
                                 <label for="tempat_kejadian">Tanggal Kejadian</label>
                             </div>
                         </div>

@@ -39,6 +39,8 @@ class DashboardController extends Controller
             ->where('dh.tipe_disposisi', 3)
             ->where('dh.limpah_den', 1)->count();
 
+        $data['waktu'] = Carbon::now()->translatedFormat('d F Y | h:i');
+
         return view('pages.dashboard.index', $data);
     }
 
