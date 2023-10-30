@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,9 +14,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('penyidiks', function (Blueprint $table) {
-            $table->integer('pangkat')->change();
-        });
+        DB::statement('ALTER TABLE penyidiks ALTER COLUMN 
+                  pangkat TYPE integer USING (pangkat)::integer');
     }
 
     /**
