@@ -427,7 +427,6 @@ class KasusController extends Controller
         // Get Penyidik
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
 
-
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;

@@ -36,10 +36,8 @@ class PulbaketController extends Controller
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
-            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
-            ->select('penyidiks.*', 'p.id as pangkat_id')
-            ->orderBy('pangkat_id', 'asc')->get();
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
 
 
         foreach ($penyidik as $key => $value) {
@@ -277,7 +275,7 @@ class PulbaketController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
@@ -365,10 +363,7 @@ class PulbaketController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
-            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
-            ->select('penyidiks.*', 'p.id as pangkat_id')
-            ->orderBy('pangkat_id', 'asc')->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
 
 
         foreach ($penyidik as $key => $value) {
@@ -444,7 +439,7 @@ class PulbaketController extends Controller
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
