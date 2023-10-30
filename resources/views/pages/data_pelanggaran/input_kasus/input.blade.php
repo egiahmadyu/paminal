@@ -240,7 +240,7 @@
                         <div class="col-lg-6 mb-3">
                             <div class="form-control border-dark">
                                 <select class="form-select" data-choices="true" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
-                                    <option value="">MABES / POLDA</option>
+                                    <option value="" selected disabled>MABES / POLDA</option>
                                     @if (isset($wilayah_hukum))
                                         @foreach ($wilayah_hukum as $key => $wh)
                                             <option value="{{ $wh->id }}" {{ old('wilayah_hukum') == $wh->id ? 'selected' : '' }}>
@@ -277,20 +277,20 @@
                         <div class="col-lg-12 mb-3" id="kronologi_form">
                             <div class="form-floating">
                                 <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
-                                <label for="kronologis" class="form-label">Kronologis</label>
+                                <label for="kronologis" id="label_kronologi" class="form-label">Kronologis</label>
                             </div>
                         </div>
 
                         <div class="col-lg-12 mb-3" id="btn_add_kronologi" hidden>
                             <div class="col-lg-12 mb-3">
-                                <button class="btn btn-success" id="add_kronologi">TAMBAH KRONOLOGI</button>
+                                <button class="btn btn-success" id="add_kronologi">TAMBAH FAKTA-FAKTA</button>
                             </div>
                         </div>
 
                         <div class="col-lg-12 mb-3" id="catatan_form" hidden>
                             <div class="form-floating">
-                                <textarea class="form-control border-dark" name="catatan[]" placeholder="Catatan" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
-                                <label for="catatan" class="form-label">Catatan</label>
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
+                                <label for="catatan" id="label_catatan" class="form-label">Catatan</label>
                             </div>
                         </div>
 
@@ -348,7 +348,6 @@
             };
 
             if ($('#disiplin').is(':checked')) {
-                console.log('test');
                 $('#wujud_perbuatan').removeAttr("disabled")
                 $('#kode_etik').removeAttr("required")
                 $('#kode_etik').attr("disabled")
@@ -364,25 +363,32 @@
             }
 
             $('#add_kronologi').on('click', function() {
-                console.log(this.value)
                 let krono = `<div class="form-floating mt-3">
-                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
-                                <label for="kronologis" class="form-label">Kronologis</label>
+                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
+                                <label for="kronologis" class="form-label">Fakta-fakta</label>
                             </div>`
                 $('#kronologi_form').append(krono)
             });
 
             $('#add_catatan').on('click', function() {
-                console.log(this.value)
-                let krono = `<div class="form-floating mt-3">
+                let krono = ''
+                if ($('#tipe_data').val() == 2) {
+                    krono += `<div class="form-floating mt-3">
                                 <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
-                                <label for="catatan" class="form-label">CATATAN</label>
+                                <label for="catatan" class="form-label">Catatan</label>
                             </div>`
+                } else if ($('#tipe_data').val() == 3) {
+                    krono += `<div class="form-floating mt-3">
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
+                                <label for="catatan" class="form-label">Pendapat Pelapor</label>
+                            </div>`
+                }
+                
                 $('#catatan_form').append(krono)
             });
 
             $('#tipe_data').on('change', function() {
-                console.log(this.value)
+                
                 if (this.value == 1) {
                     $('#no_nota_dinas').removeAttr('disabled')
                     $('#den_bag').prop('hidden', true)
@@ -399,6 +405,7 @@
                     $('#btn_add_kronologi').removeAttr('hidden')
                     $('#btn_add_catatan').removeAttr('hidden')
                     $('#title_form').html('FORM INPUT INFORMASI KHUSUS')
+                    $('#label_kronologi').html('Fakta-fakta')
                 } else {
                     $('#no_nota_dinas').prop('disabled', true)
                     $('#no_nota_dinas').prop('required', true)
@@ -407,6 +414,10 @@
                     $('#btn_add_kronologi').removeAttr('hidden')
                     $('#btn_add_catatan').removeAttr('hidden')
                     $('#title_form').html('FORM INPUT LAMPORAN INFORMASI')
+                    $('#label_kronologi').html('Fakta-fakta')
+                    $('#label_catatan').html('Pendapat Pelapor')
+                    $('#add_catatan').html('TAMBAH PENDAPAT PELAPOR')
+                    add_catatan
                 }
             });
             
@@ -425,7 +436,6 @@
                         let unit = Object.values(data.data.unit)
                         let option = ''
                         let html = ''
-                        console.log(unit.length)
                         if (unit.length == 0) {
                             html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="">UNIT BELUM TERSEDIA</option></select><label for="unit_den_bag" class="form-label">UNIT</label>`
                         } else {
@@ -433,7 +443,6 @@
                                 let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
                                 option += opt
                             });
-                            console.log(option)
                             html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">PILIH UNIT</option>`+option+`</select><label for="unit_den_bag" class="form-label">UNIT</label>`
                         }
                         
@@ -511,7 +520,6 @@
         }
 
         function getValKodeEtik() {
-            console.log('test');
             let kasus_wp = `{{ isset($kasus) ? $kasus->wujud_perbuatan : '' }}`;
             let list_ketke = new Array();
             list_ketke = `{{ $kode_etik }}`;
@@ -530,7 +538,6 @@
                     is_selected = 'selected';
                 }
                 html_wp += `<option value="`+el_id_ke+`" `+is_selected+`>`+el_ketke+`</option>`;
-                // console.log(html);
             }
             $('#wujud_perbuatan').append(html_wp);
 
@@ -560,7 +567,6 @@
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.querySelectorAll('.needs-validation')
-            // console.log(forms)
 
             // Loop over them and prevent submission
             Array.prototype.slice.call(forms)
