@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('penyidiks', function (Blueprint $table) {
-            $table->integer('pangkat')->change();
+            $table->integer('pangkat');
         });
     }
 
