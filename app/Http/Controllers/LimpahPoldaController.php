@@ -31,7 +31,6 @@ class LimpahPoldaController extends Controller
 
     public function generateDisposisi(Request $request, $kasus_id)
     {
-        // dd($request->all());
         $kasus = DataPelanggar::find($kasus_id);
 
         if ($request->limpah_den == 7) {
@@ -151,15 +150,30 @@ class LimpahPoldaController extends Controller
             ]);
             return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'Limpah unit telah ditentukan.');
         } else {
+
+            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
+                'klasifikasi' => $request->klasifikasi,
+                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+            ]);
+            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
+                'klasifikasi' => $request->klasifikasi,
+                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+            ]);
             DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
                 'klasifikasi' => $request->klasifikasi,
                 'derajat' => $request->derajat,
                 'no_agenda' => $request->nomor_agenda,
                 'tipe_disposisi' => $request->tipe_disposisi,
             ]);
-            $kasus->update([
+
+            DataPelanggar::where('id', $kasus_id)->update([
+                'no_nota_dinas' => $request->nomor_agenda,
                 'status_id' => 4
             ]);
+
+            return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
         }
 
         if ($request->tipe_disposisi == 1) {
@@ -222,7 +236,7 @@ class LimpahPoldaController extends Controller
             'bulan_romawi' => $this->getRomawi(Carbon::now()->translatedFormat('m')),
             'tahun' => Carbon::now()->translatedFormat('Y'),
             'tgl_kejadian' => Carbon::parse($kasus->tanggal_kejadian)->translatedFormat('d F Y'),
-            'perihal' => $kasus->perihal_nota_dinas,
+            'perihal' => $kasus->tipe_data == 2 ? 'INFOSUS' : 'LAPORAN INFORMASI',
             'tgl_pelaporan' => Carbon::parse($kasus->created_at)->translatedFormat('d F Y')
         ));
 

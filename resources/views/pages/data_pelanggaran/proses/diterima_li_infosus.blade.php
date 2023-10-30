@@ -137,8 +137,8 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-floating mb-3" id="form_agenda">
-                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="NOMOR AGENDA :" required>
-                        <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
+                        <input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="NOMOR SURAT :" {{ !is_null($disposisi[2]['no_agenda']) ? 'disabled' : '' }} required>
+                        <label for="nomor_agenda" class="form-label">NOMOR SURAT :</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" disabled required>
@@ -158,7 +158,7 @@
                         <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ $kasus ? $kasus->perihal_nota_dinas : '' }}" style="height: 120px" disabled required>{{ $kasus ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ $kasus->tipe_data == 2 ? 'INFO KHUSUS' : 'LAPORAN INFORMASI' }}" style="height: 70px" disabled required>{{ $kasus->tipe_data == 2 ? 'INFO KHUSUS' : 'LAPORAN INFORMASI' }}</textarea>
                         <label for="perihal" class="form-label">Perihal</label>
                     </div>
                     <input type="number" value="3" hidden name="tipe_disposisi">
@@ -196,25 +196,20 @@
         let is_disabled = false;
         if (modal.id == 'karosesro') {
             $('#title_modal_disposisi').text('Permohonan penomoran surat {{ $kasus->tipe_data == 2 ? 'Informasi Khusus' : 'Laporan Informasi' }} kepada Karo/Sesro');
-            let dis_karosesro = `{{ isset($disposisi[0]) ? $disposisi[0]->tipe_disposisi : '' }}`;
-            if (dis_karosesro == 1) {
-                is_disabled = false;
-            }
+            let disabled = `{{ isset($disposisi[2]['no_agenda']) ? 'disabled' : '' }}`;
+            console.log(disabled)
 
-            let id_disposisi = `{{ isset($disposisi[0]) ? $disposisi[0]->id : ''}}`;
+            let id_disposisi = `{{ isset($disposisi[2]) ? $disposisi[2]->id : ''}}`;
 
             if (id_disposisi > 0) {
-                let no_agenda = `{{ isset($disposisi[0]) ? $disposisi[0]['no_agenda'] : ''}}`;
+                let no_agenda = `{{ isset($disposisi[2]) ? $disposisi[2]['no_agenda'] : ''}}`;
                 
                 let htmlNoAgenda = `<input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp"
-                                name="nomor_agenda" placeholder="Nomor Agenda :" value="` + no_agenda + `" required>
-                            <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>`;
+                                name="nomor_agenda" placeholder="NOMOR SURAT :" value="` + no_agenda + `" `+disabled+` required>
+                            <label for="nomor_agenda" class="form-label">NOMOR SURAT :</label>`;
 
                 $('#form_agenda').html(htmlNoAgenda);
             }
-        }
-        if (is_disabled) {
-            document.getElementById("nomor_agenda").setAttribute("disabled", "disabled");
         }
     }
 

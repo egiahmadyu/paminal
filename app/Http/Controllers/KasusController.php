@@ -313,6 +313,10 @@ class KasusController extends Controller
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
         $nd_hasil_gelar = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus->id)->first();
 
+        $disposisi[0] = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
+        $disposisi[1] = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 2)->first();
+        $disposisi[2] = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+
         $data = [
             'kasus' => $kasus,
             'status' => $status,
@@ -322,9 +326,12 @@ class KasusController extends Controller
             'wujud_perbuatan' => $wujud_perbuatan,
             'pimpinan' => $pimpinan,
             'lhp' => $lhp ?? '',
+            'disposisi' => $disposisi,
             'nd_hasil_gelar' => $nd_hasil_gelar ?? '',
             'title' => 'DETAIL DATA PELANGGAR',
         ];
+
+        // dd($data);
 
         return view('pages.data_pelanggaran.detail', $data);
     }
