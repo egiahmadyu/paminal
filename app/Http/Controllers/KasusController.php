@@ -700,10 +700,7 @@ class KasusController extends Controller
         $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
-            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
-            ->select('penyidiks.*', 'p.id as pangkat_id')
-            ->orderBy('pangkat_id', 'asc')->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
 
 
         foreach ($penyidik as $key => $value) {
