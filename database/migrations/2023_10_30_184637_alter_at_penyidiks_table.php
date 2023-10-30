@@ -14,8 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE penyidiks ALTER COLUMN 
-                  pangkat TYPE integer USING (pangkat)::integer');
+        DB::statement('ALTER TABLE penyidiks ALTER COLUMN pangkat TYPE integer USING (pangkat)::integer');
     }
 
     /**
