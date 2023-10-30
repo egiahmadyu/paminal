@@ -6,6 +6,7 @@ use App\Models\DataAnggota;
 use App\Models\DataPelanggar;
 use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
+use App\Models\DPExtends;
 use App\Models\LimpahPolda;
 use App\Models\Penyidik;
 use App\Models\Polda;
@@ -30,6 +31,7 @@ class LimpahPoldaController extends Controller
 
     public function generateDisposisi(Request $request, $kasus_id)
     {
+        // dd($request->all());
         $kasus = DataPelanggar::find($kasus_id);
 
         if ($request->limpah_den == 7) {
@@ -104,6 +106,11 @@ class LimpahPoldaController extends Controller
             ]);
             return redirect()->back()->with('message', 'Limpah Datasemen telah ditentukan.');
         } elseif ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
+            $penyidik = DataAnggota::where('unit', (int)$request->limpah_unit)->get();
+            if (count($penyidik) < 1) {
+                return back()->withInput()->with('error', 'Anggota Unit belum dibuat !');
+            }
+
             $data->update([
                 'limpah_unit' => $request->limpah_unit
             ]);
@@ -142,7 +149,7 @@ class LimpahPoldaController extends Controller
             $kasus->update([
                 'status_id' => 4
             ]);
-            return redirect()->back()->with('message', 'Limpah unit telah ditentukan.');
+            return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'Limpah unit telah ditentukan.');
         } else {
             DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
                 'klasifikasi' => $request->klasifikasi,
@@ -203,6 +210,9 @@ class LimpahPoldaController extends Controller
         $wujud_perbuatan = WujudPerbuatan::find($kasus->wujud_perbuatan);
         $wilayah_hukum = Polda::find($kasus->wilayah_hukum);
 
+        $kronologi = DPExtends::where('data_pelanggar_id', $kasus->id)->where('tipe', 'kronologis')->get();
+        $catatan = DPExtends::where('data_pelanggar_id', $kasus->id)->where('tipe', 'catatan')->get();
+
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename . '.docx'));
 
         $template_document->setValues(array(
@@ -213,9 +223,22 @@ class LimpahPoldaController extends Controller
             'tahun' => Carbon::now()->translatedFormat('Y'),
             'tgl_kejadian' => Carbon::parse($kasus->tanggal_kejadian)->translatedFormat('d F Y'),
             'perihal' => $kasus->perihal_nota_dinas,
-            'kronologis' => $kasus->kronologi,
             'tgl_pelaporan' => Carbon::parse($kasus->created_at)->translatedFormat('d F Y')
         ));
+
+        $template_document->cloneBlock('kronologi_section', count($kronologi), true, true);
+        foreach ($kronologi as $keyKrono => $valKrono) {
+            $template_document->setValues(array(
+                'kronologi#' . $keyKrono + 1 => $valKrono->deskripsi
+            ));
+        }
+
+        $template_document->cloneBlock('catatan_section', count($catatan), true, true);
+        foreach ($kronologi as $keyCatatan => $valCatatan) {
+            $template_document->setValues(array(
+                'catatan#' . $keyCatatan + 1 => $valCatatan->deskripsi
+            ));
+        }
 
         $template_document->saveAs(storage_path('template_surat/' . $filename . '.docx'));
 

@@ -2,10 +2,13 @@
 
 @prepend('styles')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <style>
         select:hover, #datepicker:hover, #datepicker_tgl_kejadian:hover {
             cursor: pointer;
         }
+
     </style>
 @endprepend
 
@@ -20,93 +23,87 @@
     @include('partials.message')
     <div class="row form-control">
         <div class="form-control text-center border-0">
-            <h3>FORM {{ $title }}</h3>
+            <h3 id="title_form">FORM {{ $title }}</h3>
         </div>
-        <form action="/input-data-kasus/store" method="post">
+        <form action="/input-data-kasus/store" class="needs-validation" method="post">
             @csrf
             <div class="row">
-                <div class="col-lg-6 mb-3">
-                    <div class="form-floating">
-                        <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" required>
-                            <option value="">-- Pilih Tipe Aduan --</option>
-                            <option value="1" {{ old('tipe_data') == 1 ? 'selected' : '' }}>Aduan Masyarakat</option>
-                            @can('infosus-li')
-                                <option value="2" {{ old('tipe_data') == 2 ? 'selected' : '' }}>Info Khusus</option>
-                                <option value="3" {{ old('tipe_data') == 3 ? 'selected' : '' }}>Laporan Informasi</option>
-                            @endcan
-                            
-                        </select>
-                        <label for="tipe_data" class="form-label">Tipe Aduan</label>
-                    </div>
+                <div class="col-lg-12 mb-3">
+                    <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" required>
+                        <option value="" selected disabled>PILIH TIPE ADUAN</option>
+                        <option value="1" {{ old('tipe_data') == 1 ? 'selected' : '' }}>ADUAN MASYARAKAT</option>
+                        @can('infosus-li')
+                            <option value="2" {{ old('tipe_data') == 2 ? 'selected' : '' }}>INFO KHUSUS</option>
+                            <option value="3" {{ old('tipe_data') == 3 ? 'selected' : '' }}>LAPORAN INFORMASI</option>
+                        @endcan
+                        
+                    </select>
                 </div>
-                <div class="col-lg-6 mb-3">
+
+                <div class="col-lg-12 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" disabled required>
-                        <label for="no_nota_dinas">No. Nota Dinas</label>
+                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="NO. NOTA DINAS" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" disabled required>
+                        <label for="no_nota_dinas">NO. NOTA DINAS</label>
                     </div>
                 </div>
                 
-                <div class="col-lg-6 mb-0">
+                <div class="col-lg-12 mb-3">
                     <center>
                         <div class="form-label">
-                            <label for="check-box">Tipe Pelanggaran</label>
+                            <label for="check-box">TIPE PELANGGARAN</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="jenis_wp" value="1" {{ old('jenis_wp') == 1 ? 'checked' : ''}} onchange='disiplinChange(this);'>
-                            <label class="form-check-label " for="disiplin">Disiplin</label>
+                            <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="jenis_wp" value="1" {{ old('jenis_wp') == 1 ? 'checked' : ''}} onchange='disiplinChange(this);' required>
+                            <label class="form-check-label " for="disiplin">DISIPLIN</label>
                           </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="jenis_wp" value="2" {{ old('jenis_wp') == 2 ? 'checked' : ''}} onchange='kodeEtikChange(this);'>
-                            <label class="form-check-label" for="kode_etik">Kode Etik</label>
+                            <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="jenis_wp" value="2" {{ old('jenis_wp') == 2 ? 'checked' : ''}} onchange='kodeEtikChange(this);' required>
+                            <label class="form-check-label" for="kode_etik">KODE ETIK</label>
                         </div>
+                        <div class="invalid-feedback">Example invalid feedback text</div>
                     </center>
                 </div>
 
-                <div class="col-lg-6 mb-3">
-                    <div class="form-floating">
-                        <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required>
-                            <option value="">-- Pilih Wujud Perbuatan --</option>
-                        </select>
-                        <label for="wujud_perbuatan" class="form-label">Wujud Perbuatan</label>
-                    </div>
+                <div class="col-lg-12 mb-3">
+                    <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required style="height:100%">
+                        <option value="">PILIH WUJUD PERBUATAN</option>
+                    </select>
                 </div>
 
-                <div class="col-lg-6 mb-3">
+                <div class="col-lg-12 mb-3">
                     <div class="form-floating">
                         <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}" readonly required>
-                        <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="perihal_nota_dinas" id="perihal_nota_dinas" placeholder="Perihal Nota Dinas" value="{{ old('perihal_nota_dinas') ? old('perihal_nota_dinas') : '' }}" required>
-                        <label for="perihal_nota_dinas">Perihal Nota Dinas</label>
+                        <label for="tanggal_nota_dinas">TANGGAL NOTA DINAS</label>
                     </div>
                 </div>
 
-                <div class="col-lg-6 mb-3">
+                <div class="col-lg-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control border-dark" name="perihal" placeholder="PERIHAL" id="perihal" value="{{ old('perihal') ? old('perihal') : '' }}" style="height: 150px" required></textarea>
+                        <label for="perihal" class="form-label">PERIHAL</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 mb-3">
                     <div class="form-floating" id="den_bag" {{ old('den_bag') ? '' : 'hidden' }}>
                         <select class="form-select border-dark" aria-label="Default select example" name="den_bag">
-                            <option value="">-- Pilih Bag / Detasemen --</option>
+                            <option value="">PILIH BAG / DETASEMEN</option>
                             @foreach ($bag_den as $bd)
                                 <option value="{{ $bd->id }}" {{ old('den_bag') == $bd->id ? 'selected' : '' }}>{{ $bd->name }}</option>
                             @endforeach
                         </select>
-                        <label for="den_bag" class="form-label">Bag / Detasemen</label>
+                        <label for="den_bag" class="form-label">BAG / DETASEMEN</label>
                     </div>
                 </div>
 
-                <div class="col-lg-6 mb-3">
-                    <div class="form-floating" id="unit_den_bag" hidden>
-                        {{-- <select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" required>
-                        </select>
-                        <label for="unit_den_bag" class="form-label">Unit</label> --}}
-                    </div>
+                <div class="col-lg-12 mb-3">
+                    <div class="form-floating" id="unit_den_bag" hidden></div>
                 </div>
                 <hr>
             </div>
             <div class="row">
-                <div class="col-lg-6 p-3">
+                <h4>PELAPOR</h4>
+                <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
@@ -194,7 +191,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 p-3">
+                <hr>
+                <h4>TERLAPOR</h4>
+                <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
@@ -224,7 +223,6 @@
                             </div>
                         </div>
 
-                        
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="Jabatan Terduga Pelanggar" value="{{ old('jabatan') ? old('jabatan') : '' }}" required>
@@ -240,20 +238,18 @@
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <div class="form-floating">
-                                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
-                                        <option value="">-- Mabes/Polda --</option>
-                                        @if (isset($wilayah_hukum))
-                                            @foreach ($wilayah_hukum as $key => $wh)
-                                                <option value="{{ $wh->id }}" {{ old('wilayah_hukum') == $wh->id ? 'selected' : '' }}>
-                                                    {{ $wh->name }}
-                                                </option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <label for="pangkat" class="form-label">Mabes/Polda</label>
-                                </div>
+                            <div class="form-control border-dark">
+                                <select class="form-select" data-choices="true" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
+                                    <option value="">MABES / POLDA</option>
+                                    @if (isset($wilayah_hukum))
+                                        @foreach ($wilayah_hukum as $key => $wh)
+                                            <option value="{{ $wh->id }}" {{ old('wilayah_hukum') == $wh->id ? 'selected' : '' }}>
+                                                {{ $wh->name }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                
                             </div>
                         </div>
 
@@ -263,12 +259,14 @@
                                 <label for="tempat_kejadian">Tempat Kejadian</label>
                             </div>
                         </div>
+
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
                                 <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" readonly required>
                                 <label for="tempat_kejadian">Tanggal Kejadian</label>
                             </div>
                         </div>
+
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="Nama korban" value="{{ old('nama_korban') ? old('nama_korban') : '' }}" required>
@@ -276,31 +274,57 @@
                             </div>
                         </div>
                         
-                        <div class="col-lg-12 mb-3">
+                        <div class="col-lg-12 mb-3" id="kronologi_form">
                             <div class="form-floating">
-                                <textarea class="form-control border-dark" name="kronologis" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
+                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
                                 <label for="kronologis" class="form-label">Kronologis</label>
                             </div>
+                        </div>
+
+                        <div class="col-lg-12 mb-3" id="btn_add_kronologi" hidden>
+                            <div class="col-lg-12 mb-3">
+                                <button class="btn btn-success" id="add_kronologi">TAMBAH KRONOLOGI</button>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 mb-3" id="catatan_form" hidden>
+                            <div class="form-floating">
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="Catatan" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
+                                <label for="catatan" class="form-label">Catatan</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 mb-3" id="btn_add_catatan" hidden>
+                            <div class="col-lg-12 mb-3">
+                                <button class="btn btn-success" id="add_catatan">TAMBAH CATATAN</button>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 mb-3">
+                            <button class="btn btn-success form-control" type="submit" value="input_kasus" name="type_submit">
+                                Submit Data
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 mb-3">
-                    <button class="btn btn-success form-control" type="submit" value="input_kasus" name="type_submit">
-                        Submit Data
-                    </button>
-                </div>
-            </div>
+            
+            
         </form>
+          
     </div>
 @endsection
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#tipe_data').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
 
             //no identitas
             no_identitas.addEventListener('keyup', function(e){
@@ -325,25 +349,64 @@
 
             if ($('#disiplin').is(':checked')) {
                 console.log('test');
-                document.getElementById("wujud_perbuatan").removeAttribute("disabled");
-                document.getElementById("kode_etik").setAttribute("disabled", "disabled");
+                $('#wujud_perbuatan').removeAttr("disabled")
+                $('#kode_etik').removeAttr("required")
+                $('#kode_etik').attr("disabled")
                 getValDisiplin()
-            } else if ($('#kode_etik').is('checked')) {
-                document.getElementById("wujud_perbuatan").removeAttribute("disabled");
-                document.getElementById("disiplin").setAttribute("disabled", "disabled");
+            } else if (!$('#disiplin').is(':checked')) {
+                $('#kode_etik').attr("required")
+            }
+            
+            if ($('#kode_etik').is('checked')) {
+                $('#wujud_perbuatan').removeAttr("disabled")
+                $('#disiplin').attr("disabled")
                 getValKodeEtik()
             }
+
+            $('#add_kronologi').on('click', function() {
+                console.log(this.value)
+                let krono = `<div class="form-floating mt-3">
+                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
+                                <label for="kronologis" class="form-label">Kronologis</label>
+                            </div>`
+                $('#kronologi_form').append(krono)
+            });
+
+            $('#add_catatan').on('click', function() {
+                console.log(this.value)
+                let krono = `<div class="form-floating mt-3">
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
+                                <label for="catatan" class="form-label">CATATAN</label>
+                            </div>`
+                $('#catatan_form').append(krono)
+            });
 
             $('#tipe_data').on('change', function() {
                 console.log(this.value)
                 if (this.value == 1) {
                     $('#no_nota_dinas').removeAttr('disabled')
                     $('#den_bag').prop('hidden', true)
+                    $('#catatan_form').prop('hidden',true)
+                    $('#btn_add_kronologi').prop('hidden',true)
+                    $('#btn_add_catatan').prop('hidden',true)
+                    $('#catatan').removeAttr('required')
+                    $('#title_form').html('FORM INPUT ADUAN MASYARAKAT')
+                } else if (this.value == 2) {
+                    $('#no_nota_dinas').prop('disabled', true)
+                    $('#no_nota_dinas').prop('required', true)
+                    $('#den_bag').removeAttr('hidden')
+                    $('#catatan_form').removeAttr('hidden')
+                    $('#btn_add_kronologi').removeAttr('hidden')
+                    $('#btn_add_catatan').removeAttr('hidden')
+                    $('#title_form').html('FORM INPUT INFORMASI KHUSUS')
                 } else {
                     $('#no_nota_dinas').prop('disabled', true)
                     $('#no_nota_dinas').prop('required', true)
                     $('#den_bag').removeAttr('hidden')
-                    
+                    $('#catatan_form').removeAttr('hidden')
+                    $('#btn_add_kronologi').removeAttr('hidden')
+                    $('#btn_add_catatan').removeAttr('hidden')
+                    $('#title_form').html('FORM INPUT LAMPORAN INFORMASI')
                 }
             });
             
@@ -364,14 +427,14 @@
                         let html = ''
                         console.log(unit.length)
                         if (unit.length == 0) {
-                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="">-- Unit Belum Tersedia --</option></select><label for="unit_den_bag" class="form-label">Unit</label>`
+                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="">UNIT BELUM TERSEDIA</option></select><label for="unit_den_bag" class="form-label">UNIT</label>`
                         } else {
                             unit.forEach(element => {
                                 let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
                                 option += opt
                             });
                             console.log(option)
-                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">-- Pilih Unit --</option>`+option+`</select><label for="unit_den_bag" class="form-label">Unit</label>`
+                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">PILIH UNIT</option>`+option+`</select><label for="unit_den_bag" class="form-label">UNIT</label>`
                         }
                         
                         $('#unit_den_bag').removeAttr('hidden')
@@ -428,7 +491,8 @@
             list_id_dis = `{{ $id_disiplin }}`;
             list_id_dis = list_id_dis.split('|');
 
-            let html_wp = `<option value="">-- Pilih Wujud Perbuatan --</option>`;
+            // let html_wp = `<option value="">PILIH WUJUD PERBUATAN</option>`;
+            let html_wp = ``;
             $('#wujud_perbuatan').append(html_wp);
             let is_selected = '';
             for (let index = 0; index < list_ketdis.length; index++) {
@@ -439,7 +503,11 @@
                 }
                 html_wp += `<option value="`+el_id_dis+`" `+is_selected+`>`+el_ketdis+`</option>`;
             }
-            $('#wujud_perbuatan').html(html_wp);
+            $('#wujud_perbuatan').append(html_wp);
+
+            $('#wujud_perbuatan').select2({
+                theme: "bootstrap-5"
+            })
         }
 
         function getValKodeEtik() {
@@ -453,7 +521,7 @@
             list_id_ke = `{{ $id_kode_etik }}`;
             list_id_ke = list_id_ke.split('|');
 
-            let html_wp = `<option value="">-- Pilih Wujud Perbuatan --</option>`;
+            let html_wp = ``;
             let is_selected = '';
             for (let index = 0; index < list_ketke.length; index++) {
                 const el_ketke = list_ketke[index];
@@ -464,7 +532,11 @@
                 html_wp += `<option value="`+el_id_ke+`" `+is_selected+`>`+el_ketke+`</option>`;
                 // console.log(html);
             }
-            $('#wujud_perbuatan').html(html_wp);
+            $('#wujud_perbuatan').append(html_wp);
+
+            $('#wujud_perbuatan').select2({
+                theme: "bootstrap-5"
+            })
         }
 
         $( function() {
@@ -481,5 +553,27 @@
                 language: 'id'
             });
         } );
+
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        $(function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+            // console.log(forms)
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+                })
+        })
     </script>
 @endsection

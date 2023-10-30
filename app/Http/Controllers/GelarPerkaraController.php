@@ -16,6 +16,7 @@ use App\Models\NdPermohonanGelar;
 use App\Models\Pangkat;
 use App\Models\PasalPelanggaran;
 use App\Models\Penyidik;
+use App\Models\Polda;
 use App\Models\SprinHistory;
 use App\Models\Unit;
 use App\Models\WujudPerbuatan;
@@ -39,7 +40,7 @@ class GelarPerkaraController extends Controller
             $data = GelarPerkaraHistory::create([
                 'data_pelanggar_id' => $kasus_id,
                 'tanggal' => Carbon::createFromFormat('m/d/Y', $request->tanggal_gelar_perkara)->format('Y-m-d H:i:s'),
-                'waktu' => Carbon::createFromFormat('H:i', $request->waktu_gelar_perkara)->format('H:i'),
+                'waktu' => Carbon::createFromFormat('H:i:s', $request->waktu_gelar_perkara)->format('H:i:s'),
                 'tempat' => $request->tempat_gelar_perkara,
                 'pimpinan' => $pimpinan->nama,
                 'pangkat_pimpinan' => $pimpinan->pangkat,
@@ -52,6 +53,9 @@ class GelarPerkaraController extends Controller
         $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
 
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+        $detasemen = Datasemen::find($disposisi->limpah_den);
+
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_undangan_gelar_perkara.docx'));
 
         $template_document->setValues(array(
@@ -63,20 +67,21 @@ class GelarPerkaraController extends Controller
             'tanggal_gp' => Carbon::parse($data->tanggal)->translatedFormat('d F Y'),
             'waktu' => Carbon::parse($data->waktu)->format('H:i'),
             'tempat' => $data->tempat,
-            'pimpinan' => $data->pimpinan,
-            'pangkat_pimpinan' => $pangkat_pimpinan->name,
-            'jabatan_pimpinan' => $data->jabatan_pimpinan,
+            'pimpinan' => strtoupper($data->pimpinan),
+            'pangkat_pimpinan' => strtoupper($pangkat_pimpinan->name),
+            'jabatan_pimpinan' => strtoupper($data->jabatan_pimpinan),
             'tanggal_ugp' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
             'penangan' => $data->penangan,
             'dihubungi' => $data->dihubungi,
             'jabatan_dihubungi' => $data->jabatan_dihubungi,
             'telp_dihubungi' => $data->telp_dihubungi,
-            'pangkat_terlapor' => $pangkat_terlapor->name,
+            'pangkat_terlapor' => strtoupper($pangkat_terlapor->name),
             'terlapor' => strtoupper($kasus->terlapor),
             'nrp_terlapor' => $kasus->nrp,
-            'jabatan_terlapor' => $kasus->jabatan,
+            'jabatan_terlapor' => strtoupper($kasus->jabatan),
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'kronologi' => $kasus->kronologi,
+            'detasemen' => $detasemen->name,
         ));
 
         $template_document->saveAs(storage_path("template_surat/" . $kasus->pelapor . "-UGP-$kasus->id.docx"));
@@ -168,28 +173,31 @@ class GelarPerkaraController extends Controller
         }
         $pangkat_pimpinan_gelar = Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first()->name;
 
+        $wilayah_hukum = Polda::where('id', $kasus->wilayah_hukum)->first();
+
         $template_document->setValues(array(
             'tahun_ttd' => Carbon::parse($gelar_perkara->created_at)->translatedFormat('Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'pangkat' => $pangkat->name,
+            'pangkat' => strtoupper($pangkat->name),
             'jabatan' => $kasus->jabatan,
             'kwn' => $kasus->kewarganegaraan,
-            'nama' => $kasus->terlapor,
+            'nama' => strtoupper($kasus->terlapor),
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'terlapor' => strtoupper($kasus->terlapor),
             'nrp' => $kasus->nrp,
             'jabatan' => $kasus->jabatan,
             'kesatuan' => $kasus->kesatuan,
-            'pelapor' => $kasus->pelapor,
+            'pelapor' => strtoupper($kasus->pelapor),
+            'wilayah_hukum' => strtoupper($wilayah_hukum->name),
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
             'bulan_tahun_gp' => Carbon::parse($gelar_perkara->created_at)->translatedFormat('F Y'),
             'hari_gp' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('l'),
             'tgl_gp' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y'),
             'waktu_gp' => Carbon::parse($gelar_perkara->waktu)->translatedFormat('H:i'),
             'tempat_gp' => $gelar_perkara->tempat,
-            'pimpinan_gelar' => $pangkat_pimpinan_gelar . ' ' . $gelar_perkara->pimpinan,
-            'jabatan_pimpinan_gelar' => $gelar_perkara->jabatan_pimpinan,
+            'pimpinan_gelar' => strtoupper($pangkat_pimpinan_gelar . ' ' . $gelar_perkara->pimpinan),
+            'jabatan_pimpinan_gelar' => strtoupper($gelar_perkara->jabatan_pimpinan),
             'no_nd_permohonan_gelar' => 'R/ND - ' . $nd_permohonan_gelar->no_surat . '/' . $this->getRomawi(Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('m')) . '/WAS.2.4./' . Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('Y') . '/Den A',
             'tgl_nd_permohonan_gelar' => Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('d F Y'),
             'dugaan' => $wujud_perbuatan->keterangan_wp,
@@ -197,7 +205,7 @@ class GelarPerkaraController extends Controller
             'tahun_ttd' => Carbon::parse($data->created_at)->translatedFormat('Y'),
             'hasil_penyelidikan' => $lhp->hasil_penyelidikan == '1' ? 'Ditemukan' : 'Belum ditemukan',
             'jumlah_penyidik' => count($penyidik) . ' (' . $this->getTerbilang(count($penyidik)) . ')',
-            'katim_penyidik' => $penyidik[0]['pangkat'] . ' ' . $penyidik[0]['name'] . ' jabatan ' . $penyidik[0]['jabatan'],
+            'katim_penyidik' => strtoupper($penyidik[0]['pangkat'] . ' ' . $penyidik[0]['name'] . ' jabatan ' . $penyidik[0]['jabatan']),
             'jenis_wp' => $wujud_perbuatan->jenis_wp == 'disiplin' ? 'DISIPLIN' : 'KEPP',
             'jenis_limpah' => $jenis_limpah
         ));
@@ -250,16 +258,15 @@ class GelarPerkaraController extends Controller
         $template_document->setValues(array(
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'pangkat' => $pangkat->name,
-            'jabatan' => $kasus->jabatan,
+            'pangkat' => strtoupper($pangkat->name),
+            'jabatan' => strtoupper($kasus->jabatan),
             'kwn' => $kasus->kewarganegaraan,
-            'terlapor' => $kasus->terlapor,
+            'terlapor' => strtoupper($kasus->terlapor),
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
-            'terlapor' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
             'jabatan' => $kasus->jabatan,
-            'kesatuan' => $kasus->kesatuan,
-            'pelapor' => $kasus->pelapor,
+            'kesatuan' => strtoupper($kasus->kesatuan),
+            'pelapor' => strtoupper($kasus->pelapor),
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
             'no_surat_nd_hasil_gelar' => 'R/ND-' . $nd_hasil_gelar->no_surat . '/' . $this->getRomawi(Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('m')) . '/WAS.2.4./' . Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('Y') . '/Ropaminal',
             'tgl_nd_surat_hasil_gelar' => Carbon::parse($nd_hasil_gelar->created_at)->translatedFormat('d F Y'),

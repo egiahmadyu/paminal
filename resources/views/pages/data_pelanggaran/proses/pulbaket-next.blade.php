@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="form-buat-surat col-lg-12 mb-3">
-                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Sipil</label>
+                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Pelapor</label>
                     <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                         aria-describedby="emailHelp"
                         value="{{ isset($bai_pelapor) ? Carbon\Carbon::parse($bai_pelapor->created_at)->translatedFormat('d-m-Y') : '' }}"
@@ -13,7 +13,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="form-buat-surat col-lg-12 mb-3">
-                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Personel</label>
+                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal BAI Terlapor</label>
                     <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                         aria-describedby="emailHelp"
                         value="{{ isset($bai_terlapor) ? Carbon\Carbon::parse($bai_terlapor->created_at)->translatedFormat('d-m-Y') : '' }}"

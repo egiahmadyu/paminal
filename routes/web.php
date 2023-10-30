@@ -123,7 +123,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Generate
     Route::get('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi']);
-    Route::post('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi']);
+    Route::post('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi'])->name('post.lembar.disposisi');
     Route::get('/surat-li_infosus/{id}', [LimpahPoldaController::class, 'generateLiInfosus']);
     // Route::get('/lembar-disposisi/{id}/{type}', [LimpahPoldaController::class, 'downloadDisposisi']);
     Route::post('/surat-limpah-polda/{id}', [LimpahPoldaController::class, 'generateLimpahPolda']);

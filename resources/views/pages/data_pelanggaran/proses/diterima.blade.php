@@ -36,7 +36,7 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>LIMPAH BIRO</p>
+                    <p>LIMPAH</p>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
             @csrf
             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
             <div class="row">
-                <div class="col-lg-6 mb-3">
+                <div class="col-lg-12 mb-3">
                     <div class="form-floating">
                         <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" disabled required>
                             <option value="1" {{ isset($kasus) ? ($kasus->tipe_data == '1' ? 'selected' : '') : '' }}>Aduan Masyarakat</option>
@@ -58,15 +58,15 @@
                         <label for="tipe_data" class="form-label">Tipe Aduan</label>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-3">
+
+                <div class="col-lg-12 mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" required>
                         <label for="no_nota_dinas">No. Nota Dinas</label>
                     </div>
                 </div>
                 
-
-                <div class="col-lg-6 mb-0">
+                <div class="col-lg-12 mb-3">
                     <center>
                         <div class="form-label">
                             <label for="check-box">Tipe Pelanggaran</label>
@@ -82,31 +82,30 @@
                     </center>
                 </div>
 
-                <div class="col-lg-6 mb-3">
-                    <div class="form-floating">
-                        <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required>
-                            <option value="">-- Pilih Wujud Perbuatan --</option>
-                        </select>
-                        <label for="jenis_identitas" class="form-label">Wujud Perbuatan</label>
-                    </div>
+                <div class="col-lg-12 mb-3">
+                    <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required style="height: 100%"> 
+                        <option value="">PILIH WUJUD PERBUATAN</option>
+                    </select>
                 </div>
 
-                <div class="col-lg-6 mb-3">
+                <div class="col-lg-12 mb-3">
                     <div class="form-floating">
                         <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" readonly required>
                         <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-3">
+
+                <div class="col-lg-12 mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="perihal_nota_dinas" id="perihal_nota_dinas" placeholder="Perihal Nota Dinas" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" required>
-                        <label for="perihal_nota_dinas">Perihal Nota Dinas</label>
+                        <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" style="height: 150px" required>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <label for="perihal" class="form-label">Perihal</label>
                     </div>
                 </div>
                 <hr>
             </div>
             <div class="row">
-                <div class="col-lg-6 p-3">
+                <h4>PELAPOR</h4>
+                <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
@@ -199,8 +198,10 @@
                         </div>
                     </div>
                 </div>
+                <hr>
 
-                <div class="col-lg-6 p-3">
+                <h4>TERLAPOR</h4>
+                <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
@@ -229,7 +230,6 @@
                                 <label for="pangkat" class="form-label">Pangkat Terduga Pelangar</label>
                             </div>
                         </div>
-
 
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
@@ -269,12 +269,14 @@
                                 <label for="tempat_kejadian">Tempat Kejadian</label>
                             </div>
                         </div>
+
                         <div class="col-lg-6 mb-3">
                             <div class="form-floating">
                                 <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ isset($kasus) ? $kasus->tanggal_kejadian : '' }}" readonly required>
                                 <label for="tempat_kejadian">Tanggal Kejadian</label>
                             </div>
                         </div>
+
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="Nama korban" value="{{ isset($kasus) ? $kasus->nama_korban : '' }}" required>
@@ -284,12 +286,20 @@
 
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
-                                <textarea class="form-control border-dark" name="kronologis" placeholder="Kronologis" id="kronologis" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->kronologi : '' }}</textarea>
+                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->kronologi : '' }}</textarea>
                                 <label for="kronologis" class="form-label">Kronologis</label>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Submit data / Update status button -->
+                @can('edit-diterima')
+                <div class="col-lg-12 mb-3">
+                    <button class="btn btn-update-diterima btn-info" type="submit" value="update_data" name="type_submit" style="width: 100%">
+                        <i class="far fa-upload"></i> Update Data
+                    </button>
+                </div>
+                @endcan 
 
                 <!--Disposisi Button-->
                 <div class="col-lg-12">
@@ -406,21 +416,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Submit data / Update status button -->
-            @can('edit-diterima')
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-6">
-                                <button class="btn btn-update-diterima btn-success" type="submit" value="update_data" name="type_submit">
-                                    <i class="far fa-upload"></i> Update Data
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endcan
             
         </form>
     </div>
@@ -430,9 +425,9 @@
     @csrf
     <input type="hidden" name="limpah_den" id="limpah_den_input" value="">
     <input type="hidden" name="limpah_unit" id="limpah_unit_input" value="">
-    <input type="hidden" name="nomor_agenda" value="{{ isset($disposisi[1]) ? $disposisi[1]['no_agenda'] : null }}">
-    <input type="hidden" name="klasifikasi" value="{{ isset($disposisi[1]) ? $disposisi[1]['klasifikasi'] : null }}">
-    <input type="hidden" name="derajat" value="{{ isset($disposisi[1]) ? $disposisi[1]['derajat'] : null }}">
+    <input type="hidden" name="nomor_agenda" value="{{ isset($disposisi[0]) ? $disposisi[0]['no_agenda'] : null }}">
+    <input type="hidden" name="klasifikasi" value="{{ isset($disposisi[0]) ? $disposisi[0]['klasifikasi'] : null }}">
+    <input type="hidden" name="derajat" value="{{ isset($disposisi[0]) ? $disposisi[0]['derajat'] : null }}">
     <input type="hidden" name="tipe_disposisi" id="tipe_disposisi" value="">
     {{-- <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Generate</button>
@@ -447,7 +442,7 @@
                 <h5 class="modal-title" id="title_modal_disposisi">Disposisi Karo/Sesro</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(1)"></button>
             </div>
-            <form action="/lembar-disposisi/{{ $kasus->id }}" method="post">
+            <form action="{{ route('post.lembar.disposisi', ['id' => $kasus->id]) }}" method="post">
                 @csrf
                 <div class="modal-body">
                     <div class="form-floating mb-3" id="form_agenda">
@@ -455,21 +450,23 @@
                         <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" required>
+                        <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" {{ isset($disposisi[0]) ? 'disabled' : '' }} required>
                             <option value="">-- Pilih Klasifikasi --</option>
-                            <option value="Biasa">Biasa</option>
-                            <option value="Sangat Rahasia">Sangat Rahasia</option>
+                            <option value="Biasa" {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Biasa' ? 'selected' : '') : '' }}>Biasa</option>
+                            <option value="Sangat Rahasia" {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Sangat Rahasia' ? 'selected' : '') : '' }}>Sangat Rahasia</option>
                         </select>
                         <label for="klasifikasi" class="form-label">Klafisikasi</label>
+                        {{-- <input type="hidden" name="klasifikasi" value="{{ isset($disposisi[0]) ? $disposisi[0]['klasifikasi'] : null }}"> --}}
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select border-dark" aria-label="Default select example" name="derajat" id="derajat" required>
+                        <select class="form-select border-dark" aria-label="Default select example" name="derajat" id="derajat" {{ isset($disposisi[0]) ? 'disabled' : '' }} required>
                             <option value="">-- Pilih Derajat --</option>
-                            <option value="Biasa">Biasa</option>
-                            <option value="Segera">Segera</option>
-                            <option value="Kilat">Kilat</option>
+                            <option value="Biasa" {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Biasa' ? 'selected' : '') : '' }}>Biasa</option>
+                            <option value="Segera" {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Segera' ? 'selected' : '') : '' }}>Segera</option>
+                            <option value="Kilat" {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Kilat' ? 'selected' : '') : '' }}>Kilat</option>
                         </select>
                         <label for="derajat" class="form-label">Derajat</label>
+                        {{-- <input type="hidden" name="derajat" value="{{ isset($disposisi[0]) ? $disposisi[0]['derajat'] : null }}"> --}}
                     </div>
 
                     <div class="form-floating mb-3">
@@ -511,21 +508,24 @@
                         <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" {{ isset($disposisi_kadena) ? 'disabled' : '' }} required>
+                        <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" {{ isset($disposisi[1]) ? 'disabled' : '' }} required>
                             <option value="">-- Pilih Klasifikasi --</option>
-                            <option value="Biasa" {{ isset($disposisi_kadena) ? ($disposisi_kadena->klasifikasi == 'Biasa' ? 'selected' : '') : '' }}>Biasa</option>
-                            <option value="Sangat Rahasia" {{ isset($disposisi_kadena) ? ($disposisi_kadena->klasifikasi == 'Sangat Rahasia' ? 'selected' : '') : '' }}>Sangat Rahasia</option>
+                            <option value="Biasa" {{ isset($disposisi[1]) ? ($disposisi[1]->klasifikasi == 'Biasa' ? 'selected' : '') : '' }}>Biasa</option>
+                            <option value="Sangat Rahasia" {{ isset($disposisi[1]) ? ($disposisi[1]->klasifikasi == 'Sangat Rahasia' ? 'selected' : '') : '' }}>Sangat Rahasia</option>
                         </select>
                         <label for="klasifikasi" class="form-label">Klafisikasi</label>
+                        <input type="hidden" name="klasifikasi" value="{{ isset($disposisi[0]) ? $disposisi[0]['klasifikasi'] : null }}">
+                        
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select border-dark" aria-label="Default select example" name="derajat" id="derajat" {{ isset($disposisi_kadena) ? 'disabled' : '' }} required>
+                        <select class="form-select border-dark" aria-label="Default select example" name="derajat" id="derajat" {{ isset($disposisi[1]) ? 'disabled' : '' }} required>
                             <option value="">-- Pilih Derajat --</option>
-                            <option value="Biasa" {{ isset($disposisi_kadena) ? ($disposisi_kadena->derajat == 'Biasa' ? 'selected' : '') : '' }}>Biasa</option>
-                            <option value="Segera" {{ isset($disposisi_kadena) ? ($disposisi_kadena->derajat == 'Segera' ? 'selected' : '') : '' }}>Segera</option>
-                            <option value="Kilat" {{ isset($disposisi_kadena) ? ($disposisi_kadena->derajat == 'Kilat' ? 'selected' : '') : '' }}>Kilat</option>
+                            <option value="Biasa" {{ isset($disposisi[1]) ? ($disposisi[1]->derajat == 'Biasa' ? 'selected' : '') : '' }}>Biasa</option>
+                            <option value="Segera" {{ isset($disposisi[1]) ? ($disposisi[1]->derajat == 'Segera' ? 'selected' : '') : '' }}>Segera</option>
+                            <option value="Kilat" {{ isset($disposisi[1]) ? ($disposisi[1]->derajat == 'Kilat' ? 'selected' : '') : '' }}>Kilat</option>
                         </select>
                         <label for="derajat" class="form-label">Derajat</label>
+                        <input type="hidden" name="derajat" value="{{ isset($disposisi[1]) ? $disposisi[1]['derajat'] : null }}">
                     </div>
 
                     <div class="form-floating mb-3">
@@ -637,8 +637,10 @@
 
             hiddenHtml = `<input type="number" value="1" hidden name="tipe_disposisi">`;
             $('.modal-body').append(hiddenHtml);
+            
         } else if (modal.id == 'binpam') {
             $('#title_modal_disposisi').text('Distribusi Binpam');
+            let hiddenHtml = ''
             let dis_binpam = `{{ isset($disposisi[1]) ? $disposisi[1]->tipe_disposisi : '' }}`;
             if (dis_binpam == 2) {
                 is_disabled = true;
@@ -646,6 +648,7 @@
 
             let id_disposisi = `{{ isset($disposisi[1]) ? $disposisi[1]->id : ''}}`;
 
+            console.log(id_disposisi > 0)
             if (id_disposisi > 0) {
                 let no_agenda = `{{ isset($disposisi[1]) ? $disposisi[1]->no_agenda : '' }}`;
                 let klasifikasi = `{{ isset($disposisi[1]) ? $disposisi[1]->klasifikasi : '' }}`;
@@ -657,11 +660,16 @@
                 let htmlDerajat = `<option value="` + derajat + `" selected>` + derajat + `</option>`;
 
                 $('#form_agenda').html(htmlNoAgenda);
-                $('#klasifikasi').html(htmlKlasifikasi);
-                $('#derajat').html(htmlDerajat);
+                $('#klasifikasi').append(htmlKlasifikasi);
+                $('#derajat').append(htmlDerajat);
+            } else {
+                let klasifikasi = `{{ isset($disposisi[0]) ? $disposisi[0]->klasifikasi : '' }}`;
+                let derajat = `{{ isset($disposisi[0]) ? $disposisi[0]->derajat :'' }}`;
+                hiddenHtml += `<input type="text" value="`+klasifikasi+`" hidden name="klasifikasi">`
+                hiddenHtml += `<input type="text" value="`+derajat+`" hidden name="derajat">`
             }
 
-            hiddenHtml = `<input type="number" value="2" hidden name="tipe_disposisi">`;
+            hiddenHtml += `<input type="number" value="2" hidden name="tipe_disposisi">`;
             $('.modal-body').append(hiddenHtml);
         }
         if (is_disabled) {
@@ -708,7 +716,7 @@
         list_id_dis = `{{ $id_disiplin }}`;
         list_id_dis = list_id_dis.split('|');
 
-        let html_wp = `<option value="">-- Pilih Wujud Perbuatan --</option>`;
+        let html_wp = ``;
         for (let index = 0; index < list_ketdis.length; index++) {
             const el_ketdis = list_ketdis[index];
             const el_id_dis = list_id_dis[index];
@@ -718,7 +726,12 @@
                 html_wp += `<option value="` + el_id_dis + `">` + el_ketdis + `</option>`;
             }
         }
-        $('#wujud_perbuatan').html(html_wp);
+        $('#wujud_perbuatan').append(html_wp);
+
+        $('#wujud_perbuatan').select2({
+                theme: "bootstrap-5",
+                height: "100%"
+        })
     }
 
     function getValKodeEtik() {
@@ -731,7 +744,7 @@
         list_id_ke = `{{ $id_kode_etik }}`;
         list_id_ke = list_id_ke.split('|');
 
-        let html_wp = `<option value="">-- Pilih Wujud Perbuatan --</option>`;
+        let html_wp = ``;
         for (let index = 0; index < list_ketke.length; index++) {
             const el_ketke = list_ketke[index];
             const el_id_ke = list_id_ke[index];
@@ -741,7 +754,11 @@
                 html_wp += `<option value="` + el_id_ke + `">` + el_ketke + `</option>`;
             }
         }
-        $('#wujud_perbuatan').html(html_wp);
+        $('#wujud_perbuatan').append(html_wp);
+        $('#wujud_perbuatan').select2({
+                theme: "bootstrap-5",
+                height: "100%"
+            })
     }
 
     $(function() {

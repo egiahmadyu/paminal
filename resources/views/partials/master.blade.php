@@ -18,7 +18,7 @@
     <link href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Layout config Js -->
-    <script src="/assets/js/layout.js"></script>
+    <script src="{{ asset('assets/js/layout.js') }}"></script>
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
@@ -45,6 +45,35 @@
     <style>
         [data-layout-mode=light] .page-content {
             background: #ededed;
+        }
+
+        [data-layout-mode=dark] {
+            .select2-container--bootstrap-5 .select2-selection {
+                background-color: #252b37;
+                color: #ffffff;
+            }
+
+            .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field {
+                background-color: #252b37;
+                color: #ffffff
+            }
+
+            .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+                color: #ffffff;
+            }
+
+            .select2-search { 
+                background-color: #252b37;
+                color: #ffffff;
+            }
+            .select2-search input { 
+                background-color: #252b37;
+                color: #ffffff;
+            }
+            .select2-results { 
+                background-color: #252b37;
+                color: #ffffff;
+            }
         }
         /* Loader */
         /* Absolute Center Spinner */
@@ -412,13 +441,13 @@
             let date;
             setInterval(() => {
                 a = new Date();
-                date = getDaysName() +', '+a.getDate() + ' ' + getMonthName(a.getMonth()) + ' ' +a.getFullYear() + ' | ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds()
+                date = getDaysName() +', '+a.getDate() + ' ' + getMonthName(a.getMonth()) + ' ' +a.getFullYear() + ' | ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds()  + ' WIB'
                 document.getElementById('waktu-saat-ini').innerHTML = date;
             }, 1000);
 
             function getMonthName(monthNumber) {
                 const date = new Date();
-                date.setMonth(monthNumber - 1);
+                date.setMonth(monthNumber);
 
                 return date.toLocaleString('id-ID', {
                     month: 'long',

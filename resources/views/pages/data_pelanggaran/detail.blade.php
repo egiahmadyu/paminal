@@ -3,6 +3,8 @@
 @prepend('styles')
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
     <style>
         select:hover, #datepicker:hover, #datepicker_tgl_kejadian:hover {
@@ -34,7 +36,7 @@
                         @endif
                     </h4>
 
-                    @if ($kasus->status_id == 5)
+                    @if ($kasus->status_id == 5 && $nd_hasil_gelar)
                         <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>    
                     @endif
                     {{-- <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button> --}}
@@ -61,6 +63,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

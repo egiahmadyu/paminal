@@ -33,6 +33,20 @@ class PulbaketController extends Controller
     public function printSuratPerintah($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+        $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
+
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
+            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
+            ->select('penyidiks.*', 'p.id as pangkat_id')
+            ->orderBy('pangkat_id', 'asc')->get();
+
+
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id', $value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
+        }
+
         if (!$data = SprinHistory::where('data_pelanggar_id', $kasus_id)->first()) {
 
             $data = SprinHistory::create([
@@ -43,17 +57,6 @@ class PulbaketController extends Controller
                 // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
         }
-
-        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
-        $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
-
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
-        foreach ($penyidik as $key => $value) {
-            $pangkat = Pangkat::where('id', $value->pangkat)->first();
-            $value->pangkat = $pangkat->name;
-        }
-        // $penyidik = Penyidik::where('tim','Den A')->where('unit',$unit)->get()->toArray();
-        // $ketua_penyidik = Penyidik::where('tim','Den A')->where('jabatan','KADEN A')->first();
 
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_sprin.docx'));
         $template_document->setValues(array(
@@ -68,37 +71,17 @@ class PulbaketController extends Controller
             'wilayah_hukum' => $kasus->wilayahHukum->name,
             'tanggal_ttd' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
 
-            'ketua' => $penyidik[0]['name'] ?? '',
-            'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
-            'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
-            'jabatan_ketua' => $penyidik[0]['jabatan'] ?? '',
-
-            'anggota_1' => $penyidik[1]['name'] ?? '',
-            'pangkat_1' => $penyidik[1]['pangkat'] ?? '',
-            'nrp_1' => $penyidik[1]['nrp'] ?? '',
-            'jabatan_1' => $penyidik[1]['jabatan'] ?? '',
-
-            'anggota_2' => $penyidik[2]['name'] ?? '',
-            'pangkat_2' => $penyidik[2]['pangkat'] ?? '',
-            'nrp_2' => $penyidik[2]['nrp'] ?? '',
-            'jabatan_2' => $penyidik[2]['jabatan'] ?? '',
-
-            'anggota_3' => $penyidik[3]['name'] ?? '',
-            'pangkat_3' => $penyidik[3]['pangkat'] ?? '',
-            'nrp_3' => $penyidik[3]['nrp'] ?? '',
-            'jabatan_3' => $penyidik[3]['jabatan'] ?? '',
-
-            'anggota_4' => $penyidik[4]['name'] ?? '',
-            'pangkat_4' => $penyidik[4]['pangkat'] ?? '',
-            'nrp_4' => $penyidik[4]['nrp'] ?? '',
-            'jabatan_4' => $penyidik[4]['jabatan'] ?? '',
-
-            'anggota_5' => $penyidik[5]['name'] ?? '',
-            'pangkat_5' => $penyidik[5]['pangkat'] ?? '',
-            'nrp_5' => $penyidik[5]['nrp'] ?? '',
-            'jabatan_5' => $penyidik[5]['jabatan'] ?? '',
-
         ));
+
+        for ($i = 0; $i < 10; $i++) {
+            # code...
+            $template_document->setValues(array(
+                'anggota_' . $i => $penyidik[$i]['name'] ?? '',
+                'pangkat_' . $i => $penyidik[$i]['pangkat'] ?? '',
+                'nrp_' . $i => $penyidik[$i]['nrp'] ?? '',
+                'jabatan_' . $i => $penyidik[$i]['jabatan'] ?? '',
+            ));
+        }
 
         $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-surat-perintah.docx'));
 
@@ -156,7 +139,7 @@ class PulbaketController extends Controller
 
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_uuk.docx'));
         $template_document->setValues(array(
-            'nama' => $kasus->terlapor,
+            'nama' => strtoupper($kasus->terlapor),
             'nrp' => $kasus->nrp,
             'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
@@ -382,7 +365,12 @@ class PulbaketController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
+            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
+            ->select('penyidiks.*', 'p.id as pangkat_id')
+            ->orderBy('pangkat_id', 'asc')->get();
+
+
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
@@ -398,7 +386,7 @@ class PulbaketController extends Controller
             'pangkat' => $pangkat->name,
             'jabatan' => $kasus->jabatan,
             'kwn' => $kasus->kewarganegaraan,
-            'terlapor' => $kasus->terlapor,
+            'terlapor' => strtoupper($kasus->terlapor),
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'terlapor' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
@@ -411,31 +399,23 @@ class PulbaketController extends Controller
             'tanggal_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('d F Y'),
             'waktu_introgasi' => Carbon::parse($undangan_klarifikasi->waktu_klarifikasi)->translatedFormat('H:i'),
             'hari_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('l'),
+
             'ketua' => $penyidik[0]['name'] ?? '',
             'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
             'jabatan_ketua' => $penyidik[0]['jabatan'] ?? '',
             'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
-            'anggota_1' => $penyidik[1]['name'] ?? '',
-            'pangkat_1' => $penyidik[1]['pangkat'] ?? '',
-            'jabatan_1' => $penyidik[1]['jabatan'] ?? '',
-            'nrp_1' => $penyidik[1]['nrp'] ?? '',
-            'anggota_2' => $penyidik[2]['name'] ?? '',
-            'pangkat_2' => $penyidik[2]['pangkat'] ?? '',
-            'nrp_2' => $penyidik[2]['nrp'] ?? '',
-            'anggota_3' => $penyidik[3]['name'] ?? '',
-            'pangkat_3' => $penyidik[3]['pangkat'] ?? '',
-            'nrp_3' => $penyidik[3]['nrp'] ?? '',
-            'anggota_4' => $penyidik[4]['name'] ?? '',
-            'pangkat_4' => $penyidik[4]['pangkat'] ?? '',
-            'nrp_4' => $penyidik[4]['nrp'] ?? '',
-            'anggota_5' => $penyidik[5]['name'] ?? '',
-            'pangkat_5' => $penyidik[5]['pangkat'] ?? '',
-            'nrp_5' => $penyidik[5]['nrp'] ?? '',
-            'jabatan_2' => $penyidik[2]['jabatan'] ?? '',
-            'jabatan_3' => $penyidik[3]['jabatan'] ?? '',
-            'jabatan_4' => $penyidik[4]['jabatan'] ?? '',
-            'jabatan_5' => $penyidik[5]['jabatan'] ?? '',
+
         ));
+
+        for ($i = 0; $i < 10; $i++) {
+            # code...
+            $template_document->setValues(array(
+                'anggota_' . $i => $penyidik[$i]['name'] ?? '',
+                'pangkat_' . $i => $penyidik[$i]['pangkat'] ?? '',
+                'nrp_' . $i => $penyidik[$i]['nrp'] ?? '',
+                'jabatan_' . $i => $penyidik[$i]['jabatan'] ?? '',
+            ));
+        }
 
         $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-surat-bai-anggota.docx'));
 
@@ -479,7 +459,7 @@ class PulbaketController extends Controller
             'jabatan' => $kasus->jabatan,
             'perihal' => $kasus->perihal_nota_dinas,
             'kwn' => $kasus->kewarganegaraan,
-            'terlapor' => $kasus->terlapor,
+            'terlapor' => strtoupper($kasus->terlapor),
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'terlapor' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
@@ -565,11 +545,10 @@ class PulbaketController extends Controller
             'kesatuan' => $kasus->kesatuan,
             'pelapor' => $kasus->pelapor,
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
-            'kadena' => $kadena->name,
-            'pangkat_kadena' => Pangkat::where('id', $kadena->pangkat)->first()->name,
+            'kadena' => strtoupper($kadena->name),
+            'pangkat_kadena' => strtoupper(Pangkat::where('id', $kadena->pangkat)->first()->name),
             'nrp_kadena' => $kadena->nrp,
-            'den' => 'Detasemen ' . $den_name[1],
-            'DEN' => 'DETASEMEN ' . $den_name[1],
+            'detasemen' => $den->name,
         ));
 
         $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-nd_permohonan_gelar.docx'));

@@ -23,19 +23,19 @@
                 </div>
                 <div class="f1-step active">
                     <div class="f1-step-icon"><i class="fa fa-user"></i></div>
-                    <p>Diterima</p>
+                    <p>DITERIMA</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-home"></i></div>
-                    <p>Pulbaket</p>
+                    <p>PULBAKET</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-key"></i></div>
-                    <p>Gelar Penyelidikan</p>
+                    <p>GELAR PERKARA</p>
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>Limpah Biro</p>
+                    <p>LIMPAH</p>
                 </div>
             </div>
         </div>
@@ -127,7 +127,7 @@
 
 <!-- Modal Disposisi Karo/Sesro & Binpam-->
 <div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="modal_disposisi" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="title_modal_disposisi">PERMOHONAN PENOMORAN SURAT {{ $kasus->tipe_data == 2 ? 'INFORMASI KHUSUS' : 'LAPORAN INFORMASI' }} kepada Karo/Sesro</h5>
@@ -158,8 +158,8 @@
                         <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="perihal" name="perihal" placeholder="PERIHAL" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" disabled>
-                        <label for="perihal" class="form-label">PERIHAL</label>
+                        <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ $kasus ? $kasus->perihal_nota_dinas : '' }}" style="height: 120px" disabled required>{{ $kasus ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <label for="perihal" class="form-label">Perihal</label>
                     </div>
                     <input type="number" value="3" hidden name="tipe_disposisi">
                 </div>
@@ -176,6 +176,8 @@
     $(document).ready(function() {
         checkStatusID()
         getPolda()
+        let test = `{{ $kasus->perihal_nota_dinas }}`
+        // console.log('masuk')
 
     });
 

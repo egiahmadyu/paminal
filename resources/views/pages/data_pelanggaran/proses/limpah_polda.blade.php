@@ -22,13 +22,13 @@
                 <a href="javascript::void(0)" onclick="getViewProcess(1)">
                     <div class="f1-step" style="width: 50%;">
                         <div class="f1-step-icon"><i class="fa fa-user"></i></div>
-                        <p>Diterima</p>
+                        <p>DITERIMA</p>
                     </div>
                 </a>
 
                 <div class="f1-step active" style="width: 50%;">
                     <div class="f1-step-icon"><i class="fa fa-home"></i></div>
-                    <p>Limpah Polda</p>
+                    <p>LIMPAH</p>
                 </div>
             </div>
         </div>

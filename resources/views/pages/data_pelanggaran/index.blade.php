@@ -103,7 +103,7 @@
                             <thead class="text-muted table-light">
                                 <tr>
                                     <th scope="col">NO. NOTA DINAS</th>
-                                    <th scope="col">TANGGAL</th>
+                                    <th scope="col">TANGGAL PELAPORAN</th>
                                     <th scope="col">PELAPOR</th>
                                     <th scope="col">TERLAPOR</th>
                                     <th scope="col">PANGKAT</th>
@@ -158,8 +158,8 @@
                         name: 'no_nota_dinas'
                     },
                     {
-                        data: 'tanggal_kejadian',
-                        name: 'tanggal_kejadian'
+                        data: 'created_at',
+                        name: 'created_at'
                     },
                     {
                         data: 'pelapor',
@@ -186,6 +186,7 @@
                         name: 'ticket_id'
                     },
                 ],
+                order: [[1, 'desc']],
                 createdRow: (row, data, dataIndex, cells) => {
                     $(cells[3]).css('background-color', data.status_color)
                 }

@@ -9,6 +9,7 @@ use App\Models\DataAnggota;
 use App\Models\DataPelanggar;
 use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
+use App\Models\DPExtends;
 use App\Models\GelarPerkaraHistory;
 use App\Models\JenisIdentitas;
 use App\Models\JenisKelamin;
@@ -102,126 +103,155 @@ class KasusController extends Controller
 
     public function storeKasus(Request $request)
     {
-        $wujud_perbuatan = WujudPerbuatan::where('jenis_wp', $request->jenis_wp)->where('keterangan_wp', $request->wujud_perbuatan)->first();
-        $no_pengaduan = null; //generate otomatis
+        try {
+            $wujud_perbuatan = WujudPerbuatan::where('jenis_wp', $request->jenis_wp)->where('keterangan_wp', $request->wujud_perbuatan)->first();
+            $no_pengaduan = null; //generate otomatis
 
-        if ($request->tipe_data != 1) {
+            if ($request->tipe_data != 1) {
 
-            $penyidik = DataAnggota::where('unit', (int)$request->unit_den_bag)->get();
-            if (count($penyidik) < 1) {
-                return back()->withInput()->with('error', 'Anggota Unit belum dibuat !');
-            }
+                $penyidik = DataAnggota::where('unit', (int)$request->unit_den_bag)->get();
+                if (count($penyidik) < 1) {
+                    return back()->withInput()->with('error', 'Anggota Unit belum dibuat !');
+                }
 
-            $DP = DataPelanggar::create([
-                // Pelapor
-                'no_nota_dinas' => $request->no_nota_dinas,
-                'no_pengaduan' => $no_pengaduan,
-                'perihal_nota_dinas' => $request->perihal_nota_dinas,
-                'wujud_perbuatan' => $request->wujud_perbuatan,
-                'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),
-                'pelapor' => $request->pelapor,
-                'umur' => $request->umur,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'pekerjaan' => $request->pekerjaan,
-                'agama' => $request->agama,
-                'alamat' => $request->alamat,
-                'no_identitas' => $request->no_identitas,
-                'no_telp' => $request->no_telp,
-                'jenis_identitas' => $request->jenis_identitas,
-                //Terlapor
-                'terlapor' => $request->terlapor,
-                'nrp' => $request->nrp,
-                'jabatan' => $request->jabatan,
-                'kesatuan' => $request->kesatuan,
-                'wilayah_hukum' => $request->wilayah_hukum,
-                'tempat_kejadian' => $request->tempat_kejadian,
-                'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
-                'kronologi' => $request->kronologis,
-                'pangkat' => $request->pangkat,
-                'nama_korban' => $request->nama_korban,
-                'status_id' => 1,
-                'tipe_data' => $request->tipe_data,
-            ]);
+                $kronologis = [
+                    'kronologis' => $request->kronologis,
+                    'catatan' => $request->catatan,
+                ];
 
-            DisposisiHistory::create([
-                'data_pelanggar_id' => $DP->id,
-                'tipe_disposisi' => 1,
-            ]);
+                $kronologis = json_encode($kronologis);
 
 
-            DisposisiHistory::create([
-                'data_pelanggar_id' => $DP->id,
-                'tipe_disposisi' => 2,
-                'limpah_den' => $request->den_bag,
-            ]);
+                $DP = DataPelanggar::create([
+                    // Pelapor
+                    'no_nota_dinas' => $request->no_nota_dinas,
+                    'no_pengaduan' => $no_pengaduan,
+                    'perihal_nota_dinas' => $request->perihal,
+                    'wujud_perbuatan' => $request->wujud_perbuatan,
+                    'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),
+                    'pelapor' => $request->pelapor,
+                    'umur' => $request->umur,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'pekerjaan' => $request->pekerjaan,
+                    'agama' => $request->agama,
+                    'alamat' => $request->alamat,
+                    'no_identitas' => $request->no_identitas,
+                    'no_telp' => $request->no_telp,
+                    'jenis_identitas' => $request->jenis_identitas,
+                    //Terlapor
+                    'terlapor' => $request->terlapor,
+                    'nrp' => $request->nrp,
+                    'jabatan' => $request->jabatan,
+                    'kesatuan' => $request->kesatuan,
+                    'wilayah_hukum' => $request->wilayah_hukum,
+                    'tempat_kejadian' => $request->tempat_kejadian,
+                    'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
+                    'kronologi' => $kronologis,
+                    'pangkat' => $request->pangkat,
+                    'nama_korban' => $request->nama_korban,
+                    'status_id' => 1,
+                    'tipe_data' => $request->tipe_data,
+                ]);
 
-            DisposisiHistory::create([
-                'data_pelanggar_id' => $DP->id,
-                'tipe_disposisi' => 3,
-                'limpah_den' => $request->den_bag,
-                'limpah_unit' => $request->unit_den_bag,
-            ]);
+                foreach ($request->kronologis as $key => $valKrono) {
+                    DPExtends::create([
+                        'data_pelanggar_id' => $DP->id,
+                        'deskripsi' => $valKrono,
+                        'tipe' => 'kronologis'
+                    ]);
+                }
 
-            // Create katim
-            $datasemen = Datasemen::where('id', (int)$request->den_bag)->first();
-            $pimpinans = DataAnggota::where('id', $datasemen->kaden)->orWhere('id', $datasemen->wakaden)->get();
-            foreach ($pimpinans as $key => $pimpinan) {
-                Penyidik::create([
+                foreach ($request->catatan as $key => $valCatatan) {
+                    DPExtends::create([
+                        'data_pelanggar_id' => $DP->id,
+                        'deskripsi' => $valCatatan,
+                        'tipe' => 'catatan'
+                    ]);
+                }
+
+                DisposisiHistory::create([
                     'data_pelanggar_id' => $DP->id,
-                    'name' => $pimpinan->nama,
-                    'nrp' => $pimpinan->nrp,
-                    'pangkat' => $pimpinan->pangkat,
-                    'jabatan' => $pimpinan->jabatan,
-                    'datasemen' => $pimpinan->datasemen,
-                    'unit' => '',
+                    'tipe_disposisi' => 1,
+                ]);
+
+
+                DisposisiHistory::create([
+                    'data_pelanggar_id' => $DP->id,
+                    'tipe_disposisi' => 2,
+                    'limpah_den' => $request->den_bag,
+                ]);
+
+                DisposisiHistory::create([
+                    'data_pelanggar_id' => $DP->id,
+                    'tipe_disposisi' => 3,
+                    'limpah_den' => $request->den_bag,
+                    'limpah_unit' => $request->unit_den_bag,
+                ]);
+
+                // Create katim
+                $datasemen = Datasemen::where('id', (int)$request->den_bag)->first();
+                $pimpinans = DataAnggota::where('id', $datasemen->kaden)->orWhere('id', $datasemen->wakaden)->get();
+                foreach ($pimpinans as $key => $pimpinan) {
+                    Penyidik::create([
+                        'data_pelanggar_id' => $DP->id,
+                        'name' => $pimpinan->nama,
+                        'nrp' => $pimpinan->nrp,
+                        'pangkat' => $pimpinan->pangkat,
+                        'jabatan' => $pimpinan->jabatan,
+                        'datasemen' => $pimpinan->datasemen,
+                        'unit' => '',
+                    ]);
+                }
+
+                foreach ($penyidik as $key => $value) {
+                    Penyidik::create([
+                        'data_pelanggar_id' => $DP->id,
+                        'name' => $value->nama,
+                        'nrp' => $value->nrp,
+                        'pangkat' => $value->pangkat,
+                        'jabatan' => $value->jabatan,
+                        'datasemen' => $value->datasemen,
+                        'unit' => $value->unit,
+                    ]);
+                }
+            } else {
+                $DP = DataPelanggar::create([
+                    // Pelapor
+                    'no_nota_dinas' => $request->no_nota_dinas,
+                    'no_pengaduan' => $no_pengaduan,
+                    'perihal_nota_dinas' => $request->perihal,
+                    'wujud_perbuatan' => $request->wujud_perbuatan,
+                    'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),
+                    'pelapor' => $request->pelapor,
+                    'umur' => $request->umur,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'pekerjaan' => $request->pekerjaan,
+                    'agama' => $request->agama,
+                    'alamat' => $request->alamat,
+                    'no_identitas' => $request->no_identitas,
+                    'no_telp' => $request->no_telp,
+                    'jenis_identitas' => $request->jenis_identitas,
+                    //Terlapor
+                    'terlapor' => $request->terlapor,
+                    'nrp' => $request->nrp,
+                    'jabatan' => $request->jabatan,
+                    'kesatuan' => $request->kesatuan,
+                    'wilayah_hukum' => $request->wilayah_hukum,
+                    'tempat_kejadian' => $request->tempat_kejadian,
+                    'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
+                    'kronologi' => $request->kronologis[0],
+                    'pangkat' => $request->pangkat,
+                    'nama_korban' => $request->nama_korban,
+                    'status_id' => 1,
+                    'tipe_data' => $request->tipe_data,
                 ]);
             }
 
-            foreach ($penyidik as $key => $value) {
-                Penyidik::create([
-                    'data_pelanggar_id' => $DP->id,
-                    'name' => $value->nama,
-                    'nrp' => $value->nrp,
-                    'pangkat' => $value->pangkat,
-                    'jabatan' => $value->jabatan,
-                    'datasemen' => $value->datasemen,
-                    'unit' => $value->unit,
-                ]);
-            }
-        } else {
-            $DP = DataPelanggar::create([
-                // Pelapor
-                'no_nota_dinas' => $request->no_nota_dinas,
-                'no_pengaduan' => $no_pengaduan,
-                'perihal_nota_dinas' => $request->perihal_nota_dinas,
-                'wujud_perbuatan' => $request->wujud_perbuatan,
-                'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),
-                'pelapor' => $request->pelapor,
-                'umur' => $request->umur,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'pekerjaan' => $request->pekerjaan,
-                'agama' => $request->agama,
-                'alamat' => $request->alamat,
-                'no_identitas' => $request->no_identitas,
-                'no_telp' => $request->no_telp,
-                'jenis_identitas' => $request->jenis_identitas,
-                //Terlapor
-                'terlapor' => $request->terlapor,
-                'nrp' => $request->nrp,
-                'jabatan' => $request->jabatan,
-                'kesatuan' => $request->kesatuan,
-                'wilayah_hukum' => $request->wilayah_hukum,
-                'tempat_kejadian' => $request->tempat_kejadian,
-                'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
-                'kronologi' => $request->kronologis,
-                'pangkat' => $request->pangkat,
-                'nama_korban' => $request->nama_korban,
-                'status_id' => 1,
-                'tipe_data' => $request->tipe_data,
-            ]);
+            return redirect()->route('kasus.detail', ['id' => $DP->id]);
+        } catch (\Exception $e) {
+            //throw $th;
+            return back()->withInput()->with('error', $e->getMessage());
         }
-
-        return redirect()->route('kasus.detail', ['id' => $DP->id]);
     }
 
     public function data(Request $request)
@@ -252,6 +282,11 @@ class KasusController extends Controller
                 if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '">Edit Data</a>';
                 return '<a href="/data-kasus/detail/' . $query->id . '">' . $query->no_nota_dinas . '</a>';
             })
+            ->editColumn('created_at', function ($query) {
+                $created_at = Carbon::parse($query->created_at)->translatedFormat('d F Y');
+
+                return $created_at;
+            })
             ->addColumn('pangkat', function ($query) {
                 $pangkat = Pangkat::where('id', $query->pangkat)->first();
                 if (!$pangkat) return '';
@@ -259,7 +294,7 @@ class KasusController extends Controller
 
                 return $pangkat;
             })
-            ->rawColumns(['no_nota_dinas']);
+            ->rawColumns(['no_nota_dinas', 'created_at']);
 
         return $table->make(true);
     }
@@ -275,6 +310,8 @@ class KasusController extends Controller
         $agama = Agama::get();
         $pangkat = Pangkat::get();
         $wujud_perbuatan = WujudPerbuatan::get();
+        $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $nd_hasil_gelar = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus->id)->first();
 
         $data = [
             'kasus' => $kasus,
@@ -284,6 +321,8 @@ class KasusController extends Controller
             'pangkat' => $pangkat,
             'wujud_perbuatan' => $wujud_perbuatan,
             'pimpinan' => $pimpinan,
+            'lhp' => $lhp ?? '',
+            'nd_hasil_gelar' => $nd_hasil_gelar ?? '',
             'title' => 'DETAIL DATA PELANGGAR',
         ];
 
@@ -300,7 +339,7 @@ class KasusController extends Controller
         $data_pelanggar->update([
             'no_nota_dinas' => $request->no_nota_dinas,
             'no_pengaduan' => $no_pengaduan,
-            'perihal_nota_dinas' => $request->perihal_nota_dinas,
+            'perihal_nota_dinas' => $request->perihal,
             'wujud_perbuatan' => $request->wujud_perbuatan,
             'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),
             'pelapor' => $request->pelapor,
@@ -310,6 +349,7 @@ class KasusController extends Controller
             'agama' => $request->agama,
             'alamat' => $request->alamat,
             'no_identitas' => $request->no_identitas,
+            'no_telp' => $request->no_telp,
             'jenis_identitas' => $request->jenis_identitas,
             'terlapor' => $request->terlapor,
             'pangkat' => $request->pangkat,
@@ -385,7 +425,12 @@ class KasusController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
+            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
+            ->select('penyidiks.*', 'p.id as pangkat_id')
+            ->orderBy('pangkat_id', 'asc')->get();
+
+
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
@@ -440,7 +485,12 @@ class KasusController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
+            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
+            ->select('penyidiks.*', 'p.id as pangkat_id')
+            ->orderBy('pangkat_id', 'asc')->get();
+
+
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
@@ -650,7 +700,12 @@ class KasusController extends Controller
         $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
+            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
+            ->select('penyidiks.*', 'p.id as pangkat_id')
+            ->orderBy('pangkat_id', 'asc')->get();
+
+
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;

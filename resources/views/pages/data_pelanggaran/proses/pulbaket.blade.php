@@ -38,7 +38,7 @@
                 </div>
                 <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
-                    <p>LIMPAH BIRO</p>
+                    <p>LIMPAH</p>
                 </div>
             </div>
         </div>
