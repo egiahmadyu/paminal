@@ -38,8 +38,6 @@ class PulbaketController extends Controller
 
         // Get Penyidik
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
-        dd($penyidik);
-
 
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
