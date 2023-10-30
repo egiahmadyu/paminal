@@ -425,10 +425,7 @@ class KasusController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
-            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
-            ->select('penyidiks.*', 'p.id as pangkat_id')
-            ->orderBy('pangkat_id', 'asc')->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
 
 
         foreach ($penyidik as $key => $value) {
@@ -485,10 +482,7 @@ class KasusController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         // Get Penyidik
-        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)
-            ->join('pangkats as p', 'p.id', '=', 'penyidiks.pangkat')
-            ->select('penyidiks.*', 'p.id as pangkat_id')
-            ->orderBy('pangkat_id', 'asc')->get();
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
 
 
         foreach ($penyidik as $key => $value) {
@@ -701,7 +695,6 @@ class KasusController extends Controller
 
         // Get Penyidik
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
-
 
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
