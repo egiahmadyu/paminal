@@ -28,6 +28,9 @@ class GelarPerkaraController extends Controller
 {
     public function printUGP($kasus_id, Request $request)
     {
+        // dd($request->all());
+        // $waktu = Carbon::createFromFormat('H:i', $request->waktu_gelar_perkara)->format('H:i');
+        // dd($waktu);
         $kasus = DataPelanggar::find($kasus_id);
         $nd_permohonan_gelar = NdPermohonanGelar::where('data_pelanggar_id', $kasus_id)->first();
         if (!isset($nd_permohonan_gelar)) {
@@ -40,7 +43,7 @@ class GelarPerkaraController extends Controller
             $data = GelarPerkaraHistory::create([
                 'data_pelanggar_id' => $kasus_id,
                 'tanggal' => Carbon::createFromFormat('m/d/Y', $request->tanggal_gelar_perkara)->format('Y-m-d H:i:s'),
-                'waktu' => Carbon::createFromFormat('H:i:s', $request->waktu_gelar_perkara)->format('H:i:s'),
+                'waktu' => Carbon::createFromFormat('H:i', $request->waktu_gelar_perkara)->format('H:i'),
                 'tempat' => $request->tempat_gelar_perkara,
                 'pimpinan' => $pimpinan->nama,
                 'pangkat_pimpinan' => $pimpinan->pangkat,
@@ -65,7 +68,7 @@ class GelarPerkaraController extends Controller
             'tgl_nd_permohonan_gp' => Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('d F Y'),
             'hari_gp' => Carbon::parse($data->tanggal)->translatedFormat('l'),
             'tanggal_gp' => Carbon::parse($data->tanggal)->translatedFormat('d F Y'),
-            'waktu' => Carbon::parse($data->waktu)->format('H:i'),
+            'waktu' => Carbon::parse($data->waktu)->translatedFormat('H:i'),
             'tempat' => $data->tempat,
             'pimpinan' => strtoupper($data->pimpinan),
             'pangkat_pimpinan' => strtoupper($pangkat_pimpinan->name),
