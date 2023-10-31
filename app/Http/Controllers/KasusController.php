@@ -505,8 +505,8 @@ class KasusController extends Controller
         $usia_dumas = $tgl_dumas->diffInDays($today);
 
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
-        $bai_pelapor = BaiPelapor::where('data_pelanggar_id', $kasus->id)->first();
-        $bai_terlapor = BaiTerlapor::where('data_pelanggar_id', $kasus->id)->first();
+        $bai_pelapor = BaiPelapor::where('data_pelanggar_id', $kasus->id)->first() ?? '';
+        $bai_terlapor = BaiTerlapor::where('data_pelanggar_id', $kasus->id)->first() ?? '';
         $ugp = GelarPerkaraHistory::where('data_pelanggar_id', $id)->first();
         $sprin = SprinHistory::where('data_pelanggar_id', $id)->first();
         $litpers = LitpersHistory::where('data_pelanggar_id', $id)->first();
@@ -547,8 +547,8 @@ class KasusController extends Controller
             'pangkat' => $pangkat,
             'usia_dumas' => $usia_dumas . ' hari',
             'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
-            'tgl_bai_pelapor' => !is_null($bai_pelapor->created_at) ? Carbon::parse($bai_pelapor->created_at)->translatedFormat('d F Y') : '',
-            'tgl_bai_terlapor' => !is_null($bai_terlapor->created_at) ? Carbon::parse($bai_terlapor->created_at)->translatedFormat('d F Y') : '',
+            'tgl_bai_pelapor' => $bai_pelapor ? Carbon::parse($bai_pelapor->created_at)->translatedFormat('d F Y') : '',
+            'tgl_bai_terlapor' => $bai_terlapor ? Carbon::parse($bai_terlapor->created_at)->translatedFormat('d F Y') : '',
             'tgl_nd_pg' => Carbon::parse($ndPG->created_at)->translatedFormat('d F Y'),
             'hasil_lhp' => $lhp->hasil_penyelidikan == 1 ? 'Ditemukan Cukup Bukti' : 'Belum Ditemukan cukup bukti',
             'tgl_ugp' => isset($ugp) ? Carbon::parse($ugp->tanggal)->translatedFormat('d F Y') : '',
