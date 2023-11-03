@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
     <style>
         select:hover, #datepicker:hover, #datepicker_tgl_kejadian:hover {
             cursor: pointer;
@@ -13,6 +14,21 @@
         .loader-view {
             margin-top : 75px;
         }
+        .bootstrap-timepicker-widget.dropdown-menu {
+            z-index: 99999!important;
+        }
+        /* .bootstrap-datetimepicker-widget .btn[data-action="incrementMinutes"] {
+            background-color: #ffffff;
+        }
+        .bootstrap-datetimepicker-widget .btn[data-action="incrementHours"] {
+            background-color: #ffffff;
+        }
+        .bootstrap-datetimepicker-widget .btn[data-action="decrementHours"] {
+            background-color: #ffffff;
+        }
+        .bootstrap-datetimepicker-widget .btn[data-action="decrementMinutes"] {
+            background-color: #ffffff;
+        } */
     </style>
 @endprepend
 
@@ -36,10 +52,9 @@
                         @endif
                     </h4>
 
-                    @if ($kasus->status_id == 5 && $nd_hasil_gelar)
+                    {{-- @if ($kasus->status_id == 5 && $nd_hasil_gelar)
                         <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>    
-                    @endif
-                    {{-- <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button> --}}
+                    @endif --}}
 
                 </div><!-- end card header -->
 
@@ -64,6 +79,9 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -135,6 +153,8 @@
                     }
                 })
             });
+            
+            console.log($('.btn[data-action="incrementMinutes"]').html())
 
             let process_id = $('#process_id').val()
             getViewProcess(process_id)

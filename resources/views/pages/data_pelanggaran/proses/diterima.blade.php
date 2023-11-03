@@ -44,61 +44,62 @@
 
     <!-- Isi -->
     <div class="col-lg-12">
-        <form action="/data-kasus/update" method="post" id="form_input_data">
+        <form action="/data-kasus/update" method="post" id="form_input_data" class="needs-validation" novalidate>
             @csrf
             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
             <div class="row">
                 <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" disabled required>
-                            <option value="1" {{ isset($kasus) ? ($kasus->tipe_data == '1' ? 'selected' : '') : '' }}>Aduan Masyarakat</option>
-                            <option value="2" {{ isset($kasus) ? ($kasus->tipe_data == '2' ? 'selected' : '') : '' }}>Info Khusus</option>
-                            <option value="3" {{ isset($kasus) ? ($kasus->tipe_data == '3' ? 'selected' : '') : '' }}>Laporan Informasi</option>
-                        </select>
-                        <label for="tipe_data" class="form-label">Tipe Aduan</label>
-                    </div>
+                    <label for="tipe_data" class="form-label">TIPE ADUAN</label>
+                    <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" disabled required>
+                        <option value="1" {{ isset($kasus) ? ($kasus->tipe_data == '1' ? 'selected' : '') : '' }}>ADUAN MASYARAKAT</option>
+                        <option value="2" {{ isset($kasus) ? ($kasus->tipe_data == '2' ? 'selected' : '') : '' }}>INFO KHUSUS</option>
+                        <option value="3" {{ isset($kasus) ? ($kasus->tipe_data == '3' ? 'selected' : '') : '' }}>LAPORAN INFORMASI</option>
+                    </select>
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" required>
-                        <label for="no_nota_dinas">No. Nota Dinas</label>
-                    </div>
+                    <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS</label>
+                    <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" required>
+                        
                 </div>
                 
                 <div class="col-lg-12 mb-3">
                     <center>
                         <div class="form-label">
-                            <label for="check-box">Tipe Pelanggaran</label>
+                            <label for="check-box">TIPE PELANGGARAN</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="disiplin" value="1" onchange="disiplinChange(this);" {{ $kasus->wujud_perbuatan ? ($wujud_perbuatan[$kasus->wujud_perbuatan]->jenis_wp == 'disiplin' ? 'checked' : 'disabled') : '' }} required>
-                            <label class="form-check-label" for="disiplin">Disiplin</label>
+                            <label class="form-check-label" for="disiplin">DISIPLIN</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="kode_etik" value="2" onchange="kodeEtikChange(this);" {{ $kasus->wujud_perbuatan ? ($wujud_perbuatan[$kasus->wujud_perbuatan]->jenis_wp == 'kode etik' ? 'checked' : 'disabled') : '' }} required>
-                            <label class="form-check-label" for="kode_etik">Kode Etik</label>
+                            <label class="form-check-label" for="kode_etik">KODE ETIK</label>
                         </div>
                     </center>
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required style="height: 100%"> 
+                    <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
+                    <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required> 
                         <option value="">PILIH WUJUD PERBUATAN</option>
                     </select>
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" readonly required>
-                        <label for="tanggal_nota_dinas">Tanggal Nota Dinas</label>
-                    </div>
+                    <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
+                    <input type="text" data-provider="flatpickr" data-date-format="d F Y" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" readonly required>
+                        
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" style="height: 150px" required>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
-                        <label for="perihal" class="form-label">Perihal</label>
+                    <label for="perihal" class="form-label">PERIHAL</label>
+                    <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" style="height: 150px" required>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                    <div class="invalid-feedback">
+                        MOHON ISI PERIHAL ADUAN !
+                    </div>
+                    <div class="valid-feedback">
+                        OK !
                     </div>
                 </div>
                 <hr>
@@ -108,93 +109,81 @@
                 <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="pelapor" id="pelapor" placeholder="Nama Pelapor" value="{{ isset($kasus) ? $kasus->pelapor : '' }}" required>
-                                <label for="pelapor">Pelapor</label>
-                            </div>
+                            <label for="pelapor" class="form-label">PELAPOR</label>
+                            <input type="text" class="form-control border-dark" name="pelapor" id="pelapor" placeholder="Nama Pelapor" value="{{ isset($kasus) ? $kasus->pelapor : '' }}" required>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="number" class="form-control border-dark" name="umur" id="umur" placeholder="Umur Pelapor" value="{{ isset($kasus) ? $kasus->umur : '' }}" required>
-                                <label for="umur">Umur</label>
-                            </div>
+                            <label for="umur" class="form-label">UMUR</label>
+                            <input type="number" class="form-control border-dark" name="umur" id="umur" placeholder="Umur Pelapor" value="{{ isset($kasus) ? $kasus->umur : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
-                                    @if (isset($jenis_kelamin))
+                            <label for="jenis_kelamin" class="form-label">PILIH JENIS KELAMIN</label>
+                            <select class="form-select border-dark" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
+                                <option disabled selected>PILIH JENIS KELAMIN</option>
+                                @if (isset($jenis_kelamin))
                                     @foreach ($jenis_kelamin as $key => $jk)
-                                    <option value="{{ $jk->id }}" {{ isset($kasus) ? ($kasus->jenis_kelamin == $jk->id ? 'selected' : '') : '' }}>{{ $jk->name }}</option>
+                                        <option value="{{ $jk->id }}" {{ isset($kasus) ? ($kasus->jenis_kelamin == $jk->id ? 'selected' : '') : '' }}>{{ strtoupper($jk->name) }}</option>
                                     @endforeach
-                                    @endif
-                                </select>
-                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                            </div>
-
+                                @endif
+                            </select>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="pekerjaan" class="form-control border-dark" placeholder="Pekerjaan Pelapor" value="{{ isset($kasus) ? $kasus->pekerjaan : '' }}" required>
-                                <label for="pekerjaan" class="form-label">Pekerjaan</label>
-                            </div>
-
+                            <label for="pekerjaan" class="form-label">PEKERJAAN</label>
+                            <input type="text" name="pekerjaan" class="form-control border-dark" placeholder="Pekerjaan Pelapor" value="{{ isset($kasus) ? $kasus->pekerjaan : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" aria-label="Default select example" name="agama" id="agama" required>
-                                    <option value="">-- Pilih Agama --</option>
-                                    @if (isset($agama))
-                                    @foreach ($agama as $key => $ag)
-                                    <option value="{{ $ag->id }}" {{ $kasus->agama == $ag->id ? 'selected' : '' }}>{{ $ag->name }}
-                                    </option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                                <label for="agama" class="form-label">Agama</label>
-                            </div>
-
+                            <label for="agama" class="form-label">PILIH AGAMA</label>
+                            <select class="form-select border-dark" aria-label="Default select example" name="agama" id="agama" required>
+                                <option disabled selected>PILIH AGAMA</option>
+                                @if (isset($agama))
+                                @foreach ($agama as $key => $ag)
+                                <option value="{{ $ag->id }}" {{ $kasus->agama == $ag->id ? 'selected' : '' }}>{{ $ag->name }}
+                                </option>
+                                @endforeach
+                                @endif
+                            </select>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="no_identitas" id="no_identitas" placeholder="1234-5678-9012-1234" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_identitas : '' }}" required>
-                                <label for="no_identitas" class="form-label">No Identitas</label>
-                            </div>
+                            <label for="no_identitas" class="form-label">NO. IDENTITAS</label>
+                            <input type="text" name="no_identitas" id="no_identitas" placeholder="1234-5678-9012-1234" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_identitas : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_identitas" id="jenis-identitas" required>
-                                    <option value="">-- Pilih Jenis Identitas --</option>
-                                    @if (isset($jenis_identitas))
-                                    @foreach ($jenis_identitas as $key => $ji)
-                                    <option value="{{ $ji->id }}" {{ $kasus->jenis_identitas == $ji->id ? 'selected' : '' }}>
-                                        {{ $ji->name }}
-                                    </option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                                <label for="jenis_identitas" class="form-label">Jenis Identitas</label>
-                            </div>
+                            <label for="jenis_identitas" class="form-label">PILIH JENIS IDENTITAS</label>
+                            <select class="form-select border-dark" aria-label="Default select example" name="jenis_identitas" id="jenis_identitas" required>
+                                <option disabled selected>PILIH JENIS IDENTITAS</option>
+                                @if (isset($jenis_identitas))
+                                @foreach ($jenis_identitas as $key => $ji)
+                                <option value="{{ $ji->id }}" {{ $kasus->jenis_identitas == $ji->id ? 'selected' : '' }}>
+                                    {{ $ji->name }}
+                                </option>
+                                @endforeach
+                                @endif
+                            </select>
+                            
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="no_telp" id="no_telp" placeholder="No. Telp Pelapor" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_telp : '' }}" required>
-                                <label for="no_telp" class="form-label">No. Telepon Pelapor</label>
-                            </div>
+                            <label for="no_telp" class="form-label">NO. TELEPON PELAPOR</label>
+                            <input type="text" name="no_telp" id="no_telp" placeholder="No. Telp Pelapor" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_telp : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <textarea class="form-control border-dark" name="alamat" placeholder="Alamat" id="floatingTextarea" value="{{ isset($kasus) ? $kasus->alamat : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->alamat : '' }}</textarea>
-                                <label for="floatingTextarea" class="form-label">Alamat</label>
-                            </div>
+                            <label for="floatingTextarea" class="form-label">ALAMAT</label>
+                            <textarea class="form-control border-dark" name="alamat" placeholder="Alamat" id="floatingTextarea" value="{{ isset($kasus) ? $kasus->alamat : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->alamat : '' }}</textarea>
+                                
                         </div>
                     </div>
                 </div>
@@ -204,88 +193,79 @@
                 <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->nrp : '' }}" required>
-                                <label for="nrp">NRP Terduga Pelanggar</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="Nama Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->terlapor : '' }}" required>
-                                <label for="terlapor">Nama Terduga Pelanggar</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="pangkat" id="pangkat" required>
-                                    <option value="">-- Pilih Pangkat --</option>
-                                    @if (isset($pangkat))
-                                    @foreach ($pangkat as $key => $p)
-                                    <option value="{{ $p->id }}" {{ $kasus->pangkat == $p->id ? 'selected' : ''}}>
-                                        {{ $p->name }}
-                                    </option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                                <label for="pangkat" class="form-label">Pangkat Terduga Pelangar</label>
-                            </div>
+                            <label for="nrp" class="form-label">NRP TERDUGA PELANGGAR</label>
+                            <input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->nrp : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="Jabatan Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->jabatan : '' }}" required>
-                                <label for="jabatan">Jabatan Terduga Pelanggar</label>
-                            </div>
+                            <label for="terlapor" class="form-label">TANGGAL NOTA DINAS</label>
+                            <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="Nama Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->terlapor : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan" placeholder="Kesatuan Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->kesatuan : '' }}" required>
-                                <label for="kesatuan">Kesatuan Terduga Pelanggar</label>
-                            </div>
+                            <label for="pangkat_terlapor" class="form-label">PANGKAT</label>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="pangkat" id="pangkat" required>
+                                <option disabled>PILIH PANGKAT</option>
+                                @if (isset($pangkat))
+                                @foreach ($pangkat as $key => $p)
+                                <option value="{{ $p->id }}" {{ $kasus->pangkat == $p->id ? 'selected' : ''}}>
+                                    {{ $p->name }}
+                                </option>
+                                @endforeach
+                                @endif
+                            </select>
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
-                                    <option value="">-- Mabes/Polda --</option>
-                                    @if (isset($wilayah_hukum))
+                            <label for="jabatan" class="form-label">JABATAN TERDUGA PELANGGAR</label>
+                            <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="Jabatan Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->jabatan : '' }}" required>
+                                
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <label for="kesatuan" class="form-label">KESATUAN TERDUGA PELANGGAR</label>
+                            <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan" placeholder="Kesatuan Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->kesatuan : '' }}" required>
+                                
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <label for="wilayah_hukum" class="form-label">PILIH MABES / POLDA</label>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
+                                <option disabled>PILIH MABES / POLDA</option>
+                                @if (isset($wilayah_hukum))
                                     @foreach ($wilayah_hukum as $key => $wh)
                                     <option value="{{ $wh->id }}" {{ $kasus->wilayah_hukum == $wh->id ? 'selected' : ''}}>
                                         {{ $wh->name }}
                                     </option>
                                     @endforeach
-                                    @endif
-                                </select>
-                            </div>
+                                @endif
+                            </select>
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="tempat_kejadian" id="tempat_kejadian" placeholder="Tempat Kejadian" value="{{ isset($kasus) ? $kasus->tempat_kejadian : '' }}" required>
-                                <label for="tempat_kejadian">Tempat Kejadian</label>
-                            </div>
+                            <label for="tempat_kejadian" class="form-label">TEMPAT KEJADIAN</label>
+                            <input type="text" class="form-control border-dark" name="tempat_kejadian" id="tempat_kejadian" placeholder="Tempat Kejadian" value="{{ isset($kasus) ? $kasus->tempat_kejadian : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ isset($kasus) ? $kasus->tanggal_kejadian : '' }}" readonly required>
-                                <label for="tempat_kejadian">Tanggal Kejadian</label>
-                            </div>
+                            <label for="tempat_kejadian" class="form-label">TANGGAL KEJADIAN</label>
+                            <input type="text" data-provider="flatpickr" data-date-format="d F Y" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ isset($kasus) ? $kasus->tanggal_kejadian : '' }}" readonly required>
+                                
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="Nama korban" value="{{ isset($kasus) ? $kasus->nama_korban : '' }}" required>
-                                <label for="nama_korban">Nama Korban</label>
-                            </div>
+                            <label for="nama_korban" class="form-label">NAMA KORBAN</label>
+                            <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="Nama korban" value="{{ isset($kasus) ? $kasus->nama_korban : '' }}" required>
+                                
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->kronologi : '' }}</textarea>
-                                <label for="kronologis" class="form-label">Kronologis</label>
-                            </div>
+                            <label for="kronologis" class="form-label">KRONOLOGIS</label>
+                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->kronologi : '' }}</textarea>
+                                
                         </div>
                     </div>
                 </div>
@@ -589,6 +569,21 @@
             $('#form_dis_karo_binpam').submit();
         });
 
+        $('#jenis_kelamin').select2({
+            theme: "bootstrap-5",
+            width: '100%',
+            height: '100%',
+        })
+        $('#jenis_identitas').select2({
+            theme: "bootstrap-5",
+            width: '100%',
+            height: '100%',
+        })
+        $('#agama').select2({
+            theme: "bootstrap-5",
+            width: '100%',
+            height: '100%',
+        })
 
     });
 
@@ -771,6 +766,36 @@
             format: 'yyyy-mm-dd',
             language: 'id'
         });
+
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+        console.log(forms)
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                var errorElements = document.querySelectorAll("input.form-control:invalid");
+                errorElements.forEach(function(element) {
+                    element.parentNode.childNodes.forEach(function(node) {
+                        if (node.className == 'valid-feedback') {
+                            node.className = 'invalid-feedback';
+                        }
+                    });
+                });
+                $('html, body').animate({
+                    scrollTop: $(errorElements[0]).offset().top
+                }, 100);
+                form.classList.add('was-validated')
+            }, false)
+        })
     });
 
     function getPolda(val) {

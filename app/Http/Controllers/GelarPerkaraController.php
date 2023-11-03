@@ -28,9 +28,6 @@ class GelarPerkaraController extends Controller
 {
     public function printUGP($kasus_id, Request $request)
     {
-        // dd($request->all());
-        // $waktu = Carbon::createFromFormat('H:i', $request->waktu_gelar_perkara)->format('H:i');
-        // dd($waktu);
         $kasus = DataPelanggar::find($kasus_id);
         $nd_permohonan_gelar = NdPermohonanGelar::where('data_pelanggar_id', $kasus_id)->first();
         if (!isset($nd_permohonan_gelar)) {
@@ -223,7 +220,7 @@ class GelarPerkaraController extends Controller
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
-        $nd_hasil_gelar = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $nd_hasil_gelar = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus->id)->first() ?? '';
 
         $data = LitpersHistory::where('data_pelanggar_id', $kasus_id)->first();
         $pasal_pelanggaran = PasalPelanggaran::where('data_pelanggar_id', $kasus_id)->first();

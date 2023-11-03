@@ -25,25 +25,31 @@
         <div class="form-control text-center border-0">
             <h3 id="title_form">FORM {{ $title }}</h3>
         </div>
-        <form action="/input-data-kasus/store" class="needs-validation" method="post">
+        <form action="/input-data-kasus/store" class="needs-validation" method="post" novalidate>
             @csrf
             <div class="row">
                 <div class="col-lg-12 mb-3">
-                    <select class="form-select border-dark" aria-label="Default select example" name="tipe_data" id="tipe_data" required>
-                        <option value="" selected disabled>PILIH TIPE ADUAN</option>
+                    <label for="tipe_data" class="form-label">TIPE ADUAN</label>
+                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="tipe_data" id="tipe_data" required>
+                        <option value="">PILIH TIPE ADUAN</option>
                         <option value="1" {{ old('tipe_data') == 1 ? 'selected' : '' }}>ADUAN MASYARAKAT</option>
                         @can('infosus-li')
                             <option value="2" {{ old('tipe_data') == 2 ? 'selected' : '' }}>INFO KHUSUS</option>
                             <option value="3" {{ old('tipe_data') == 3 ? 'selected' : '' }}>LAPORAN INFORMASI</option>
                         @endcan
-                        
                     </select>
+                    <div class="invalid-feedback">MOHON ISI TIPE ADUAN</div>
+                    <div class="valid-feedback">OK !</div>  
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="NO. NOTA DINAS" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" disabled required>
-                        <label for="no_nota_dinas">NO. NOTA DINAS</label>
+                    <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS</label>
+                    <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="NO. NOTA DINAS" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" disabled>
+                    <div class="invalid-feedback">
+                        MOHON ISI NO. NOTA DINAS !
+                    </div>
+                    <div class="valid-feedback">
+                        OK !
                     </div>
                 </div>
                 
@@ -51,6 +57,10 @@
                     <center>
                         <div class="form-label">
                             <label for="check-box">TIPE PELANGGARAN</label>
+                            <div class="invalid-feedback">
+                                MOHON PILIH TIPE PELANGGARAN !
+                            </div>
+                            
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="jenis_wp" value="1" {{ old('jenis_wp') == 1 ? 'checked' : ''}} onchange='disiplinChange(this);' required>
@@ -60,44 +70,57 @@
                             <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="jenis_wp" value="2" {{ old('jenis_wp') == 2 ? 'checked' : ''}} onchange='kodeEtikChange(this);' required>
                             <label class="form-check-label" for="kode_etik">KODE ETIK</label>
                         </div>
-                        <div class="invalid-feedback">Example invalid feedback text</div>
+                        
                     </center>
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required style="height:100%">
+                    <label for="wujud_perbuatan" class="form-label">WUJUD PERBUATAN</label>
+                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required>
                         <option value="">PILIH WUJUD PERBUATAN</option>
                     </select>
-                </div>
-
-                <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <input type="text" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}" readonly required>
-                        <label for="tanggal_nota_dinas">TANGGAL NOTA DINAS</label>
+                    <div class="invalid-feedback">
+                        MOHON PILIH WUJUD PERBUATAN !
+                    </div>
+                    <div class="valid-feedback">
+                        OK !
                     </div>
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <div class="form-floating">
-                        <textarea class="form-control border-dark" name="perihal" placeholder="PERIHAL" id="perihal" value="{{ old('perihal') ? old('perihal') : '' }}" style="height: 150px" required></textarea>
-                        <label for="perihal" class="form-label">PERIHAL</label>
-                    </div>
+                    <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
+                    <input type="date" data-live-search="true" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="BULAN/TANGGAL/TAHUN" required value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}">
+                        
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <div class="form-floating" id="den_bag" {{ old('den_bag') ? '' : 'hidden' }}>
-                        <select class="form-select border-dark" aria-label="Default select example" name="den_bag">
-                            <option value="">PILIH BAG / DETASEMEN</option>
-                            @foreach ($bag_den as $bd)
-                                <option value="{{ $bd->id }}" {{ old('den_bag') == $bd->id ? 'selected' : '' }}>{{ $bd->name }}</option>
-                            @endforeach
-                        </select>
-                        <label for="den_bag" class="form-label">BAG / DETASEMEN</label>
+                    <label for="perihal" class="form-label">PERIHAL ADUAN</label>
+                    <textarea class="form-control border-dark" name="perihal" placeholder="PERIHAL" id="perihal" value="{{ old('perihal') ? old('perihal') : '' }}" style="height: 150px" required></textarea>
+                    <div class="invalid-feedback">
+                        MOHON ISI PERIHAL ADUAN !
+                    </div>
+                    <div class="valid-feedback">
+                        OK !
                     </div>
                 </div>
 
-                <div class="col-lg-12 mb-3">
-                    <div class="form-floating" id="unit_den_bag" hidden></div>
+                <div class="col-lg-12 mb-3" id="form_den_bag" hidden>
+                    <label for="den_bag" class="form-label">BAG / DETASEMEN</label>
+                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="den_bag" id="den_bag">
+                        <option value="">PILIH BAG / DETASEMEN</option>
+                        @foreach ($bag_den as $bd)
+                            <option value="{{ $bd->id }}" {{ old('den_bag') == $bd->id ? 'selected' : '' }}>{{ $bd->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        MOHON PILIH BAG / DETASEMEN !
+                    </div>
+                    <div class="valid-feedback">
+                        OK !
+                    </div>
+                </div>
+
+                <div class="col-lg-12 mb-3" id="unit_den_bag" hidden>
                 </div>
                 <hr>
             </div>
@@ -106,88 +129,103 @@
                 <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="pelapor" id="pelapor" placeholder="Nama Pelapor" value="{{ old('pelapor') ? old('pelapor') : '' }}" required>
-                                <label for="pelapor">Nama Pelapor</label>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="number" class="form-control border-dark" name="umur" id="umur" placeholder="Umur Pelapor" value="{{ old('umur') ? old('umur') : '' }}" required>
-                                <label for="umur">Umur</label>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
-                                    @if (isset($jenis_kelamin))
-                                        @foreach ($jenis_kelamin as $key => $jk)
-                                            <option value="{{ $jk->id }}" {{ old('jenis_kelamin') == $jk->id ? 'selected' : '' }}>{{ $jk->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                            <label for="pelapor" class="form-label">NAMA</label>
+                            <input type="text" class="form-control border-dark" name="pelapor" id="pelapor" placeholder="NAMA" value="{{ old('pelapor') ? old('pelapor') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NAMA PELAPOR !
                             </div>
                             
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="pekerjaan" class="form-control border-dark" placeholder="Pekerjaan Pelapor" value="{{ old('pekerjaan') ? old('pekerjaan') : '' }}" required>
-                                <label for="pekerjaan" class="form-label">Pekerjaan</label>
+                            <label for="umur" class="form-label">UMUR</label>
+                            <input type="number" class="form-control border-dark" name="umur" id="umur" placeholder="UMUR" value="{{ old('umur') ? old('umur') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI UMUR PELAPOR !
                             </div>
-                           
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" aria-label="Default select example" name="agama" id="agama" required>
-                                    <option value="">-- Pilih Agama --</option>
-                                    @foreach ($agama as $key => $ag)
-                                        <option value="{{ $ag->id }}" {{ old('agama') == $ag->id ? 'selected' : '' }}>{{ $ag->name }}</option>
+                            <label for="jenis_kelamin" class="form-label">JENIS KELAMIN</label>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
+                                <option value="">PILIH JENIS KELAMIN</option>
+                                @if (isset($jenis_kelamin))
+                                    @foreach ($jenis_kelamin as $key => $jk)
+                                        <option value="{{ $jk->id }}" {{ old('jenis_kelamin') == $jk->id ? 'selected' : '' }}>{{ strtoupper($jk->name) }}</option>
                                     @endforeach
-                                </select>
-                                <label for="agama" class="form-label">Agama</label>
+                                @endif
+                            </select>
+                            <div class="invalid-feedback">
+                                MOHON PILIH JENIS KELAMIN PELAPOR !
                             </div>
                             
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="no_identitas" id="no_identitas" placeholder="1234-5678-9012-1234" class="form-control border-dark" value="{{ old('no_identitas') ? old('no_identitas') : '' }}" required>
-                                <label for="no_identitas" class="form-label">No Identitas</label>
+                            <label for="pekerjaan" class="form-label">PEKERJAAN</label>
+                            <input type="text" name="pekerjaan" class="form-control border-dark" placeholder="PEKERJAAN" value="{{ old('pekerjaan') ? old('pekerjaan') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI PEKERJAAN PELAPOR !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" aria-label="Default select example" name="jenis_identitas"id="jenis-identitas" required>
-                                    <option value="">-- Pilih Jenis Identitas --</option>
-                                    @if (isset($jenis_identitas))
-                                        @foreach ($jenis_identitas as $key => $ji)
-                                            <option value="{{ $ji->id }}" {{ old('jenis_identitas') == $ji->id ? 'selected' : '' }}>{{ $ji->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <label for="jenis_identitas" class="form-label">Jenis Identitas</label>
+                            <label for="agama" class="form-label">AGAMA</label>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="agama" id="agama" required>
+                                <option value="">PILIH AGAMA</option>
+                                @foreach ($agama as $key => $ag)
+                                    <option value="{{ $ag->id }}" {{ old('agama') == $ag->id ? 'selected' : '' }}>{{ strtoupper($ag->name) }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">
+                                MOHON PILIH AGAMA PELAPOR !
                             </div>
+                            
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <label for="no_identitas" class="form-label">NO. IDENTITAS</label>
+                            <input type="text" name="no_identitas" id="no_identitas" placeholder="1234-5678-9012-1234" class="form-control border-dark" value="{{ old('no_identitas') ? old('no_identitas') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NO. IDENTITAS !
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <label for="jenis_identitas" class="form-label">JENIS IDENTITAS</label>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="jenis_identitas"id="jenis_identitas" required>
+                                <option value="">PILIH JENIS IDENTITAS</option>
+                                @if (isset($jenis_identitas))
+                                    @foreach ($jenis_identitas as $key => $ji)
+                                        <option value="{{ $ji->id }}" {{ old('jenis_identitas') == $ji->id ? 'selected' : '' }}>{{ $ji->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <div class="invalid-feedback">
+                                MOHON PILIH JENIS IDENTITAS !
+                            </div>
+                            
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="no_telp" id="no_telp" placeholder="No. Telp Pelapor" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" required>
-                                <label for="no_telp" class="form-label">No. Telepon Pelapor</label>
+                            <label for="no_telp" class="form-label">NO. TELEPON</label>
+                            <input type="text" name="no_telp" id="no_telp" placeholder="NO. TELEPON" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NO. TELEPON PELAPOR !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <textarea class="form-control border-dark" name="alamat" placeholder="Alamat" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" style="height: 160px" required></textarea>
-                                <label for="floatingTextarea" class="form-label">Alamat</label>
+                            <label for="floatingTextarea" class="form-label">ALAMAT</label>
+                            <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" style="height: 160px" required></textarea>
+                            <div class="invalid-feedback">
+                                MOHON ISI ALAMAT PELAPOR !
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -196,89 +234,111 @@
                 <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP Terduga Pelanggar" value="{{ old('nrp') ? old('nrp') : '' }}" required>
-                                <label for="nrp">NRP Terduga Pelanggar</label>
+                            <label for="nrp" class="form-label">NRP</label>
+                            <input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP" value="{{ old('nrp') ? old('nrp') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NRP TERDUGA PELANGGAR !
                             </div>
-                        </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="Nama Terduga Pelanggar" value="{{ old('terlapor') ? old('terlapor') : '' }}" required>
-                                <label for="terlapor">Nama Terduga Pelanggar</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="pangkat" id="pangkat" required>
-                                    <option value="">-- Pilih Pangkat --</option>
-                                    @if (isset($pangkat))
-                                        @foreach ($pangkat as $key => $p)
-                                            <option value="{{ $p->id }}" {{ old('pangkat') == $p->id ? 'selected' : '' }}>
-                                                {{ $p->name }}
-                                            </option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <label for="pangkat" class="form-label">Pangkat Terduga Pelangar</label>
-                            </div>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="Jabatan Terduga Pelanggar" value="{{ old('jabatan') ? old('jabatan') : '' }}" required>
-                                <label for="jabatan">Jabatan Terduga Pelanggar</label>
+                            <label for="terlapor" class="form-label">NAMA</label>
+                            <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="NAMA" value="{{ old('terlapor') ? old('terlapor') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NAMA TERDUGA PELANGGAR !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan" placeholder="Kesatuan Terduga Pelanggar" value="{{ old('kesatuan') ? old('kesatuan') : '' }}" required>
-                                <label for="kesatuan">Kesatuan Terduga Pelanggar</label>
+                            <label for="pangkat" class="form-label">PANGKAT</label>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="pangkat" id="pangkat" required>
+                                <option value="">PILIH PANGKAT</option>
+                                @if (isset($pangkat))
+                                    @foreach ($pangkat as $key => $p)
+                                        <option value="{{ $p->id }}" {{ old('pangkat') == $p->id ? 'selected' : '' }}>
+                                            {{ $p->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <div class="invalid-feedback">
+                                MOHON PILIH PANGKAT TERDUGA PELANGGAR !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-control border-dark">
-                                <select class="form-select" data-choices="true" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
-                                    <option value="" selected disabled>MABES / POLDA</option>
-                                    @if (isset($wilayah_hukum))
-                                        @foreach ($wilayah_hukum as $key => $wh)
-                                            <option value="{{ $wh->id }}" {{ old('wilayah_hukum') == $wh->id ? 'selected' : '' }}>
-                                                {{ $wh->name }}
-                                            </option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                
+                            <label for="jabatan" class="form-label">JABATAN</label>
+                            <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="JABATAN" value="{{ old('jabatan') ? old('jabatan') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI JABATAN TERDUGA PELANGGAR !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="tempat_kejadian" id="tempat_kejadian" placeholder="Tempat Kejadian" value="{{ old('tempat_kejadian') ? old('tempat_kejadian') : '' }}" required>
-                                <label for="tempat_kejadian">Tempat Kejadian</label>
+                            <label for="kesatuan" class="form-label">KESATUAN</label>
+                            <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan" placeholder="KESATUAN" value="{{ old('kesatuan') ? old('kesatuan') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI KESATUAN TERDUGA PELANGGAR !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <div class="form-floating">
-                                <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" readonly required>
-                                <label for="tempat_kejadian">Tanggal Kejadian</label>
+                            <label for="wilayah_hukum" class="form-label">WILAYAH HUKUM</label>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
+                                <option value="">MABES / POLDA</option>
+                                @if (isset($wilayah_hukum))
+                                    @foreach ($wilayah_hukum as $key => $wh)
+                                        <option value="{{ $wh->id }}" {{ old('wilayah_hukum') == $wh->id ? 'selected' : '' }}>
+                                            {{ $wh->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <div class="invalid-feedback">
+                                MOHON PILIH WILAYAH HUKUM TERDUGA PELANGGAR !
                             </div>
+                            
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <label for="tempat_kejadian" class="form-label">TEMPAT KEJADIAN</label>
+                            <input type="text" class="form-control border-dark" name="tempat_kejadian" id="tempat_kejadian" placeholder="TEMPAT KEJADIAN" value="{{ old('tempat_kejadian') ? old('tempat_kejadian') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI TEMPAT KEJADIAN PELANGGARAN !
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <label for="tempat_kejadian" class="form-label">TANGGAL KEJADIAN</label>
+                            <input type="date" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="dd/mm/yyyy" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON PILIH TANGGAL KEJADIAN PELANGGARAN !
+                            </div>
+                            
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="Nama korban" value="{{ old('nama_korban') ? old('nama_korban') : '' }}" required>
-                                <label for="nama_korban">Nama Korban</label>
+                            <label for="nama_korban" class="form-label">NAMA KORBAN</label>
+                            <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="NAMA KORBAN" value="{{ old('nama_korban') ? old('nama_korban') : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NAMA KORBAN !
                             </div>
+                            
                         </div>
                         
                         <div class="col-lg-12 mb-3" id="kronologi_form">
-                            <div class="form-floating">
-                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
-                                <label for="kronologis" id="label_kronologi" class="form-label">Kronologis</label>
+                            <label for="kronologis" id="label_kronologi" class="form-label">KRONOLOGIS</label>
+                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
+                            <div class="invalid-feedback">
+                                MOHON ISI KRONOLOGIS PELANGGARAN !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-12 mb-3" id="btn_add_kronologi" hidden>
@@ -288,10 +348,12 @@
                         </div>
 
                         <div class="col-lg-12 mb-3" id="catatan_form" hidden>
-                            <div class="form-floating">
-                                <textarea class="form-control border-dark" name="catatan[]" placeholder="" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
-                                <label for="catatan" id="label_catatan" class="form-label">Catatan</label>
+                            <label for="catatan" id="label_catatan" class="form-label">CATATAN</label>
+                            <textarea class="form-control border-dark" name="catatan[]" placeholder="" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" ></textarea>
+                            <div class="invalid-feedback">
+                                MOHON ISI CATATAN PELANGGARAN !
                             </div>
+                            
                         </div>
 
                         <div class="col-lg-12 mb-3" id="btn_add_catatan" hidden>
@@ -302,7 +364,7 @@
 
                         <div class="col-lg-12 mb-3">
                             <button class="btn btn-success form-control" type="submit" value="input_kasus" name="type_submit">
-                                Submit Data
+                                SUBMIT DATA
                             </button>
                         </div>
                     </div>
@@ -322,6 +384,31 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#tipe_data').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+            
+            $('#wilayah_hukum').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            $('#pangkat').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            $('#agama').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            $('#jenis_kelamin').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            $('#jenis_identitas').select2({
                 theme: "bootstrap-5",
                 width: 'resolve'
             })
@@ -391,6 +478,7 @@
                 
                 if (this.value == 1) {
                     $('#no_nota_dinas').removeAttr('disabled')
+                    $('#no_nota_dinas').prop('required',true)
                     $('#den_bag').prop('hidden', true)
                     $('#catatan_form').prop('hidden',true)
                     $('#btn_add_kronologi').prop('hidden',true)
@@ -399,25 +487,25 @@
                     $('#title_form').html('FORM INPUT ADUAN MASYARAKAT')
                 } else if (this.value == 2) {
                     $('#no_nota_dinas').prop('disabled', true)
-                    $('#no_nota_dinas').prop('required', true)
-                    $('#den_bag').removeAttr('hidden')
+                    $('#form_den_bag').removeAttr('hidden')
                     $('#catatan_form').removeAttr('hidden')
                     $('#btn_add_kronologi').removeAttr('hidden')
                     $('#btn_add_catatan').removeAttr('hidden')
                     $('#title_form').html('FORM INPUT INFORMASI KHUSUS')
                     $('#label_kronologi').html('Fakta-fakta')
+                    
                 } else {
                     $('#no_nota_dinas').prop('disabled', true)
                     $('#no_nota_dinas').prop('required', true)
-                    $('#den_bag').removeAttr('hidden')
+                    $('#form_den_bag').removeAttr('hidden')
                     $('#catatan_form').removeAttr('hidden')
                     $('#btn_add_kronologi').removeAttr('hidden')
                     $('#btn_add_catatan').removeAttr('hidden')
                     $('#title_form').html('FORM INPUT LAMPORAN INFORMASI')
                     $('#label_kronologi').html('Fakta-fakta')
-                    $('#label_catatan').html('Pendapat Pelapor')
+                    $('#label_catatan').html('PENDAPAT PELAPOR')
                     $('#add_catatan').html('TAMBAH PENDAPAT PELAPOR')
-                    add_catatan
+                    
                 }
             });
             
@@ -437,18 +525,19 @@
                         let option = ''
                         let html = ''
                         if (unit.length == 0) {
-                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="">UNIT BELUM TERSEDIA</option></select><label for="unit_den_bag" class="form-label">UNIT</label>`
+                            html = `<label for="unit_den_bag" class="form-label">UNIT</label><select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="">UNIT BELUM TERSEDIA</option></select>`
                         } else {
                             unit.forEach(element => {
                                 let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
                                 option += opt
                             });
-                            html = `<select class="form-select border-dark" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">PILIH UNIT</option>`+option+`</select><label for="unit_den_bag" class="form-label">UNIT</label>`
+                            html = `<label for="unit_den_bag" class="form-label">UNIT</label><select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">PILIH UNIT</option>`+option+`</select>`
                         }
                         
                         $('#unit_den_bag').removeAttr('hidden')
                         $('#unit_den_bag').empty()
                         $('#unit_den_bag').append(html)
+
                     },
                     error: function (jqXhr, textStatus, errorMessage) { // error callback
                         $('.loading').css('display', 'none')
@@ -559,27 +648,37 @@
                 format:'yyyy-mm-dd',
                 language: 'id'
             });
-        } );
 
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        $(function () {
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
             'use strict'
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.querySelectorAll('.needs-validation')
+            console.log(forms)
 
             // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
+            Array.prototype.slice.call(forms).forEach(function (form) {
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
+                        event.preventDefault()
+                        event.stopPropagation()
                     }
+
+                    var errorElements = document.querySelectorAll("input.form-control:invalid");
+                    errorElements.forEach(function(element) {
+                        element.parentNode.childNodes.forEach(function(node) {
+                            if (node.className == 'valid-feedback') {
+                                node.className = 'invalid-feedback';
+                            }
+                        });
+                    });
+                    $('html, body').animate({
+                        scrollTop: $(errorElements[0]).offset().top
+                    }, 100);
 
                     form.classList.add('was-validated')
                 }, false)
-                })
-        })
+            })
+        });
     </script>
 @endsection

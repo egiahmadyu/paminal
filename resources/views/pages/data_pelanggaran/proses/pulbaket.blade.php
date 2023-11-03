@@ -386,7 +386,7 @@
 
                     <!--undangan sipil-->
                     <div class="row mb-3">
-                        <div class="col-12 mb-3">
+                        <div class="col-lg-12 mb-3">
                             <div class="form-floating">
                                 <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="Masukan No. Surat Undangan" required>
                                 <label for="no_surat_undangan">No. Surat Undangan</label>
@@ -398,16 +398,16 @@
                                 <div class="invalid-feedback">{{ $errors->first('no_surat_undangan') }}</div>
                             @endif
                         </div>
-                        <div class="col-12 mb-3">
+                        <div class="col-lg-12 mb-3">
                             <div class="form-floating">
                                 <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="Tanggal Klarifikasi" required>
                                 <label for="tgl_klarifikasi">Tanggal Klarifikasi</label>
                             </div>
                         </div>
-                        <div class="col-12 mb-3">
+                        <div class="col-lg-12 mb-3">
                             <div class="form-outline">
                                 <div class="form-floating">
-                                    <input type="time" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="Waktu Klarifikasi" required>
+                                    <input type="time" data-provider="timepickr" data-time-basic="true" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="Waktu Klarifikasi" required>
                                     <label for="waktu_klarifikasi">Waktu Klarifikasi</label>
                                 </div>
                             </div>
@@ -598,6 +598,7 @@
 <script>
     $(document).ready(function() {
         getNextData();
+
     });
 
     $(function() {
@@ -643,16 +644,16 @@
     function submitForm(event) {
         // document.forms['myform'].submit();
         getViewProcess(4)
-        // alert('a')
     }
 
     function tambahSaksi() {
         let inHtml =
-            `<div class="mb-3"><div class="form-floating">
-                                <input type="text" class="form-control border-dark inputNamaSaksi" name="nama_saksi[]"
-                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi" required>
-                                <label for="no_nota_dinas">Nama Saksi</label>
-                            </div></div>`;
+            `<div class="mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control border-dark inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi" required>
+                    <label for="no_nota_dinas" class="form-label">Nama Saksi</label>
+                </div>
+            </div>`;
         // let inHtml = '<input type="text" class="form-control" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama ">';
         $('#form_tambah_saksi').append(inHtml);
         // $('#form_tambah_saksi .inputNamaSaksi:last').before(inHtml);

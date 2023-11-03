@@ -5,6 +5,11 @@
                 <button type="button" class="btn btn-info" onclick="getViewProcess(4)"><i class="far fa-arrow-left"></i> Sebelumnya</button>
             </div>
             <div>
+                @if ($kasus->status_id == 5 && $nd_hasil_gelar)
+                    <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>    
+                @endif
+            </div>
+            <div>
 
                 @if ($kasus->status_id > 5)
                     <button type="button" class="btn btn-primary" onclick="getViewProcess(6)">Selanjutnya <i class="far fa-arrow-right"></i></button>
@@ -90,15 +95,11 @@
                                     <td>:</td>
                                     <td>{{ $usia_dumas }}</td>
                                 </tr>
+                                
                             </table>
                         </div>
                         <div class="col-lg-6">
                             <table>
-                                <tr>
-                                    <td>Perihal</td>
-                                    <td>:</td>
-                                    <td>{{ $kasus->perihal_nota_dinas}}</td>
-                                </tr>
                                 <tr>
                                     <td>Unit Pelaksana</td>
                                     <td>:</td>
@@ -107,12 +108,17 @@
                                 <tr>
                                     <td>Ketua Tim</td>
                                     <td>:</td>
-                                    <td>{{ $penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
+                                    <td>{{ strtoupper($penyidik[0]->pangkat).' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Permohonan Gelar</td>
                                     <td>:</td>
                                     <td>{{ $tgl_nd_pg }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Perihal</td>
+                                    <td>:</td>
+                                    <td>{{ $kasus->perihal_nota_dinas}}</td>
                                 </tr>
                             </table>
                         </div>
@@ -264,9 +270,9 @@
     </div>
 
     @can('edit-gelar_perkara')
-        @if (isset($kasus) & ($kasus->status_id === 5) & ($lhp->hasil_penyelidikan === '1'))
+        @if (isset($kasus) & ($kasus->status_id == 5) & ($lhp->hasil_penyelidikan === '1'))
             <div class="row mt-3">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     @if (!empty($ugp))
                         <form action="/data-kasus/update" method="post">
                             @csrf
@@ -274,11 +280,15 @@
                             <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" hidden>
                             <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }}
                                 value="update_status">LANJUTKAN
-                                KE LIMPAH</button>
+                                KE LIMPAH
+                            </button>
                         </form>
+                        
                     @endif
                 </div>
+                
             </div>
+            
         @endif
     @endcan
     
@@ -499,6 +509,7 @@
             theme: "bootstrap-5"
         })
     });
+
     $(function() {
         $( "#tanggal_gelar_perkara" ).datepicker({
             autoclose:true,
@@ -506,9 +517,6 @@
             format:'yyyy-mm-dd',
             language: 'id',
             beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
-        });
-        $('#waktu_gelar_perkara').timepicker({
-            'timeFormat': 'HH:mm:ss'
         });
     });
     function setDatepickerPos(input, inst) {

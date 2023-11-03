@@ -26,6 +26,7 @@ use App\Models\Polda;
 use App\Models\Process;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
+use App\Models\UndanganKlarifikasiHistory;
 use App\Models\Unit;
 use App\Models\UukHistory;
 use App\Models\WujudPerbuatan;
@@ -304,6 +305,7 @@ class KasusController extends Controller
         $pimpinan = DataAnggota::whereBetween('pangkat', [1, 5])->get();
 
         $kasus = DataPelanggar::find($id);
+        $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
 
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
@@ -378,7 +380,35 @@ class KasusController extends Controller
         if ($request->disposisi_tujuan != 3) {
             $data = DataPelanggar::where('id', $request->kasus_id)->first();
             $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id)->where('tipe_disposisi', 3)->first();
+
             if ($disposisi && isset($disposisi->limpah_unit)) {
+                if ($request->disposisi_tujuan == 5) {
+                    $pulbaket[0] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 1)->first();
+                    $pulbaket[1] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 2)->first();
+                    $pulbaket[2] = BaiPelapor::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[3] = BaiTerlapor::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[4] = LHPHistory::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[5] = NdPermohonanGelar::where('data_pelanggar_id', $data->id)->first();
+
+                    $keyPulbaket = ['UNDANGAN KLARIFIKASI PELAPOR', 'UNDANGAN KLARIFIKASI TERLAPOR', 'BAI PELAPOR', 'BAI TERLAPOR', 'LAPORAN HASIL PENYELIDIKAN', 'NOTA DINAS PERMOHONAN GELAR PERKARA'];
+                    foreach ($pulbaket as $key => $value) {
+                        if (!$value) {
+                            return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
+                        }
+                    }
+                } elseif ($request->disposisi_tujuan == 6) {
+                    $pulbaket[0] = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[1] = Sp2hp2Hisory::where('data_pelanggar_id', $data->id)->where('tipe', 'akhir')->first();
+                    $pulbaket[2] = LitpersHistory::where('data_pelanggar_id', $data->id)->first();
+
+                    $keyPulbaket = ['NOTA DINAS HASIL GELAR PERKARA', 'SP2HP2 AKHIR', 'NOTA DINAS KA. LITPERS'];
+                    foreach ($pulbaket as $key => $value) {
+                        if (!$value) {
+                            return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
+                        }
+                    }
+                }
+
                 $data->update([
                     'status_id' => $request->disposisi_tujuan
                 ]);
@@ -443,6 +473,7 @@ class KasusController extends Controller
         $pangkat_pimpinan_gelar = Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first();
 
         $limpah_biro = LimpahBiro::where('data_pelanggar_id', $id)->first();
+
         if ($limpah_biro->jenis_limpah == 1) {
             $jenis_limpah = "ROPROVOS";
         } elseif ($limpah_biro->jenis_limpah == 2) {
@@ -504,6 +535,7 @@ class KasusController extends Controller
         $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
 
+        $nd_hasil_gelar = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $kasus->id)->first();
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
         $bai_pelapor = BaiPelapor::where('data_pelanggar_id', $kasus->id)->first() ?? '';
         $bai_terlapor = BaiTerlapor::where('data_pelanggar_id', $kasus->id)->first() ?? '';
@@ -536,6 +568,7 @@ class KasusController extends Controller
             'litpers' => $litpers,
             'sp2hp2_akhir' => $sp2hp2_akhir,
             'lhp' => $lhp,
+            'nd_hasil_gelar' => $nd_hasil_gelar,
             'bulan_romawi_ndPG' => $bulan_romawi_ndPG,
             'gelar_perkara' => $gelar_perkara,
             'pangkat_pimpinan_gelar' => isset($gelar_perkara) ? $pangkat_pimpinan_gelar->name : '',
