@@ -1,4 +1,5 @@
 <!--Informasi Pulbaket-->
+
 <div class="card border-0">
     <div class="card-header">
         <div class="row">
@@ -37,6 +38,34 @@
                 </div>
             </div>
         </div>
+        @if ($saksis)
+            <div class="card border-dark">
+                <div class="card-header">
+                    <h4>Saksi</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach ($saksis as $i => $saksi)
+                        <div class="col-lg-2">
+                            <h5>
+                                {{$i+1}} . {{ $saksis[0]['nama'] }}
+                            </h5>
+                            
+                        </div>
+                        <div class="col-lg-6">
+                            <a type="button" class="btn btn-outline-primary text-primary" href="#">
+                                <h6>
+                                    <i class="far fa-file-plus"></i> Undangan Klarifikasi
+                                </h6>
+                            </a>
+                        </div>
+                        @endforeach
+                        
+                    </div>
+
+                </div>
+            </div>  
+        @endif
     </div>
     @can('edit-pulbaket')
         <div class="card-body">

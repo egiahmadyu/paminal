@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Saksi extends Model
 {
     use HasFactory;
-    protected $fillable = [ 'data_pelanggar_id','name' ];
+    protected $fillable = ['data_pelanggar_id', 'jenis_kelamin', 'nama', 'alamat', 'no_telp'];
 }

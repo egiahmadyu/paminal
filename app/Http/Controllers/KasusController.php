@@ -24,6 +24,7 @@ use App\Models\Pangkat;
 use App\Models\Penyidik;
 use App\Models\Polda;
 use App\Models\Process;
+use App\Models\Saksi;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UndanganKlarifikasiHistory;
@@ -36,6 +37,7 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
 use Yajra\DataTables\Facades\DataTables;
 
+use function PHPUnit\Framework\countOf;
 use function PHPUnit\Framework\isNull;
 
 class KasusController extends Controller
@@ -305,6 +307,7 @@ class KasusController extends Controller
         $pimpinan = DataAnggota::whereBetween('pangkat', [1, 5])->get();
 
         $kasus = DataPelanggar::find($id);
+        $saksis = Saksi::where('data_pelanggar_id', $kasus->id)->get();
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
 
         $status = Process::find($kasus->status_id);
@@ -328,12 +331,11 @@ class KasusController extends Controller
             'wujud_perbuatan' => $wujud_perbuatan,
             'pimpinan' => $pimpinan,
             'lhp' => $lhp ?? '',
+            'saksis' => $saksis,
             'disposisi' => $disposisi,
             'nd_hasil_gelar' => $nd_hasil_gelar ?? '',
             'title' => 'DETAIL DATA PELANGGAR',
         ];
-
-        // dd($data);
 
         return view('pages.data_pelanggaran.detail', $data);
     }
@@ -431,15 +433,82 @@ class KasusController extends Controller
         elseif ($status_id == 4) return $this->viewPulbaket($kasus_id);
         elseif ($status_id == 5) return $this->viewGelarPenyelidikan($kasus_id);
         elseif ($status_id == 6) return $this->viewLimpahBiro($kasus_id);
+        elseif ($status_id == 7) return $this->viewRJ($kasus_id);
     }
 
     public function RJ($kasus_id)
     {
+        $kasus = DataPelanggar::find($kasus_id);
+        $kasus->update([
+            'status_id' => 7
+        ]);
+
         return response()->json([
             'status' => 200,
             'success' => true,
             'message' => 'DUMAS DIHENTIKAN DENGAN STATUS RJ'
         ]);
+    }
+
+    private function viewRJ($id)
+    {
+        $kasus = DataPelanggar::find($id);
+        $status = Process::find($kasus->status_id);
+        $polda = Polda::get();
+        $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
+
+        $pangkat = Pangkat::get();
+        $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
+
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
+        $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
+        $today = Carbon::now()->addDays();
+        $usia_dumas = $tgl_dumas->diffInDays($today);
+
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+        $den = Datasemen::where('id', $disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
+
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
+
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id', $value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
+        }
+
+        $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $pangkat_pimpinan_gelar = Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first();
+
+        $limpah_biro = LimpahBiro::where('data_pelanggar_id', $id)->first();
+
+        if ($limpah_biro->jenis_limpah == 1) {
+            $jenis_limpah = "ROPROVOS";
+        } elseif ($limpah_biro->jenis_limpah == 2) {
+            $jenis_limpah = "ROWABPROF";
+        } else {
+            $jenis_limpah = "BID PROPAM POLDA";
+        }
+
+        $data = [
+            'kasus' => $kasus,
+            'status' => $status,
+            'limpah_biro' => $limpah_biro,
+            'ugp' => $gelar_perkara,
+            'polda' => $polda,
+            'usia_dumas' => $usia_dumas . ' hari',
+            'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
+            'sprin' => $sprin,
+            'unit' => $unit,
+            'den' => $den,
+            'penyidik' => $penyidik,
+            'gelar_perkara' => $gelar_perkara,
+            'pimpinan_gelar' => $pangkat_pimpinan_gelar->name . ' ' . $gelar_perkara->pimpinan . ' / ' . $gelar_perkara->nrp_pimpinan,
+            'jenis_limpah' => $jenis_limpah,
+            'title' => 'LIMPAH BIRO',
+        ];
+
+        return view('pages.data_pelanggaran.proses.rj', $data);
     }
 
     private function viewLimpahBiro($id)
@@ -741,6 +810,7 @@ class KasusController extends Controller
         }
 
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $saksis = Saksi::where('data_pelanggar_id', $kasus->id)->get();
         $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
         $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
         $today = Carbon::now()->addDays();
@@ -755,6 +825,7 @@ class KasusController extends Controller
             'unit' => $unit,
             'den' => $den,
             'lhp' => $lhp,
+            'saksis' => $saksis,
             'usia_dumas' => $usia_dumas . ' hari',
             'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
             'title' => 'PULBAKET',

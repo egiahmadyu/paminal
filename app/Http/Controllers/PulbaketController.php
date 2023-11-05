@@ -665,6 +665,7 @@ class PulbaketController extends Controller
         $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
 
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
+        $saksis = Saksi::where('data_pelanggar_id', $kasus->id)->get();
         $bai_pelapor = BaiPelapor::where('data_pelanggar_id', $kasus->id)->first();
         $bai_terlapor = BaiTerlapor::where('data_pelanggar_id', $kasus->id)->first();
 
@@ -681,6 +682,7 @@ class PulbaketController extends Controller
             'unit' => $unit,
             'den' => $den,
             'lhp' => $lhp,
+            'saksis' => $saksis,
             'penyidik' => $penyidik,
             'bai_pelapor' => $bai_pelapor,
             'bai_terlapor' => $bai_terlapor,

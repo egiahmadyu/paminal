@@ -95,7 +95,7 @@
                                 <tr>
                                     <td>KETUA TIM</td>
                                     <td>:</td>
-                                    <td>{{ $penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
+                                    <td>{{ strtoupper($penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp) }}</td>
                                 </tr>
                                 <tr>
                                     <td>PIMPINAN GELAR PERKARA</td>

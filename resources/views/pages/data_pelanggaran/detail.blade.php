@@ -90,69 +90,7 @@
             //     .catch(error => {
             //         console.error(error);
             //     });
-            $('#rj').on('click', function() {
-                let id = `{{ $kasus->id }}`
-                Swal.fire({
-                    title: 'YAKIN AKAN MELAKUKAN RESTORATIVE JUSTICE (RJ) ?',
-                    text: "DUMAS AKAN DIHENTIKAN DENGAN STATUS RJ.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'YA, LAKUKAN RJ !',
-                    cancelButtonText: 'TIDAK, BATALKAN !'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url : '/rj/'+id,
-                            type: 'GET',
-                            dataType: 'json',
-                            beforeSend: function () {
-                                $('.loading').css('display', 'block')
-                            }, 
-                            success: function (data, status, xhr) {
-                                $('.loading').css('display', 'none')
-
-                                if (data.status == 200) {
-                                    Swal.fire({
-                                        title: 'Terhapus',
-                                        text: data.message,
-                                        icon: 'success',
-                                        confirmButtonText: 'OK'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            location.reload()
-                                        }
-                                    })
-                                } else {
-                                    Swal.fire({
-                                        title: 'Gagal',
-                                        text: data.message,
-                                        icon: 'error',
-                                        confirmButtonText: 'OK'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            location.reload()
-                                        }
-                                    })
-                                }
-                                
-                            },
-                            error: function (jqXhr, textStatus, errorMessage) { // error callback
-                                $('.loading').css('display', 'none')
-                                console.log('error message: ',errorMessage)
-                                var option = {
-                                        title: 'Error',
-                                        text: 'Terjadi Kesalahan Sistem...',
-                                        icon: 'error',
-                                        confirmButtonText: 'OK'
-                                }
-                                Swal.fire(option) 
-                            }
-                        })
-                    }
-                })
-            });
+            
             
             console.log($('.btn[data-action="incrementMinutes"]').html())
 

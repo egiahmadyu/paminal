@@ -11,7 +11,7 @@
     </div>
 
     <!--Timeline-->
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-lg-12" style="text-align: center;">
             <div class="f1-steps">
                 <div class="f1-progress">
@@ -39,9 +39,14 @@
     </div>
 
     <!-- Deskripsi -->
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-lg-12">
             <div class="card border-dark">
+                <div class="card-header">
+                    <center>
+                        <h1>ADUAN DIHENTIKAN DENGAN STATUS RESTORATIVE JUSTICE</h1>
+                    </center>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
@@ -68,11 +73,6 @@
                                     <td>{{ strtoupper($terlapor) }} / {{ $kasus->nrp }}</td>
                                 </tr>
                                 <tr>
-                                    <td>PELIMPAHAN</td>
-                                    <td>:</td>
-                                    <td>{{ $jenis_limpah }}</td>
-                                </tr>
-                                <tr>
                                     <td>USIA DUMAS</td>
                                     <td>:</td>
                                     <td>{{ $usia_dumas }}</td>
@@ -80,37 +80,21 @@
                                 <tr>
                                     <td>PERIHAL</td>
                                     <td>:</td>
-                                    <td>{{ $kasus->perihal_nota_dinas }}</td>
+                                    <td>{{ $kasus->tipe == 1 ? $kasus->perihal_nota_dinas : ($kasus->tipe == 2 ? 'INFORMASI KHUSUS' : 'LAPORAN INFORMASI') }}</td>
                                 </tr>
                             </table>
                         </div>
                         <div class="col-lg-6">
                             <table>
-                                
                                 <tr>
                                     <td>UNIT PELAKSANA</td>
                                     <td>:</td>
-                                    <td>{{ $unit }}</td>
+                                    <td>{{ $unit }} {{ $den }}</td>
                                 </tr>
                                 <tr>
                                     <td>KETUA TIM</td>
                                     <td>:</td>
-                                    <td>{{ $penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
-                                </tr>
-                                <tr>
-                                    <td>PIMPINAN GELAR PERKARA</td>
-                                    <td>:</td>
-                                    <td>{{ $pimpinan_gelar }}</td>
-                                </tr>
-                                <tr>
-                                    <td>TANGGAL GELAR PERKARA</td>
-                                    <td>:</td>
-                                    <td>{{ Carbon\Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y') }}</td>
-                                </tr>
-                                <tr>
-                                    <td>TEMPAT GELAR PERKARA</td>
-                                    <td>:</td>
-                                    <td>{{ $gelar_perkara->tempat }}</td>
+                                    <td>{{ strtoupper($penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp) }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -121,58 +105,14 @@
     </div>
 
     <!-- Isi -->
-    @can('edit-limpah_biro')
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="row mv-3">
-                    <div class="col-lg-12 mb-3">
-                        <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
-                        <form action="/limpah-biro/{{ $kasus->id }}" method="post">
-                            @csrf
-                            @if ($limpah_biro->jenis_limpah == 3)
-                                @if (!is_null($limpah_biro->limpah_polda))
-                                    <div class="form-buat-surat col-lg-12">
-                                        <label for="download_laporan_limpah_biro" class="form-label">LAPORAN LIMPAH :</label>
-                                        <a href="/laporan-hasil-limpah-biro/{{ $kasus->id }}"
-                                            class="form-control btn btn-outline-primary text-primary">
-                                            <h6 class="p-0 m-0"><i class="far fa-download"></i> DOKUMEN</h6>
-                                        </a>
-                                    </div>
-                                @else
-                                    <div class="form-buat-surat col-lg-12 mb-3 mt-3">
-                                        {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
-                                        <select class="form-select border-dark" aria-label="Default select example" name="limpah_polda" id="limpah_polda" required>
-                                                <option value="" class="text-center">PILIH PELIMPAHAN POLDA</option>
-                                                @if (isset($polda))
-                                                    @foreach ($polda as $p)
-                                                        <option value="{{ $p->id }}">{{ $p->name }}</option>
-                                                    @endforeach
-                                                @endif
-                                        </select>
-                                    </div>
-                                    <div class="form-buat-surat col-lg-12 mb-3">
-                                        <button type="submit" class="form-control btn btn-outline-primary text-primary">
-                                            <h6 class="p-0 m-0">SUBMIT</h6>
-                                        </button>
-                                    </div>
-                                @endif
-                                
-                            @else
-                                <div class="form-buat-surat col-lg-12">
-                                    <label for="download_laporan_limpah_biro" class="form-label">LAPORAN LIMPAH :</label>
-                                    <a href="/laporan-hasil-limpah-biro/{{ $kasus->id }}"
-                                        class="form-control btn btn-outline-primary text-primary">
-                                        <h6 class="p-0 m-0"><i class="far fa-download"></i> DOKUMEN</h6>
-                                    </a>
-                                </div>
-                            @endif
-                            
-                        </form>
-                    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row mv-3">
+                <div class="col-lg-12 mb-3">
                 </div>
             </div>
         </div>
-    @endcan
+    </div>
     
 </div>
 

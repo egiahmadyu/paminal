@@ -12,8 +12,8 @@ class YanduanIntegration
     private $token;
     public function __construct()
     {
-       $this->base_url = ENV('URL_YANDUAN');
-       $this->getToken();
+        $this->base_url = ENV('URL_YANDUAN');
+        $this->getToken();
     }
 
     public function getToken()
@@ -41,12 +41,11 @@ class YanduanIntegration
         // $request = new Request('POST', 'https://propam.admasolusi.space/api/v2/pis/generate-token', $headers);
         // $res = $client->sendAsync($request)->wait();
         $response = Http::withHeaders([
-            'Access-Key' => 'TThrauE38AOMq4rJKghhOi1BqOpAzyPiAgJQWdvyjlliiMZhkAcdfqJkKo8x',
-            'Secret-Key' => '02F0v4CFdNKGEFFxFckzKYQ9JlxSCPVPlxU6QA0aGcCoXOOwYzyBeV5ziF1U',
+            'Access-Key' => 'TThrauE38AOMq4rJKghhOi1BqOpAzyPiAgJQWdvyjlliiMAcdfqJkKo8x',
+            'Secret-Key' => '02F0v4CFdNKGEFFxFckzKYQ9JlxSCPVPlcCoXOOwYzyBeV5ziF1U',
             'Token' => $this->token
-            ])->post($this->base_url . $url, $body);
+        ])->post($this->base_url . $url, $body);
         $res = json_decode($response->body());
         return $res;
-
     }
 }

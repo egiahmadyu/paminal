@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
+                    <label for="tanggal_nota_dinas" class="form-label">WUJUD PERBUATAN</label>
                     <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required> 
                         <option value="">PILIH WUJUD PERBUATAN</option>
                     </select>
@@ -199,7 +199,7 @@
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <label for="terlapor" class="form-label">TANGGAL NOTA DINAS</label>
+                            <label for="terlapor" class="form-label">NAMA TERDUGA TERLAPOR</label>
                             <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="Nama Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->terlapor : '' }}" required>
                                 
                         </div>
@@ -207,7 +207,7 @@
                         <div class="col-lg-6 mb-3">
                             <label for="pangkat_terlapor" class="form-label">PANGKAT</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="pangkat" id="pangkat" required>
-                                <option disabled>PILIH PANGKAT</option>
+                                <option disabled selected>PILIH PANGKAT</option>
                                 @if (isset($pangkat))
                                 @foreach ($pangkat as $key => $p)
                                 <option value="{{ $p->id }}" {{ $kasus->pangkat == $p->id ? 'selected' : ''}}>
@@ -231,9 +231,9 @@
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <label for="wilayah_hukum" class="form-label">PILIH MABES / POLDA</label>
+                            <label for="wilayah_hukum" class="form-label">WILAYAH HUKUM</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
-                                <option disabled>PILIH MABES / POLDA</option>
+                                <option disabled selected>PILIH MABES / POLDA</option>
                                 @if (isset($wilayah_hukum))
                                     @foreach ($wilayah_hukum as $key => $wh)
                                     <option value="{{ $wh->id }}" {{ $kasus->wilayah_hukum == $wh->id ? 'selected' : ''}}>
