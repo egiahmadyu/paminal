@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Yajra\DataTables\Facades\DataTables;
 
 class PulbaketController extends Controller
 {
@@ -608,7 +609,7 @@ class PulbaketController extends Controller
             $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_sipil.docx'));
 
             return response()->download(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_sipil.docx'))->deleteFileAfterSend(true);
-        } else {
+        } elseif ($data->jenis_undangan == 2) {
             $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_personel.docx'));
 
             $template_document->setValues(array(
@@ -643,6 +644,27 @@ class PulbaketController extends Controller
             $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_personel.docx'));
 
             return response()->download(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_personel.docx'))->deleteFileAfterSend(true);
+        } else {
+            $saksis = Saksi::where('data_pelanggar_id', $kasus->id)->get();
+            $filenames = [];
+            foreach ($saksis as $key => $saksi) {
+                # code...
+                $data_saksi = [
+                    'data' => $data,
+                    'kasus' => $kasus,
+                    'wujud_perbuatan' => $wujud_perbuatan,
+                    'pangkat' => $pangkat,
+                    'sprin' => $sprin,
+                    'sp2hp' => $sp2hp,
+                    'saksi' => $saksi,
+                    'key' => $key,
+                ];
+                $filenames[$key] = storage_path($this->UndanganKlarifikasiSaksi($data_saksi));
+            }
+            // response()->download(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_saksi.docx'))->deleteFileAfterSend(true);
+
+            // [public_path('myimage.jpg'), public_path('myimage2.jpg')]
+            return response()->download($filenames);
         }
     }
 
@@ -690,17 +712,77 @@ class PulbaketController extends Controller
         return view('pages.data_pelanggaran.proses.pulbaket-next', $data);
     }
 
+    public function getSaksi($id)
+    {
+        $data = Saksi::find($id);
+        return response()->json([
+            'status' => 200,
+            'success' => true,
+            'message' => 'sukses',
+            'data' => $data,
+        ]);
+    }
+
     public function tambahSaksi($id, Request $request)
     {
         $data_pelangggar = DataPelanggar::find($id);
 
-        foreach ($request->nama_saksi as $key => $value) {
-            Saksi::create([
-                'data_pelanggar_id' => $id,
-                'name' => $value
-            ]);
-        }
+        Saksi::create([
+            'data_pelanggar_id' => $data_pelangggar->id,
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp,
+        ]);
         return redirect()->route('kasus.detail', ['id' => $id]);
+    }
+
+    private function UndanganKlarifikasiSaksi($data_saksi)
+    {
+        $data = $data_saksi['data'];
+        $kasus = $data_saksi['kasus'];
+        $wujud_perbuatan = $data_saksi['wujud_perbuatan'];
+        $pangkat = $data_saksi['pangkat'];
+        $sprin = $data_saksi['sprin'];
+        $sp2hp = $data_saksi['sp2hp'];
+        $saksi = $data_saksi['saksi'];
+
+        $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_saksi.docx'));
+
+        $template_document->setValues(array(
+            'no_surat_undangan' => $data->no_surat_undangan,
+            'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+            'tahun_surat' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+            'tgl_undangan' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
+            'saksi' => $saksi->nama,
+            'alamat_saksi' => $saksi->alamat,
+            'pelapor' => $kasus->pelapor,
+            'alamat_pelapor' => $kasus->alamat,
+            'terlapor' => $kasus->terlapor,
+            'pangkat_terlapor' => $pangkat->name,
+            'nrp_terlapor' => $kasus->nrp,
+            'jabatan_terlapor' => $kasus->jabatan,
+            'kesatuan_terlapor' => $kasus->kesatuan,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'wilayah_hukum' => $kasus->wilayahHukum->name,
+            'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+            'no_nota_dinas' => $kasus->no_nota_dinas,
+            'perihal' => $kasus->perihal_nota_dinas,
+            'no_sprin' => 'SPRIN/' . $sprin->no_sprin . '/' . $this->getRomawi(Carbon::parse($sprin->created_at)->translatedFormat('m')) . '/HUK.6.6./' . Carbon::parse($sprin->created_at)->translatedFormat('Y'),
+            'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+            'hari_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('l'),
+            'tgl_klarifikasi' => Carbon::parse($data->tgl_klarifikasi)->translatedFormat('d F Y'),
+            'waktu_klarifikasi' => Carbon::parse($data->waktu_klarifikasi)->translatedFormat('H:i'),
+            'nama_penyelidik' => $sp2hp->dihubungi,
+            'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
+            'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
+            'wilayah_hukum' => $kasus->wilayahHukum->name,
+        ));
+
+        $filename = 'template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_saksi_.' . $data_saksi['key'] . 'docx';
+        $template_document->saveAs(storage_path($filename));
+
+        return $filename;
     }
 
     private function getRomawi($bln)

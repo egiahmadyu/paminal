@@ -48,9 +48,6 @@
                     <div class="invalid-feedback">
                         MOHON ISI NO. NOTA DINAS !
                     </div>
-                    <div class="valid-feedback">
-                        OK !
-                    </div>
                 </div>
                 
                 <div class="col-lg-12 mb-3">
@@ -82,15 +79,14 @@
                     <div class="invalid-feedback">
                         MOHON PILIH WUJUD PERBUATAN !
                     </div>
-                    <div class="valid-feedback">
-                        OK !
-                    </div>
                 </div>
 
                 <div class="col-lg-12 mb-3">
                     <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
-                    <input type="date" data-live-search="true" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="BULAN/TANGGAL/TAHUN" required value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}">
-                        
+                    <input type="text" data-live-search="true" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="DD/MM/YYYY" required value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}">
+                    <div class="invalid-feedback">
+                        MOHON PILIH TANGGAL NOTA DINAS !
+                    </div>
                 </div>
 
                 <div class="col-lg-12 mb-3">
@@ -99,24 +95,18 @@
                     <div class="invalid-feedback">
                         MOHON ISI PERIHAL ADUAN !
                     </div>
-                    <div class="valid-feedback">
-                        OK !
-                    </div>
                 </div>
 
                 <div class="col-lg-12 mb-3" id="form_den_bag" hidden>
                     <label for="den_bag" class="form-label">BAG / DETASEMEN</label>
                     <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="den_bag" id="den_bag">
-                        <option value="">PILIH BAG / DETASEMEN</option>
+                        <option value="" disabled selected>PILIH BAG / DETASEMEN</option>
                         @foreach ($bag_den as $bd)
                             <option value="{{ $bd->id }}" {{ old('den_bag') == $bd->id ? 'selected' : '' }}>{{ $bd->name }}</option>
                         @endforeach
                     </select>
                     <div class="invalid-feedback">
                         MOHON PILIH BAG / DETASEMEN !
-                    </div>
-                    <div class="valid-feedback">
-                        OK !
                     </div>
                 </div>
 
@@ -149,7 +139,7 @@
                         <div class="col-lg-6 mb-3">
                             <label for="jenis_kelamin" class="form-label">JENIS KELAMIN</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
-                                <option value="">PILIH JENIS KELAMIN</option>
+                                <option value="" selected disabled>PILIH JENIS KELAMIN</option>
                                 @if (isset($jenis_kelamin))
                                     @foreach ($jenis_kelamin as $key => $jk)
                                         <option value="{{ $jk->id }}" {{ old('jenis_kelamin') == $jk->id ? 'selected' : '' }}>{{ strtoupper($jk->name) }}</option>
@@ -174,7 +164,7 @@
                         <div class="col-lg-6 mb-3">
                             <label for="agama" class="form-label">AGAMA</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="agama" id="agama" required>
-                                <option value="">PILIH AGAMA</option>
+                                <option value="" selected disabled>PILIH AGAMA</option>
                                 @foreach ($agama as $key => $ag)
                                     <option value="{{ $ag->id }}" {{ old('agama') == $ag->id ? 'selected' : '' }}>{{ strtoupper($ag->name) }}</option>
                                 @endforeach
@@ -187,7 +177,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="no_identitas" class="form-label">NO. IDENTITAS</label>
-                            <input type="text" name="no_identitas" id="no_identitas" placeholder="1234-5678-9012-1234" class="form-control border-dark" value="{{ old('no_identitas') ? old('no_identitas') : '' }}" required>
+                            <input type="text" name="no_identitas" id="no_identitas" placeholder="contoh : 0000-1234-4321-9999" maxlength="20" class="form-control border-dark" value="{{ old('no_identitas') ? old('no_identitas') : '' }}" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NO. IDENTITAS !
                             </div>
@@ -197,7 +187,7 @@
                         <div class="col-lg-6 mb-3">
                             <label for="jenis_identitas" class="form-label">JENIS IDENTITAS</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="jenis_identitas"id="jenis_identitas" required>
-                                <option value="">PILIH JENIS IDENTITAS</option>
+                                <option value="" selected disabled>PILIH JENIS IDENTITAS</option>
                                 @if (isset($jenis_identitas))
                                     @foreach ($jenis_identitas as $key => $ji)
                                         <option value="{{ $ji->id }}" {{ old('jenis_identitas') == $ji->id ? 'selected' : '' }}>{{ $ji->name }}</option>
@@ -212,7 +202,7 @@
 
                         <div class="col-lg-12 mb-3">
                             <label for="no_telp" class="form-label">NO. TELEPON</label>
-                            <input type="text" name="no_telp" id="no_telp" placeholder="NO. TELEPON" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" required>
+                            <input type="text" name="no_telp" maxlength="18" id="no_telp" placeholder="contoh: 0888-1234-9999" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NO. TELEPON PELAPOR !
                             </div>
@@ -220,7 +210,7 @@
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <label for="floatingTextarea" class="form-label">ALAMAT</label>
+                            <label for="floatingTextarea" class="form-label">ALAMAT LENGKAP</label>
                             <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" style="height: 160px" required></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI ALAMAT PELAPOR !
@@ -254,7 +244,7 @@
                         <div class="col-lg-6 mb-3">
                             <label for="pangkat" class="form-label">PANGKAT</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="pangkat" id="pangkat" required>
-                                <option value="">PILIH PANGKAT</option>
+                                <option value="" selected disabled>PILIH PANGKAT</option>
                                 @if (isset($pangkat))
                                     @foreach ($pangkat as $key => $p)
                                         <option value="{{ $p->id }}" {{ old('pangkat') == $p->id ? 'selected' : '' }}>
@@ -290,7 +280,7 @@
                         <div class="col-lg-6 mb-3">
                             <label for="wilayah_hukum" class="form-label">WILAYAH HUKUM</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
-                                <option value="">MABES / POLDA</option>
+                                <option value="" selected disabled>MABES / POLDA</option>
                                 @if (isset($wilayah_hukum))
                                     @foreach ($wilayah_hukum as $key => $wh)
                                         <option value="{{ $wh->id }}" {{ old('wilayah_hukum') == $wh->id ? 'selected' : '' }}>
@@ -316,7 +306,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="tempat_kejadian" class="form-label">TANGGAL KEJADIAN</label>
-                            <input type="date" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="dd/mm/yyyy" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" required>
+                            <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="DD/MM/YYYY" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" required>
                             <div class="invalid-feedback">
                                 MOHON PILIH TANGGAL KEJADIAN PELANGGARAN !
                             </div>
@@ -334,7 +324,7 @@
                         
                         <div class="col-lg-12 mb-3" id="kronologi_form">
                             <label for="kronologis" id="label_kronologi" class="form-label">KRONOLOGIS</label>
-                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
+                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 300px" required></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI KRONOLOGIS PELANGGARAN !
                             </div>
@@ -418,6 +408,10 @@
                 no_identitas.value = format_no_identitas(this.value, '');
             });
 
+            no_telp.addEventListener('keyup', function(e){
+                no_telp.value = format_no_telp(this.value, '');
+            });
+
             function format_no_identitas(angka, prefix){
                 var number_string = angka.replace(/[^,\d]/g, '').toString(),
                 split   		= number_string.split(','),
@@ -433,6 +427,23 @@
                 rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
                 return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
             };
+
+            function format_no_telp(angka, prefix){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split   		= number_string.split(','),
+                sisa     		= split[0].length % 4,
+                rupiah     		= split[0].substr(0, sisa),
+                ribuan     		= split[0].substr(sisa).match(/\d{4}/gi);
+                
+                if(ribuan){
+                    separator = sisa ? '-' : '';
+                    rupiah += separator + ribuan.join('-');
+                }
+                
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+            };
+
 
             if ($('#disiplin').is(':checked')) {
                 $('#wujud_perbuatan').removeAttr("disabled")
@@ -525,13 +536,13 @@
                         let option = ''
                         let html = ''
                         if (unit.length == 0) {
-                            html = `<label for="unit_den_bag" class="form-label">UNIT</label><select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="">UNIT BELUM TERSEDIA</option></select>`
+                            html = `<label for="unit_den_bag" class="form-label">UNIT</label><select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" disabled ><option value="" selected disabled>UNIT BELUM TERSEDIA</option></select>`
                         } else {
                             unit.forEach(element => {
                                 let opt = `<option value="`+element.id+`">`+element.unit+`</option>`
                                 option += opt
                             });
-                            html = `<label for="unit_den_bag" class="form-label">UNIT</label><select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="">PILIH UNIT</option>`+option+`</select>`
+                            html = `<label for="unit_den_bag" class="form-label">UNIT</label><select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="unit_den_bag" id="unit_den_bag" required><option value="" selected disabled>PILIH UNIT</option>`+option+`</select>`
                         }
                         
                         $('#unit_den_bag').removeAttr('hidden')

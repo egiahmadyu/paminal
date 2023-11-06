@@ -112,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Tambah Saksi
     Route::post('/tambah-saksi/{id}', [PulbaketController::class, 'tambahSaksi'])->name('tambah.saksi');
+    Route::get('/get-saksi/{id}', [PulbaketController::class, 'getSaksi'])->name('get.saksi');
 
     // View Kasus
     Route::get('data-kasus/view/{kasus_id}/{id}', [KasusController::class, 'viewProcess'])->name('kasus.proses.view');

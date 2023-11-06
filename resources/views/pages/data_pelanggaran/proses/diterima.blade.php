@@ -58,9 +58,11 @@
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS</label>
-                    <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="No. Nota Dinas" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" required>
-                        
+                    <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS :</label>
+                    <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="R/ND-      /WAS.2.4/2023/Bagyanduan" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}" required>
+                    <div class="invalid-feedback">
+                        MOHON ISI NO. NOTA DINAS !
+                    </div>
                 </div>
                 
                 <div class="col-lg-12 mb-3">
@@ -84,12 +86,17 @@
                     <select class="form-select border-dark" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required> 
                         <option value="">PILIH WUJUD PERBUATAN</option>
                     </select>
+                    <div class="invalid-feedback">
+                        MOHON PILIH WUJUD PERBUATAN !
+                    </div>
                 </div>
 
                 <div class="col-lg-12 mb-3">
                     <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
                     <input type="text" data-provider="flatpickr" data-date-format="d F Y" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas" value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : '' }}" readonly required>
-                        
+                    <div class="invalid-feedback">
+                        MOHON PILIH TANGGAL NOTA DINAS !
+                    </div>
                 </div>
 
                 <div class="col-lg-12 mb-3">
@@ -97,9 +104,6 @@
                     <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}" style="height: 150px" required>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
                     <div class="invalid-feedback">
                         MOHON ISI PERIHAL ADUAN !
-                    </div>
-                    <div class="valid-feedback">
-                        OK !
                     </div>
                 </div>
                 <hr>
@@ -111,38 +115,46 @@
                         <div class="col-lg-12 mb-3">
                             <label for="pelapor" class="form-label">PELAPOR</label>
                             <input type="text" class="form-control border-dark" name="pelapor" id="pelapor" placeholder="Nama Pelapor" value="{{ isset($kasus) ? $kasus->pelapor : '' }}" required>
-                            
+                            <div class="invalid-feedback">
+                                MOHON ISI NAMA PELAPOR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="umur" class="form-label">UMUR</label>
                             <input type="number" class="form-control border-dark" name="umur" id="umur" placeholder="Umur Pelapor" value="{{ isset($kasus) ? $kasus->umur : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI UMUR PELAPOR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="jenis_kelamin" class="form-label">PILIH JENIS KELAMIN</label>
                             <select class="form-select border-dark" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
-                                <option disabled selected>PILIH JENIS KELAMIN</option>
+                                <option value="" disabled selected>PILIH JENIS KELAMIN</option>
                                 @if (isset($jenis_kelamin))
                                     @foreach ($jenis_kelamin as $key => $jk)
                                         <option value="{{ $jk->id }}" {{ isset($kasus) ? ($kasus->jenis_kelamin == $jk->id ? 'selected' : '') : '' }}>{{ strtoupper($jk->name) }}</option>
                                     @endforeach
                                 @endif
                             </select>
-                            
+                            <div class="invalid-feedback">
+                                MOHON PILIH JENIS KELAMIN PELAPOR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="pekerjaan" class="form-label">PEKERJAAN</label>
                             <input type="text" name="pekerjaan" class="form-control border-dark" placeholder="Pekerjaan Pelapor" value="{{ isset($kasus) ? $kasus->pekerjaan : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI PEKERJAAN PELAPOR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="agama" class="form-label">PILIH AGAMA</label>
                             <select class="form-select border-dark" aria-label="Default select example" name="agama" id="agama" required>
-                                <option disabled selected>PILIH AGAMA</option>
+                                <option value="" disabled selected>PILIH AGAMA</option>
                                 @if (isset($agama))
                                 @foreach ($agama as $key => $ag)
                                 <option value="{{ $ag->id }}" {{ $kasus->agama == $ag->id ? 'selected' : '' }}>{{ $ag->name }}
@@ -150,19 +162,23 @@
                                 @endforeach
                                 @endif
                             </select>
-                            
+                            <div class="invalid-feedback">
+                                MOHON PILIH AGAMA PELAPOR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="no_identitas" class="form-label">NO. IDENTITAS</label>
-                            <input type="text" name="no_identitas" id="no_identitas" placeholder="1234-5678-9012-1234" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_identitas : '' }}" required>
-                                
+                            <input type="text" name="no_identitas" id="no_identitas" placeholder="contoh : 1234-5678-9012-1234" maxlength="20" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_identitas : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NO. IDENTITAS !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="jenis_identitas" class="form-label">PILIH JENIS IDENTITAS</label>
                             <select class="form-select border-dark" aria-label="Default select example" name="jenis_identitas" id="jenis_identitas" required>
-                                <option disabled selected>PILIH JENIS IDENTITAS</option>
+                                <option value="" disabled selected>PILIH JENIS IDENTITAS</option>
                                 @if (isset($jenis_identitas))
                                 @foreach ($jenis_identitas as $key => $ji)
                                 <option value="{{ $ji->id }}" {{ $kasus->jenis_identitas == $ji->id ? 'selected' : '' }}>
@@ -171,19 +187,25 @@
                                 @endforeach
                                 @endif
                             </select>
-                            
+                            <div class="invalid-feedback">
+                                MOHON PILIH JENIS IDENTITAS !
+                            </div>
                         </div>
 
                         <div class="col-lg-12 mb-3">
                             <label for="no_telp" class="form-label">NO. TELEPON PELAPOR</label>
-                            <input type="text" name="no_telp" id="no_telp" placeholder="No. Telp Pelapor" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_telp : '' }}" required>
-                                
+                            <input type="tel" name="no_telp" id="no_telp" maxlength="18" placeholder="contoh: 0888-1234-9999" class="form-control border-dark" value="{{ isset($kasus) ? $kasus->no_telp : '' }}" required>
+                            <div class="invalid-feedback">
+                                MOHON ISI NO. TELEPON PELAPOR !
+                            </div> 
                         </div>
 
                         <div class="col-lg-12 mb-3">
-                            <label for="floatingTextarea" class="form-label">ALAMAT</label>
+                            <label for="floatingTextarea" class="form-label">ALAMAT LENGKAP</label>
                             <textarea class="form-control border-dark" name="alamat" placeholder="Alamat" id="floatingTextarea" value="{{ isset($kasus) ? $kasus->alamat : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->alamat : '' }}</textarea>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI ALAMAT PELAPOR !
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -195,19 +217,23 @@
                         <div class="col-lg-6 mb-3">
                             <label for="nrp" class="form-label">NRP TERDUGA PELANGGAR</label>
                             <input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->nrp : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI NRP TERDUGA PELANGGAR !
+                            </div> 
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="terlapor" class="form-label">NAMA TERDUGA TERLAPOR</label>
                             <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="Nama Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->terlapor : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI NAMA TERDUGA PELANGGAR !
+                            </div> 
                         </div>
 
                         <div class="col-lg-6 mb-3">
-                            <label for="pangkat_terlapor" class="form-label">PANGKAT</label>
+                            <label for="pangkat" class="form-label">PANGKAT</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="pangkat" id="pangkat" required>
-                                <option disabled selected>PILIH PANGKAT</option>
+                                <option value="" disabled selected>PILIH PANGKAT</option>
                                 @if (isset($pangkat))
                                 @foreach ($pangkat as $key => $p)
                                 <option value="{{ $p->id }}" {{ $kasus->pangkat == $p->id ? 'selected' : ''}}>
@@ -216,24 +242,31 @@
                                 @endforeach
                                 @endif
                             </select>
+                            <div class="invalid-feedback">
+                                MOHON PILIH PANGKAT TERDUGA PELANGGAR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="jabatan" class="form-label">JABATAN TERDUGA PELANGGAR</label>
                             <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="Jabatan Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->jabatan : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI JABATAN TERDUGA PELANGGAR !
+                            </div> 
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="kesatuan" class="form-label">KESATUAN TERDUGA PELANGGAR</label>
                             <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan" placeholder="Kesatuan Terduga Pelanggar" value="{{ isset($kasus) ? $kasus->kesatuan : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI KESATUAN TERDUGA PELANGGAR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="wilayah_hukum" class="form-label">WILAYAH HUKUM</label>
                             <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wilayah_hukum" id="wilayah_hukum" required>
-                                <option disabled selected>PILIH MABES / POLDA</option>
+                                <option value="" disabled selected>PILIH MABES / POLDA</option>
                                 @if (isset($wilayah_hukum))
                                     @foreach ($wilayah_hukum as $key => $wh)
                                     <option value="{{ $wh->id }}" {{ $kasus->wilayah_hukum == $wh->id ? 'selected' : ''}}>
@@ -242,30 +275,41 @@
                                     @endforeach
                                 @endif
                             </select>
+                            <div class="invalid-feedback">
+                                MOHON PILIH WILAYAH HUKUM TERDUGA PELANGGAR !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="tempat_kejadian" class="form-label">TEMPAT KEJADIAN</label>
                             <input type="text" class="form-control border-dark" name="tempat_kejadian" id="tempat_kejadian" placeholder="Tempat Kejadian" value="{{ isset($kasus) ? $kasus->tempat_kejadian : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI TEMPAT KEJADIAN PELANGGARAN !
+                            </div>
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label for="tempat_kejadian" class="form-label">TANGGAL KEJADIAN</label>
                             <input type="text" data-provider="flatpickr" data-date-format="d F Y" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="BB/HH/TTTT" value="{{ isset($kasus) ? $kasus->tanggal_kejadian : '' }}" readonly required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON PILIH TANGGAL KEJADIAN PELANGGARAN !
+                            </div>
                         </div>
 
                         <div class="col-lg-12 mb-3">
                             <label for="nama_korban" class="form-label">NAMA KORBAN</label>
                             <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="Nama korban" value="{{ isset($kasus) ? $kasus->nama_korban : '' }}" required>
-                                
+                            <div class="invalid-feedback">
+                                MOHON ISI NAMA KORBAN !
+                            </div>
                         </div>
 
                         <div class="col-lg-12 mb-3">
                             <label for="kronologis" class="form-label">KRONOLOGIS</label>
-                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" style="height: 160px" required>{{ isset($kasus) ? $kasus->kronologi : '' }}</textarea>
-                                
+                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ isset($kasus) ? $kasus->kronologi : '' }}" style="height: 300px" required>{{ isset($kasus) ? $kasus->kronologi : '' }}</textarea>
+                            <div class="invalid-feedback">
+                                MOHON ISI KRONOLOGIS PELANGGARAN !
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -569,22 +613,72 @@
             $('#form_dis_karo_binpam').submit();
         });
 
-        $('#jenis_kelamin').select2({
-            theme: "bootstrap-5",
-            width: '100%',
-            height: '100%',
-        })
-        $('#jenis_identitas').select2({
-            theme: "bootstrap-5",
-            width: '100%',
-            height: '100%',
-        })
-        $('#agama').select2({
-            theme: "bootstrap-5",
-            width: '100%',
-            height: '100%',
-        })
+        $('#wilayah_hukum').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
 
+            $('#pangkat').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            $('#agama').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            $('#jenis_kelamin').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            $('#jenis_identitas').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+
+        //no identitas
+        no_identitas.addEventListener('keyup', function(e){
+                no_identitas.value = format_no_identitas(this.value, '');
+            });
+
+            no_telp.addEventListener('keyup', function(e){
+                no_telp.value = format_no_telp(this.value, '');
+            });
+
+            function format_no_identitas(angka, prefix){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split   		= number_string.split(','),
+                sisa     		= split[0].length % 4,
+                rupiah     		= split[0].substr(0, sisa),
+                ribuan     		= split[0].substr(sisa).match(/\d{4}/gi);
+                
+                if(ribuan){
+                    separator = sisa ? '-' : '';
+                    rupiah += separator + ribuan.join('-');
+                }
+                
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+            };
+
+            function format_no_telp(angka, prefix){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split   		= number_string.split(','),
+                sisa     		= split[0].length % 4,
+                rupiah     		= split[0].substr(0, sisa),
+                ribuan     		= split[0].substr(sisa).match(/\d{4}/gi);
+                
+                if(ribuan){
+                    separator = sisa ? '-' : '';
+                    rupiah += separator + ribuan.join('-');
+                }
+                
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+            };
     });
 
     function checkStatusID() {

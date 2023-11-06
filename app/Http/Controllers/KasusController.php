@@ -370,7 +370,7 @@ class KasusController extends Controller
             'wilayah_hukum' => $request->wilayah_hukum,
             'tempat_kejadian' => $request->tempat_kejadian,
             'tanggal_kejadian' => Carbon::create($request->tanggal_kejadian)->format('Y-m-d'),
-            'kronologi' => $request->kronologis,
+            'kronologi' => $request->kronologis[0],
             'pangkat' => $request->pangkat,
             'nama_korban' => $request->nama_korban,
         ]);
@@ -816,6 +816,8 @@ class KasusController extends Controller
         $today = Carbon::now()->addDays();
         $usia_dumas = $tgl_dumas->diffInDays($today);
 
+        $jenis_kelamin = JenisKelamin::all();
+
         $data = [
             'kasus' => $kasus,
             'sprin' => SprinHistory::where('data_pelanggar_id', $id)->first(),
@@ -826,6 +828,7 @@ class KasusController extends Controller
             'den' => $den,
             'lhp' => $lhp,
             'saksis' => $saksis,
+            'jenis_kelamin' => $jenis_kelamin,
             'usia_dumas' => $usia_dumas . ' hari',
             'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
             'title' => 'PULBAKET',

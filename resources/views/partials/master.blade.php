@@ -475,11 +475,16 @@
                         if(data.status == 200) {
                             $('#modal_import_yanduan').modal('hide')
                             $('.loading').css('display', 'none')
-                            Swal.fire(
-                                'Selesai!',
-                                data.total_import+ ' Data berhasil ditambahkan',
-                                'success'
-                                )
+                            Swal.fire({
+                                title: 'BERHASIL !',
+                                text: data.total_import + ' Data berhasil ditambahkan',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload()
+                                }
+                            })
                         }
                     },
                     error: function (jqXhr, textStatus, errorMessage) { // error callback

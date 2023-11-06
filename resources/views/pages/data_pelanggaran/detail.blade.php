@@ -17,18 +17,6 @@
         .bootstrap-timepicker-widget.dropdown-menu {
             z-index: 99999!important;
         }
-        /* .bootstrap-datetimepicker-widget .btn[data-action="incrementMinutes"] {
-            background-color: #ffffff;
-        }
-        .bootstrap-datetimepicker-widget .btn[data-action="incrementHours"] {
-            background-color: #ffffff;
-        }
-        .bootstrap-datetimepicker-widget .btn[data-action="decrementHours"] {
-            background-color: #ffffff;
-        }
-        .bootstrap-datetimepicker-widget .btn[data-action="decrementMinutes"] {
-            background-color: #ffffff;
-        } */
     </style>
 @endprepend
 
@@ -81,7 +69,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-    
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

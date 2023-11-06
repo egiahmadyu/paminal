@@ -380,6 +380,7 @@
                             <option value="">Pilih Jenis Undangan</option>
                             <option value="1">Pelapor</option>
                             <option value="2">Terlapor</option>
+                            {{-- <option value="3">Saksi</option> --}}
                         </select>
                         <label for="jenis_undangan" class="form-label">-- Pilih Jenis Undangan --</label>
                     </div>
@@ -428,10 +429,10 @@
 <!-- Modal Tambah Saksi -->
 <div class="modal fade" id="modal_tambah_saksi" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Saksi</h5>
+                <h5 class="modal-title" id="exampleModalLabel">SAKSI</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="getViewProcess(4)" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -439,16 +440,42 @@
                     @csrf
                     <div class="form-outline mb-3" id="form_tambah_saksi">
                         <div class="mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control inputNamaSaksi" name="nama_saksi[]"
+                            <label for="nama_saksi" class="form-label">Nama Saksi</label>
+                            <input type="text" class="form-control border-dark inputNamaSaksi" name="nama"
                                 aria-describedby="emailHelp" placeholder="Enter Nama Saksi" required>
-                                <label for="nama_saksi">Nama Saksi</label>
-                            </div>
                         </div>
                     </div>
                     <div class="form-outline mb-3">
-                        <a type="button" class="btn btn-outline-success" href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
+                        <label for="jenis_kelamin" class="form-label">JENIS KELAMIN</label>
+                        <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
+                            <option value="" selected disabled>PILIH JENIS KELAMIN</option>
+                            @if (isset($jenis_kelamin))
+                                @foreach ($jenis_kelamin as $key => $jk)
+                                    <option value="{{ $jk->id }}" {{ old('jenis_kelamin') == $jk->id ? 'selected' : '' }}>{{ strtoupper($jk->name) }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback">
+                            MOHON PILIH JENIS KELAMIN PELAPOR !
+                        </div>
                     </div>
+                    <div class="form-outline mb-3">
+                        <label for="floatingTextarea" class="form-label">ALAMAT LENGKAP</label>
+                        <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" style="height: 160px" required></textarea>
+                        <div class="invalid-feedback">
+                            MOHON ISI ALAMAT PELAPOR !
+                        </div>
+                    </div>
+                    <div class="form-outline mb-3">
+                        <label for="no_telp" class="form-label">NO. TELEPON</label>
+                        <input type="text" name="no_telp" maxlength="15" id="no_telp" placeholder="contoh: 0888-1234-9999" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" required>
+                        <div class="invalid-feedback">
+                            MOHON ISI NO. TELEPON PELAPOR !
+                        </div>
+                    </div>
+                    {{-- <div class="form-outline mb-3" id="btn_tambah_saksi">
+                        <a type="button" class="btn btn-outline-success" href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
+                    </div> --}}
                     <div class="form-outline mb-3">
                         <button type="submit" class="btn btn-outline-primary form-control">Simpan</button>
                     </div>
@@ -595,10 +622,29 @@
     </div>
 </div>
 
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
 <script>
     $(document).ready(function() {
         getNextData();
-
+        no_telp.addEventListener('keyup', function(e){
+                no_telp.value = format_no_telp(this.value, '');
+            });
+        function format_no_telp(angka, prefix){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split   		= number_string.split(','),
+                sisa     		= split[0].length % 4,
+                rupiah     		= split[0].substr(0, sisa),
+                ribuan     		= split[0].substr(sisa).match(/\d{4}/gi);
+                
+                if(ribuan){
+                    separator = sisa ? '-' : '';
+                    rupiah += separator + ribuan.join('-');
+                }
+                
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+            };
     });
 
     $(function() {
@@ -631,6 +677,35 @@
             beforeShow: function (input, inst) { setDatepickerPos(input, inst) },
         });
     });
+
+    function undanganSaksi(id) {
+        $.ajax({
+            url : '/get-saksi/'+id,
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: function () {
+                $('.loading').css('display', 'block')
+            }, 
+            success: function (data, status, xhr) {
+                $('.loading').css('display', 'none')
+                console.log(data.data)
+
+
+
+                $('#modal_undangan_sipil').modal('show'); 
+            },
+            error: function (jqXhr, textStatus, errorMessage) { // error callback
+                $('.loading').css('display', 'none')
+                var option = {
+                    title: 'Error',
+                    text: 'Terjadi Kesalahan Sistem...',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }
+                Swal.fire(option) 
+            }
+        })
+    }
 
     function setDatepickerPos(input, inst) {
         var rect = input.getBoundingClientRect();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Integrations\YanduanIntegration;
+use App\Models\Agama;
 use App\Models\DataPelanggar;
 use App\Models\JenisKelamin;
 use App\Models\Saksi;
@@ -42,9 +43,27 @@ class YanduanController extends Controller
             //     dd($value);
             // }
             if ($value->biro == 'BIRO PAMINAL') {
-                $data['perihal_nota_dinas'] = $value->perihal_nota_dinas;
+                $data['pelapor'] = strtoupper($value->reporter->name) ?? '-';
+                $data['jenis_kelamin'] = $value->reporter->gender ? ($value->reporter->gender == 'LAKI-LAKI' ? 1 : 2) : null;
+                $data['no_identitas'] = $value->reporter->identity_number ?? '-';
+                $data['jenis_identitas'] = 1;
+                $data['alamat'] = $value->reporter->alamat ?? '-';
+                $data['pekerjaan'] = $value->reporter->occupation ?? '-';
+                $data['no_telp'] = $value->reporter->phonenumber ?? '-';
+
+                if ($value->reporter->religion) {
+                    $agamas = Agama::all();
+                    $agama_api = preg_replace('/\s+/', '', strtoupper($value->reporter->religion));
+                    foreach ($agamas as $key => $valAgama) {
+                        if ($agama_api == strtoupper($valAgama->name)) {
+                            $data['agama'] = $key + 1;
+                        }
+                    }
+                }
+
+                $data['perihal_nota_dinas'] = strtoupper($value->perihal_nota_dinas);
                 $data['tanggal_nota_dinas'] = Carbon::create($value->tanggal_nota_dinas)->format('Y-m-d');
-                $data['kronologi'] = $value->chronology ? strip_tags($value->chronology) : null;
+                $data['kronologi'] = $value->chronology ? strtoupper(strip_tags($value->chronology)) : null;
                 $data['created_at'] = $value->released_at;
                 $data['status_id'] = 1;
                 $data['tipe_data'] = 1;
@@ -60,7 +79,7 @@ class YanduanController extends Controller
                             $korban = $korban . ', ' . $victim->name;
                         }
                     }
-                    $data['nama_korban'] = $korban;
+                    $data['nama_korban'] = strtoupper($korban);
                 }
 
                 if ($value->evidences) {
@@ -72,9 +91,9 @@ class YanduanController extends Controller
 
                 if (!DataPelanggar::where('ticket_id', $value->ticket_id)->first()) {
                     for ($i = 0; $i < count($value->defendants); $i++) {
-                        $data['terlapor'] = $value->defendants[$i]->name;
-                        $data['kesatuan'] = $value->defendants[$i]->unit;
-                        $data['jabatan'] = $value->defendants[$i]->occupation;
+                        $data['terlapor'] = strtoupper($value->defendants[$i]->name);
+                        $data['kesatuan'] = strtoupper($value->defendants[$i]->unit);
+                        $data['jabatan'] = strtoupper($value->defendants[$i]->occupation);
 
                         $insert = DataPelanggar::create($data);
                         $insert->created_at = $value->released_at;
@@ -135,9 +154,9 @@ class YanduanController extends Controller
         foreach ($nama as $key => $value) {
             Saksi::create([
                 'data_pelanggar_id' => $dp_id,
-                'nama' => $value,
+                'nama' => strtoupper($value),
                 'jenis_kelamin' => $jenis_kelamin[$key],
-                'alamat' => $alamat[$key],
+                'alamat' => strtoupper($alamat[$key]),
                 'no_telp' => $no_telp[$key],
             ]);
         }
