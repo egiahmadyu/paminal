@@ -19,11 +19,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $agamas = Agama::all();
-        $agamas[5]->name = 'KONGHUCU';
-        $agamas[5]->save();
-        $test = preg_replace('/\s+/', '', strtoupper('KONG HU CU'));
-        dd($test);
         $data['title'] = 'DASHBOARD';
         $data['poldas'] = Polda::get();
         $data['pelanggar'] = DataPelanggar::get();
