@@ -22,6 +22,7 @@
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 
@@ -99,7 +100,9 @@
                         </div>
                         <div class="card-footer">
                             <footer class="">
-                                <p class="text-center text-muted">&copy; 2023 Propam Integrated System - Divisi Propam Polri</p>
+                                <p class="text-center text-muted mb-0">&copy;
+                                    <script>document.write(new Date().getFullYear())</script> Propam Integrated System - Divisi Propam Polri
+                                </p>
                             </footer>
                         </div>
                         
@@ -121,6 +124,62 @@
     <script src="{{ asset('assets/js/plugins.js') }}"></script>
 
     <script src="{{ asset('assets/js/pages/password-addon.init.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+
+        @if(Session::has('message'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+            toastr.success("{{ session('message') }}");
+        @endif
+
+        @if(Session::has('error'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+            toastr.error("{{ session('error') }}");
+        @endif
+
+        @if(Session::has('info'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+            toastr.info("{{ session('info') }}");
+        @endif
+
+        @if(Session::has('warning'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+            toastr.warning("{{ session('warning') }}");
+        @endif
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "700",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
 
 </body>
 

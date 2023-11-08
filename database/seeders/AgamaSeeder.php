@@ -16,27 +16,27 @@ class AgamaSeeder extends Seeder
     public function run()
     {
         Agama::create([
-            'name' => 'Islam'
+            'name' => 'ISLAM'
         ]);
 
         Agama::create([
-            'name' => 'Kristen'
+            'name' => 'KRISTEN'
         ]);
 
         Agama::create([
-            'name' => 'Katolik'
+            'name' => 'KATOLIK'
         ]);
 
         Agama::create([
-            'name' => 'Buddha'
+            'name' => 'BUDDHA'
         ]);
 
         Agama::create([
-            'name' => 'Hindu'
+            'name' => 'HINDU'
         ]);
 
         Agama::create([
-            'name' => 'Konghuchu'
+            'name' => 'KONGHUCU'
         ]);
     }
 }

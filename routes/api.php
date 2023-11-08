@@ -26,3 +26,4 @@ Route::get('all-pangkat', [HelperController::class, 'getAllPangkat']);
 Route::get('get-unit/{bag_den}', [HelperController::class, 'getUnit']);
 
 Route::post('yanduan', [YanduanController::class, 'getData']);
+Route::get('import-pangkat', [YanduanController::class, 'importPangkat']);

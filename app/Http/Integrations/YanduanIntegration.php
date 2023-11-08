@@ -30,6 +30,12 @@ class YanduanIntegration
         return $this->post($url, $body);
     }
 
+    public function importPangkat()
+    {
+        $url = 'api/v1/master/pangkat';
+        return $this->get($url);
+    }
+
     private function post($url, $body)
     {
         // $client = new Client();
@@ -45,6 +51,13 @@ class YanduanIntegration
             'Secret-Key' => '02F0v4CFdNKGEFFxFckzKYQ9JlxSCPVPlcCoXOOwYzyBeV5ziF1U',
             'Token' => $this->token
         ])->post($this->base_url . $url, $body);
+        $res = json_decode($response->body());
+        return $res;
+    }
+
+    private function get($url)
+    {
+        $response = Http::get($this->base_url . $url);
         $res = json_decode($response->body());
         return $res;
     }

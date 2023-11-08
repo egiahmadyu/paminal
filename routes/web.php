@@ -12,6 +12,8 @@ use App\Http\Controllers\ProvostWabprofController;
 use App\Http\Controllers\PulbaketController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +38,8 @@ Route::get('/login', function () {
 Route::get('/pdf-test', [LimpahPoldaController::class, 'generateDocumen']);
 // Route::get('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
 Route::post('login', [AuthController::class, 'loginAction'])->name('login-action');
+Route::get('reset-password/{user_id?}', [AuthController::class, 'resetPassword'])->name('reset.password');
+Route::post('reset', [AuthController::class, 'storeReset'])->name('reset.action');
 
 
 Route::middleware(['auth'])->group(function () {

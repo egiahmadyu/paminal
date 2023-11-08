@@ -140,6 +140,30 @@ class YanduanController extends Controller
         ]);
     }
 
+    public function importPangkat()
+    {
+        $body = [];
+        $response = $this->yanduan->importPangkat($body);
+        if ($response == null) {
+            return response()->json([
+                'status' => 200,
+                'total_import' => 0
+            ]);
+        }
+
+        foreach ($response->data as $key => $value) {
+            # code...
+            $pangkat = Pangkat::whereRaw('UPPER(name) = (?)', strtoupper($value->name))->first();
+            if (!$pangkat) {
+                Pangkat::create([
+                    'name' => strtoupper($value->name)
+                ]);
+            }
+        }
+
+        return 'ok';
+    }
+
     private function getSaksi($obj, $dp_id)
     {
         $saksis = preg_split('/' . '\r\n|\r|\n' . '/', $obj);

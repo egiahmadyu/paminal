@@ -116,7 +116,7 @@
 
                 <li class="nav-item">
                     <span class="logo-lg" id="logo-burung">
-                        <img src="/assets/images/maskot_polri.png" alt="" class="img-fluid" height="450">
+                        <img src="/assets/images/maskot_polri.png" alt="" class="img-fluid">
                     </span>
                 </li>
                 
