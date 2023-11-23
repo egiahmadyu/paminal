@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('no_nota_dinas');
             $table->string('no_pengaduan');
-            $table->string('perihal_nota_dinas')->nullable();
+            $table->text('perihal_nota_dinas')->nullable();
             $table->integer('wujud_perbuatan')->nullable();
             $table->date('tanggal_nota_dinas');
             $table->string('pelapor')->nullable();

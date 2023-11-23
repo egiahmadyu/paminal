@@ -74,15 +74,6 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            // ClassicEditor
-            //     .create(document.querySelector('#editor'))
-            //     .catch(error => {
-            //         console.error(error);
-            //     });
-            
-            
-            console.log($('.btn[data-action="incrementMinutes"]').html())
-
             let process_id = $('#process_id').val()
             getViewProcess(process_id)
         });
@@ -105,9 +96,9 @@
             });
         }
 
-        function getValue() {
-            console.log($('#editor').text())
-        }
+        // function getValue() {
+        //     console.log($('#editor').text())
+        // }
 
         // $(function() {
         //     $( "#datepicker" ).datepicker({

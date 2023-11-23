@@ -115,10 +115,22 @@
                 @endcan
 
                 <li class="nav-item">
-                    <span class="logo-lg" id="logo-burung">
-                        <img src="/assets/images/maskot_polri.png" alt="" class="img-fluid">
-                    </span>
+                    <center>
+                    <div class="logo">
+                        <span class="logo-sm">
+                            <img src="/assets/images/maskot_polri.png" alt="" width="30">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="/assets/images/maskot_polri.png" alt="" width="170">
+                        </span>
+                    </div>
+                    </center>
+                    
+                    
                 </li>
+                <!-- <li class="nav-item">
+                    <img src="/maskot-polri.png" alt="" class="img-fluid">
+                </li> -->
                 
             </ul>
 

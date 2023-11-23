@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('data_pelanggar_id')->nullable();
             $table->string('name');
             $table->string('nrp');
-            $table->string('pangkat');
+            $table->integer('pangkat');
             $table->string('jabatan');
             $table->string('datasemen');
             $table->string('unit')->nullable();

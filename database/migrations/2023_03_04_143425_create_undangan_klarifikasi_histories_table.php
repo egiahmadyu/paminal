@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('undangan_klarifikasi_histories', function (Blueprint $table) {
+        Schema::create('undangan_klarifikasi_histori', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('data_pelanggar_id');
             $table->string('no_surat_undangan');

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('data_pelanggars', function (Blueprint $table) {
-            $table->text('perihal_nota_dinas')->nullable()->change();
+            // $table->text('perihal_nota_dinas')->change();
             $table->text('catatan')->nullable();
         });
     }

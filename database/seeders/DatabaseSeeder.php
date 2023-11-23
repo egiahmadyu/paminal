@@ -69,18 +69,18 @@ class DatabaseSeeder extends Seeder
             'name' => 'Nota Dinas Hasil Gelar'
         ]);
 
-        $this->call([
-            AgamaSeeder::class,
-            JenisKelaminSeed::class,
-            JenisIdentitasSeeder::class,
-            DataPelanggarSeed::class,
-            PoldaSeed::class,
-            PangkatSeeder::class,
-            WujudPerbuatanSeeder::class,
-            DatasemenSeeder::class,
-            UnitSeeder::class,
-            DataAnggotaSeeder::class,
-        ]);
+        // $this->call([
+        //     AgamaSeeder::class,
+        //     JenisKelaminSeed::class,
+        //     JenisIdentitasSeeder::class,
+        //     DataPelanggarSeed::class,
+        //     // PoldaSeed::class,
+        //     PangkatSeeder::class,
+        //     WujudPerbuatanSeeder::class,
+        //     DatasemenSeeder::class,
+        //     UnitSeeder::class,
+        //     DataAnggotaSeeder::class,
+        // ]);
 
         // Process::create([
         //     'name' => 'Diterima'

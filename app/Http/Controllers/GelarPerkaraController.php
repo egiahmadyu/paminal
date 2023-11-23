@@ -40,7 +40,7 @@ class GelarPerkaraController extends Controller
             $data = GelarPerkaraHistory::create([
                 'data_pelanggar_id' => $kasus_id,
                 'tanggal' => Carbon::createFromFormat('m/d/Y', $request->tanggal_gelar_perkara)->format('Y-m-d H:i:s'),
-                'waktu' => Carbon::createFromFormat('H:i', $request->waktu_gelar_perkara)->format('H:i'),
+                'waktu' => Carbon::createFromFormat('H:i', $request->waktu_gelar_perkara)->format('Y-m-d H:i'),
                 'tempat' => $request->tempat_gelar_perkara,
                 'pimpinan' => $pimpinan->nama,
                 'pangkat_pimpinan' => $pimpinan->pangkat,

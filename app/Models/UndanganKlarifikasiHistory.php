@@ -9,7 +9,6 @@ class UndanganKlarifikasiHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'data_pelanggar_id', 'no_surat_undangan', 'tgl_klarifikasi', 'waktu_klarifikasi', 'jenis_undangan',
-    ];
+    protected $table = 'undangan_klarifikasi_histori';
+    protected $guarded = [];
 }

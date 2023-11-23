@@ -91,7 +91,7 @@
 
                 <div class="col-lg-12 mb-3">
                     <label for="perihal" class="form-label">PERIHAL ADUAN</label>
-                    <textarea class="form-control border-dark" name="perihal" placeholder="PERIHAL" id="perihal" value="{{ old('perihal') ? old('perihal') : '' }}" style="height: 150px" required></textarea>
+                    <textarea class="form-control border-dark" name="perihal" placeholder="PERIHAL" id="perihal" value="{{ old('perihal') ? old('perihal') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px"  required></textarea>
                     <div class="invalid-feedback">
                         MOHON ISI PERIHAL ADUAN !
                     </div>
@@ -211,7 +211,7 @@
 
                         <div class="col-lg-12 mb-3">
                             <label for="floatingTextarea" class="form-label">ALAMAT LENGKAP</label>
-                            <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" style="height: 160px" required></textarea>
+                            <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI ALAMAT PELAPOR !
                             </div>
@@ -324,7 +324,7 @@
                         
                         <div class="col-lg-12 mb-3" id="kronologi_form">
                             <label for="kronologis" id="label_kronologi" class="form-label">KRONOLOGIS</label>
-                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 300px" required></textarea>
+                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 300px" required></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI KRONOLOGIS PELANGGARAN !
                             </div>
@@ -339,7 +339,7 @@
 
                         <div class="col-lg-12 mb-3" id="catatan_form" hidden>
                             <label for="catatan" id="label_catatan" class="form-label">CATATAN</label>
-                            <textarea class="form-control border-dark" name="catatan[]" placeholder="" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" ></textarea>
+                            <textarea class="form-control border-dark" name="catatan[]" placeholder="" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" ></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI CATATAN PELANGGARAN !
                             </div>
@@ -462,7 +462,7 @@
 
             $('#add_kronologi').on('click', function() {
                 let krono = `<div class="form-floating mt-3">
-                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" style="height: 160px" required></textarea>
+                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
                                 <label for="kronologis" class="form-label">Fakta-fakta</label>
                             </div>`
                 $('#kronologi_form').append(krono)
@@ -472,12 +472,12 @@
                 let krono = ''
                 if ($('#tipe_data').val() == 2) {
                     krono += `<div class="form-floating mt-3">
-                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
                                 <label for="catatan" class="form-label">Catatan</label>
                             </div>`
                 } else if ($('#tipe_data').val() == 3) {
                     krono += `<div class="form-floating mt-3">
-                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" style="height: 160px" required></textarea>
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
                                 <label for="catatan" class="form-label">Pendapat Pelapor</label>
                             </div>`
                 }

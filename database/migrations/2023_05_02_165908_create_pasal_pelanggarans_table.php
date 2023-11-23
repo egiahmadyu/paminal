@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('data_pelanggar_id');
             $table->string('pasal');
             $table->string('ayat');
-            $table->string('bunyi_pasal');
+            $table->text('bunyi_pasal');
             $table->timestamps();
         });
     }

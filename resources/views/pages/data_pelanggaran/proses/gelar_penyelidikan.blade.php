@@ -270,7 +270,7 @@
     </div>
 
     @can('edit-gelar_perkara')
-        @if (isset($kasus) & ($kasus->status_id == 5) & ($lhp->hasil_penyelidikan === '1'))
+        @if (isset($kasus) & ($kasus->status_id == 5) & ($lhp->hasil_penyelidikan == '1'))
             <div class="row mt-3">
                 <div class="col-lg-6">
                     @if (!empty($ugp))

@@ -553,6 +553,7 @@ class PulbaketController extends Controller
 
     public function printUndanganKlarifikasi($kasus_id, Request $request)
     {
+
         $kasus = DataPelanggar::find($kasus_id);
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus->id)->first();
         $sp2hp = Sp2hp2Hisory::where('data_pelanggar_id', $kasus_id)->first();
@@ -567,8 +568,8 @@ class PulbaketController extends Controller
             $data = UndanganKlarifikasiHistory::create([
                 'data_pelanggar_id' => $kasus->id,
                 'no_surat_undangan' => $request->no_surat_undangan,
-                'tgl_klarifikasi' => Carbon::createFromFormat('m/d/Y', $request->tgl_klarifikasi)->format('Y-m-d H:i:s'),
-                'waktu_klarifikasi' => Carbon::createFromFormat('H:i', $request->waktu_klarifikasi)->format('H:i'),
+                'tgl_klarifikasi' => Carbon::createFromFormat('m/d/Y', $request->tgl_klarifikasi)->format('Y-m-d'),
+                'waktu_klarifikasi' => Carbon::createFromFormat('m/d/Y H:i', $request->tgl_klarifikasi.' '.$request->waktu_klarifikasi)->format('Y-m-d H:i'),
                 'jenis_undangan' => $request->jenis_undangan,
             ]);
         }
@@ -576,6 +577,7 @@ class PulbaketController extends Controller
         $pangkat = Pangkat::where('id', $kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
 
+        // dd($kasus->perihal_nota_dinas);
         if ($data->jenis_undangan == 1) {
             $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_sipil.docx'));
 

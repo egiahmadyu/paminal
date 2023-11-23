@@ -1,0 +1,11 @@
+/*
+Template Name: Hybrix - Admin & Dashboard Template
+Author: Themesbrand
+Website: https://themesbrand.com/
+Contact: support@themesbrand.com
+File: Custom Css File
+*/
+
+input::placeholder {
+    font: 20px/3;
+}

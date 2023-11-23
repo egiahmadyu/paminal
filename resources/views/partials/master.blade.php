@@ -373,6 +373,7 @@
 
 <body>
 
+    <div class="loading" style="display: none">Loading&#8230;</div>
     <div id="layout-wrapper">
         <div class="top-tagbar">
             <div class="w-100">
@@ -497,6 +498,11 @@
         @yield('scripts')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script>
+            $(document).ready(function(){
+                $("logout").on('click',function(){
+                    $('.loading').css('display', 'block')
+                });
+            });
 
             @if(Session::has('message'))
             toastr.options =

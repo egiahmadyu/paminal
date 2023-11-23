@@ -34,6 +34,7 @@ use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -345,6 +346,23 @@ class KasusController extends Controller
         if ($request->type_submit === 'update_status') {
             return $this->updateStatus(($request));
         }
+        
+        $rules = [
+            'perihal' => 'required|regex:/^[a-zA-Z 0-9\.\,\+\-\/\:\;\(\)\!\@\#\$\%\]*$/u',
+        ];
+
+        $messages = [
+            'perihal.regex' => 'spesial karakter (&) tidak diizinkan pada field input perihal !',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', strtoupper($validator->messages()));
+            // return redirect()->back()->withInput()->withErrors($validator)->with('error', strtoupper($validator->messages()));
+        }
+        
+
         $no_pengaduan = "123456"; //generate otomatis
         $data_pelanggar = DataPelanggar::where('id', $request->kasus_id)->first();
         $data_pelanggar->update([
@@ -724,6 +742,7 @@ class KasusController extends Controller
     private function viewDiterima($id)
     {
         $kasus = DataPelanggar::find($id);
+        $kasus->tanggal_nota_dinas = Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d-m-Y');
         $status = Process::find($kasus->status_id);
         $process = Process::where('sort', '<=', $status->id)->get();
         $agama = Agama::get();

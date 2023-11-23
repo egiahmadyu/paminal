@@ -188,7 +188,7 @@
 
 
 @can('edit-pulbaket')
-    @if (isset($kasus) & ($kasus->status_id === 4))
+    @if (isset($kasus) & ($kasus->status_id == 4))
     <div class="row mt-4">
         <div class="col-lg-12">
             <form action="/data-kasus/update" method="post">
@@ -204,5 +204,6 @@
     </div>
     @endif
 @endcan
+
 
 
