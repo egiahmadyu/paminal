@@ -507,8 +507,12 @@
                                 class="align-middle">Profile</span>
                         </a> --}}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}" id="logout">
-                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> 
+                        <a class="dropdown-item" href="{{ route('reset.password', ['user_id' => auth()->user()->id]) }}">
+                            <i class="mdi mdi-key-change text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle" data-key="t-logout">Change Password</span>
+                        </a>
+                        <a class="dropdown-item" href="{{ route('logout') }}">
+                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle" data-key="t-logout">Logout</span>
                         </a>
                     </div>
