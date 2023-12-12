@@ -19,6 +19,7 @@ class YanduanIntegration
         $url = 'api/v2/pis/generate-token';
         $body = null;
         $response = $this->post($url, null);
+
         $this->token = $response->data;
     }
 
@@ -37,8 +38,8 @@ class YanduanIntegration
     private function post($url, $body)
     {
         $response = Http::withHeaders([
-            'Access-Key' => 'TThrauE38AOMq4rJKghhOi1BqOpAzyPiAgJQWdvyjlliiMAcdfqJkKo8x',
-            'Secret-Key' => '02F0v4CFdNKGEFFxFckzKYQ9JlxSCPVPlcCoXOOwYzyBeV5ziF1U',
+            'Access-Key' => 'pjQkbjJ8L7J2wdVL2JStwie326kprVbjzBOvHKDq0Y1hprSWgV',
+            'Secret-Key' => 'ei61TC3R28VbsxXwVDlgjWxYT9IR3n4zlUl0pam1sk757rUmRc',
             'Token' => $this->token
         ])->withOptions(["verify"=>false])
         ->post($this->base_url . $url, $body);

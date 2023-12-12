@@ -23,8 +23,10 @@
             </div>
             <div class="col-lg-4">
                 <div class="form-buat-surat col-lg-12 mb-3">
-                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Permohonan Gelar Perkara</label>
-                    <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
+                    <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Permohonan Gelar
+                        Perkara</label>
+                    <input type="text" class="form-control border-dark"
+                        id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
                         value="{{ isset($nd_pgp) ? Carbon\Carbon::parse($nd_pgp->created_at)->translatedFormat('d-m-Y') : '' }}"
                         readonly>
                 </div>
@@ -32,7 +34,8 @@
             <div class="col-lg-12">
                 <div class="form-buat-surat col-lg-12 mb-3">
                     <label for="tgl_pembuatan_surat_perintah" class="form-label">Hasil Penyelidikan</label>
-                    <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
+                    <input type="text" class="form-control border-dark"
+                        id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
                         value="{{ isset($lhp) ? ($lhp->hasil_penyelidikan == 1 ? 'Ditemukan Cukup Bukti' : 'Belum Ditemukan Cukup Bukti') : '' }}"
                         readonly>
                 </div>
@@ -40,14 +43,22 @@
         </div>
         @if ($saksis)
             <div class="card border-dark">
+                <div class="card-header">
+                    DAFTAR SAKSI YANG DIAJUKAN PELAPOR
+                </div>
+                <div class="card-body">
+                    {{ $history_saksi->saksi }}
+                </div>
+            </div>
+            <div class="card border-dark">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">LIST SAKSI</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">DAFTAR SAKSI DITERIMA</h4>
                     @can('edit-pulbaket')
-                    <a href="#!" class="btn btn-outline-warning text-warning px-2"
-                        data-bs-toggle="modal" data-bs-target="#modal_tambah_saksi">
-                        <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> TAMBAH SAKSI</h6>
-                    </a>
-                @endcan
+                        <a href="#!" class="btn btn-outline-warning text-warning px-2" data-bs-toggle="modal"
+                            data-bs-target="#modal_tambah_saksi">
+                            <h6 class="p-0 m-0"><i class="far fa-user-plus"></i> TAMBAH SAKSI</h6>
+                        </a>
+                    @endcan
                 </div><!-- end card header -->
 
                 <div class="card-body">
@@ -60,7 +71,7 @@
                                         {{-- <td><a href="#" onclick="undanganSaksi({{$saksi->id}})"><i class="far fa-file-plus"></i> BUAT UNDANGAN KLARIFIKASI</a></td> --}}
                                     </tr>
                                 @endforeach
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -84,7 +95,7 @@
                             <h5>
                                 {{ $saksis[$i]['nama'] }}
                             </h5>
-                            
+
                         </div>
                         <div class="col-lg-6 mb-3">
                             <a href="#" id="undangan_saksi" onclick="undanganSaksi({{$saksi->id}})">
@@ -92,7 +103,7 @@
                             </a>
                         </div>
                         @endforeach
-                        
+
                     </div>
 
                 </div>
@@ -122,8 +133,8 @@
                                             </a>
                                         </div>
                                     </div>
-            
-            
+
+
                                 </td>
                             </tr>
                             <tr>
@@ -131,17 +142,21 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <a href="/bai-sipil/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
-                                                <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor</h6>
+                                            <a href="/bai-sipil/{{ $kasus->id }}"
+                                                class="btn btn-outline-primary text-primary">
+                                                <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Pelapor
+                                                </h6>
                                             </a>
                                         </div>
                                         <div class="col-lg-6">
-                                            <a href="/bai-anggota/{{ $kasus->id }}" class="btn btn-outline-primary text-primary">
-                                                <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Terduga Pelanggar</h6>
+                                            <a href="/bai-anggota/{{ $kasus->id }}"
+                                                class="btn btn-outline-primary text-primary">
+                                                <h6 class="p-0 m-0"><i class="far fa-file-plus"></i> Dokumen BAI Terduga
+                                                    Pelanggar</h6>
                                             </a>
                                         </div>
                                     </div>
-            
+
                                 </td>
                             </tr>
                             <tr>
@@ -174,8 +189,8 @@
                                             <h6 class="p-0 m-0"><i class="far fa-download"></i> Download Dokumen</h6>
                                         </a>
                                     @endif
-            
-            
+
+
                                 </td>
                             </tr>
                         </tbody>
@@ -189,21 +204,18 @@
 
 @can('edit-pulbaket')
     @if (isset($kasus) & ($kasus->status_id == 4))
-    <div class="row mt-4">
-        <div class="col-lg-12">
-            <form action="/data-kasus/update" method="post">
-                @csrf
-                <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
-                <input type="text" class="form-control" value="5" hidden name="disposisi_tujuan" hidden>
-                <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 4 ? 'disabled' : '' }}
-                    value="update_status">
-                    Lanjutkan ke proses Gelar Penyelidikan
-                </button>
-            </form>
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <form action="/data-kasus/update" method="post">
+                    @csrf
+                    <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
+                    <input type="text" class="form-control" value="5" hidden name="disposisi_tujuan" hidden>
+                    <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 4 ? 'disabled' : '' }}
+                        value="update_status">
+                        Lanjutkan ke proses Gelar Penyelidikan
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
     @endif
 @endcan
-
-
-

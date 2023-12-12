@@ -8,6 +8,7 @@ use App\Models\DataPelanggar;
 use App\Models\JenisKelamin;
 use App\Models\Pangkat;
 use App\Models\Saksi;
+use App\Models\HistorySaksi;
 use App\Models\Terlapor;
 use Carbon\Carbon;
 use FontLib\Table\Type\name;
@@ -166,49 +167,9 @@ class YanduanController extends Controller
 
     private function getSaksi($obj, $dp_id)
     {
-        $saksis = preg_split('/' . '\r\n|\r|\n' . '/', $obj);
-        $counter = count($saksis);
-        $nama = [];
-        $i_nama = 0;
-
-        while ($i_nama < $counter) {
-            # code...
-            array_push($nama, $saksis[$i_nama] ?? '-');
-            $i_nama = $i_nama + 4;
-        }
-
-        $jenis_kelamin = [];
-        $i_jenis_kelamin = 1;
-        while ($i_jenis_kelamin < $counter) {
-            # code...
-            array_push($jenis_kelamin, $saksis[$i_jenis_kelamin] ?? '-');
-            $i_jenis_kelamin = $i_jenis_kelamin + 4;
-        }
-
-        $alamat = [];
-        $i_alamat = 2;
-        while ($i_alamat < $counter) {
-            # code...
-            array_push($alamat, $saksis[$i_alamat] ?? '-');
-            $i_alamat = $i_alamat + 4;
-        }
-
-        $no_telp = [];
-        $i_no_telp = 3;
-        while ($i_no_telp < $counter) {
-            # code...
-            array_push($no_telp, $saksis[$i_no_telp] ?? '-');
-            $i_no_telp = $i_no_telp + 4;
-        }
-
-        foreach ($nama as $key => $value) {
-            Saksi::create([
-                'data_pelanggar_id' => $dp_id,
-                'nama' => strtoupper($value),
-                'jenis_kelamin' => $jenis_kelamin[$key],
-                'alamat' => strtoupper($alamat[$key]),
-                'no_telp' => $no_telp[$key],
-            ]);
-        }
+        HistorySaksi::create([
+            'data_pelanggar_id' => $dp_id,
+            'saksi' => $obj,
+        ]);
     }
 }

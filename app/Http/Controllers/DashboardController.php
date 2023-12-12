@@ -236,7 +236,7 @@ class DashboardController extends Controller
         $triwulan = [$value, $label, $tipe];
         //End Triwulan
 
-        //Semester 
+        //Semester
         $value = array_fill(1, 2, '');
         $label = array_fill(1, 2, '');
         $s_temp = 1;

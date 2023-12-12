@@ -346,9 +346,10 @@ class KasusController extends Controller
         if ($request->type_submit === 'update_status') {
             return $this->updateStatus(($request));
         }
-        
+
         $rules = [
-            'perihal' => 'required|regex:/^[a-zA-Z 0-9\.\,\+\-\/\:\;\(\)\!\@\#\$\%\]*$/u',
+            'perihal' => 'required|regex:/[a-zA-Z 0-9\!@$%\*\(\)_=\?;\':\[\]\",.]/',
+
         ];
 
         $messages = [
@@ -361,7 +362,7 @@ class KasusController extends Controller
             return redirect()->back()->with('error', strtoupper($validator->messages()));
             // return redirect()->back()->withInput()->withErrors($validator)->with('error', strtoupper($validator->messages()));
         }
-        
+
 
         $no_pengaduan = "123456"; //generate otomatis
         $data_pelanggar = DataPelanggar::where('id', $request->kasus_id)->first();
