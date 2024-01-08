@@ -47,7 +47,7 @@
                     DAFTAR SAKSI YANG DIAJUKAN PELAPOR
                 </div>
                 <div class="card-body">
-                    {{ $history_saksi->saksi }}
+                    {{ $history_saksi == '' ? '-' : $history_saksi->saksi }}
                 </div>
             </div>
             <div class="card border-dark">

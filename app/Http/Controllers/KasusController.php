@@ -782,6 +782,8 @@ class KasusController extends Controller
         $kode_etik = implode('|', $kode_etik);
         $id_kode_etik = implode('|', $id_kode_etik);
 
+        $evidences = json_decode($kasus->evidences);
+
         $data = [
             'kasus' => $kasus,
             'status' => $status,
@@ -800,6 +802,7 @@ class KasusController extends Controller
             'wilayah_hukum' => $wilayah_hukum,
             'tim_disposisi' => $tim_disposisi,
             'unit' => $unit,
+            'evidences' => $evidences,
             'title' => 'DATA DUMAS',
         ];
 

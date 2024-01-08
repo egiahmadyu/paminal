@@ -45,6 +45,7 @@ class AnggotaController extends Controller
 
     public function tambahAnggota(Request $request)
     {
+        // dd($anggota);
         foreach ($request->pangkat as $key => $value) {
             DataAnggota::create([
                 'nama' => $request->nama[$key],

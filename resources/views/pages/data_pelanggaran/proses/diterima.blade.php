@@ -66,7 +66,18 @@
                 </div>
 
                 <div class="col-lg-12 mb-3">
-                    <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS :</label>
+                    <label for="jenis_laporan" class="form-label">JENIS PELAPORAN </label>
+                    <input type="text" class="form-control border-dark" name="jenis_laporan" id="jenis_laporan"
+                        placeholder="LANGSUNG/WHATSAPP"
+                        value="{{ isset($kasus) ? $kasus->jenis_laporan : (old('jenis_laporan') ? old('jenis_laporan') : '') }}"
+                        disabled>
+                    <div class="invalid-feedback">
+                        MOHON ISI JENIS PELAPORAN !
+                    </div>
+                </div>
+
+                <div class="col-lg-12 mb-3">
+                    <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS </label>
                     <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas"
                         placeholder="R/ND-      /WAS.2.4/2023/Bagyanduan"
                         value="{{ isset($kasus) ? $kasus->no_nota_dinas : (old('no_nota_dinas') ? old('no_nota_dinas') : '') }}"
@@ -111,8 +122,9 @@
 
                 <div class="col-lg-12 mb-3">
                     <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
-                    <input type="text" data-provider="flatpickr" data-date-format="d F Y" name="tanggal_nota_dinas"
-                        class="form-control border-dark" id="datepicker" placeholder="Tanggal Nota Dinas"
+                    <input type="text" data-provider="flatpickr" data-date-format="d F Y"
+                        name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker"
+                        placeholder="Tanggal Nota Dinas"
                         value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : (old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '') }}"
                         readonly required>
                     <div class="invalid-feedback">
@@ -261,6 +273,40 @@
                                 MOHON ISI ALAMAT PELAPOR !
                             </div>
                         </div>
+
+                        <div class="card col-lg-12 mb-3 ">
+                            <div class="card-header border-0">
+                                LINK DATA PENDUKUNG
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-lg-12 mb-3" {{ isset($kasus) ? ($kasus->link_ktp ? '' : 'hidden') : '' }}>
+                                <label for="no_telp" class="form-label">LINK KTP PELAPOR :
+                                    <a
+                                        href="{{ isset($kasus) ? $kasus->link_ktp : (old('link_ktp') ? old('link_ktp') : '') }}">{{ isset($kasus) ? $kasus->link_ktp : (old('link_ktp') ? old('link_ktp') : '') }}
+                                    </a>
+                                </label>
+                            </div>
+
+                            <div class="col-lg-12 mb-3" {{ isset($kasus) ? ($kasus->link_ktp ? '' : 'hidden') : '' }}>
+                                <label for="no_telp" class="form-label">FOTO SELFIE PELAPOR :
+                                    <a
+                                        href="{{ isset($kasus) ? $kasus->selfie : (old('selfie') ? old('selfie') : '') }}">{{ isset($kasus) ? $kasus->selfie : (old('selfie') ? old('selfie') : '') }}
+                                    </a>
+                                </label>
+                            </div>
+
+                            <div class="col-lg-12 mb-3"
+                                {{ isset($kasus) ? ($kasus->evidences ? '' : 'hidden') : '' }}>
+                                @foreach ($evidences as $key => $evidence)
+                                    <label for="no_telp" class="form-label">
+                                        BUKTI DATA PENDUKUNG {{ $key + 1 }}.
+                                        <a href="{{ $evidence }}">{{ $evidence }}</a>
+                                    </label><br />
+                                @endforeach
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -275,6 +321,7 @@
                                 value="{{ isset($kasus) ? $kasus->nrp : (old('nrp') ? old('nrp') : '') }}" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NRP TERDUGA PELANGGAR !
+                                *ISI DEFAULT "0" JIKA NOMOR NRP BELUM DIKETAHUI.
                             </div>
                         </div>
 
@@ -591,6 +638,8 @@
             </div>
             <form action="{{ route('post.lembar.disposisi', ['id' => $kasus->id]) }}" method="post">
                 @csrf
+                <input type="hidden" id="tipe_data" name="tipe_data"
+                    value="{{ isset($kasus) ? ($kasus->tipe_data ? $kasus->tipe_data : '') : '' }}">
                 <div class="modal-body">
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda"

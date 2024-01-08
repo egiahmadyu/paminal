@@ -91,95 +91,98 @@ class LimpahPoldaController extends Controller
                 ]);
             }
         } elseif ($data && $data->tipe_disposisi == 2 && !isset($data->limpah_den)) {
-            if ($request->limpah_den == 7) {
+            if ($request->has('limpah_den')) {
+                if ($request->limpah_den == 7) {
+                    $data->update([
+                        'limpah_den' => $request->limpah_den
+                    ]);
+                    $kasus->update([
+                        'status_id' => 3
+                    ]);
+                    return redirect()->back()->with('message', 'Dumas dilimpahkan ke polda.');
+                }
                 $data->update([
                     'limpah_den' => $request->limpah_den
                 ]);
-                $kasus->update([
-                    'status_id' => 3
-                ]);
-                return redirect()->back()->with('message', 'Dumas dilimpahkan ke polda.');
+                return redirect()->back()->with('message', 'Limpah BAG / DEN telah ditentukan.');
             }
-            $data->update([
-                'limpah_den' => $request->limpah_den
-            ]);
-            return redirect()->back()->with('message', 'Limpah Datasemen telah ditentukan.');
         } elseif ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
-            $penyidik = DataAnggota::where('unit', (int)$request->limpah_unit)->get();
-            if (count($penyidik) < 1) {
-                return back()->withInput()->with('error', 'Anggota Unit belum dibuat !');
-            }
+            if ($request->has('limpah_unit')) {
+                $penyidik = DataAnggota::where('unit', (int)$request->limpah_unit)->get();
+                if (count($penyidik) < 1) {
+                    return back()->withInput()->with('error', 'Anggota Unit belum dibuat !');
+                }
 
-            $data->update([
-                'limpah_unit' => $request->limpah_unit
-            ]);
-
-            // Create pimpinan
-            $datasemen = Datasemen::where('id', $data->limpah_den)->first();
-
-            $pimpinans = DataAnggota::where('id', $datasemen->kaden)->orWhere('id', $datasemen->wakaden)->get();
-            foreach ($pimpinans as $key => $pimpinan) {
-                Penyidik::create([
-                    'data_pelanggar_id' => $kasus->id,
-                    'name' => $pimpinan->nama,
-                    'nrp' => $pimpinan->nrp,
-                    'pangkat' => $pimpinan->pangkat,
-                    'jabatan' => $pimpinan->jabatan,
-                    'datasemen' => $pimpinan->datasemen,
-                    'unit' => '',
+                $data->update([
+                    'limpah_unit' => $request->limpah_unit
                 ]);
-            }
 
-            // Create anggota tim
-            $anggota = DataAnggota::where('unit', $data->limpah_unit)->where('datasemen', $data->limpah_den)->get();
-            foreach ($anggota as $key => $valAnggota) {
-                # code...
-                Penyidik::create([
-                    'data_pelanggar_id' => $kasus->id,
-                    'name' => $valAnggota->nama,
-                    'nrp' => $valAnggota->nrp,
-                    'pangkat' => $valAnggota->pangkat,
-                    'jabatan' => $valAnggota->jabatan,
-                    'datasemen' => $valAnggota->datasemen,
-                    'unit' => $valAnggota->unit,
+                // Create pimpinan
+                $datasemen = Datasemen::where('id', $data->limpah_den)->first();
+
+                $pimpinans = DataAnggota::where('id', $datasemen->kaden)->orWhere('id', $datasemen->wakaden)->get();
+                foreach ($pimpinans as $key => $pimpinan) {
+                    Penyidik::create([
+                        'data_pelanggar_id' => $kasus->id,
+                        'name' => $pimpinan->nama,
+                        'nrp' => $pimpinan->nrp,
+                        'pangkat' => $pimpinan->pangkat,
+                        'jabatan' => $pimpinan->jabatan,
+                        'datasemen' => $pimpinan->datasemen,
+                        'unit' => '',
+                    ]);
+                }
+
+                // Create anggota tim
+                $anggota = DataAnggota::where('unit', $data->limpah_unit)->where('datasemen', $data->limpah_den)->get();
+                foreach ($anggota as $key => $valAnggota) {
+                    # code...
+                    Penyidik::create([
+                        'data_pelanggar_id' => $kasus->id,
+                        'name' => $valAnggota->nama,
+                        'nrp' => $valAnggota->nrp,
+                        'pangkat' => $valAnggota->pangkat,
+                        'jabatan' => $valAnggota->jabatan,
+                        'datasemen' => $valAnggota->datasemen,
+                        'unit' => $valAnggota->unit,
+                    ]);
+                }
+
+                $kasus->update([
+                    'status_id' => 4
                 ]);
+                return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'Limpah unit telah ditentukan.');
             }
-
-            $kasus->update([
-                'status_id' => 4
-            ]);
-            return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'Limpah unit telah ditentukan.');
         } else {
-
-            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
-                'klasifikasi' => $request->klasifikasi,
-                'derajat' => $request->derajat,
-                'no_agenda' => $request->nomor_agenda,
-            ]);
-            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
-                'klasifikasi' => $request->klasifikasi,
-                'derajat' => $request->derajat,
-                'no_agenda' => $request->nomor_agenda,
-            ]);
-            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
-                'klasifikasi' => $request->klasifikasi,
-                'derajat' => $request->derajat,
-                'no_agenda' => $request->nomor_agenda,
-                'tipe_disposisi' => $request->tipe_disposisi,
-            ]);
-
-            DataPelanggar::where('id', $kasus_id)->update([
-                'no_nota_dinas' => $request->nomor_agenda,
-                'status_id' => 4
-            ]);
-
-            return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
+            if ($request->tipe_data != '1') {
+                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
+                    'klasifikasi' => $request->klasifikasi,
+                    'derajat' => $request->derajat,
+                    'no_agenda' => $request->nomor_agenda,
+                ]);
+                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
+                    'klasifikasi' => $request->klasifikasi,
+                    'derajat' => $request->derajat,
+                    'no_agenda' => $request->nomor_agenda,
+                ]);
+                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
+                    'klasifikasi' => $request->klasifikasi,
+                    'derajat' => $request->derajat,
+                    'no_agenda' => $request->nomor_agenda,
+                    'tipe_disposisi' => $request->tipe_disposisi,
+                ]);
+                DataPelanggar::where('id', $kasus_id)->update([
+                    'no_nota_dinas' => $request->nomor_agenda,
+                    'status_id' => 4
+                ]);
+                return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
+            }
         }
 
-        if ($request->tipe_disposisi == 1) {
+        if ($data->tipe_disposisi == 1) {
             $template_filename = 'template_disposisi_karopaminal';
             $filename = $kasus->pelapor . '-surat-disposisi-karopaminal';
-        } elseif ($request->tipe_disposisi == 2) {
+        } elseif ($data->tipe_disposisi == 2) {
             $template_filename = 'template_disposisi_kabagbinpam';
             $filename = $kasus->pelapor . '-surat-distribusi-kabagbinpam';
         } else {

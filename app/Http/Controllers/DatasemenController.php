@@ -14,7 +14,7 @@ class DatasemenController extends Controller
 {
     public function listDatasemen()
     {
-        $data['title'] = 'LIST DETASEMEN';
+        $data['title'] = 'LIST BAG / DEN';
         return view('pages.datasemen.list-datasemen', $data);
     }
 
@@ -77,7 +77,7 @@ class DatasemenController extends Controller
             'anggota' => $anggota,
             'pangkat' => $pangkat,
             'url' => $url,
-            'title' => 'TAMBAH DETASEMEN',
+            'title' => 'TAMBAH BAG / DEN',
         ];
         return view('pages.datasemen.tambah-datasemen', $data);
     }
@@ -92,12 +92,12 @@ class DatasemenController extends Controller
             $valDat = preg_replace('/\s+/', '', $valDatasemen->name);
 
             if (strtoupper($valDat) == strtoupper($valInput)) {
-                return redirect()->back()->withInput()->with('error', 'Nama Datasemen sudah dibuat !');
+                return redirect()->back()->withInput()->with('error', 'Nama Bag / Den sudah dibuat !');
             }
         }
 
         if ($request->kaden == $request->wakaden) {
-            return redirect()->back()->withInput()->with('error', 'Kepala Datasemen tidak boleh sama dengan Wakil Datasemen !');
+            return redirect()->back()->withInput()->with('error', 'Kepala tidak boleh sama dengan Wakil Kepala !');
         }
 
         Datasemen::create([
@@ -133,7 +133,7 @@ class DatasemenController extends Controller
             'wakaden' => $wakaden,
             'anggota' => $anggota,
             'url' => $url,
-            'title' => 'EDIT DETASEMEN',
+            'title' => 'EDIT BAG / DEN',
         ];
         return view('pages.datasemen.tambah-datasemen', $data);
     }
@@ -186,7 +186,7 @@ class DatasemenController extends Controller
         $data = [
             'datasemen' => $datasemen,
             'unit' => $units,
-            'title' => 'UNIT DATASEMEN',
+            'title' => 'UNIT BAG / DEN',
         ];
         return view('pages.datasemen.unit-datasemen', $data);
     }

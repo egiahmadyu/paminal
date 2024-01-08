@@ -46,6 +46,7 @@ class YanduanController extends Controller
             ]);
         }
         $import = 0;
+        // dd($response->data);
         foreach ($response->data as $key => $value) {
             $tiket = DataPelanggar::where('ticket_id', $value->ticket_id)->first();
             if (($value->biro == 'BIRO PAMINAL') && (!$tiket)) {
@@ -66,6 +67,8 @@ class YanduanController extends Controller
                 $data['alamat'] = $value->reporter->alamat ?? null;
                 $data['pekerjaan'] = $value->reporter->occupation ?? null;
                 $data['no_telp'] = $value->reporter->phonenumber ?? null;
+                $data['link_ktp'] = $value->reporter->id_card ? $value->reporter->id_card : null;
+                $data['selfie'] = $value->reporter->selfie ? $value->reporter->selfie : null;
 
                 if ($value->reporter->religion) {
                     $agamas = Agama::all();
@@ -84,6 +87,8 @@ class YanduanController extends Controller
                 $data['status_id'] = 1;
                 $data['tipe_data'] = 1;
                 $data['ticket_id'] = $value->ticket_id ? $value->ticket_id : null;
+                $data['no_nota_dinas'] = $value->nomor_nota_dinas ? $value->nomor_nota_dinas : null;
+                $data['jenis_laporan'] = $value->jenis_pelaporan ? $value->jenis_pelaporan : null;
                 $data['tempat_kejadian'] = $value->crime_scenes ? $value->crime_scenes[0]->detail : null;
                 $data['tanggal_kejadian'] = $value->crime_scenes ? Carbon::createFromFormat('d/m/Y H:i', $value->crime_scenes[0]->datetime)->format('Y-m-d') : null;
                 if ($value->victims) {
@@ -135,6 +140,7 @@ class YanduanController extends Controller
                 }
             }
         }
+
         return response()->json([
             'status' => 200,
             'total_import' => $import
