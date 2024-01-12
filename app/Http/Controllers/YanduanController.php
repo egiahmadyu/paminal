@@ -53,7 +53,7 @@ class YanduanController extends Controller
         //         $korban = '';
         //         if ($value->victims) {
         //             $korban = $value->victims;
-        //             array_push($test,$korban[0]->name);
+        //             array_push($test, $korban[0]->name);
         //         }
         //     }
         // }
@@ -103,12 +103,13 @@ class YanduanController extends Controller
                 $data['jenis_laporan'] = $value->jenis_pelaporan ? $value->jenis_pelaporan : null;
                 $data['tempat_kejadian'] = $value->crime_scenes ? $value->crime_scenes[0]->detail : null;
                 $data['tanggal_kejadian'] = $value->crime_scenes ? Carbon::createFromFormat('d/m/Y H:i', $value->crime_scenes[0]->datetime)->format('Y-m-d') : null;
-                $korban = '';
-                if ($value->victims) {
-                    $korban = $value->victims[0];
-                    $korban = $korban->name ?? 'TIDAK ADA';
-                    $data['nama_korban'] = strtoupper($korban);
-                }
+                $data['nama_korban'] = $value->victims ? strtoupper($value->victims[0]->name) : null;
+                // $korban = '';
+                // if ($value->victims) {
+                //     $korban = $value->victims[0];
+                //     $korban = $korban->name ?? 'TIDAK ADA';
+                //     $data['nama_korban'] = strtoupper($korban);
+                // }
 
                 if ($value->evidences) {
                     foreach ($value->evidences as $key => $valEvidences) {
