@@ -46,7 +46,19 @@ class YanduanController extends Controller
             ]);
         }
         $import = 0;
-        // dd($response->data);
+
+        // $test = [];
+        // foreach ($response->data as $key => $value) {
+        //     if ($value->biro == 'BIRO PAMINAL') {
+        //         $korban = '';
+        //         if ($value->victims) {
+        //             $korban = $value->victims;
+        //             array_push($test,$korban[0]->name);
+        //         }
+        //     }
+        // }
+        // dd($test);
+
         foreach ($response->data as $key => $value) {
             $tiket = DataPelanggar::where('ticket_id', $value->ticket_id)->first();
             if (($value->biro == 'BIRO PAMINAL') && (!$tiket)) {
@@ -91,15 +103,10 @@ class YanduanController extends Controller
                 $data['jenis_laporan'] = $value->jenis_pelaporan ? $value->jenis_pelaporan : null;
                 $data['tempat_kejadian'] = $value->crime_scenes ? $value->crime_scenes[0]->detail : null;
                 $data['tanggal_kejadian'] = $value->crime_scenes ? Carbon::createFromFormat('d/m/Y H:i', $value->crime_scenes[0]->datetime)->format('Y-m-d') : null;
+                $korban = '';
                 if ($value->victims) {
-                    $korban = '';
-                    foreach ($value->victims as $key => $victim) {
-                        if ($key == 0) {
-                            $korban = $victim->name;
-                        } else {
-                            $korban = $korban . ', ' . $victim->name;
-                        }
-                    }
+                    $korban = $value->victims[0];
+                    $korban = $korban->name ?? 'TIDAK ADA';
                     $data['nama_korban'] = strtoupper($korban);
                 }
 

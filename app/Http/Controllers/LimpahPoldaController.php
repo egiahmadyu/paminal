@@ -51,17 +51,17 @@ class LimpahPoldaController extends Controller
 
         $status = true;
         if ($request->tipe_disposisi == 3 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->first())) {
-            $message = 'Distribusi Binpam belum dibuat !';
+            $message = 'DISTRIBUSI BINPAM BELUM DIBUAT !';
             $status = false;
         } elseif ($request->tipe_disposisi == 3 && ($distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->first())) {
             if (is_null($distribusi_binpam->limpah_den)) {
-                $message = 'Limpah Datasemen belum ditentukan !';
+                $message = 'LIMPAH BAG/ DEN BELUM DITENTUKAN !';
                 $status = false;
             }
         }
 
         if ($request->tipe_disposisi == 2 && (!DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->first())) {
-            $message = 'Disposisi Karo/Sesro belum dibuat !';
+            $message = 'DISPOSISI KARO/SESRO BELUM DIBUAT !';
             $status = false;
         }
 
@@ -99,7 +99,7 @@ class LimpahPoldaController extends Controller
                     $kasus->update([
                         'status_id' => 3
                     ]);
-                    return redirect()->back()->with('message', 'Dumas dilimpahkan ke polda.');
+                    return redirect()->back()->with('message', 'DUMAS DILIMPAHKAN KE POLDA.');
                 }
                 $data->update([
                     'limpah_den' => $request->limpah_den
@@ -110,7 +110,7 @@ class LimpahPoldaController extends Controller
             if ($request->has('limpah_unit')) {
                 $penyidik = DataAnggota::where('unit', (int)$request->limpah_unit)->get();
                 if (count($penyidik) < 1) {
-                    return back()->withInput()->with('error', 'Anggota Unit belum dibuat !');
+                    return back()->withInput()->with('error', 'ANGGOTA UNIT BELUM DIBUAT!');
                 }
 
                 $data->update([
@@ -151,7 +151,7 @@ class LimpahPoldaController extends Controller
                 $kasus->update([
                     'status_id' => 4
                 ]);
-                return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'Limpah unit telah ditentukan.');
+                return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'LIMPAH UNIT TELAH DITENTUKAN.');
             }
         } else {
             if ($request->tipe_data != '1') {
@@ -200,7 +200,7 @@ class LimpahPoldaController extends Controller
             'tahun_agenda' => Carbon::parse($data->created_at)->translatedFormat('Y'),
             'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
             'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
-            'surat_dari' => 'BagYanduan',
+            'surat_dari' => 'BAGYANDUAN',
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'perihal' => $kasus->perihal_nota_dinas,

@@ -193,7 +193,14 @@ class DatasemenController extends Controller
 
     public function getUnit()
     {
-        $query = Unit::get();
+        $user = Auth::getUser();
+
+        if ($user->datasemen) {
+            $query = Unit::where('datasemen',$user->datasemen)->get();
+        } else {
+            $query = Unit::get();
+        }
+
 
         return DataTables::of($query)
             ->editColumn('datasemen', function ($query) {

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\DataAnggota;
 use App\Models\Datasemen;
 use App\Models\Pangkat;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class AnggotaController extends Controller
@@ -20,6 +22,7 @@ class AnggotaController extends Controller
 
     public function getAnggota()
     {
+
         $query = DataAnggota::get();
 
         return DataTables::of($query)
@@ -29,9 +32,15 @@ class AnggotaController extends Controller
                 return $pangkat;
             })
             ->addColumn('action', function ($query) {
-                $btn_edit = '<button type="button" class="btn" onclick="editAnggota(' . $query->id . ')"><i class="fa fa-edit text-warning"></i></button>';
-                $btn_delete = '<button type="button" class="btn" onclick="deleteAnggota(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
-
+                $roles = auth()->user()->roles()->get();
+                $roles = $roles[0];
+                if ($roles->name == 'admin' || $roles->name == 'operator') {
+                    $btn_edit = '<button type="button" class="btn" onclick="editAnggota(' . $query->id . ')"><i class="fa fa-edit text-warning"></i></button>';
+                    $btn_delete = '<button type="button" class="btn" onclick="deleteAnggota(' . $query->id . ')"><i class="fa fa-trash text-danger"></i></button>';
+                } else {
+                    $btn_edit = '';
+                    $btn_delete = '';
+                }
 
                 $button = '<div class="btn-group" role="group">';
                 $button .= $btn_edit;
