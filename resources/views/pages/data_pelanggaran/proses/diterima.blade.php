@@ -910,6 +910,7 @@
         if (user) {
             if (!disposisi_kaden) {
                 $('#modal_disposisi').modal('show');
+                $('#form_agenda').append('<input type="hidden" name="tipe_disposisi" id="tipe_disposisi" value="1">');
             }
         }
     }
