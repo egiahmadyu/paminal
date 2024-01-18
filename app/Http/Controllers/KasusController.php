@@ -45,6 +45,7 @@ class KasusController extends Controller
 {
     public function index()
     {
+        $data['user'] = Auth::getUser();
         $data['title'] = 'LIST DATA DUMAS';
         $data['kasuss'] = DataPelanggar::get();
         $data['diterima'] = $data['kasuss']->where('status_id', 1);
@@ -52,12 +53,13 @@ class KasusController extends Controller
             ->whereBetween('data_pelanggars.status_id', [4, 5])->get();
         $data['selesai'] = DataPelanggar::where('status_id', 6)->orwhere('status_id', 3)->orwhere('status_id', 7)->get();
 
-        // $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
-        // ->where('dhf.tipe_disposisi','1')
-        // ->orderBy('data_pelanggars.id','desc')
-        // ->get();
-
-        // dd($query);
+        if ($data['user']->hasRole('operator') || $data['user']->hasRole('admin')) {
+            $data['diterima_urtu'] = $data['diterima'];
+            $data['disposisi_binpam'] = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                ->select('data_pelanggars.id')
+                ->where('dh.tipe_disposisi', 1)
+                ->where('status_id', 1)->count();
+        }
 
         return view('pages.data_pelanggaran.index', $data);
     }
@@ -271,9 +273,34 @@ class KasusController extends Controller
         $role = $user->roles->first();
 
         if ($role->name == 'admin' || $role->name == 'operator') {
-            $query = DataPelanggar::with('status');
-        }
-        elseif (!$user->unit && !$user->datasemen) {
+            // filter
+            if ($request->has('filter')) {
+                if ($request->filter == 'disposisi-binpam') {
+                    $query = DataPelanggar::join('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                        ->select('data_pelanggars.*')
+                        ->where('dh.tipe_disposisi', 1)
+                        ->with('status');
+                } elseif ($request->filter == 'disposisi-bagden') {
+                    $query = DataPelanggar::join('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                        ->select('data_pelanggars.*')
+                        ->where('dh.tipe_disposisi', 2)
+                        ->with('status');
+                } elseif ($request->filter == 'disposisi-unit') {
+                    $query = DataPelanggar::join('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                        ->select('data_pelanggars.*')
+                        ->where('dh.tipe_disposisi', 3)
+                        ->with('status');
+                } elseif ($request->filter == 'diterima') {
+                    $query = DataPelanggar::where('status_id', 1)->with('status');
+                } elseif ($request->filter == 'diproses') {
+                    $query = DataPelanggar::whereBetween('status_id', [4, 5])->with('status');
+                } else {
+                    $query = DataPelanggar::where('status_id', 6)->orwhere('status_id', 3)->orwhere('status_id', 7)->with('status');
+                }
+            } else {
+                $query = DataPelanggar::with('status');
+            }
+        } elseif (!$user->unit && !$user->datasemen) {
             $query = DataPelanggar::orderBy('created_at', 'asc')->with('status');
         } elseif (!$user->unit && $user->datasemen) {
             $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
@@ -288,23 +315,21 @@ class KasusController extends Controller
                 ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
         }
 
-        if ($role->name == 'min' && $user->username == 'min_binpam') {
+        if ($role->name == 'min') {
             $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
-                        ->where('dhf.tipe_disposisi','1')
-                        ->orderBy('data_pelanggars.created_at','asc')->with('status');
+                ->select('data_pelanggars.*')
+                ->where('dhf.tipe_disposisi', '1')
+                ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
         }
-
-        // $query = $query->leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
-        //             ->orderBy('dhf.created_at', 'desc');
 
         $table = DataTables::of($query->get())
             ->editColumn('no_nota_dinas', function ($query) {
                 // return $query->no_nota_dinas;
                 if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '">Edit Data</a>';
-                return '<a href="/data-kasus/detail/' . $query->id . '" style="color:black">' . $query->no_nota_dinas . '</a>';
+                return '<a href="/data-kasus/detail/' . $query->id . '" class="text-dark">' . $query->no_nota_dinas . '</a>';
             })
             ->editColumn('created_at', function ($query) {
-                $created_at = Carbon::parse($query->created_at)->translatedFormat('d F Y');
+                $created_at = Carbon::parse($query->created_at)->translatedFormat('Y/m/d');
 
                 return $created_at;
             })
@@ -317,8 +342,28 @@ class KasusController extends Controller
             })
             ->setRowAttr([
                 'style' => function ($data) {
-                    $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id)->exists();
-                    return $disposisi ? 'background-color: #66ABC5;color:white' : '';
+                    $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id);
+                    $disposisi_exists = (clone $disposisi)->exists();
+                    // $disposisi_binpam = (clone $disposisi)->where('limpah_unit', null)->where('limpah_den', null)->first();
+                    // $disposisi_bagden = (clone $disposisi)->where('limpah_unit', null)->where('limpah_den', '>', 0)->first();
+                    // $disposisi_unit = (clone $disposisi)->where('limpah_unit', '>', 0)->where('limpah_den', '>', 0)->first();
+
+                    $disposisi_binpam = (clone $disposisi)->where('tipe_disposisi', 1)->first();
+                    $disposisi_bagden = (clone $disposisi)->where('tipe_disposisi', 2)->first();
+                    $disposisi_unit = (clone $disposisi)->where('tipe_disposisi', 3)->first();
+
+                    if ($disposisi_binpam) {
+                        $color = 'background-color: #66ABC5;color:white';
+                    }
+                    if ($disposisi_bagden) {
+                        $color = 'background-color: #fcad03;color:white';
+                    }
+                    if ($disposisi_unit) {
+                        $color = 'background-color: #027afa;color:white';
+                    }
+
+
+                    return $disposisi_exists ? $color : '';
                 }
             ])
             ->rawColumns(['no_nota_dinas', 'created_at']);
@@ -328,12 +373,11 @@ class KasusController extends Controller
 
     public function detail($id)
     {
-        $id_pimpinan = ['1','2','3','4','5'];
+
+        $id_pimpinan = ['1', '2', '3', '4', '5'];
         $pimpinan = DataAnggota::whereIn('pangkat', $id_pimpinan)->get();
 
         $kasus = DataPelanggar::find($id);
-        // $test = DataPelanggar::find(562);
-        // dd($test);
         $saksis = Saksi::where('data_pelanggar_id', $kasus->id)->get();
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
 
@@ -374,16 +418,16 @@ class KasusController extends Controller
         }
 
         $rules = [
-            'perihal' => 'required|regex:/[a-zA-Z 0-9\!@\/$%\*\(\)_=\?;\':\[\]\",.]/',
-            'pelapor' => 'required|regex:/[a-zA-Z 0-9\!@\/$%\*\(\)_=\?;\':\[\]\",.]/',
-            'alamat' => 'required|regex:/[a-zA-Z 0-9\!@\/$%\*\(\)_=\?;\':\[\]\",.]/',
+            'perihal' => 'required|regex:/[a-zA-Z 0-9\!@$%\*\(\)_=\?;\':\[\]\",.]/',
+            'pelapor' => 'required|regex:/[a-zA-Z 0-9\!@$%\*\(\)_=\?;\':\[\]\",.]/',
+            'alamat' => 'required|regex:/[a-zA-Z 0-9\!@$%\*\(\)_=\?;\':\[\]\",.]/',
 
         ];
 
         $messages = [
-            'perihal.regex' => 'spesial karakter tidak diizinkan pada field input perihal !',
-            'pelapor.regex' => 'spesial karakter tidak diizinkan pada field input pelapor !',
-            'alamat.regex' => 'spesial karakter tidak diizinkan pada field input alamat !',
+            'perihal.regex' => 'spesial karakter (&) tidak diizinkan pada field input perihal !',
+            'pelapor.regex' => 'spesial karakter (&) tidak diizinkan pada field input pelapor !',
+            'alamat.regex' => 'spesial karakter (&) tidak diizinkan pada field input alamat !',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -392,8 +436,6 @@ class KasusController extends Controller
             return redirect()->back()->with('error', strtoupper($validator->messages()));
             // return redirect()->back()->withInput()->withErrors($validator)->with('error', strtoupper($validator->messages()));
         }
-
-        dd($validator);
 
         $no_pengaduan = "123456"; //generate otomatis
         $data_pelanggar = DataPelanggar::where('id', $request->kasus_id)->first();
@@ -664,7 +706,7 @@ class KasusController extends Controller
         $sp2hp2_akhir = Sp2hp2Hisory::where('data_pelanggar_id', $id)->where('tipe', 'akhir')->first();
         $gelar_perkara = GelarPerkaraHistory::where('data_pelanggar_id', $id)->first();
         $pangkat_pimpinan_gelar = isset($gelar_perkara) ? Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first() : '';
-        $id_pimpinan = ['1','2','3','4','5'];
+        $id_pimpinan = ['1', '2', '3', '4', '5'];
         $pimpinan = DataAnggota::whereIn('pangkat', $id_pimpinan)->get();
 
         $limpah_biro = LimpahBiro::where('data_pelanggar_id', $id)->first();
@@ -817,6 +859,7 @@ class KasusController extends Controller
         $evidences = json_decode($kasus->evidences);
 
         $data = [
+            'user' => Auth::getUser(),
             'kasus' => $kasus,
             'status' => $status,
             'process' =>  $process,

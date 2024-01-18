@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $user = User::create([
             'name' => 'Super Admin',
             'username' => 'admin',
-            'password' => bcrypt('123456')
+            'password' => bcrypt('Paminal12345')
         ]);
         $user->assignRole($adminRole);
 
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         $user = User::create([
             'name' => 'egi',
             'username' => 'egiahmadyu',
-            'password' => bcrypt('123456')
+            'password' => bcrypt('Paminal12345')
         ]);
         $user->assignRole($adminRole);
 

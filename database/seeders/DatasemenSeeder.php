@@ -15,22 +15,42 @@ class DatasemenSeeder extends Seeder
      */
     public function run()
     {
-        Datasemen::create([
-            'name' => 'Den A',
-            'kaden' => '1',
-            'wakaden' => '2',
-        ]);
+        $bagden = array(
+            [
+                'name' => 'DEN A',
+                'kaden' => '28',
+                'wakaden' => '2',
+            ],
+            [
+                'name' => 'DEN B',
+                'kaden' => '29',
+                'wakaden' => '2',
+            ],
+            [
+                'name' => 'DEN C',
+                'kaden' => '30',
+                'wakaden' => '2',
+            ],
+            [
+                'name' => 'BAGBINPAM',
+                'kaden' => '25',
+                'wakaden' => null,
+            ],
+            [
+                'name' => 'BAGLITPERS',
+                'kaden' => '26',
+                'wakaden' => null,
+            ],
+            [
+                'name' => 'BAGPRODOK',
+                'kaden' => '27',
+                'wakaden' => null,
+            ],
+        );
 
-        Datasemen::create([
-            'name' => 'Den B',
-            'kaden' => '1',
-            'wakaden' => '2',
-        ]);
-
-        Datasemen::create([
-            'name' => 'Den C',
-            'kaden' => '1',
-            'wakaden' => '2',
-        ]);
+        foreach ($bagden as $key => $value) {
+            # code...
+            Datasemen::create($value);
+        }
     }
 }

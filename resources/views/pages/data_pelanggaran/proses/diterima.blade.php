@@ -629,7 +629,7 @@
 <!-- Modal Disposisi Karo/Sesro & Binpam-->
 <div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="title_modal_disposisi">Disposisi Karo/Sesro</h5>
@@ -710,7 +710,7 @@
 <!-- Modal Disposisi Datasemen-->
 <div class="modal fade" id="modal_disposisi_kadena" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="title_modal_disposisi">Disposisi</h5>
@@ -801,6 +801,7 @@
 
 <script>
     $(document).ready(function() {
+        checkUser()
         checkStatusID()
         getPolda()
 
@@ -901,6 +902,17 @@
             return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
         };
     });
+
+    function checkUser() {
+        let user = `{{ $user->hasRole('operator') }}`
+        let disposisi_kaden = `{{ $disposisi[0] }}`
+        console.log(disposisi_kaden)
+        if (user) {
+            if (!disposisi_kaden) {
+                $('#modal_disposisi').modal('show');
+            }
+        }
+    }
 
     function checkStatusID() {
         let status_id = `{{ $kasus->status_id }}`

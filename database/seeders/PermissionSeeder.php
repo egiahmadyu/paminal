@@ -17,6 +17,7 @@ class PermissionSeeder extends Seeder
     {
         $permission = [
             'tambah-bag_detasemen', 'list-unit', 'view-diterima', 'edit-diterima', 'view-pulbaket', 'edit-pulbaket', 'view-gelar_perkara', 'edit-gelar_perkara', 'view-limpah_biro', 'edit-limpah_biro',
+            'dashboard', 'data-pelanggar', 'input-data', 'anggota', 'list-bag_den', 'import-data', 'infosus-li', 'edit-anggota_unit', 'edit-anggota', ''
         ];
 
         foreach ($permission as $key => $value) {

@@ -72,7 +72,8 @@ class YanduanController extends Controller
                 }
 
 
-                $data['pelapor'] = $value->reporter->name ? strtoupper($value->reporter->name) : null;
+                $pelapor = strtoupper(str_replace('/', '-', $value->reporter->name));
+                $data['pelapor'] = $value->reporter->name ? str_replace('&', 'DAN', $pelapor) : null;
                 $data['jenis_kelamin'] = $value->reporter->gender ? ($value->reporter->gender == 'LAKI-LAKI' ? 1 : 2) : null;
                 $data['no_identitas'] = $value->reporter->identity_number ? $value->reporter->identity_number : null;
                 $data['jenis_identitas'] = 1;
@@ -92,7 +93,7 @@ class YanduanController extends Controller
                     }
                 }
 
-                $data['perihal_nota_dinas'] = $value->perihal_nota_dinas != '-' ? strtoupper($value->perihal_nota_dinas) : null;
+                $data['perihal_nota_dinas'] = $value->perihal_nota_dinas != '-' ? strtoupper(str_replace('&', 'DAN', $value->perihal_nota_dinas)) : null;
                 $data['tanggal_nota_dinas'] = $value->tanggal_nota_dinas != '-' ? Carbon::create($value->tanggal_nota_dinas)->format('Y-m-d') : null;
                 $data['kronologi'] = $value->chronology ? strtoupper(strip_tags($value->chronology)) : null;
                 $data['created_at'] = $value->released_at;

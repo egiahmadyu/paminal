@@ -3,6 +3,32 @@
 @prepend('styles')
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .box-1 {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #66ABC5;
+            background-color: #66ABC5;
+            padding: 10px;
+            margin: 10px;
+        }
+        .box-2 {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #fcad03;
+            background-color: #fcad03;
+            padding: 10px;
+            margin: 10px;
+        }
+        .box-3 {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #027afa;
+            background-color: #027afa;
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
 @endprepend
 
 @section('content')
@@ -13,41 +39,8 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
         </ol>
     </nav>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-xl-12 col-md-12 col-lg-12">
-            <!-- card -->
-            {{-- <div class="card card-animate">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div class="flex-grow-1">
-                            <p class="text-uppercase fw-medium text-muted text-truncate fs-13">Total Kasus</p>
-                            <h4 class="fs-22 fw-semibold mb-3"><span class="counter-value"
-                                    data-target="{{ count($kasuss) }}">0</span></h4>
-                            <div class="d-flex align-items-center gap-2">
-                                <h5 class="text-success fs-12 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i> +18.30 %
-                                </h5>
-                                <p class="text-muted mb-0">than last week</p>
-                            </div>
-                        </div>
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-soft-success rounded fs-3">
-                                <i class="bx bx-dollar-circle text-success"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div><!-- end card body -->
-                <div class="animation-effect-6 text-success opacity-25 fs-18">
-                    <i class="bi bi-currency-dollar"></i>
-                </div>
-                <div class="animation-effect-4 text-success opacity-25 fs-18">
-                    <i class="bi bi-currency-pound"></i>
-                </div>
-                <div class="animation-effect-3 text-success opacity-25 fs-18">
-                    <i class="bi bi-currency-euro"></i>
-                </div>
-            </div> --}}
-            <!-- end card -->
 
             <div class="row">
                 <div class="col-lg-4 col-sm-6">
@@ -89,13 +82,67 @@
             </div>
         </div>
     </div>
+    
+    @if ($user->hasRole('operator') || $user->hasRole('admin'))
+        <hr>
+        <div class="row">
+            <h4>INFORMARI URTU</h4>
+            <div class="col">
+                <div class="card-box bg-gradient" style="background: #011a7d;">
+                    <div class="inner">
+                        <h1 style="color: white"> {{ isset($diterima_urtu) ? count($diterima_urtu) : 0 }} </h1>
+                        <h5 style="color: white"> DITERIMA DI URTU </h5>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-gavel f-left" aria-hidden="true"></i>
+                    </div>
+                    {{-- <a href="#" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a> --}}
+                </div>
+            </div>
+            <div class="col">
+                <div class="card-box bg-gradient" style="background: #fa3605;">
+                    <div class="inner">
+                        <h1 style="color: white"> {{ isset($disposisi_binpam) ? $disposisi_binpam : 0 }} </h1>
+                        <h5 style="color: white"> DISPOSISI KE BINPAM </h5>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-expand-arrows-alt" aria-hidden="true"></i>
+                    </div>
+                    {{-- <a href="#" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a> --}}
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <div class="card">
+        <div class="card-header">
+            FILTER
+        </div>
+        <div class="card-body">
+            @if ($user->hasRole('operator') || $user->hasRole('admin'))
+                <button type="button" class="btn btn-outline-success" id="f-disposisi-binpam" onclick="filter('disposisi-binpam')">DISPOSISI BINPAM</button>
+            @elseif ($user->hasRole('min') || $user->hasRole('admin'))
+                <button type="button" class="btn btn-outline-success" id="f-disposisi-bagden" onclick="filter('disposisi-bagden')">DISTRIBUSI BAG / DEN</button>
+            @else
+                <button type="button" class="btn btn-outline-success" id="f-disposisi-unit" onclick="filter('disposisi-unit')">DISPOSISI UNIT</button>
+            @endif
+            <button type="button" class="btn btn-outline-success" id="f-diterima" onclick="filter('diterima')">DITERIMA</button>
+            <button type="button" class="btn btn-outline-success" id="f-diproses" onclick="filter('diproses')">DIPROSES</button>
+            <button type="button" class="btn btn-outline-success" id="f-selesai" onclick="filter('selesai')">SELESAI</button>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
-
+                    <p>
+                        KETERANGAN : 
+                        <div class="box-1"></div> DISPOSISI KE BINPAM
+                        <div class="box-2"></div> DISTRIBUSI KE BAG/DEN
+                        <div class="box-3"></div> DISPOSISI KE UNIT
+                    </p>
                 </div><!-- end card header -->
 
                 <div class="card-body">
@@ -127,20 +174,30 @@
     <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function() {
+            var table;
             getData()
         });
 
-        function getData() {
-            var table = $('#data-data').DataTable({
+        function filter(value) {
+            // alert(value)
+            table.destroy();
+            getData(value)
+        }
+
+        function getData(filter) {
+            $('data-data').DataTable().destroy();
+            console.log(filter);
+            table = $('#data-data').DataTable({
+                // retrieve: true,
                 processing: true,
                 serverSide: true,
-                searching: false,
+                searching: true,
                 ajax: {
                     url: "{{ route('kasus.data') }}",
                     method: "post",
                     data: function(data) {
-                        data._token = '{{ csrf_token() }}'
-                        // data.polda = $('#polda').val(),
+                        data._token = '{{ csrf_token() }}',
+                        data.filter = filter
                         // data.jenis_kelamin = $('#jenis_kelamin').val(),
                         // data.jenis_pelanggaran = $('#jenis_pelanggaran').val(),
                         // data.pangkat = $('#pangkat').val(),
@@ -188,7 +245,7 @@
                     },
                 ],
                 order: [
-                    [1, 'asc']
+                    [1, 'desc']
                 ],
                 createdRow: (row, data, dataIndex, cells) => {
                     $(cells[3]).css('background-color', data.status_color)

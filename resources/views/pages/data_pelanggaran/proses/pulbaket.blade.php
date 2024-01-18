@@ -779,7 +779,6 @@
     }
 
     function getNextData() {
-        console.log($('#test_sprin').val())
         if ($('#test_sprin').val() == 'done') {
 
             $.ajax({
