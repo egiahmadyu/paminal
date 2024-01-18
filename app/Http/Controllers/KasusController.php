@@ -356,24 +356,24 @@ class KasusController extends Controller
                     $disposisi_unit = (clone $disposisi)->where('tipe_disposisi', 3)->first();
 
                     if ($disposisi_binpam) {
-                        $color = 'background-color: #66ABC5;color:white';
+                        $color = 'background-color: #66ABC5;';
                     }
                     if ($disposisi_bagden) {
-                        $color = 'background-color: #fcad03;color:white';
+                        $color = 'background-color: #fcad03;';
                     }
                     if ($disposisi_unit) {
-                        $color = 'background-color: #027afa;color:white';
+                        $color = 'background-color: #027afa;';
                     }
 
 
                     if ($data->status_id == StatusDumas::LimpahPolda) {
-                        $color = 'background-color: #61fa61;color:white';
+                        $color = 'background-color: #61fa61;';
                     }
                     if ($data->status_id == StatusDumas::RestorativeJustice) {
-                        $color = 'background-color: #c5c7c5;color:white';
+                        $color = 'background-color: #c5c7c5;';
                     }
                     if ($data->status_id == StatusDumas::LimpahBiro) {
-                        $color = 'background-color: #DBFF33;color:white';
+                        $color = 'background-color: #DBFF33;';
                     }
 
 
