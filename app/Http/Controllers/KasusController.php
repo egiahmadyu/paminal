@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusDumas;
 use App\Models\Agama;
 use App\Models\BaiPelapor;
 use App\Models\BaiTerlapor;
@@ -324,8 +325,6 @@ class KasusController extends Controller
                 ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
         }
 
-        dd($query->get());
-
         $table = DataTables::of($query->get())
             ->editColumn('no_nota_dinas', function ($query) {
                 // return $query->no_nota_dinas;
@@ -364,6 +363,17 @@ class KasusController extends Controller
                     }
                     if ($disposisi_unit) {
                         $color = 'background-color: #027afa;color:white';
+                    }
+
+
+                    if ($data->status_id == StatusDumas::LimpahBiro) {
+                        $color = 'background-color: #61fa61;color:white';
+                    }
+                    if ($data->status_id == StatusDumas::RestorativeJustice) {
+                        $color = 'background-color: #c5c7c5;color:white';
+                    }
+                    if ($data->status_id == StatusDumas::LimpahBiro) {
+                        $color = 'background-color: #013975;color:white';
                     }
 
 
