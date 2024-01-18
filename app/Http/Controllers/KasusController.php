@@ -304,11 +304,13 @@ class KasusController extends Controller
             $query = DataPelanggar::orderBy('created_at', 'asc')->with('status');
         } elseif (!$user->unit && $user->datasemen) {
             $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                ->select('data_pelanggars.*')
                 ->where('dh.limpah_den', $user->datasemen)
                 ->where('dh.tipe_disposisi', '=', 3)
                 ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
         } else {
             $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                ->select('data_pelanggars.*')
                 ->where('dh.limpah_unit', '=', $user->unit)
                 ->where('dh.limpah_den', $user->datasemen)
                 ->where('dh.tipe_disposisi', '=', 3)
@@ -321,6 +323,8 @@ class KasusController extends Controller
                 ->where('dhf.tipe_disposisi', '1')
                 ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
         }
+
+        dd($query->get());
 
         $table = DataTables::of($query->get())
             ->editColumn('no_nota_dinas', function ($query) {
