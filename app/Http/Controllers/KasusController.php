@@ -373,7 +373,7 @@ class KasusController extends Controller
                         $color = 'background-color: #c5c7c5;';
                     }
                     if ($data->status_id == StatusDumas::LimpahBiro) {
-                        $color = 'background-color: #DBFF33;';
+                        $color = 'background-color: #DBFF33;color:black';
                     }
 
 
