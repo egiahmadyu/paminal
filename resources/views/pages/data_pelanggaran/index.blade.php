@@ -28,6 +28,30 @@
             padding: 10px;
             margin: 10px;
         }
+        .box-4 {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #61fa61;
+            background-color: #61fa61;
+            padding: 10px;
+            margin: 10px;
+        }
+        .box-5 {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #DBFF33;
+            background-color: #DBFF33;
+            padding: 10px;
+            margin: 10px;
+        }
+        .box-6 {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #c5c7c5;
+            background-color: #c5c7c5;
+            padding: 10px;
+            margin: 10px;
+        }
     </style>
 @endprepend
 
@@ -142,6 +166,9 @@
                         <div class="box-1"></div> DISPOSISI KE BINPAM
                         <div class="box-2"></div> DISTRIBUSI KE BAG/DEN
                         <div class="box-3"></div> DISPOSISI KE UNIT
+                        <div class="box-4"></div> SELESAI (LIMPAH POLDA)
+                        <div class="box-5"></div> SELESAI (LIMPAH BRIO)
+                        <div class="box-6"></div> SELESAI (RJ)
                     </p>
                 </div><!-- end card header -->
 

@@ -366,7 +366,7 @@ class KasusController extends Controller
                     }
 
 
-                    if ($data->status_id == StatusDumas::LimpahBiro) {
+                    if ($data->status_id == StatusDumas::LimpahPolda) {
                         $color = 'background-color: #61fa61;color:white';
                     }
                     if ($data->status_id == StatusDumas::RestorativeJustice) {
