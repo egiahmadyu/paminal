@@ -74,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('data-kasus', [KasusController::class, 'index'])->name('kasus.index');
     Route::post('data-kasus/data', [KasusController::class, 'data'])->name('kasus.data');
     Route::post('data-kasus/update', [KasusController::class, 'updateData'])->name('kasus.update');
+    Route::get('data-kasus/selesai-tidak-benar/{id}', [KasusController::class, 'selesaiTidakBenar'])->name('kasus.selesai-tidak-benar');
     Route::get('data-kasus/detail/{id}', [KasusController::class, 'detail'])->name('kasus.detail');
     Route::post('data-kasus/status/update', [KasusController::class, 'updateStatus'])->name('kasus.update.status');
     // End View Kasus

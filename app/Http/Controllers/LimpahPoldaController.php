@@ -13,6 +13,7 @@ use App\Models\Polda;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use PDF;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -90,7 +91,9 @@ class LimpahPoldaController extends Controller
                     'tipe_disposisi' => $request->tipe_disposisi,
                 ]);
             }
-        } elseif ($data && $data->tipe_disposisi == 2 && !isset($data->limpah_den)) {
+        }
+
+        if ($data && $data->tipe_disposisi == 2 && !isset($data->limpah_den)) {
             if ($request->has('limpah_den')) {
                 if ($request->limpah_den == 7) {
                     $data->update([
@@ -101,12 +104,39 @@ class LimpahPoldaController extends Controller
                     ]);
                     return redirect()->back()->with('message', 'DUMAS DILIMPAHKAN KE POLDA.');
                 }
+
+                // limpah kabagden
+                $template_filename_limpah_bagden = 'template_limpah_kabagbinpam';
+                $filename_limpah_bagden = $kasus->pelapor . '-surat-limpah-kabagbinpam';
+
+                $template_document_limpah_bagden = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename_limpah_bagden . '.docx'));
+                $template_document_limpah_bagden->setValues(array(
+                    'nomor_agenda' => $data->no_agenda,
+                    'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+                    'tahun' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+                    'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
+                    'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
+                    'surat_dari' => 'BAGYANDUAN',
+                    'no_nota_dinas' => $kasus->no_nota_dinas,
+                    'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+                    'perihal' => $kasus->perihal_nota_dinas,
+                    'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
+                ));
+                $template_document_limpah_bagden->saveAs(storage_path('template_surat/' . $filename_limpah_bagden . '.docx'));
+
+                $path_files = storage_path('template_surat/' . $filename_limpah_bagden . '.docx');
+                toastr()->success('Limpah BAG / DEN telah ditentukan.', 'Berhasil!');
+
                 $data->update([
                     'limpah_den' => $request->limpah_den
                 ]);
-                return redirect()->back()->with('message', 'Limpah BAG / DEN telah ditentukan.');
+
+                return response()->download($path_files)->deleteFileAfterSend(true);
+                // return redirect()->back()->with('message', 'Limpah BAG / DEN telah ditentukan.');
             }
-        } elseif ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
+        }
+
+        if ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
             if ($request->has('limpah_unit')) {
                 $penyidik = DataAnggota::where('unit', (int)$request->limpah_unit)->get();
                 if (count($penyidik) < 1) {
@@ -153,30 +183,30 @@ class LimpahPoldaController extends Controller
                 ]);
                 return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'LIMPAH UNIT TELAH DITENTUKAN.');
             }
-        } else {
-            if ($request->tipe_data != '1') {
-                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
-                    'klasifikasi' => $request->klasifikasi,
-                    'derajat' => $request->derajat,
-                    'no_agenda' => $request->nomor_agenda,
-                ]);
-                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
-                    'klasifikasi' => $request->klasifikasi,
-                    'derajat' => $request->derajat,
-                    'no_agenda' => $request->nomor_agenda,
-                ]);
-                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
-                    'klasifikasi' => $request->klasifikasi,
-                    'derajat' => $request->derajat,
-                    'no_agenda' => $request->nomor_agenda,
-                    'tipe_disposisi' => $request->tipe_disposisi,
-                ]);
-                DataPelanggar::where('id', $kasus_id)->update([
-                    'no_nota_dinas' => $request->nomor_agenda,
-                    'status_id' => 4
-                ]);
-                return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
-            }
+        }
+
+        if ($request->tipe_data && $request->tipe_data != '1') {
+            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
+                'klasifikasi' => $request->klasifikasi,
+                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+            ]);
+            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
+                'klasifikasi' => $request->klasifikasi,
+                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+            ]);
+            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
+                'klasifikasi' => $request->klasifikasi,
+                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+                'tipe_disposisi' => $request->tipe_disposisi,
+            ]);
+            DataPelanggar::where('id', $kasus_id)->update([
+                'no_nota_dinas' => $request->nomor_agenda,
+                'status_id' => 4
+            ]);
+            return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
         }
 
         if ($data->tipe_disposisi == 1) {

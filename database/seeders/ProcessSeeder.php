@@ -18,5 +18,8 @@ class ProcessSeeder extends Seeder
         Process::create([
             'name' => 'Restorative Justice'
         ]);
+        Process::create([
+            'name' => 'Selesai Tidak Benar'
+        ]);
     }
 }

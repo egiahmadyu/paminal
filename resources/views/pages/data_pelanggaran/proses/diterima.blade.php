@@ -443,10 +443,15 @@
                 </div>
                 <!-- Submit data / Update status button -->
                 @can('edit-diterima')
-                    <div class="col-lg-12 mb-3">
+                    <div class="col-lg-10 mb-3">
                         <button class="btn btn-update-diterima btn-info" type="submit" value="update_data"
                             name="type_submit" style="width: 100%">
                             <i class="far fa-upload"></i> Update Data
+                        </button>
+                    </div>
+                    <div class="col-lg-2 mb-3">
+                        <button type="button" class="btn btn-danger" id="selesai-tidak-benar" onclick="selesaiTidakBenar({{ $kasus->id }})" style="width: 100%">
+                            <i class="fas fa-minus-circle"></i> Selesaikan Aduan
                         </button>
                     </div>
                 @endcan
@@ -903,10 +908,55 @@
         };
     });
 
+    function selesaiTidakBenar(id) {
+        let url = '/data-kasus/selesai-tidak-benar/'+id
+        Swal.fire({
+            icon: 'question',
+            showDenyButton: false,
+            title: 'Yakin akan selesaikan data dengan status "SELESAI TIDAK BENAR"?',
+            showCancelButton: true,
+            confirmButtonText: "Ya, selesaikan aduan!"
+        }).then((result) => {
+            if(result.isConfirmed){
+                $.ajax(url, {
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        Swal.fire({
+                            html: "<h5>Please Wait...</h5>",
+                            customClass: {
+                            },
+                            buttonsStyling: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        })
+                        Swal.showLoading()
+                    },
+                    success: function (data, status, xhr) {   // success callback function
+                        Swal.close()
+                        location.reload()
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) { // error callback
+                        $('.preloader').css('display', 'none')
+                        let text = jqXhr.responseJSON?.message == undefined ? "Terjadi Kesalahan Pada Sistem!" : jqXhr.responseJSON.message
+                        var option = {
+                            text: text,
+                            pos: 'top-center',
+                            backgroundColor: '#e7515a'
+                        }
+                        window[onerror](errorMessage);
+                    }
+                })
+                // ajaxGetJson(`/transaction/surat-masuk/print-blanko/${data.txNumber}`, 'printBlanko', 'input_error')
+            } else {
+                return false
+            }
+        });
+    }
+
     function checkUser() {
         let user = `{{ $user->hasRole('operator') }}`
         let disposisi_kaden = `{{ $disposisi[0] }}`
-        console.log(disposisi_kaden)
         if (user) {
             if (!disposisi_kaden) {
                 $('#modal_disposisi').modal('show');

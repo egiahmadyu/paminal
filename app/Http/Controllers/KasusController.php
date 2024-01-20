@@ -33,6 +33,7 @@ use App\Models\Unit;
 use App\Models\UukHistory;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -540,6 +541,36 @@ class KasusController extends Controller
         elseif ($status_id == 5) return $this->viewGelarPenyelidikan($kasus_id);
         elseif ($status_id == 6) return $this->viewLimpahBiro($kasus_id);
         elseif ($status_id == 7) return $this->viewRJ($kasus_id);
+        elseif ($status_id == 8) return $this->viewSelesaiTidakBenar($kasus_id);
+    }
+
+    public function selesaiTidakBenar($id)
+    {
+        $data_pelanggar = DataPelanggar::where('id', $id)->first();
+        $data_pelanggar->update([
+            'status_id' => StatusDumas::SelesaiTidakBenar
+        ]);
+
+        return response()->json([
+            'status' => JsonResponse::HTTP_OK,
+            'message' => 'DUMAS DISELESAIKAN DENGAN STATUS "SELESAI TIDAK BENAR".',
+        ]);
+    }
+
+    public function viewSelesaiTidakBenar($kasus_id)
+    {
+        $kasus = DataPelanggar::find($kasus_id);
+        $status = Process::find($kasus->status_id);
+        $pangkat_terlapor = Pangkat::where('id', $kasus->pangkat)->first();
+
+        $data = [
+            'kasus' => $kasus,
+            'status' => $status,
+            'terlapor' => $pangkat_terlapor ? $pangkat_terlapor->name . ' ' . $kasus->terlapor : 'TIDAK TAHU',
+            'title' => 'DUMAS SELESAI TIDAK BENAR',
+        ];
+
+        return view('pages.data_pelanggaran.proses.selesai-tidak-benar', $data);
     }
 
     public function RJ($kasus_id)
@@ -611,7 +642,7 @@ class KasusController extends Controller
             'gelar_perkara' => $gelar_perkara,
             'pimpinan_gelar' => $pangkat_pimpinan_gelar->name . ' ' . $gelar_perkara->pimpinan . ' / ' . $gelar_perkara->nrp_pimpinan,
             'jenis_limpah' => $jenis_limpah,
-            'title' => 'LIMPAH BIRO',
+            'title' => 'RESTORATIVE JUSTICE',
         ];
 
         return view('pages.data_pelanggaran.proses.rj', $data);

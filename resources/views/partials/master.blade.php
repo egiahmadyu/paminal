@@ -464,6 +464,17 @@
                 return day
             }
 
+            const flatPickrList = [].slice.call(document.querySelectorAll('.flatpickr-validation'))
+            // Flat pickr
+            if (flatPickrList) {
+                flatPickrList.forEach(flatPickr => {
+                    flatPickr.flatpickr({
+                        allowInput: true,
+                        monthSelectorType: 'static'
+                    });
+                });
+            }
+
             $("#import_data").submit(function(event){
                 event.preventDefault();
                 $('.loading').css('display', 'block')
@@ -493,6 +504,7 @@
                     }
                 });
             });
+            
         </script>
 
         @yield('scripts')

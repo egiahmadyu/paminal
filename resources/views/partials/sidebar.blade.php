@@ -150,18 +150,18 @@
           <h5 class="modal-title" id="exampleModalLabel">IMPORT DATA DARI YANDUAN</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-            <form id="import_data">
+        <div class="modal-body" class="needs-validation">
+            <form id="import_data" >
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">TANGGAL AWAL</label>
-                  <input type="date" class="form-control" name="start">
+                    <label for="exampleInputEmail1" class="form-label">TANGGAL AWAL</label>
+                    <input type="text" name="start" class="form-control flatpickr-input flatpickr-validation" data-provider="flatpickr" data-altFormat="F j, Y" placeholder="January 1, 2024" required>
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">TANGGAL AKHIR</label>
-                  <input type="date" class="form-control" name="end">
+                    <label for="exampleInputPassword1" class="form-label">TANGGAL AKHIR</label>
+                    <input type="text" name="end" class="form-control flatpickr-input flatpickr-validation" data-provider="flatpickr" data-altFormat="F j, Y" placeholder="January 1, 2024" required>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%">SUBMIT</button>
-              </form>
+            </form>
         </div>
       </div>
     </div>

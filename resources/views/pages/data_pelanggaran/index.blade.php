@@ -160,7 +160,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4></br>
                     <p>
                         KETERANGAN : 
                         <div class="box-1"></div> DISPOSISI KE BINPAM

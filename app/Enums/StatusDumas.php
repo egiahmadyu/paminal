@@ -19,4 +19,5 @@ final class StatusDumas extends Enum
     const GelarPerkara = 5;
     const LimpahBiro = 6;
     const RestorativeJustice = 7;
+    const SelesaiTidakBenar = 8;
 }
