@@ -7,7 +7,7 @@
             <div>
 
                 @if ($kasus->status_id > 1)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">SELANJUTNYA <i
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess({{$kasus->status_id == 8 ? 8 : 3}})">SELANJUTNYA <i
                             class="far fa-arrow-right"></i></button>
                 @endif
 

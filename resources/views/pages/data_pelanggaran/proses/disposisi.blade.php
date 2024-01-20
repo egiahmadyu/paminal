@@ -2,7 +2,7 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-warning" onclick="getViewProcess(1)">Sebelumnya</button>
+                <button type="button" class="btn btn-warning" onclick="getViewProcess(1)">SEBELUMNYA</button>
             </div>
             <div>
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" style="width:100%">
@@ -13,7 +13,7 @@
             </div>
             <div>
                 @if ($kasus->status_id > 2)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">Selanjutnya</button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(3)">SELANJUTNYA</button>
                 @endif
             </div>
         </div>

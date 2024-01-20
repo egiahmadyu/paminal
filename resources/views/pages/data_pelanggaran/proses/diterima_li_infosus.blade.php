@@ -6,7 +6,7 @@
             <div>
 
                 @if ($kasus->status_id > 1)
-                <button type="button" class="btn btn-primary" onclick="getViewProcess(4)">Selanjutnya <i class="far fa-arrow-right"></i></button>
+                <button type="button" class="btn btn-primary" onclick="getViewProcess(4)">SELANJUTNYA <i class="far fa-arrow-right"></i></button>
                 @endif
 
             </div>

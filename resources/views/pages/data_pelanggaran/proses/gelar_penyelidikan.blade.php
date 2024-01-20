@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between">
             <div>
                 <button type="button" class="btn btn-info" onclick="getViewProcess(4)"><i class="far fa-arrow-left"></i>
-                    Sebelumnya</button>
+                    SEBELUMNYA</button>
             </div>
             <div>
                 @if ($kasus->status_id == 5 && $nd_hasil_gelar)
@@ -13,7 +13,7 @@
             <div>
 
                 @if ($kasus->status_id > 5)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(6)">Selanjutnya <i
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(6)">SELANJUTNYA <i
                             class="far fa-arrow-right"></i></button>
                 @endif
 

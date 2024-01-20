@@ -2,7 +2,7 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(5)"><i class="far fa-arrow-left"></i> Sebelumnya</button>
+                <button type="button" class="btn btn-info" onclick="getViewProcess(1)"><i class="far fa-arrow-left"></i> SEBELUMNYA</button>
             </div>
             <div>
 
@@ -30,7 +30,7 @@
                     <div class="f1-step-icon"><i class="fa fa-key"></i></div>
                     <p>GELAR PERKARA</p>
                 </div>
-                <div class="f1-step active">
+                <div class="f1-step">
                     <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
                     <p>LIMPAH</p>
                 </div>
