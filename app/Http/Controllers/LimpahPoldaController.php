@@ -23,9 +23,15 @@ class LimpahPoldaController extends Controller
     public function generateLimpahPolda(Request $request, $kasus_id)
     {
         $kasus = DataPelanggar::find($kasus_id);
-        $data =
+        $data = LimpahPolda::where('data_pelanggar_id', $kasus->id)->first();
+        $polda = Polda::find($data->polda_id);
+        $pangkat_terlapor = Pangkat::find($kasus->pangkat);
+        $terlapor = $pangkat_terlapor->name . ' ' . $kasus->terlapor;
+        $wujud_perbuatan = WujudPerbuatan::find($kasus->wujud_perbuatan);
+        $sesro = DataAnggota::where('jabatan', 'SESROPAMINAL')->first();
+        $pangkat_sesro = Pangkat::find($sesro->pangkat);
 
-            dd($kasus);
+
         // limpah polda
         $template_filename_limpah_polda = 'template_limpah_polda';
         $filename_limpah_polda = $kasus->pelapor . '-surat-limpah-polda';
@@ -43,7 +49,16 @@ class LimpahPoldaController extends Controller
             'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'perihal' => $kasus->perihal_nota_dinas,
             'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
-            'bag_den' => $data->limpah_den,
+            'polda' => $polda->name,
+            'pelapor' => $kasus->pelapor,
+            'terlapor' => $terlapor,
+            'jabatan' => $kasus->jabatan,
+            'kesatuan' => $kasus->kesatuan,
+            'wilayah_hukum' => $polda->name,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'sesro' => $sesro->name,
+            'pangkat_sesro' => $pangkat_sesro->name,
+            'nrp_sesro' => $sesro->nrp,
         ));
         $template_document_limpah_polda->saveAs(storage_path('template_surat/' . $filename_limpah_polda . '.docx'));
 

@@ -18,10 +18,10 @@
     <div class="row">
         <div class="card">
             <div class="card-header d-flex align-items-center">
-                <h5 class="card-title flex-grow-1 mb-0">User</h5>
+                <h5 class="card-title flex-grow-1 mb-0">Daftar User</h5>
                 <div class="d-flex gap-1 flex-wrap">
-                    <button type="button" class="btn btn-success create-btn" data-bs-toggle="modal"
-                        data-bs-target="#add_user"><i class="ri-add-line align-bottom me-1"></i>Add User</button>
+                    <button type="button" class="btn btn-outline-success create-btn" data-bs-toggle="modal"
+                        data-bs-target="#add_user"><i class="ri-add-line align-bottom me-1"></i>Tambah User</button>
                 </div>
             </div>
 
@@ -46,7 +46,9 @@
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->getRoleNames()[0] }}</td>
                                     <td>
-                                        <a href="http://"><button class="btn btn-sm btn-danger">Reset Password</button></a>
+                                        <a href="#"><button class="btn btn-sm btn-outline-info">Reset Password</button></a>
+                                        <a href="#"><button class="btn btn-sm btn-outline-warning">Edit User</button></a>
+                                        <a href="#"><button class="btn btn-sm btn-outline-danger">Hapus User</button></a>
                                     </td>
                                 </tr>
                             @endforeach
