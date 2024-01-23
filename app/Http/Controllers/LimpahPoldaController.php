@@ -8,6 +8,7 @@ use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
 use App\Models\DPExtends;
 use App\Models\LimpahPolda;
+use App\Models\Pangkat;
 use App\Models\Penyidik;
 use App\Models\Polda;
 use App\Models\WujudPerbuatan;
@@ -22,12 +23,36 @@ class LimpahPoldaController extends Controller
     public function generateLimpahPolda(Request $request, $kasus_id)
     {
         $kasus = DataPelanggar::find($kasus_id);
-        $data['ticketDesc'] = $request->ticketDesc;
-        $pdf =  PDF::setOptions(['isRemoteEnabled' => TRUE])
-            ->setPaper('A4', 'potrait')
-            ->loadView('pages.data_pelanggaran.generate.limpah-polda', $data);
+        $data =
 
-        return $pdf->download($kasus->pelapor . '-dokumen-limpah-polda.pdf');
+            dd($kasus);
+        // limpah polda
+        $template_filename_limpah_polda = 'template_limpah_polda';
+        $filename_limpah_polda = $kasus->pelapor . '-surat-limpah-polda';
+
+        $template_document_limpah_polda = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename_limpah_polda . '.docx'));
+        $template_document_limpah_polda->setValues(array(
+            'nomor_agenda' => $data->no_agenda,
+            'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+            'tahun' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+            'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
+            'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
+            'tanggal' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
+            'surat_dari' => 'BAGYANDUAN',
+            'no_nota_dinas' => $kasus->no_nota_dinas,
+            'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+            'perihal' => $kasus->perihal_nota_dinas,
+            'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
+            'bag_den' => $data->limpah_den,
+        ));
+        $template_document_limpah_polda->saveAs(storage_path('template_surat/' . $filename_limpah_polda . '.docx'));
+
+        $path_files = storage_path('template_surat/' . $filename_limpah_polda . '.docx');
+        toastr()->success('DUMAS DILIMPAHKAN KE POLDA', 'Berhasil!');
+
+        return response()->download($path_files)->deleteFileAfterSend(true);
+
+        // return $pdf->download($kasus->pelapor . '-dokumen-limpah-polda.pdf');
     }
 
     public function generateDisposisi(Request $request, $kasus_id)
@@ -102,12 +127,25 @@ class LimpahPoldaController extends Controller
                     $kasus->update([
                         'status_id' => 3
                     ]);
+
                     return redirect()->back()->with('message', 'DUMAS DILIMPAHKAN KE POLDA.');
                 }
 
                 // limpah kabagden
                 $template_filename_limpah_bagden = 'template_limpah_kabagbinpam';
                 $filename_limpah_bagden = $kasus->pelapor . '-surat-limpah-kabagbinpam';
+
+                $data->update([
+                    'limpah_den' => $request->limpah_den
+                ]);
+
+                $pangkat_terlapor = Pangkat::find($kasus->pangkat);
+                $wujud_perbuatan = WujudPerbuatan::find($kasus->wujud_perbuatan);
+                $den = Datasemen::find($data->limpah_den);
+                $kabagden = DataAnggota::find($den->kaden);
+                $kabagden_pangkat = Pangkat::find($kabagden->pangkat);
+                $kabagden_nrp = $kabagden->nrp;
+                $limpah_bagden = Datasemen::find($data->limpah_den);
 
                 $template_document_limpah_bagden = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename_limpah_bagden . '.docx'));
                 $template_document_limpah_bagden->setValues(array(
@@ -116,20 +154,27 @@ class LimpahPoldaController extends Controller
                     'tahun' => Carbon::parse($data->created_at)->translatedFormat('Y'),
                     'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
                     'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
+                    'tanggal' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
                     'surat_dari' => 'BAGYANDUAN',
                     'no_nota_dinas' => $kasus->no_nota_dinas,
                     'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
                     'perihal' => $kasus->perihal_nota_dinas,
                     'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
+                    'bag_den' => 'KA. ' . $limpah_bagden->name,
+                    'pelapor' => $kasus->pelapor,
+                    'pangkat_terlapor' => $pangkat_terlapor->name,
+                    'terlapor' => $kasus->terlapor,
+                    'jabatan_terlapor' => $kasus->jabatan,
+                    'kesatuan_terlapor' => $kasus->kesatuan,
+                    'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+                    'kabagden' => $kabagden->nama,
+                    'kabagden_pangkat' => $kabagden_pangkat->name,
+                    'kabagden_nrp' => $kabagden_nrp,
                 ));
                 $template_document_limpah_bagden->saveAs(storage_path('template_surat/' . $filename_limpah_bagden . '.docx'));
 
                 $path_files = storage_path('template_surat/' . $filename_limpah_bagden . '.docx');
                 toastr()->success('Limpah BAG / DEN telah ditentukan.', 'Berhasil!');
-
-                $data->update([
-                    'limpah_den' => $request->limpah_den
-                ]);
 
                 return response()->download($path_files)->deleteFileAfterSend(true);
                 // return redirect()->back()->with('message', 'Limpah BAG / DEN telah ditentukan.');

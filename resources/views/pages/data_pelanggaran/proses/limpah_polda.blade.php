@@ -16,7 +16,7 @@
         <div class="col-lg-12" style="text-align: center;">
             <div class="f1-steps">
                 <div class="f1-progress">
-                    <div class="f1-progress-line" data-now-value="75" data-number-of-steps="2" style="width: 75%;">
+                    <div class="f1-progress-line" data-now-value="75" data-number-of-steps="2" style="width: 100%;">
                     </div>
                 </div>
                 <a href="javascript::void(0)" onclick="getViewProcess(1)">
@@ -34,27 +34,27 @@
         </div>
     </div>
     <div class="col-lg-12">
-        <h4>Limpah Ke Polda</h4>
+        <h4>LIMPAH KE POLDA</h4>
         <form action="/surat-limpah-polda/{{ $kasus->id }}" method="post">
             @csrf
             <div>
                 <div class="row mb-3">
                     <div class="col-lg-4">
-                        <label for="exampleInputEmail1" class="form-label">Polda / Sederajat</label>
+                        <label for="exampleInputEmail1" class="form-label">POLDA / SEDERAJAT</label>
                         <input type="text" class="form-control border-dark" id="polda_limpah" readonly
                             value="{{ $limpahPolda->polda->name }}">
                     </div>
                     <div class="col-lg-4">
-                        <label for="exampleInputEmail1" class="form-label">Tanggal Limpah</label>
+                        <label for="exampleInputEmail1" class="form-label">TANGGAL LIMPAH</label>
                         <input type="text" class="form-control border-dark" readonly value="{{ $tgl_limpah }}">
                     </div>
                     <div class="col-lg-4">
-                        <label for="exampleInputEmail1" class="form-label">Pelimpah</label>
+                        <label for="exampleInputEmail1" class="form-label">PELIMPAH</label>
                         <input type="text" class="form-control border-dark" readonly value="{{ $limpahPolda->user->name }}">
                     </div>
                 </div>
 
-                <div class="row mb-3">
+                {{-- <div class="row mb-3">
                     <div class="col-lg-12">
                         <div class="title">
                             <h3>Isi Surat Limpah</h3>
@@ -64,8 +64,8 @@
                         </div>
                     </div>
                     
-                </div>
-                <button type="submit" class="btn btn-primary">Generate Surat Limpah</button>
+                </div> --}}
+                <button type="submit" class="btn btn-primary" style="width: 100%">BUAT SURAT LIMPAH KE {{ $limpahPolda->polda->name }}</button>
             </div>
         </form>
     </div>
