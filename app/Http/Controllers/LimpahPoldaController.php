@@ -56,7 +56,7 @@ class LimpahPoldaController extends Controller
             'kesatuan' => $kasus->kesatuan,
             'wilayah_hukum' => $polda->name,
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
-            'sesro' => $sesro->name,
+            'sesro' => $sesro->nama,
             'pangkat_sesro' => $pangkat_sesro->name,
             'nrp_sesro' => $sesro->nrp,
         ));
