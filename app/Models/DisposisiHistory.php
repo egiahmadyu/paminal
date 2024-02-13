@@ -9,6 +9,11 @@ class DisposisiHistory extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'data_pelanggar_id','no_agenda', 'klasifikasi', 'derajat', 'tipe_disposisi', 'limpah_unit','limpah_den',
+        'data_pelanggar_id', 'no_agenda', 'klasifikasi', 'derajat', 'tipe_disposisi', 'limpah_unit', 'limpah_den',
     ];
+
+    function disposisiBagDen()
+    {
+        return $this->hasOne(Datasemen::class, 'id', 'limpah_den');
+    }
 }

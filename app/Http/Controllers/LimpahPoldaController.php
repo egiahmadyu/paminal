@@ -20,7 +20,70 @@ use PhpOffice\PhpWord\TemplateProcessor;
 
 class LimpahPoldaController extends Controller
 {
-    public function generateLimpahPolda(Request $request, $kasus_id)
+    public function penagihanTinjutPolda($polda_id)
+    {
+        $polda = Polda::where('id', $polda_id)->get();
+        $kasus = DataPelanggar::join('limpah_poldas as lp', 'lp.data_pelanggar_id', '=', 'data_pelanggars.id')
+            ->join('poldas', 'poldas.id', '=', 'lp.polda_id')
+            ->select('data_pelanggars.*')
+            ->where('data_pelanggars.status_id', 9)
+            ->where('poldas.id', $polda[0]->id);
+
+        if ($kasus->count() < 1) {
+            return redirect()->back()->with('error', 'DATA DUMAS DI ' . $polda[0]->name . ' KOSONG');
+        }
+
+        $values = [];
+        $i = 1;
+        foreach ($kasus->get() as $key => $value) {
+            $data = [
+                'counter' => $i,
+                'no_nota_dinas' => $value->no_nota_dinas,
+                'bulan' => Carbon::parse($value->tanggal_nota_dinas)->translatedFormat('F'),
+                'tanggal_nota_dinas' => Carbon::parse($value->tanggal_nota_dinas)->translatedFormat('d F Y'),
+                'nama_pendumas' => $value->pelapor,
+                'perihal' => $value->perihal_nota_dinas,
+            ];
+            array_push($values, $data);
+            $i++;
+        }
+
+        //Open template with ${table}
+        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/penagihan_tinjut_polda.docx'));
+
+        $template_document->setValues([
+            'judul' => 'REKAP PELIMPAHAN DUMAS KE POLDA ' . $polda[0]->name . ' T.A.' . Carbon::now()->translatedFormat('Y'),
+        ]);
+
+        $template_document->cloneRowAndSetValues('counter', $values);
+
+        //save template with table
+        $template_document->saveAs(storage_path('template_surat/REKAP-PELIMPAHAN-DUMAS-' . $polda[0]->name . '.docx'));
+
+        // dd($template_document);
+        return response()->download(storage_path('template_surat/REKAP-PELIMPAHAN-DUMAS-' . $polda[0]->name . '.docx'))->deleteFileAfterSend(true);
+    }
+
+    public function updateDataLimpahPolda(Request $request, $id)
+    {
+        // dd($request->all());
+        $data = LimpahPolda::find($id);
+        $polda = Polda::find($data->polda_id);
+        // $tgl_limpah = Carbon::createFromFormat('d-m-Y', $request->tgl_limpah)->format('Y-m-d');
+        $tgl_limpah = strtotime($request->tgl_limpah);
+        $tgl_limpah = date('Y-m-d', $tgl_limpah);
+
+        $data->update([
+            'polda_id' => $polda->id,
+            'tanggal_limpah' => $tgl_limpah,
+            'hasil_tinjut_limpah' => $request->hasil_tinjut_polda,
+            'catatan' => $request->catatan,
+        ]);
+
+        return redirect()->back()->with('success', 'Data berhasil diupdate!');
+    }
+
+    public function generateLimpahPolda($kasus_id)
     {
         $kasus = DataPelanggar::find($kasus_id);
         $data = LimpahPolda::where('data_pelanggar_id', $kasus->id)->first();
@@ -133,7 +196,7 @@ class LimpahPoldaController extends Controller
             }
         }
 
-        if ($data && $data->tipe_disposisi == 2 && !isset($data->limpah_den)) {
+        if ($data && $data->tipe_disposisi == 2) {
             if ($request->has('limpah_den')) {
                 if ($request->limpah_den == 7) {
                     $data->update([
@@ -351,7 +414,6 @@ class LimpahPoldaController extends Controller
 
         return response()->download(storage_path('template_surat/' . $filename . '.docx'))->deleteFileAfterSend(true);
     }
-
 
     public function downloadDisposisi($type)
     {

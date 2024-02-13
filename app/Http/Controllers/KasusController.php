@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\HelperController;
 
 use function PHPUnit\Framework\countOf;
 use function PHPUnit\Framework\isNull;
@@ -54,6 +55,7 @@ class KasusController extends Controller
         $data['diproses'] = DataPelanggar::join('sprin_histories as sh', 'sh.data_pelanggar_id', '=', 'data_pelanggars.id')
             ->whereBetween('data_pelanggars.status_id', [4, 5])->get();
         $data['selesai'] = DataPelanggar::where('status_id', 6)->orwhere('status_id', 3)->orwhere('status_id', 7)->get();
+        $data['poldas'] = Polda::all();
 
         if ($data['user']->hasRole('operator') || $data['user']->hasRole('admin')) {
             $data['diterima_urtu'] = $data['diterima'];
@@ -271,45 +273,30 @@ class KasusController extends Controller
 
     public function data(Request $request)
     {
+        // dd($request->filter['diterima']);
         $user = Auth::getUser();
         $role = $user->roles->first();
 
         if ($role->name == 'admin' || $role->name == 'operator') {
             // filter
+            $query = DataPelanggar::with('status');
             if ($request->has('filter')) {
-                if ($request->filter == 'disposisi-binpam') {
-                    $query = DataPelanggar::join('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
-                        ->select('data_pelanggars.*')
-                        ->where('dh.tipe_disposisi', 1)
-                        ->with('status');
-                } elseif ($request->filter == 'disposisi-bagden') {
-                    $query = DataPelanggar::join('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
-                        ->select('data_pelanggars.*')
-                        ->where('dh.tipe_disposisi', 2)
-                        ->with('status');
-                } elseif ($request->filter == 'disposisi-unit') {
-                    $query = DataPelanggar::join('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
-                        ->select('data_pelanggars.*')
-                        ->where('dh.tipe_disposisi', 3)
-                        ->with('status');
-                } elseif ($request->filter == 'diterima') {
-                    $query = DataPelanggar::where('status_id', 1)->with('status');
-                } elseif ($request->filter == 'diproses') {
-                    $query = DataPelanggar::whereBetween('status_id', [4, 5])->with('status');
-                } else {
-                    $query = DataPelanggar::where('status_id', 6)->orwhere('status_id', 3)->orwhere('status_id', 7)->with('status');
-                }
-            } else {
-                $query = DataPelanggar::with('status');
+                $query = HelperController::dataFilter($query, $request->filter);
             }
         } elseif (!$user->unit && !$user->datasemen) {
             $query = DataPelanggar::orderBy('created_at', 'asc')->with('status');
+            if ($request->has('filter')) {
+                $query = HelperController::dataFilter($query, $request->filter);
+            }
         } elseif (!$user->unit && $user->datasemen) {
             $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
                 ->select('data_pelanggars.*')
                 ->where('dh.limpah_den', $user->datasemen)
                 ->where('dh.tipe_disposisi', '=', 3)
                 ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+            if ($request->has('filter')) {
+                $query = HelperController::dataFilter($query, $request->filter);
+            }
         } else {
             $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
                 ->select('data_pelanggars.*')
@@ -317,13 +304,24 @@ class KasusController extends Controller
                 ->where('dh.limpah_den', $user->datasemen)
                 ->where('dh.tipe_disposisi', '=', 3)
                 ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+            if ($request->has('filter')) {
+                $query = HelperController::dataFilter($query, $request->filter);
+            }
         }
 
         if ($role->name == 'min') {
-            $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
-                ->select('data_pelanggars.*')
-                ->where('dhf.tipe_disposisi', '1')
-                ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+            if ($user->hasDatasemen->name == 'BAGBINPAM') {
+                $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->select('data_pelanggars.*')
+                    ->where('dhf.tipe_disposisi', 1)
+                    ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+            } else {
+                $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->select('data_pelanggars.*')
+                    ->where('dhf.tipe_disposisi', 2)
+                    ->where('dhf.limpah_den', $user->datasemen)
+                    ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+            }
         }
 
         $table = DataTables::of($query->get())
@@ -366,16 +364,18 @@ class KasusController extends Controller
                         $color = 'background-color: #027afa;';
                     }
 
-
-                    if ($data->status_id == StatusDumas::LimpahPolda) {
+                    if ($data->status->id == StatusDumas::DiprosesPolda) {
                         $color = 'background-color: #61fa61;color:black';
                     }
-                    if ($data->status_id == StatusDumas::RestorativeJustice) {
+                    if ($data->status->id == StatusDumas::RestorativeJustice) {
                         $color = 'background-color: #c5c7c5;color:black';
                     }
-                    if ($data->status_id == StatusDumas::LimpahBiro) {
-                        $color = 'background-color: #DBFF33;color:black';
+                    if ($data->status->id == StatusDumas::SelesaiTidakBenar) {
+                        $color = 'background-color: #c90e0e;color:white';
                     }
+                    // if ($data->status_id == StatusDumas::Diterima) {
+                    //     $color = 'background-color: #DBFF33;color:black';
+                    // }
 
 
                     return $disposisi_exists ? $color : '';
@@ -542,6 +542,7 @@ class KasusController extends Controller
         elseif ($status_id == 6) return $this->viewLimpahBiro($kasus_id);
         elseif ($status_id == 7) return $this->viewRJ($kasus_id);
         elseif ($status_id == 8) return $this->viewSelesaiTidakBenar($kasus_id);
+        elseif ($status_id == 9) return $this->viewDiprosesPolda($kasus_id);
     }
 
     public function selesaiTidakBenar($id)
@@ -820,7 +821,35 @@ class KasusController extends Controller
             'polda' => $polda,
             'limpahPolda' => $limpahPolda,
             'tgl_limpah' => Carbon::parse($limpahPolda->tanggal_limpah)->translatedFormat('d F Y'),
-            'title' => 'LIMPAH POLDA',
+            'title' => 'LIMPAH ' . $limpahPolda->polda->name,
+        ];
+
+        return view('pages.data_pelanggaran.proses.limpah_polda', $data);
+    }
+
+    private function viewDiprosesPolda($id)
+    {
+        $kasus = DataPelanggar::find($id);
+        $status = Process::find($kasus->status_id);
+        $process = Process::where('sort', '<=', $status->id)->get();
+
+        $disposisi_karosesro = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 1)->first();
+        $tgl_dumas = Carbon::parse($disposisi_karosesro->created_at);
+        $today = Carbon::now();
+        $usia_dumas = $tgl_dumas->diffInDays($today);
+        $limpahPolda = LimpahPolda::where('data_pelanggar_id', $id)->first();
+
+        $polda = Polda::get();
+
+        $data = [
+            'kasus' => $kasus,
+            'status' => $status,
+            'process' =>  $process,
+            'usia_dumas' => $usia_dumas,
+            'polda' => $polda,
+            'limpahPolda' => $limpahPolda,
+            'tgl_limpah' => Carbon::parse($limpahPolda->tanggal_limpah)->translatedFormat('d F Y'),
+            'title' => 'LIMPAH ' . $limpahPolda->polda->name,
         ];
 
         return view('pages.data_pelanggaran.proses.limpah_polda', $data);
@@ -903,6 +932,8 @@ class KasusController extends Controller
 
         $evidences = json_decode($kasus->evidences);
 
+        $is_datalengkap = HelperController::cekKelengkapanData($kasus);
+
         $data = [
             'user' => Auth::getUser(),
             'kasus' => $kasus,
@@ -924,6 +955,7 @@ class KasusController extends Controller
             'unit' => $unit,
             'evidences' => $evidences,
             'title' => 'DATA DUMAS',
+            'is_datalengkap' => $is_datalengkap,
         ];
 
         if ($kasus->tipe_data == 2 || $kasus->tipe_data == 3) {

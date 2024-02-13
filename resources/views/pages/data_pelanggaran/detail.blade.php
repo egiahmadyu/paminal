@@ -48,7 +48,9 @@
                         @else
                             DATA LAPORAN INFORMASI
                         @endif
+                        
                         ({{ strtoupper($kasus->status->name) }})
+
                         @if ($kasus->status->ticket_id)
                             <span class="badge bg-warning">DATA DARI YANDUAN DENGAN ID : {{ $kasus->ticket_id }}</span>
                         @endif

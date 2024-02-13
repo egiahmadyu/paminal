@@ -15,11 +15,12 @@ class ProcessSeeder extends Seeder
      */
     public function run()
     {
-        Process::create([
-            'name' => 'Restorative Justice'
-        ]);
-        Process::create([
-            'name' => 'Selesai Tidak Benar'
-        ]);
+        $name = ['DITERIMA', 'DISPOSISI', 'LIMPAH POLDA', 'PULBAKET', 'GELAR PENYELIDIKAN', 'NOTA DINAS HASIL GELAR PERKARA', 'RESTORATIVE JUSTICE', 'SELESAI TIDAK BENAR'];
+
+        foreach ($name as $key => $value) {
+            Process::create([
+                'name' => $value
+            ]);
+        }
     }
 }

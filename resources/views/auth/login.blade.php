@@ -160,7 +160,6 @@
 </head>
 
 <body>
-    
     <div class="loading" style="display: none">Loading&#8230;</div>
     <section class="auth-bg-cover min-vh-100 p-4 p-lg-5 d-flex align-items-center justify-content-center">
         <div class="bg-overlay"></div>

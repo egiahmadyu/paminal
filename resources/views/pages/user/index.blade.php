@@ -46,9 +46,9 @@
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->getRoleNames()[0] }}</td>
                                     <td>
-                                        <a href="#"><button class="btn btn-sm btn-outline-info">Reset Password</button></a>
-                                        <a href="#"><button class="btn btn-sm btn-outline-warning">Edit User</button></a>
-                                        <a href="#"><button class="btn btn-sm btn-outline-danger">Hapus User</button></a>
+                                        <a href="#" type="button" class="btn btn-sm btn-outline-info">Reset Password</a>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="editData({{$user->id}})">Edit User</button>
+                                        <a href="/user/destroy/{{$user->id}}" type="button" class="btn btn-sm btn-outline-danger">Hapus User</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -58,6 +58,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="add_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -70,11 +71,11 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" name="name" required>
+                            <input type="text" class="form-control" name="name" id="name" required>
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" required>
+                            <input type="text" class="form-control" name="username" id="username" required>
                         </div>
                         <div class="mb-3">
                             <label for="datasemen" class="form-label">Bag / Detasemen</label>
@@ -96,11 +97,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="jabatan" class="form-label">Jabatan</label>
-                            <input type="text" class="form-control" name="jabatan" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" required>
+                            <input type="text" class="form-control" name="jabatan" id="jabatan" required>
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
@@ -181,5 +178,51 @@
             
         });
     });
+
+    function editData(id) {
+        let url = `/user/edit/${id}`
+        $.ajax(url, {
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function () {
+                Swal.fire({
+                    html: "<h5>Please Wait...</h5>",
+                    customClass: {
+                    },
+                    buttonsStyling: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                })
+                Swal.showLoading()
+            },
+            success: function (data, status, xhr) {   // success callback function
+                Swal.close()
+                console.log(data)
+                let datas = data.data
+                let user = datas.user
+                let datasemens = datas.all_datasemen
+                let datasamen = datas.datasemen
+
+                $('#name').val(user.name);
+                $('#username').val(user.username);
+                $('#jabatan').val(user.jabatan);
+
+                
+
+                $('#add_user').modal('toggle')
+            },
+            error: function (jqXhr, textStatus, errorMessage) { // error callback
+                $('.load_process').css('display', 'none')
+                let text = jqXhr.responseJSON?.message == undefined ? "Terjadi Kesalahan Pada Sistem!" : jqXhr.responseJSON.message
+                var option = {
+                    text: text,
+                    pos: 'top-center',
+                    backgroundColor: '#e7515a'
+                }
+                // Snackbar.show(option);
+                window[onerror](errorMessage);
+            }
+        })
+    }
 </script>
 @endsection

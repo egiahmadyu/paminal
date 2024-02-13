@@ -43,4 +43,9 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
+    function hasDatasemen()
+    {
+        return $this->hasOne(Datasemen::class, 'id', 'datasemen');
+    }
 }

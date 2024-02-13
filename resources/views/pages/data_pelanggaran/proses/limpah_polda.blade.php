@@ -28,29 +28,61 @@
 
                 <div class="f1-step active" style="width: 50%;">
                     <div class="f1-step-icon"><i class="fa fa-home"></i></div>
-                    <p>LIMPAH</p>
+                    <p>LIMPAH {{ $limpahPolda->polda->name }}</p>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-lg-12">
-        <h4>LIMPAH KE POLDA</h4>
-        <form action="/surat-limpah-polda/{{ $kasus->id }}" method="post">
+        <h4>DATA LIMPAH {{ $limpahPolda->polda->name }}</h4>
+        <form action="/update-limpah-polda/{{ $limpahPolda->id }}" method="post">
             @csrf
             <div>
                 <div class="row mb-3">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-4">
                         <label for="exampleInputEmail1" class="form-label">POLDA / SEDERAJAT</label>
-                        <input type="text" class="form-control border-dark" id="polda_limpah" readonly
-                            value="{{ $limpahPolda->polda->name }}">
+                        <select class="form-select border-dark" data-live-search="true"
+                            aria-label="Default select example" name="polda_id" id="polda_id" required>
+                            <option value="" disabled selected>PILIH MABES / POLDA</option>
+                            @if (isset($polda))
+                                @foreach ($polda as $key => $p)
+                                    <option value="{{ $p->id }}"
+                                        {{ $limpahPolda->polda_id == $p->id ? 'selected' : '' }}>
+                                        {{ $p->name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        {{-- <input type="text" class="form-control border-dark" id="polda_limpah" name="polda_id" value="{{ $limpahPolda->polda->name }}"> --}}
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-4">
                         <label for="exampleInputEmail1" class="form-label">TANGGAL LIMPAH</label>
-                        <input type="text" class="form-control border-dark" readonly value="{{ $tgl_limpah }}">
+                        {{-- <input type="text" class="form-control border-dark" name="tgl_limpah" value="{{ $tgl_limpah }}"> --}}
+                        <input type="text" name="tgl_limpah" class="form-control border-dark" data-provider="flatpickr" data-date-format="Y-m-d" id="datepicker" placeholder="Y-m-d"
+                        value="{{ isset($limpahPolda) ? $limpahPolda->tanggal_limpah : '' }}"
+                        readonly required>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-4">
                         <label for="exampleInputEmail1" class="form-label">PELIMPAH</label>
-                        <input type="text" class="form-control border-dark" readonly value="{{ $limpahPolda->user->name }}">
+                        <input type="text" class="form-control border-dark" value="{{ $limpahPolda->user->name }}" disabled>
+                    </div>
+                    <div class="col-lg-12 mb-4">
+                        <label for="exampleInputEmail1" class="form-label">HASIL TINDAK LANJUT</label>
+                        <select class="form-select border-dark" data-live-search="true"
+                            aria-label="Default select example" name="hasil_tinjut_polda" id="hasil_tinjut_polda">
+                            <option value="" disabled selected>PILIH HASIL TINJUT</option>
+                            <option value="1" {{ isset($limpahPolda) ? ($limpahPolda->hasil_tinjut_limpah == '1' ? 'selected' : '' ) : '' }}>DIPROSES POLDA</option>
+                            <option value="2" {{ isset($limpahPolda) ? ($limpahPolda->hasil_tinjut_limpah == '2' ? 'selected' : '' ) : '' }}>SELESAI</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12 mb-4">
+                        <label for="exampleInputEmail1" class="form-label">CATATAN</label>
+                        <textarea class="form-control border-dark" name="catatan" placeholder="Catatan" id="catatan" value="{{ isset($limpahPolda) ? ($limpahPolda->catatan ? '' : '' ) : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px">{{ isset($limpahPolda) ? ($limpahPolda->catatan ? $limpahPolda->catatan : '' ) : '' }}</textarea>
+                    </div>
+                    <div class="col-lg-12 mb-4">
+                        <a href="/surat-limpah-polda/{{ $limpahPolda->id }}" type="button" class="btn btn-outline-success">BUAT SURAT LIMPAH KE {{ $limpahPolda->polda->name }}</a>
+                        <a href="/penagihan-tinjut-polda/{{ $limpahPolda->polda_id }}" type="button" class="btn btn-outline-info">PENAGIHAN TINJUT {{ $limpahPolda->polda->name }}</a>
+                        <button type="submit" class="btn btn-outline-warning">UPDATE DATA</button>
                     </div>
                 </div>
 
@@ -65,7 +97,6 @@
                     </div>
                     
                 </div> --}}
-                <button type="submit" class="btn btn-primary" style="width: 100%">BUAT SURAT LIMPAH KE {{ $limpahPolda->polda->name }}</button>
             </div>
         </form>
     </div>
@@ -100,9 +131,24 @@
             e.preventDefault();
             alert($("#editorCopy").val());
         });
+
+        $("#datepicker").flatpickr({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+            language: 'id'
+        });
+
+        $('#polda_id').select2({
+            theme: "bootstrap-5",
+            width: 'resolve'
+        })
     });
 </script>
 
+
+<script type='text/javascript' src='{{ asset('assets/js/pages/form-pickers.init.js') }}'></script>
+<script type='text/javascript' src='{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}'></script>
 <script src="{{ asset('assets/tinymce/js/tinymce/tinymce.min.js') }}"></script>
 <script>
     tinymce.init({

@@ -49,6 +49,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('user', [UserController::class, 'index']);
     Route::post('user/save', [UserController::class, 'store']);
+    Route::get('user/destroy/{id}', [UserController::class, 'destroy']);
+    Route::get('user/edit/{id}', [UserController::class, 'edit']);
+    Route::post('user/update/{id}', [UserController::class, 'update']);
 
     Route::get('role', [RoleController::class, 'index']);
     Route::post('role/save', [RoleController::class, 'save']);
@@ -132,7 +135,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/lembar-disposisi/{id}', [LimpahPoldaController::class, 'generateDisposisi'])->name('post.lembar.disposisi');
     Route::get('/surat-li_infosus/{id}', [LimpahPoldaController::class, 'generateLiInfosus']);
     // Route::get('/lembar-disposisi/{id}/{type}', [LimpahPoldaController::class, 'downloadDisposisi']);
-    Route::post('/surat-limpah-polda/{id}', [LimpahPoldaController::class, 'generateLimpahPolda']);
+    Route::get('/surat-limpah-polda/{id}', [LimpahPoldaController::class, 'generateLimpahPolda']);
+    Route::post('/update-limpah-polda/{id}', [LimpahPoldaController::class, 'updateDataLimpahPolda']);
+    Route::get('/penagihan-tinjut-polda/{id}', [LimpahPoldaController::class, 'penagihanTinjutPolda']);
     Route::get('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);
     Route::get('/surat-perintah-pengantar/{id}', [PulbaketController::class, 'printSuratPengantarSprin']);
     Route::post('/surat-perintah/{id}', [PulbaketController::class, 'printSuratPerintah']);

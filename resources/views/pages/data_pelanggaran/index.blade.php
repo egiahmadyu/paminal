@@ -3,6 +3,10 @@
 @prepend('styles')
     <link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/responsive.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <style>
         .box-1 {
             width: 8px;
@@ -137,44 +141,115 @@
             </div>
         </div>
     @endif
-
-    <div class="card">
-        <div class="card-header">
-            FILTER
-        </div>
-        <div class="card-body">
-            @if ($user->hasRole('operator') || $user->hasRole('admin'))
-                <button type="button" class="btn btn-outline-success" id="f-disposisi-binpam" onclick="filter('disposisi-binpam')">DISPOSISI BINPAM</button>
-            @elseif ($user->hasRole('min') || $user->hasRole('admin'))
-                <button type="button" class="btn btn-outline-success" id="f-disposisi-bagden" onclick="filter('disposisi-bagden')">DISTRIBUSI BAG / DEN</button>
-            @else
-                <button type="button" class="btn btn-outline-success" id="f-disposisi-unit" onclick="filter('disposisi-unit')">DISPOSISI UNIT</button>
-            @endif
-            <button type="button" class="btn btn-outline-success" id="f-diterima" onclick="filter('diterima')">DITERIMA</button>
-            <button type="button" class="btn btn-outline-success" id="f-diproses" onclick="filter('diproses')">DIPROSES</button>
-            <button type="button" class="btn btn-outline-success" id="f-selesai" onclick="filter('selesai')">SELESAI</button>
-        </div>
-    </div>
-
+    
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-2">
+            <div class="card">
+                <div class="card-header">
+                    <h5>FILTER</h5>
+                    <a type="button" href="" id="tinjut-polda" hidden></a>
+                </div>
+                <div class="card-body">
+                    <form action="javascript:void(0)" method="post" id="form-filter">
+                        @csrf
+                        <input type="hidden" name="filter" value="1">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="disposisi-bagden" id="disposisi-bagden">
+                            <label class="form-check-label" for="disposisi-bagden">
+                              DISTRIBUSI BAG / DEN
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="disposisi-unit" id="disposisi-unit" name="disposisi-unit">
+                            <label class="form-check-label" for="disposisi-unit">
+                              DISPOSISI UNIT
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="diterima" id="diterima" name="diterima">
+                            <label class="form-check-label" for="diterima">
+                              DITERIMA
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="diproses" id="diproses" name="diproses">
+                            <label class="form-check-label" for="diproses">
+                              DIPROSES
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="selesai" id="selesai" name="selesai">
+                            <label class="form-check-label" for="selesai">
+                              SELESAI
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="selesai-tidak-benar" id="selesai-tidak-benar" name="selesai-tidak-benar">
+                            <label class="form-check-label" for="selesai-tidak-benar">
+                              SELESAI TIDAK BENAR
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="rj" id="rj" name="rj">
+                            <label class="form-check-label" for="rj">
+                              RESTORATIVE JUSTICE
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="limpah-biro" id="limpah-biro" name="limpah-biro">
+                            <label class="form-check-label" for="limpah-biro">
+                              LIMPAH BIRO
+                            </label>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="limpah-polda" id="limpah-polda" name="limpah-polda">
+                            <label class="form-check-label" for="limpah-polda">
+                              LIMPAH POLDA
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="diproses-polda" id="diproses-polda" name="diproses-polda">
+                            <label class="form-check-label" for="diproses-polda">
+                              DIPROSES POLDA
+                            </label>
+                        </div>
+
+                        <div class="form-control" id="select-polda" hidden>
+                            <select class="form-select border-dark" aria-label="Default select example" name="selected_polda" id="selected_polda">
+                                <option value="">PILIH POLDA</option>
+                                @foreach ($poldas as $polda)
+                                    <option value={{$polda->id}}>{{ $polda->name }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="form-custom">
+                        <button type="button" id="button-filter" class="btn btn-outline-secondary" onclick="filter()" style="width: 100%">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4></br>
-                    <p>
-                        KETERANGAN : 
-                        <div class="box-1"></div> DISPOSISI KE BINPAM
-                        <div class="box-2"></div> DISTRIBUSI KE BAG/DEN
-                        <div class="box-3"></div> DISPOSISI KE UNIT
-                        <div class="box-4"></div> SELESAI (LIMPAH POLDA)
-                        <div class="box-5"></div> SELESAI (LIMPAH BRIO)
-                        <div class="box-6"></div> SELESAI (RJ)
-                    </p>
+                    <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
                 </div><!-- end card header -->
 
                 <div class="card-body">
-                    <div class="table-responsive table-card px-3">
-                        <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
+                    <div class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <table class="table mb-0" id="data-data">
                             <thead class="text-muted table-light">
                                 <tr>
                                     <th scope="col">NO. NOTA DINAS</th>
@@ -191,31 +266,72 @@
                         </table>
                     </div>
                 </div>
+                <div class="card-footer">
+                    KETERANGAN : 
+                    <div class="row d-flex align-items-center">
+                        <div class="box-1"></div> DISPOSISI KE BINPAM
+                        <div class="box-2"></div> DISTRIBUSI KE BAG/DEN
+                        <div class="box-3"></div> DISPOSISI KE UNIT
+                        <div class="box-4"></div> DIPROSES POLDA
+                        <div class="box-5"></div> SELESAI (LIMPAH BIRO)
+                        <div class="box-6"></div> SELESAI (RJ)
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 @endsection
 
 @section('scripts')
+    {{-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script> --}}
     <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            var table;
+            var table
             getData()
+
+            $('#selected_polda').select2({
+                theme: "bootstrap-5",
+                width: 'resolve'
+            })
+
+            
+            $('#diproses-polda').on("change", function() {
+                if ($(this).is(":checked")) {
+                    $('#select-polda').removeAttr('hidden')
+                } else {
+                    $('#select-polda').attr('hidden','hidden')
+                }
+            })
         });
 
-        function filter(value) {
-            // alert(value)
+        function filter() {
             table.destroy();
-            getData(value)
+            let form =  $("#form-filter").serializeArray()
+
+            getData(form)
         }
 
         function getData(filter) {
+            let button = buttonBuatLaporanTinjutPolda()
+
             $('data-data').DataTable().destroy();
-            console.log(filter);
+
             table = $('#data-data').DataTable({
                 // retrieve: true,
+                dom: 'lBfrtip',
+                paging: "true",
                 processing: true,
                 serverSide: true,
                 searching: true,
@@ -229,6 +345,7 @@
                         // data.jenis_pelanggaran = $('#jenis_pelanggaran').val(),
                         // data.pangkat = $('#pangkat').val(),
                         // data.wujud_perbuatan = $('#wujud_perbuatan').val()
+                        // formName: 'form-filter'
                     }
                 },
                 columns: [
@@ -276,12 +393,30 @@
                 ],
                 createdRow: (row, data, dataIndex, cells) => {
                     $(cells[3]).css('background-color', data.status_color)
-                }
+                },
+                buttons: [
+                    'csv', 'excel', 'pdf', 'print'
+                ]
             });
-            $('#kt_search').on('click', function(e) {
-                e.preventDefault();
-                table.table().draw();
-            });
+            
+            if ($('#diproses-polda').is(":checked")) {
+                $('.dt-buttons').append(button)
+                $('#select-polda').removeAttr('hidden')
+            }
+
+            if ($('#selected_polda').val() != '') {
+                $('#print-tinjut-polda').removeAttr('hidden')
+            } else {
+                $('#print-tinjut-polda').attr('hidden','hidden')
+            }
+        }
+
+        function buttonBuatLaporanTinjutPolda() {
+            const id = $( "#selected_polda option:selected" ).val();
+            let url = `/penagihan-tinjut-polda/${id}`
+
+            html = `<a href="${url}"><button class="dt-button buttons-print-buat-laporan-tinjut" id="print-tinjut-polda" tabindex="0" aria-controls="data-data" type="button" hidden><span>Buat Laporan Tinjut Polda</span></button></a>`
+            return html
         }
     </script>
 @endsection

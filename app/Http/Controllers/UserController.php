@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Datasemen;
 use App\Models\Unit;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -33,7 +34,7 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'username' => strtolower($request->username),
-                'password' => bcrypt($request->password),
+                'password' => bcrypt('Paminal123456'),
                 'jabatan' => $request->jabatan,
                 'datasemen' => $request->datasemen,
                 'unit' => $request->unit
@@ -44,6 +45,25 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Failed Create User');
         }
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        $datasemens = Datasemen::all();
+        $datasemen = $datasemens->find($user->datasemen);
+        $data = [
+            'user' => $user,
+            'all_datasemen' => $datasemens,
+            'password' => bcrypt('Paminal123456'),
+            'datasemen' => $datasemen,
+        ];
+
+        return response()->json([
+            'status' => JsonResponse::HTTP_OK,
+            'message' => 'OK!',
+            'data' => $data,
+        ]);
     }
 
     public function destroy($id)

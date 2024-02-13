@@ -20,4 +20,5 @@ final class StatusDumas extends Enum
     const LimpahBiro = 6;
     const RestorativeJustice = 7;
     const SelesaiTidakBenar = 8;
+    const DiprosesPolda = 9;
 }

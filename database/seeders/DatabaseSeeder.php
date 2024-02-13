@@ -19,12 +19,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         Permission::create(['name' => 'manage-auth']);
         $adminRole = Role::create(['name' => 'admin']);
         $permission = Permission::where('name', 'manage-auth')->first();
@@ -37,53 +31,25 @@ class DatabaseSeeder extends Seeder
         ]);
         $user->assignRole($adminRole);
 
-        $adminRole = Role::create(['name' => 'operator']);
-        $user = User::create([
-            'name' => 'egi',
-            'username' => 'egiahmadyu',
-            'password' => bcrypt('Paminal12345')
-        ]);
-        $user->assignRole($adminRole);
-
-        Process::create([
-            'name' => 'Diterima'
-        ]);
-
-        Process::create([
-            'name' => 'Disposisi'
-        ]);
-
-        Process::create([
-            'name' => 'Limpah'
-        ]);
-
-        Process::create([
-            'name' => 'Pulbaket'
-        ]);
-
-        Process::create([
-            'name' => 'Gelar Penyidikan'
-        ]);
-
-        Process::create([
-            'name' => 'Nota Dinas Hasil Gelar'
-        ]);
+        // $adminRole = Role::create(['name' => 'operator']);
+        // $user = User::create([
+        //     'name' => 'egi',
+        //     'username' => 'egiahmadyu',
+        //     'password' => bcrypt('Paminal12345')
+        // ]);
+        // $user->assignRole($adminRole);
 
         // $this->call([
         //     AgamaSeeder::class,
         //     JenisKelaminSeed::class,
         //     JenisIdentitasSeeder::class,
         //     DataPelanggarSeed::class,
-        //     // PoldaSeed::class,
+        //     PoldaSeed::class,
         //     PangkatSeeder::class,
         //     WujudPerbuatanSeeder::class,
         //     DatasemenSeeder::class,
         //     UnitSeeder::class,
         //     DataAnggotaSeeder::class,
-        // ]);
-
-        // Process::create([
-        //     'name' => 'Diterima'
         // ]);
     }
 }
