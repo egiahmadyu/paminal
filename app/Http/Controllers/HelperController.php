@@ -115,8 +115,8 @@ class HelperController extends Controller
                 $data->join('limpah_poldas as lp', 'lp.data_pelanggar_id', '=', 'data_pelanggars.id')
                     ->join('poldas', 'poldas.id', '=', 'lp.polda_id')
                     ->select('data_pelanggars.*')
-                    ->where('data_pelanggars.status_id', 9)
-                    ->where('poldas.id', $polda->id);
+                    ->orwhere('data_pelanggars.status_id', 9)
+                    ->orwhere('poldas.id', $polda->id);
             }
         }
 

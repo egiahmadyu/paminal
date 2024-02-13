@@ -373,9 +373,9 @@ class KasusController extends Controller
                     if ($data->status->id == StatusDumas::SelesaiTidakBenar) {
                         $color = 'background-color: #c90e0e;color:white';
                     }
-                    // if ($data->status_id == StatusDumas::Diterima) {
-                    //     $color = 'background-color: #DBFF33;color:black';
-                    // }
+                    if ($data->status->id == StatusDumas::LimpahBiro) {
+                        $color = 'background-color: #B8BE25';
+                    }
 
 
                     return $disposisi_exists ? $color : '';

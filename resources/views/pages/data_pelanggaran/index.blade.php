@@ -43,8 +43,8 @@
         .box-5 {
             width: 8px;
             height: 8px;
-            border: 1px solid #DBFF33;
-            background-color: #DBFF33;
+            border: 1px solid #B8BE25;
+            background-color: #B8BE25;
             padding: 10px;
             margin: 10px;
         }
@@ -395,7 +395,7 @@
                     $(cells[3]).css('background-color', data.status_color)
                 },
                 buttons: [
-                    'csv', 'excel', 'pdf', 'print'
+                    'excel', 'pdf', 'word'
                 ]
             });
             
