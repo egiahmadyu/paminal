@@ -298,13 +298,14 @@
 
                             <div class="col-lg-12 mb-3"
                                 {{ isset($kasus) ? ($kasus->evidences ? '' : 'hidden') : '' }}>
-                                @foreach ($evidences as $key => $evidence)
-                                    <label for="no_telp" class="form-label">
-                                        BUKTI DATA PENDUKUNG {{ $key + 1 }}.
-                                        <a href="{{ $evidence }}">{{ $evidence }}</a>
-                                    </label><br />
-                                @endforeach
-
+                                @if (isset($kasus->evidences))
+                                    @foreach ($evidences as $key => $evidence)
+                                        <label for="no_telp" class="form-label">
+                                            BUKTI DATA PENDUKUNG {{ $key + 1 }}.
+                                            <a href="{{ $evidence }}">{{ $evidence }}</a>
+                                        </label><br />
+                                    @endforeach    
+                                @endif
                             </div>
                         </div>
                     </div>
