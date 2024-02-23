@@ -96,18 +96,19 @@
                 @endcan
                 
             </div>
+
+            {{-- <button class="btn btn-success" name="type_submit" value="update_status">LANJUTKAN KE PULBAKET</button> --}}
             <!-- Submit data / Update status button -->
             {{-- <div class="row">
                 <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-6">
-                            <button class="btn btn-update-diterima btn-success" type="submit" value="update_data" name="type_submit">
-                                <i class="far fa-upload"></i> Update Data
-                            </button>
-                        </div>
-                    </div>
+                    <button class="btn btn-update-diterima btn-success" type="submit" value="update_data" name="type_submit">
+                        <i class="far fa-upload"></i> LANJUTKAN KE PULBAKET
+                    </button>
                 </div>
             </div> --}}
+            <button class="btn btn-update-diterima btn-info" type="submit" value="update_status" name="type_submit">
+                <i class="far fa-upload"></i> LANJUTKAN KE PULBAKET
+            </button>
         </form>
     </div>
 </div>

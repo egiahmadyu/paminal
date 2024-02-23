@@ -486,50 +486,60 @@ class KasusController extends Controller
 
     public function updateStatus(Request $request)
     {
-        if ($request->disposisi_tujuan != 3) {
-            $data = DataPelanggar::where('id', $request->kasus_id)->first();
-            $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id)->where('tipe_disposisi', 3)->first();
+        $data = DataPelanggar::where('id', $request->kasus_id)->first();
 
-            if ($disposisi && isset($disposisi->limpah_unit)) {
-                if ($request->disposisi_tujuan == 5) {
-                    $pulbaket[0] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 1)->first();
-                    $pulbaket[1] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 2)->first();
-                    $pulbaket[2] = BaiPelapor::where('data_pelanggar_id', $data->id)->first();
-                    $pulbaket[3] = BaiTerlapor::where('data_pelanggar_id', $data->id)->first();
-                    $pulbaket[4] = LHPHistory::where('data_pelanggar_id', $data->id)->first();
-                    $pulbaket[5] = NdPermohonanGelar::where('data_pelanggar_id', $data->id)->first();
+        if ($data->tipe_data != 1) {
+            $data->update([
+                'status_id' => 4
+            ]);
 
-                    $keyPulbaket = ['UNDANGAN KLARIFIKASI PELAPOR', 'UNDANGAN KLARIFIKASI TERLAPOR', 'BAI PELAPOR', 'BAI TERLAPOR', 'LAPORAN HASIL PENYELIDIKAN', 'NOTA DINAS PERMOHONAN GELAR PERKARA'];
-                    foreach ($pulbaket as $key => $value) {
-                        if (!$value) {
-                            return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
+            return redirect()->back();
+        } else {
+            if ($request->disposisi_tujuan != 3) {
+                $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id)->where('tipe_disposisi', 3)->first();
+
+                if ($disposisi && isset($disposisi->limpah_unit)) {
+                    if ($request->disposisi_tujuan == 5) {
+                        $pulbaket[0] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 1)->first();
+                        $pulbaket[1] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 2)->first();
+                        $pulbaket[2] = BaiPelapor::where('data_pelanggar_id', $data->id)->first();
+                        $pulbaket[3] = BaiTerlapor::where('data_pelanggar_id', $data->id)->first();
+                        $pulbaket[4] = LHPHistory::where('data_pelanggar_id', $data->id)->first();
+                        $pulbaket[5] = NdPermohonanGelar::where('data_pelanggar_id', $data->id)->first();
+
+                        $keyPulbaket = ['UNDANGAN KLARIFIKASI PELAPOR', 'UNDANGAN KLARIFIKASI TERLAPOR', 'BAI PELAPOR', 'BAI TERLAPOR', 'LAPORAN HASIL PENYELIDIKAN', 'NOTA DINAS PERMOHONAN GELAR PERKARA'];
+                        foreach ($pulbaket as $key => $value) {
+                            if (!$value) {
+                                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
+                            }
+                        }
+                    } elseif ($request->disposisi_tujuan == 6) {
+                        $pulbaket[0] = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $data->id)->first();
+                        $pulbaket[1] = Sp2hp2Hisory::where('data_pelanggar_id', $data->id)->where('tipe', 'akhir')->first();
+                        $pulbaket[2] = LitpersHistory::where('data_pelanggar_id', $data->id)->first();
+
+                        $keyPulbaket = ['NOTA DINAS HASIL GELAR PERKARA', 'SP2HP2 AKHIR', 'NOTA DINAS KA. LITPERS'];
+                        foreach ($pulbaket as $key => $value) {
+                            if (!$value) {
+                                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
+                            }
                         }
                     }
-                } elseif ($request->disposisi_tujuan == 6) {
-                    $pulbaket[0] = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $data->id)->first();
-                    $pulbaket[1] = Sp2hp2Hisory::where('data_pelanggar_id', $data->id)->where('tipe', 'akhir')->first();
-                    $pulbaket[2] = LitpersHistory::where('data_pelanggar_id', $data->id)->first();
 
-                    $keyPulbaket = ['NOTA DINAS HASIL GELAR PERKARA', 'SP2HP2 AKHIR', 'NOTA DINAS KA. LITPERS'];
-                    foreach ($pulbaket as $key => $value) {
-                        if (!$value) {
-                            return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
-                        }
-                    }
+                    $data->update([
+                        'status_id' => $request->disposisi_tujuan
+                    ]);
+
+                    return redirect()->back();
+                } elseif ($disposisi && !isset($disposisi->limpah_unit)) {
+                    return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Limpah Unit (Penyelidik) belum ditentukan');
+                } {
+                    return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Disposisi Ka. Den A belum dibuat');
                 }
-
-                $data->update([
-                    'status_id' => $request->disposisi_tujuan
-                ]);
-
-                return redirect()->back();
-            } elseif ($disposisi && !isset($disposisi->limpah_unit)) {
-                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Limpah Unit (Penyelidik) belum ditentukan');
-            } {
-                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Disposisi Ka. Den A belum dibuat');
             }
+
+            return $this->limpahToPolda($request);
         }
-        return $this->limpahToPolda($request);
     }
 
     public function viewProcess($kasus_id, $status_id)
