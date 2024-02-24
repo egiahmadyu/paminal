@@ -32,7 +32,9 @@
                     <label for="tipe_data" class="form-label">TIPE ADUAN</label>
                     <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="tipe_data" id="tipe_data" required>
                         <option value="">PILIH TIPE ADUAN</option>
-                        <option value="1" {{ old('tipe_data') == 1 ? 'selected' : '' }}>ADUAN MASYARAKAT</option>
+                        @can('input-dumas')
+                            <option value="1" {{ old('tipe_data') == 1 ? 'selected' : '' }}>ADUAN MASYARAKAT</option>
+                        @endcan
                         @can('infosus-li')
                             <option value="2" {{ old('tipe_data') == 2 ? 'selected' : '' }}>INFO KHUSUS</option>
                             <option value="3" {{ old('tipe_data') == 3 ? 'selected' : '' }}>LAPORAN INFORMASI</option>

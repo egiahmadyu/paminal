@@ -46,6 +46,7 @@
         <form action="/data-kasus/update" method="post" id="form_input_data">
             @csrf
             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden name="kasus_id">
+            <input type="text" class="form-control" value="4" hidden name="disposisi_tujuan">
             
             <div class="row">
                 <!--Disposisi Button-->

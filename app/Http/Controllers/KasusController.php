@@ -273,7 +273,6 @@ class KasusController extends Controller
 
     public function data(Request $request)
     {
-        // dd($request->filter['diterima']);
         $user = Auth::getUser();
         $role = $user->roles->first();
 
@@ -283,37 +282,12 @@ class KasusController extends Controller
             if ($request->has('filter')) {
                 $query = HelperController::dataFilter($query, $request->filter);
             }
-        } elseif (!$user->unit && !$user->datasemen) {
-            $query = DataPelanggar::orderBy('created_at', 'asc')->with('status');
-            if ($request->has('filter')) {
-                $query = HelperController::dataFilter($query, $request->filter);
-            }
-        } elseif (!$user->unit && $user->datasemen) {
-            $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
-                ->select('data_pelanggars.*')
-                ->where('dh.limpah_den', $user->datasemen)
-                ->where('dh.tipe_disposisi', '=', 3)
-                ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
-            if ($request->has('filter')) {
-                $query = HelperController::dataFilter($query, $request->filter);
-            }
-        } else {
-            $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
-                ->select('data_pelanggars.*')
-                ->where('dh.limpah_unit', '=', $user->unit)
-                ->where('dh.limpah_den', $user->datasemen)
-                ->where('dh.tipe_disposisi', '=', 3)
-                ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
-            if ($request->has('filter')) {
-                $query = HelperController::dataFilter($query, $request->filter);
-            }
-        }
-
-        if ($role->name == 'min') {
+        } elseif ($role->name == 'min') {
             if ($user->hasDatasemen->name == 'BAGBINPAM') {
                 $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
                     ->select('data_pelanggars.*')
                     ->where('dhf.tipe_disposisi', 1)
+                    ->where('data_pelanggars.tipe_data', '1')
                     ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
             } else {
                 $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
@@ -322,12 +296,56 @@ class KasusController extends Controller
                     ->where('dhf.limpah_den', $user->datasemen)
                     ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
             }
+        } else {
+            if (!$user->unit && !$user->datasemen) {
+                $query = DataPelanggar::orderBy('created_at', 'asc')
+                    ->where('data_pelanggars.tipe_data', '1')
+                    ->with('status');
+                if ($request->has('filter')) {
+                    $query = HelperController::dataFilter($query, $request->filter);
+                }
+            } elseif (!$user->unit && $user->datasemen) {
+                $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->select('data_pelanggars.*')
+                    ->where('dh.limpah_den', $user->datasemen)
+                    ->where('dh.tipe_disposisi', '=', 3)
+                    ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+                if ($request->has('filter')) {
+                    $query = HelperController::dataFilter($query, $request->filter);
+                }
+            } else {
+                $query = DataPelanggar::leftJoin('disposisi_histories as dh', 'dh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->select('data_pelanggars.*')
+                    ->where('dh.limpah_unit', '=', $user->unit)
+                    ->where('dh.limpah_den', $user->datasemen)
+                    ->where('dh.tipe_disposisi', '=', 3)
+                    ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+                if ($request->has('filter')) {
+                    $query = HelperController::dataFilter($query, $request->filter);
+                }
+            }
         }
+
+        // if ($role->name == 'min') {
+        //     if ($user->hasDatasemen->name == 'BAGBINPAM') {
+        //         $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
+        //             ->select('data_pelanggars.*')
+        //             ->where('dhf.tipe_disposisi', 1)
+        //             ->where('data_pelanggars.tipe_data', '1')
+        //             ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+        //     } else {
+        //         $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
+        //             ->select('data_pelanggars.*')
+        //             ->where('dhf.tipe_disposisi', 2)
+        //             ->where('dhf.limpah_den', $user->datasemen)
+        //             ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
+        //     }
+        // }
 
         $table = DataTables::of($query->get())
             ->editColumn('no_nota_dinas', function ($query) {
                 // return $query->no_nota_dinas;
-                if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '">Edit Data</a>';
+                if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '" style="color:#ffffff">Edit Data</a>';
                 return '<a href="/data-kasus/detail/' . $query->id . '" class="text-dark">' . $query->no_nota_dinas . '</a>';
             })
             ->editColumn('created_at', function ($query) {
@@ -488,58 +506,50 @@ class KasusController extends Controller
     {
         $data = DataPelanggar::where('id', $request->kasus_id)->first();
 
-        if ($data->tipe_data != 1) {
-            $data->update([
-                'status_id' => 4
-            ]);
+        if ($request->disposisi_tujuan != 3) {
+            $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id)->where('tipe_disposisi', 3)->first();
 
-            return redirect()->back();
-        } else {
-            if ($request->disposisi_tujuan != 3) {
-                $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id)->where('tipe_disposisi', 3)->first();
+            if ($disposisi && isset($disposisi->limpah_unit)) {
+                if ($request->disposisi_tujuan == 5) {
+                    $pulbaket[0] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 1)->first();
+                    $pulbaket[1] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 2)->first();
+                    $pulbaket[2] = BaiPelapor::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[3] = BaiTerlapor::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[4] = LHPHistory::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[5] = NdPermohonanGelar::where('data_pelanggar_id', $data->id)->first();
 
-                if ($disposisi && isset($disposisi->limpah_unit)) {
-                    if ($request->disposisi_tujuan == 5) {
-                        $pulbaket[0] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 1)->first();
-                        $pulbaket[1] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 2)->first();
-                        $pulbaket[2] = BaiPelapor::where('data_pelanggar_id', $data->id)->first();
-                        $pulbaket[3] = BaiTerlapor::where('data_pelanggar_id', $data->id)->first();
-                        $pulbaket[4] = LHPHistory::where('data_pelanggar_id', $data->id)->first();
-                        $pulbaket[5] = NdPermohonanGelar::where('data_pelanggar_id', $data->id)->first();
-
-                        $keyPulbaket = ['UNDANGAN KLARIFIKASI PELAPOR', 'UNDANGAN KLARIFIKASI TERLAPOR', 'BAI PELAPOR', 'BAI TERLAPOR', 'LAPORAN HASIL PENYELIDIKAN', 'NOTA DINAS PERMOHONAN GELAR PERKARA'];
-                        foreach ($pulbaket as $key => $value) {
-                            if (!$value) {
-                                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
-                            }
-                        }
-                    } elseif ($request->disposisi_tujuan == 6) {
-                        $pulbaket[0] = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $data->id)->first();
-                        $pulbaket[1] = Sp2hp2Hisory::where('data_pelanggar_id', $data->id)->where('tipe', 'akhir')->first();
-                        $pulbaket[2] = LitpersHistory::where('data_pelanggar_id', $data->id)->first();
-
-                        $keyPulbaket = ['NOTA DINAS HASIL GELAR PERKARA', 'SP2HP2 AKHIR', 'NOTA DINAS KA. LITPERS'];
-                        foreach ($pulbaket as $key => $value) {
-                            if (!$value) {
-                                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
-                            }
+                    $keyPulbaket = ['UNDANGAN KLARIFIKASI PELAPOR', 'UNDANGAN KLARIFIKASI TERLAPOR', 'BAI PELAPOR', 'BAI TERLAPOR', 'LAPORAN HASIL PENYELIDIKAN', 'NOTA DINAS PERMOHONAN GELAR PERKARA'];
+                    foreach ($pulbaket as $key => $value) {
+                        if (!$value) {
+                            return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
                         }
                     }
+                } elseif ($request->disposisi_tujuan == 6) {
+                    $pulbaket[0] = NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $data->id)->first();
+                    $pulbaket[1] = Sp2hp2Hisory::where('data_pelanggar_id', $data->id)->where('tipe', 'akhir')->first();
+                    $pulbaket[2] = LitpersHistory::where('data_pelanggar_id', $data->id)->first();
 
-                    $data->update([
-                        'status_id' => $request->disposisi_tujuan
-                    ]);
-
-                    return redirect()->back();
-                } elseif ($disposisi && !isset($disposisi->limpah_unit)) {
-                    return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Limpah Unit (Penyelidik) belum ditentukan');
-                } {
-                    return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Disposisi Ka. Den A belum dibuat');
+                    $keyPulbaket = ['NOTA DINAS HASIL GELAR PERKARA', 'SP2HP2 AKHIR', 'NOTA DINAS KA. LITPERS'];
+                    foreach ($pulbaket as $key => $value) {
+                        if (!$value) {
+                            return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', $keyPulbaket[$key] . ' BELUM DIBUAT');
+                        }
+                    }
                 }
-            }
 
-            return $this->limpahToPolda($request);
+                $data->update([
+                    'status_id' => $request->disposisi_tujuan
+                ]);
+
+                return redirect()->back();
+            } elseif ($disposisi && !isset($disposisi->limpah_unit)) {
+                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Limpah Unit (Penyelidik) belum ditentukan');
+            } {
+                return redirect()->route('kasus.detail', ['id' => $data->id])->with('error', 'Disposisi Ka. Den A belum dibuat');
+            }
         }
+
+        return $this->limpahToPolda($request);
     }
 
     public function viewProcess($kasus_id, $status_id)
