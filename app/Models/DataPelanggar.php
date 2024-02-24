@@ -35,4 +35,19 @@ class DataPelanggar extends Model
     {
         return $this->hasOne(Polda::class, 'id', 'wilayah_hukum');
     }
+
+    public function wujudPerbuatan()
+    {
+        return $this->hasOne(WujudPerbuatan::class, 'id', 'wujud_perbuatan');
+    }
+
+    public function JenisKelamin()
+    {
+        return $this->hasOne(JenisKelamin::class, 'id', 'jenis_kelamin');
+    }
+
+    public function pangkatTerlapor()
+    {
+        return $this->hasOne(Pangkat::class, 'id', 'pangkat');
+    }
 }

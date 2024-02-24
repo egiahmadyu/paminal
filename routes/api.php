@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\APILimpahBiroController;
 use App\Http\Controllers\HelperController;
 use App\Http\Controllers\PoldaController;
 use App\Http\Controllers\YanduanController;
@@ -28,3 +29,5 @@ Route::get('get-unit/{bag_den}', [HelperController::class, 'getUnit']);
 Route::post('yanduan', [YanduanController::class, 'getData']);
 Route::post('get-data-yanduan', [YanduanController::class, 'getDataYanduan']);
 Route::get('import-pangkat', [YanduanController::class, 'importPangkat']);
+
+Route::get('limpah-wabprof/{id}', [APILimpahBiroController::class, 'limpahWabprof']);
