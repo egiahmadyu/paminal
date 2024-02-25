@@ -61,16 +61,16 @@ class APILimpahBiroController extends Controller
         if ($data->tipe_data == '1') {
             $body['kronologi'] = $data->kronologi;
         } elseif ($data->tipe_data == '2') {
-            $kronologi = json_decode($data->kronologi, true);
+            $kronologi = json_decode($data->kronologi);
             // dd($kronologi);
-            $body['fakta_fakta'] = json_encode($kronologi['kronologis'], true);
-            $body['catatan'] = json_encode($kronologi['catatan'], true);
+            $body['fakta_fakta'] = $kronologi['kronologis'];
+            $body['catatan'] = $kronologi['catatan'];
         } else {
             $kronologi = json_decode($data->kronologi);
             $body['fakta_fakta'] = $kronologi['kronologis'];
             $body['pendapat_pelapor'] = $kronologi['catatan'];
         }
-        dd(json_encode($body));
+        // dd(json_encode($body));
         // return response()->json($body);
 
         $result = $this->process_limpah($body);
