@@ -250,7 +250,7 @@
                                 @if (isset($pangkat))
                                     @foreach ($pangkat as $key => $p)
                                         <option value="{{ $p->id }}" {{ old('pangkat') == $p->id ? 'selected' : '' }}>
-                                            {{ $p->name }}
+                                            {{ $p->alias }}
                                         </option>
                                     @endforeach
                                 @endif
@@ -335,7 +335,7 @@
 
                         <div class="col-lg-12 mb-3" id="btn_add_kronologi" hidden>
                             <div class="col-lg-12 mb-3">
-                                <button class="btn btn-success" id="add_kronologi">TAMBAH FAKTA-FAKTA</button>
+                                <button type="button" class="btn btn-success" id="add_kronologi">TAMBAH FAKTA-FAKTA</button>
                             </div>
                         </div>
 
@@ -350,7 +350,7 @@
 
                         <div class="col-lg-12 mb-3" id="btn_add_catatan" hidden>
                             <div class="col-lg-12 mb-3">
-                                <button class="btn btn-success" id="add_catatan">TAMBAH CATATAN</button>
+                                <button type="button" class="btn btn-success" id="add_catatan">TAMBAH CATATAN</button>
                             </div>
                         </div>
 

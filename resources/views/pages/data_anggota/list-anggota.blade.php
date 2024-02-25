@@ -70,7 +70,7 @@
                                             <option value="">-- PILIH PANGKAT --</option>
                                             @foreach ($pangkat as $key => $p)
                                                 <option value="{{ $p->id }}">
-                                                    {{ $p->name }}
+                                                    {{ $p->alias }}
                                                 </option>
                                             @endforeach
                                         @endif
@@ -155,7 +155,7 @@
                         let option = ''
                         pangkat.forEach(element => {
                             let opt = `<option value="` + element.id + `">` + element
-                                .name + `</option>`
+                                .alias + `</option>`
                             option += opt
                         });
                         let html =
@@ -235,13 +235,12 @@
 
                     let option = ''
                     pangkat.forEach(element => {
-                        console.log(element.id)
                         let selected = ''
                         if (element.id == anggota.pangkat) {
                             selected = 'selected'
                         }
                         option += '<option value="' + element.id + '" ' + selected + '>' + element
-                            .name + '</option>'
+                            .alias + '</option>'
                     });
 
                     console.log(anggota)

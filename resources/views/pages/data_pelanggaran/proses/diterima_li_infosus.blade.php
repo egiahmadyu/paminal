@@ -137,10 +137,11 @@
             </div>
             <form action="/lembar-disposisi/{{ $kasus->id }}" method="post">
                 @csrf
+                <input type="hidden" name="tipe_data" value="{{ $kasus->tipe_data }}">
                 <div class="modal-body">
                     <div class="form-floating mb-3" id="form_agenda">
-                        <input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="NOMOR SURAT :" {{ !is_null($disposisi[2]['no_agenda']) ? 'disabled' : '' }} required>
-                        <label for="nomor_agenda" class="form-label">NOMOR SURAT :</label>
+                        <input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="NOMOR :" value="{{ !is_null($disposisi[2]['no_agenda']) ? $disposisi[2]['no_agenda'] : '' }}" {{ !is_null($disposisi[2]['no_agenda']) ? 'readonly' : '' }} required>
+                        <label for="nomor_agenda" class="form-label">NOMOR :</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="klasifikasi" id="klasifikasi" disabled required>
@@ -198,7 +199,7 @@
         let is_disabled = false;
         if (modal.id == 'karosesro') {
             $('#title_modal_disposisi').text('Permohonan penomoran surat {{ $kasus->tipe_data == 2 ? 'Informasi Khusus' : 'Laporan Informasi' }} kepada Karo/Sesro');
-            let disabled = `{{ isset($disposisi[2]['no_agenda']) ? 'disabled' : '' }}`;
+            let disabled = `{{ isset($disposisi[2]['no_agenda']) ? 'readonly' : '' }}`;
             console.log(disabled)
 
             let id_disposisi = `{{ isset($disposisi[2]) ? $disposisi[2]->id : ''}}`;

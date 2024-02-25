@@ -408,8 +408,11 @@
                                     <select class="form-select border-dark" aria-label="Default select example"
                                         name="limpah_biro" id="limpah_biro" required>
                                         <option value="">-- Pilih Limpah Biro --</option>
-                                        <option value="1">Provos</option>
-                                        <option value="2">Wabprof</option>
+                                        @if ($kasus->wujudPerbuatan->jenis_wp == 'disiplin')
+                                            <option value="1">Provos</option>
+                                        @elseif ($kasus->wujudPerbuatan->jenis_wp == 'kode etik')
+                                            <option value="2">Wabprof</option>
+                                        @endif
                                         <option value="3">Bid Propam Polda</option>
                                     </select>
                                     <label for="limpah_biro" class="form-label">Limpah Biro</label>

@@ -149,6 +149,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/nd-hasil-gelar-perkara/{id}', [GelarPerkaraController::class, 'laporanHasilGelar']);
     Route::get('/gelar-perkara-baglitpers/{id}', [GelarPerkaraController::class, 'baglitpers']);
     Route::get('/bai-sipil/{id}', [PulbaketController::class, 'printBaiSipil']);
+    Route::get('/bai-saksi/{id}', [PulbaketController::class, 'printBaiSaksi']);
     Route::get('/bai-anggota/{id}', [PulbaketController::class, 'printBaiAnggota']);
     Route::get('/laporan-hasil-penyelidikan/{id}', [PulbaketController::class, 'lhp'])->name('download-lhp');
     Route::post('/laporan-hasil-penyelidikan/{id}', [PulbaketController::class, 'lhp'])->name('generate-lhp');

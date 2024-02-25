@@ -188,18 +188,24 @@ class KasusController extends Controller
 
                 DisposisiHistory::create([
                     'data_pelanggar_id' => $DP->id,
+                    'klasifikasi' => 'Rahasia',
+                    'derajat' => 'Segera',
                     'tipe_disposisi' => 1,
                 ]);
 
 
                 DisposisiHistory::create([
                     'data_pelanggar_id' => $DP->id,
+                    'klasifikasi' => 'Rahasia',
+                    'derajat' => 'Segera',
                     'tipe_disposisi' => 2,
                     'limpah_den' => $request->den_bag,
                 ]);
 
                 DisposisiHistory::create([
                     'data_pelanggar_id' => $DP->id,
+                    'klasifikasi' => 'Rahasia',
+                    'derajat' => 'Segera',
                     'tipe_disposisi' => 3,
                     'limpah_den' => $request->den_bag,
                     'limpah_unit' => $request->unit_den_bag,
@@ -511,9 +517,12 @@ class KasusController extends Controller
 
             if ($disposisi && isset($disposisi->limpah_unit)) {
                 if ($request->disposisi_tujuan == 5) {
-                    $pulbaket[0] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 1)->first();
+                    if ($data->tipe_data == '1') {
+                        $pulbaket[0] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 1)->first();
+                        $pulbaket[2] = BaiPelapor::where('data_pelanggar_id', $data->id)->first();
+                    }
+
                     $pulbaket[1] = UndanganKlarifikasiHistory::where('data_pelanggar_id', $data->id)->where('jenis_undangan', 2)->first();
-                    $pulbaket[2] = BaiPelapor::where('data_pelanggar_id', $data->id)->first();
                     $pulbaket[3] = BaiTerlapor::where('data_pelanggar_id', $data->id)->first();
                     $pulbaket[4] = LHPHistory::where('data_pelanggar_id', $data->id)->first();
                     $pulbaket[5] = NdPermohonanGelar::where('data_pelanggar_id', $data->id)->first();
@@ -537,9 +546,17 @@ class KasusController extends Controller
                     }
                 }
 
-                $data->update([
-                    'status_id' => $request->disposisi_tujuan
-                ]);
+                if ($data->tipe_data != '1') {
+                    $dh = DisposisiHistory::where('data_pelanggar_id', $data->id)->where('tipe_disposisi', 3)->first();
+                    $data->update([
+                        'no_nota_dinas' => $dh->no_agenda,
+                        'status_id' => $request->disposisi_tujuan
+                    ]);
+                } else {
+                    $data->update([
+                        'status_id' => $request->disposisi_tujuan
+                    ]);
+                }
 
                 return redirect()->back();
             } elseif ($disposisi && !isset($disposisi->limpah_unit)) {

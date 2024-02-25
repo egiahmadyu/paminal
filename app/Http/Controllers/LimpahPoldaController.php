@@ -310,26 +310,35 @@ class LimpahPoldaController extends Controller
 
         if ($request->tipe_data && $request->tipe_data != '1') {
             DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
-                'klasifikasi' => $request->klasifikasi,
-                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+                // 'klasifikasi' => $request->klasifikasi,
+                // 'derajat' => $request->derajat,
                 'no_agenda' => $request->nomor_agenda,
             ]);
             DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
-                'klasifikasi' => $request->klasifikasi,
-                'derajat' => $request->derajat,
+                'no_agenda' => $request->nomor_agenda,
+                // 'klasifikasi' => $request->klasifikasi,
+                // 'derajat' => $request->derajat,
                 'no_agenda' => $request->nomor_agenda,
             ]);
             DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
-                'klasifikasi' => $request->klasifikasi,
-                'derajat' => $request->derajat,
+                // 'klasifikasi' => $request->klasifikasi,
+                // 'derajat' => $request->derajat,
                 'no_agenda' => $request->nomor_agenda,
                 'tipe_disposisi' => $request->tipe_disposisi,
             ]);
+
+            $bulan = $this->getRomawi(date('m'));
+            if ($kasus->tipe_data == '2') {
+                $no_surat = 'R/Infosus-' . $request->nomor_agenda . '/' . $bulan . '/' . date('Y') . '/ROPAMINAL';
+            } else {
+                $no_surat = 'R/LI-' . $request->nomor_agenda . '/' . $bulan . '/' . date('Y') . '/ROPAMINAL';
+            }
+
             DataPelanggar::where('id', $kasus_id)->update([
-                'no_nota_dinas' => $request->nomor_agenda,
-                'status_id' => 4
+                'no_nota_dinas' => $no_surat,
             ]);
-            return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
+            // return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
         }
 
         if ($data->tipe_disposisi == 1) {

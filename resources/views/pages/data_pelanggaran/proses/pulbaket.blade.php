@@ -131,13 +131,13 @@
                             @if (!empty($sprin))
                                 <div class="row">
                                     <div class="col-4">
-                                        <a href="/surat-perintah/{{ $kasus->id }}">
+                                        <a type="button" class="text-info" onclick="printSprin({{$kasus->id}})">
                                             <i class="far fa-download"></i> SPRIN
                                         </a>
                                     </div>
                                     <div class="col-8">
-                                        <a href="/surat-perintah-pengantar/{{ $kasus->id }}">
-                                            <i class="far fa-download"></i> ND Pengantar SPRIN
+                                        <a type="button" class="text-info" onclick="printPengantarSprin({{$kasus->id}})">
+                                            <i class="far fa-download"></i> ND PENGANTAR SPRIN
                                         </a>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                 readonly aria-describedby="emailHelp">
                         </div>
                         @can('edit-pulbaket')
-                            <a href="/surat-uuk/{{ $kasus->id }}">
+                            <a type="button" class="text-info" onclick="printUUK({{$kasus->id}})">
                                 <i class="far fa-download"></i> UUK
                             </a>
                         @endcan
@@ -177,7 +177,7 @@
                             </div>
                             @can('edit-pulbaket')
                                 @if (!empty($sp2hp_awal))
-                                    <a href="/surat-sp2hp2-awal/{{ $kasus->id }}">
+                                    <a type="button" class="text-info" onclick="printSP2HP2({{$kasus->id}})">
                                         <i class="far fa-download"></i> Surat
                                     </a>
                                 @else
@@ -380,7 +380,6 @@
                             <option value="">Pilih Jenis Undangan</option>
                             <option value="1">Pelapor</option>
                             <option value="2">Terlapor</option>
-                            {{-- <option value="3">Saksi</option> --}}
                         </select>
                         <label for="jenis_undangan" class="form-label">-- Pilih Jenis Undangan --</label>
                     </div>
@@ -631,7 +630,7 @@
                 no_telp.value = format_no_telp(this.value, '');
             });
         function format_no_telp(angka, prefix){
-                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
                 split   		= number_string.split(','),
                 sisa     		= split[0].length % 4,
                 rupiah     		= split[0].substr(0, sisa),
@@ -644,7 +643,10 @@
                 
                 rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
                 return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
-            };
+        };
+        $('#print-uuk').on('click', function () {
+            location.reload();
+        })
     });
 
     $(function() {
@@ -789,5 +791,75 @@
                 $("#viewNext").html(data)
             });
         }
+    }
+
+    function printUUK(id){
+        // alert(id)
+        var tempDownload = document.createElement("a");
+        tempDownload.style.display = 'none';
+
+        document.body.appendChild( tempDownload );
+
+        // var download = data.file;
+        tempDownload.setAttribute( 'href', `/surat-uuk/${id}` );
+        // tempDownload.setAttribute( 'download', download );
+
+        tempDownload.click();
+
+        reloadPage()
+    }
+    
+    function printSprin(id){
+        // alert(id)
+        var tempDownload = document.createElement("a");
+        tempDownload.style.display = 'none';
+
+        document.body.appendChild( tempDownload );
+
+        // var download = data.file;
+        tempDownload.setAttribute( 'href', `/surat-perintah/${id}` );
+        // tempDownload.setAttribute( 'download', download );
+
+        tempDownload.click();
+
+        reloadPage()
+    }
+    
+    function printPengantarSprin(id){
+        // alert(id)
+        var tempDownload = document.createElement("a");
+        tempDownload.style.display = 'none';
+
+        document.body.appendChild( tempDownload );
+
+        // var download = data.file;
+        tempDownload.setAttribute( 'href', `/surat-perintah/${id}` );
+        // tempDownload.setAttribute( 'download', download );
+
+        tempDownload.click();
+
+        reloadPage()
+    }
+    
+    function printSP2HP2(id){
+        // alert(id)
+        var tempDownload = document.createElement("a");
+        tempDownload.style.display = 'none';
+
+        document.body.appendChild( tempDownload );
+
+        // var download = data.file;
+        tempDownload.setAttribute( 'href', `/surat-perintah/${id}` );
+        // tempDownload.setAttribute( 'download', download );
+
+        tempDownload.click();
+
+        reloadPage()
+    }
+    
+    function reloadPage() {
+        setTimeout(function(){
+            location.reload(1);
+        }, 1000);
     }
 </script>

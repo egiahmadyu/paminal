@@ -346,7 +346,7 @@
                                     @foreach ($pangkat as $key => $p)
                                         <option value="{{ $p->id }}"
                                             {{ $kasus->pangkat == $p->id ? 'selected' : (old('pangkat') ? 'selected' : '') }}>
-                                            {{ $p->name }}
+                                            {{ $p->alias }}
                                         </option>
                                     @endforeach
                                 @endif

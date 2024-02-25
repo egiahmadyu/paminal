@@ -25,6 +25,9 @@ class DatasemenController extends Controller
         return DataTables::of($query)
             ->editColumn('kaden', function ($query) {
                 $anggota = DataAnggota::where('id', $query->kaden)->first();
+                if (!$anggota) {
+                    return '';
+                }
                 $pangkat = Pangkat::where('id', $anggota->pangkat)->first();
                 if ($pangkat) {
                     $kaden = $pangkat->name . ' ' . $anggota->nama;
@@ -36,6 +39,9 @@ class DatasemenController extends Controller
             })
             ->editColumn('wakaden', function ($query) {
                 $anggota = DataAnggota::where('id', $query->wakaden)->first();
+                if (!$anggota) {
+                    return '';
+                }
                 $pangkat = Pangkat::where('id', $anggota->pangkat)->first();
                 if ($pangkat) {
                     $wakaden = $pangkat->name . ' ' . $anggota->nama;
@@ -196,7 +202,7 @@ class DatasemenController extends Controller
         $user = Auth::getUser();
 
         if ($user->datasemen) {
-            $query = Unit::where('datasemen',$user->datasemen)->get();
+            $query = Unit::where('datasemen', $user->datasemen)->get();
         } else {
             $query = Unit::get();
         }

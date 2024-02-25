@@ -34,7 +34,7 @@ class APILimpahBiroController extends Controller
         $body = [
             "no_nota_dinas" => $data->no_nota_dinas,
             "perihal_nota_dinas" => $data->perihal_nota_dinas,
-            "wujud_perbuatan" => json_encode($wujud_perbuatan),
+            "wujud_perbuatan" => $data->wujudPerbuatan->keterangan_wp,
             "tanggal_nota_dinas" => $data->tanggal_nota_dinas,
             "pelapor" => $data->pelapor,
             "jenis_kelamin" => $data->jenis_kelamin,
@@ -43,23 +43,38 @@ class APILimpahBiroController extends Controller
             "no_identitas" => $data->no_identitas,
             "jenis_identitas" => $data->jenis_identitas,
             "terlapor" => $data->terlapor,
-            "agama_terlapor" => $data->agama,
+            "agama" => $data->agama,
+            "umur" => $data->umur,
+            "pekerjaan" => $data->pekerjaan,
             "kesatuan" => $data->kesatuan,
             "nrp" => $data->nrp,
             "tempat_kejadian" => $data->tempat_kejadian,
             "tanggal_kejadian" => $data->tanggal_kejadian,
-            "id_pangkat" => $data->agama,
+            "pangkat" => $data->pangkat,
             "jabatan" => $data->jabatan,
-            "kronologi" => $data->kronologi,
             "wilayah_hukum" => strtoupper($wilayah_hukum),
             "nama_korban" => $data->nama_korban,
+            "id_card" => $data->link_ktp,
+            "selfie" => $data->selfie,
         ];
-        // dd(json_encode($body));
-
+        // dd(json_decode($data->kronologi));
+        if ($data->tipe_data == '1') {
+            $body['kronologi'] = $data->kronologi;
+        } elseif ($data->tipe_data == '2') {
+            $kronologi = json_decode($data->kronologi, true);
+            // dd($kronologi);
+            $body['fakta_fakta'] = json_encode($kronologi['kronologis'], true);
+            $body['catatan'] = json_encode($kronologi['catatan'], true);
+        } else {
+            $kronologi = json_decode($data->kronologi);
+            $body['fakta_fakta'] = $kronologi['kronologis'];
+            $body['pendapat_pelapor'] = $kronologi['catatan'];
+        }
+        dd(json_encode($body));
         // return response()->json($body);
 
         $result = $this->process_limpah($body);
 
-        return true;
+        return $result;
     }
 }

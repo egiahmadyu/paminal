@@ -23,6 +23,8 @@ use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
+use App\Http\Controllers\APILimpahBiroController;
+use Illuminate\Support\Facades\DB;
 
 class GelarPerkaraController extends Controller
 {
@@ -134,15 +136,29 @@ class GelarPerkaraController extends Controller
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();
 
         if (!$limpah_biro = LimpahBiro::where('data_pelanggar_id', $kasus_id)->first()) {
-            $limpah_biro = LimpahBiro::create([
-                'data_pelanggar_id' => $kasus_id,
-                'jenis_limpah' => $request->limpah_biro,
-                'tanggal_limpah' => Carbon::now()
-            ]);
 
-            LimpahBiroHistory::create([
-                'data_pelanggar_id' => $kasus_id,
-            ]);
+            DB::beginTransaction();
+            try {
+                //code...
+                $limpah_biro = LimpahBiro::create([
+                    'data_pelanggar_id' => $kasus_id,
+                    'jenis_limpah' => $request->limpah_biro,
+                    'tanggal_limpah' => Carbon::now()
+                ]);
+
+                LimpahBiroHistory::create([
+                    'data_pelanggar_id' => $kasus_id,
+                ]);
+
+                if ($request->limpah_biro == 2) {
+                    $limpah_api = new APILimpahBiroController();
+                    $response = $limpah_api->limpahWabprof($kasus->id);
+                }
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                throw $th;
+            }
         }
 
         if ($limpah_biro->jenis_limpah == 1) {

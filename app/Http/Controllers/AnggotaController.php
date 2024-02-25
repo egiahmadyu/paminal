@@ -28,7 +28,7 @@ class AnggotaController extends Controller
         return DataTables::of($query)
             ->editColumn('pangkat', function ($query) {
                 $pangkat = Pangkat::where('id', $query->pangkat)->first();
-                $pangkat = $pangkat->name;
+                $pangkat = $pangkat->alias;
                 return $pangkat;
             })
             ->addColumn('action', function ($query) {

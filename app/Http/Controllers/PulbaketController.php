@@ -27,6 +27,7 @@ use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -336,6 +337,91 @@ class PulbaketController extends Controller
         return response()->download(storage_path('template_surat/' . $kasus->pelapor . '-surat-bai-pelapor.docx'))->deleteFileAfterSend(true);
     }
 
+    public function printBaiSaksi($kasus_id, Request $request)
+    {
+        $kasus = DataPelanggar::find($kasus_id);
+        $sp2hp = Sp2hp2Hisory::where('data_pelanggar_id', $kasus_id)->first();
+        $undangan_klarifikasi = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first();
+
+        if (!isset($sp2hp)) {
+            return redirect()->route('kasus.detail', ['id' => $kasus_id])->with('error', 'Data Penyidik SP2HP2 belum dibuat !');
+        } elseif (!isset($undangan_klarifikasi)) {
+            return redirect()->route('kasus.detail', ['id' => $kasus_id])->with('error', 'Undangan Klarifikasi belum dibuat !');
+        }
+
+        $template_document = new TemplateProcessor(storage_path('template_surat/BAI_SAKSI.docx'));
+        if (!$data = BaiPelapor::where('data_pelanggar_id', $kasus_id)->first()) {
+            $data = BaiPelapor::create([
+                'data_pelanggar_id' => $kasus_id,
+                'created_by' => auth()->user()->id,
+
+            ]);
+        }
+        $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
+        $den = Datasemen::where('id', $disposisi->limpah_den)->first()->name;
+        $unit = Unit::where('id', $disposisi->limpah_unit)->first()->unit;
+
+        // Get Penyidik
+        $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
+        foreach ($penyidik as $key => $value) {
+            $pangkat = Pangkat::where('id', $value->pangkat)->first();
+            $value->pangkat = $pangkat->name;
+        }
+
+        $pangkat = Pangkat::where('id', $kasus->pangkat)->first();
+        $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
+        $undangan_klarifikasi = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first();
+        $template_document->setValues(array(
+            'no_nota_dinas' => $kasus->no_nota_dinas,
+            'perihal_nota_dinas' => $kasus->perihal_nota_dinas,
+            'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+            'pelapor' => $kasus->pelapor,
+            'pekerjaan' => $kasus->pekerjaan,
+            'nik' => $kasus->nik,
+            'agama' => $kasus->religi->name,
+            'alamat' => $kasus->alamat,
+            'telp' => $kasus->no_telp,
+            'pelapor' => $kasus->pelapor,
+            'pangkat' => $pangkat->name,
+            'jabatan' => $kasus->jabatan,
+            'kwn' => $kasus->kewarganegaraan,
+            'terlapor' => $kasus->terlapor,
+            'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+            'kronologi' => $kasus->kronologi,
+            'tanggal_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('d F Y'),
+            'waktu_introgasi' => Carbon::parse($undangan_klarifikasi->waktu_klarifikasi)->translatedFormat('H:i'),
+            'hari_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('l'),
+            'ketua' => $penyidik[0]['name'] ?? '',
+            'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
+            'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
+            'jabatan_ketua' => $penyidik[0]['jabatan'] ?? '',
+            'anggota_1' => $penyidik[1]['name'] ?? '',
+            'pangkat_1' => $penyidik[1]['pangkat'] ?? '',
+            'nrp_1' => $penyidik[1]['nrp'] ?? '',
+            'jabatan_1' => $penyidik[1]['jabatan'] ?? '',
+            'anggota_2' => $penyidik[2]['name'] ?? '',
+            'pangkat_2' => $penyidik[2]['pangkat'] ?? '',
+            'nrp_2' => $penyidik[2]['nrp'] ?? '',
+            'jabatan_2' => $penyidik[2]['jabatan'] ?? '',
+            'anggota_3' => $penyidik[3]['name'] ?? '',
+            'pangkat_3' => $penyidik[3]['pangkat'] ?? '',
+            'nrp_3' => $penyidik[3]['nrp'] ?? '',
+            'jabatan_3' => $penyidik[3]['jabatan'] ?? '',
+            'anggota_4' => $penyidik[4]['name'] ?? '',
+            'pangkat_4' => $penyidik[4]['pangkat'] ?? '',
+            'nrp_4' => $penyidik[4]['nrp'] ?? '',
+            'jabatan_4' => $penyidik[4]['jabatan'] ?? '',
+            'anggota_5' => $penyidik[5]['name'] ?? '',
+            'pangkat_5' => $penyidik[5]['pangkat'] ?? '',
+            'nrp_5' => $penyidik[5]['nrp'] ?? '',
+            'jabatan_5' => $penyidik[5]['jabatan'] ?? '',
+        ));
+
+        $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-surat-bai-pelapor.docx'));
+        Redirect::away("bai-sipil/" . $kasus_id);
+        return response()->download(storage_path('template_surat/' . $kasus->pelapor . '-surat-bai-pelapor.docx'))->deleteFileAfterSend(true);
+    }
+
     public function printBaiAnggota($kasus_id, Request $request)
     {
         $kasus = DataPelanggar::find($kasus_id);
@@ -570,7 +656,7 @@ class PulbaketController extends Controller
                 'data_pelanggar_id' => $kasus->id,
                 'no_surat_undangan' => $request->no_surat_undangan,
                 'tgl_klarifikasi' => Carbon::createFromFormat('m/d/Y', $request->tgl_klarifikasi)->format('Y-m-d'),
-                'waktu_klarifikasi' => Carbon::createFromFormat('m/d/Y H:i', $request->tgl_klarifikasi.' '.$request->waktu_klarifikasi)->format('Y-m-d H:i'),
+                'waktu_klarifikasi' => Carbon::createFromFormat('m/d/Y H:i', $request->tgl_klarifikasi . ' ' . $request->waktu_klarifikasi)->format('Y-m-d H:i'),
                 'jenis_undangan' => $request->jenis_undangan,
             ]);
         }
