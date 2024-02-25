@@ -31,3 +31,4 @@ Route::post('get-data-yanduan', [YanduanController::class, 'getDataYanduan']);
 Route::get('import-pangkat', [YanduanController::class, 'importPangkat']);
 
 Route::get('limpah-wabprof/{id}', [APILimpahBiroController::class, 'limpahWabprof']);
+Route::get('limpah-provos/{id}', [APILimpahBiroController::class, 'limpahProvos']);

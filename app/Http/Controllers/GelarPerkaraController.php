@@ -152,7 +152,10 @@ class GelarPerkaraController extends Controller
 
                 if ($request->limpah_biro == 2) {
                     $limpah_api = new APILimpahBiroController();
-                    $response = $limpah_api->limpahWabprof($kasus->id);
+                    $limpah_api->limpahWabprof($kasus->id);
+                } else {
+                    $limpah_api = new APILimpahBiroController();
+                    $limpah_api->limpahProvos($kasus->id);
                 }
                 DB::commit();
             } catch (\Throwable $th) {
