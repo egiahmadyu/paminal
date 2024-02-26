@@ -31,11 +31,12 @@
         </ol>
     </nav> --}}
 
-    <center>
-        <span class="logo-lg">
-            <img src="/assets/images/Tagline-Propam.png" alt="" height="50">
-        </span>
-    </center>
+    <div style="width: 100%">
+        
+    </div>
+    <span class="logo-lg">
+        <img src="/assets/images/Tagline-Propam.png" alt="" width="100%">
+    </span>
 
     <div class="row mb-3">
         <div class="col-lg-4 col-sm-6">

@@ -114,7 +114,7 @@
                 </li>
                 @endcan
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <center>
                     <div class="logo">
                         <span class="logo-sm">
@@ -125,9 +125,7 @@
                         </span>
                     </div>
                     </center>
-                    
-                    
-                </li>
+                </li> --}}
                 <!-- <li class="nav-item">
                     <img src="/maskot-polri.png" alt="" class="img-fluid">
                 </li> -->
