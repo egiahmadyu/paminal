@@ -305,7 +305,7 @@ class DatasemenController extends Controller
         return DataTables::of($query)
             ->editColumn('nama', function ($query) {
                 $pangkat = Pangkat::where('id', $query->pangkat)->first();
-                $pangkat = $pangkat->name;
+                $pangkat = $pangkat->alias;
                 return $pangkat . ' ' . $query->nama;
             })
             ->addColumn('action', function ($query) {
