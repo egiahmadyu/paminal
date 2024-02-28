@@ -283,7 +283,7 @@
                         <div class="card-body">
                             <div class="col-lg-12 mb-3">
                                 <label for="no_telp" class="form-label">LINK KTP PELAPOR :
-                                    <a href="{{ isset($kasus->link_ktp) ? $kasus->link_ktp : '#' }}">
+                                    <a href="{{ isset($kasus->link_ktp) ? $kasus->link_ktp : '#' }}" target="_blank">
                                         {{ isset($kasus->link_ktp) ? $kasus->link_ktp : 'FOTO KTP PELAPOR TIDAK ADA' }}
                                     </a>
                                 </label>
