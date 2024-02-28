@@ -291,7 +291,7 @@
 
                             <div class="col-lg-12 mb-3">
                                 <label for="no_telp" class="form-label">FOTO SELFIE PELAPOR :
-                                    <a href="{{ isset($kasus->selfie) ? $kasus->selfie : '#' }}">
+                                    <a href="{{ isset($kasus->selfie) ? $kasus->selfie : '#' }}" target="_blank">
                                         {{ isset($kasus->selfie) ? $kasus->selfie : 'FOTO SELFIE PELAPOR TIDAK ADA' }}
                                     </a>
                                 </label>
@@ -303,7 +303,7 @@
                                     @foreach ($evidences as $key => $evidence)
                                         <label for="no_telp" class="form-label">
                                             BUKTI DATA PENDUKUNG {{ $key + 1 }}.
-                                            <a href="{{ $evidence }}" target='_blank'>{{ $evidence }}</a>
+                                            <a href="{{ $evidence }}" target="_blank">{{ $evidence }}</a>
                                         </label><br />
                                     @endforeach
                                 @endif
