@@ -31,19 +31,19 @@
                         <span></span>
                     </span>
                 </button>
+                <h4 class="title-nav text-uppercase mt-3"> Propam Integrated System </h4>
                 <div class="logo-presisi mt-2">
-                    <span class="logo-lg">
+                    {{-- <span class="logo-lg">
                         <img src="/assets/images/PRESISI-Garbha.png" alt="" height="50">
-                    </span>
+                    </span> --}}
                 </div>
                 {{-- <h4 class="px-3 fs-15 text-muted header-item d-none d-md-block">APPPPP</h4> --}}
-                
+
 
             </div>
-            <h4 class="title-nav text-uppercase fs-30"> Propam Integrated System </h4>
 
             <div class="d-flex align-items-center">
-                
+
 
                 <div class="d-md-none topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle"
@@ -507,7 +507,8 @@
                                 class="align-middle">Profile</span>
                         </a> --}}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('reset.password', ['user_id' => auth()->user()->id]) }}">
+                        <a class="dropdown-item"
+                            href="{{ route('reset.password', ['user_id' => auth()->user()->id]) }}">
                             <i class="mdi mdi-key-change text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle" data-key="t-logout">Change Password</span>
                         </a>
