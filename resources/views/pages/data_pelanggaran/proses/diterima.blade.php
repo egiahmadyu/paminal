@@ -156,7 +156,7 @@
                         <div class="col-lg-12 mb-3">
                             <label for="pelapor" class="form-label">PELAPOR</label>
                             <input type="text" class="form-control border-dark" name="pelapor" id="pelapor"
-                                placeholder="Nama Pelapor"
+                                placeholder="Nama Pelapor" onkeyup="this.value = this.value.replace(/[&*/<>]/g, '')"
                                 value="{{ isset($kasus) ? $kasus->pelapor : (old('pelapor') ? old('pelapor') : '') }}"
                                 required>
                             <div class="invalid-feedback">
@@ -330,7 +330,7 @@
                         <div class="col-lg-6 mb-3">
                             <label for="terlapor" class="form-label">NAMA TERDUGA TERLAPOR</label>
                             <input type="text" class="form-control border-dark" name="terlapor" id="terlapor"
-                                placeholder="Nama Terduga Pelanggar"
+                                placeholder="Nama Terduga Pelanggar" onkeyup="this.value = this.value.replace(/[&*/<>]/g, '')"
                                 value="{{ isset($kasus) ? $kasus->terlapor : (old('terlapor') ? old('terlapor') : '') }}"
                                 required>
                             <div class="invalid-feedback">
