@@ -968,6 +968,8 @@ class KasusController extends Controller
         $id_kode_etik = implode('|', $id_kode_etik);
 
         $evidences = json_decode($kasus->evidences);
+        // $extension = pathinfo($evidences[1], PATHINFO_EXTENSION);
+        // dd($extension);
 
         $is_datalengkap = HelperController::cekKelengkapanData($kasus);
 

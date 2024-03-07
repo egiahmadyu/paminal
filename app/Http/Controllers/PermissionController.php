@@ -11,6 +11,7 @@ class PermissionController extends Controller
     public function index()
     {
         $data['permission'] = Permission::all();
+        $data['title'] = 'PERMISSION';
 
         return view('pages.role.list_permission', $data);
     }
@@ -28,9 +29,7 @@ class PermissionController extends Controller
             })
             ->addColumn('action', function ($query) {
                 $edit_button = '<a class="btn" onclick="editPermission(' . $query->id . ')" href="#"><i class="fa fa-edit text-warning"></i></a>';
-                $delete_button = '<a class="btn" onclick="deletePermission(' . $query->id . ')" href="#"><i class="fa fa-trash text-danger"></i></a>';
-                $delete_url = route('delete.permission', ['id' => $query->id]);
-
+                $delete_button = '<a class="btn" href="' . route('delete.permission', ['id' => $query->id]) . '"><i class="fa fa-trash text-danger"></i></a>';
 
                 $button = '';
                 $button .= '<div class="btn-group" role="group">';
@@ -50,7 +49,6 @@ class PermissionController extends Controller
             'guard_name' => $request->guard_name
         ]);
         return redirect()->back()->with('success', 'Successfully Add Permission!');
-        return redirect()->back();
     }
 
     public function deletePermission($id)

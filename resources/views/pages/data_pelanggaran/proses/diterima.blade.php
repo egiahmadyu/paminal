@@ -151,10 +151,32 @@
             </div>
             <div class="row">
                 <h4>PELAPOR</h4>
+
+                <!-- foto ktp, selfie dan bukti pendukung -->
+                <div class="card col-lg-12 mb-0 border-0">
+                    <div class="card-body">
+                        <h5>DATA PENDUKUNG </h5>
+                        <div class="row mt-3">
+                            <div class="col-lg-6 d-flex justify-content-center">
+                                <div class="card mb-0 border-0">
+                                    <img src="{{ $kasus->link_ktp }}" class="card-img-top" alt="foto-ktp" height="400">
+                                    <a href="{{ $kasus->link_ktp }}" target="_blank" class="btn btn-outline-primary mt-3" style="width: 100%">BUKA FOTO KTP</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-flex justify-content-center">
+                                <div class="card mb-0 border-0">
+                                    <img src="{{ $kasus->selfie }}" class="card-img-top" alt="foto-selfie" height="400">
+                                    <a href="{{ $kasus->selfie }}" target="_blank" class="btn btn-outline-primary mt-3">BUKA FOTO SELFIE</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="col-lg-12 p-3">
                     <div class="row">
                         <div class="col-lg-12 mb-3">
-                            <label for="pelapor" class="form-label">PELAPOR</label>
+                            <label for="pelapor" class="form-label">NAMA PELAPOR</label>
                             <input type="text" class="form-control border-dark" name="pelapor" id="pelapor"
                                 placeholder="Nama Pelapor" onkeyup="this.value = this.value.replace(/[&*/<>]/g, '')"
                                 value="{{ isset($kasus) ? $kasus->pelapor : (old('pelapor') ? old('pelapor') : '') }}"
@@ -272,41 +294,6 @@
                                 onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required>{{ isset($kasus) ? $kasus->alamat : (old('alamat') ? old('alamat') : '') }}</textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI ALAMAT PELAPOR !
-                            </div>
-                        </div>
-
-                        <div class="card col-lg-12 mb-3 ">
-                            <div class="card-header border-0">
-                                LINK DATA PENDUKUNG
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="col-lg-12 mb-3">
-                                <label for="no_telp" class="form-label">LINK KTP PELAPOR :
-                                    <a href="{{ isset($kasus->link_ktp) ? $kasus->link_ktp : '#' }}" target="_blank">
-                                        {{ isset($kasus->link_ktp) ? $kasus->link_ktp : 'FOTO KTP PELAPOR TIDAK ADA' }}
-                                    </a>
-                                </label>
-                            </div>
-
-                            <div class="col-lg-12 mb-3">
-                                <label for="no_telp" class="form-label">FOTO SELFIE PELAPOR :
-                                    <a href="{{ isset($kasus->selfie) ? $kasus->selfie : '#' }}" target="_blank">
-                                        {{ isset($kasus->selfie) ? $kasus->selfie : 'FOTO SELFIE PELAPOR TIDAK ADA' }}
-                                    </a>
-                                </label>
-                            </div>
-
-                            <div class="col-lg-12 mb-3"
-                                {{ isset($kasus) ? ($kasus->evidences ? '' : 'hidden') : '' }}>
-                                @if (isset($kasus->evidences))
-                                    @foreach ($evidences as $key => $evidence)
-                                        <label for="no_telp" class="form-label">
-                                            BUKTI DATA PENDUKUNG {{ $key + 1 }}.
-                                            <a href="{{ $evidence }}" target="_blank">{{ $evidence }}</a>
-                                        </label><br />
-                                    @endforeach
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -443,6 +430,10 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="col-lg-12 mt-0 mb-3 mx-0">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalBukti" style="width: 100%">LIHAT BUKTI-BUKTI</button>
+                </div>
 
                 @if ($kasus->status_id != 8)
                     <!-- Submit data / Update status button -->
@@ -500,13 +491,13 @@
                                                         Binpam</label>
                                                     @if (isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2 && is_null($disposisi[1]->limpah_den))
                                                         <button class="btn btn-success" style="width: 100%"
-                                                            data-bs-toggle="modal" data-bs-target="#modal_disposisi"
+                                                            data-bs-toggle="modal" data-bs-target="#modal_distribusi"
                                                             id="binpam" onclick="onClickModal(this)" type="button">
                                                             <i class="far fa-download"></i> Download
                                                         </button>
                                                     @elseif (isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2 && $disposisi[1]->limpah_den)
                                                         <button class="btn btn-success" style="width: 100%"
-                                                            data-bs-toggle="modal" data-bs-target="#modal_disposisi"
+                                                            data-bs-toggle="modal" data-bs-target="#modal_distribusi"
                                                             id="binpam" onclick="onClickModal(this)" type="button">
                                                             <i class="far fa-download"></i> Download
                                                         </button>
@@ -682,11 +673,103 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(1)"></button>
             </div>
-            <form action="{{ route('post.lembar.disposisi', ['id' => $kasus->id]) }}" method="post">
+            <form action="{{ route('post.lembar.disposisi', ['id' => $kasus->id]) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="tipe_data" name="tipe_data"
                     value="{{ isset($kasus) ? ($kasus->tipe_data ? $kasus->tipe_data : '') : '' }}">
                 <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
+                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
+                            disabled>
+                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[1]) ? $disposisi[1]->no_agenda : '' }}" {{ isset($disposisi[1]) ? 'readonly' : '' }} required>
+                        <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select border-dark" aria-label="Default select example"
+                            name="klasifikasi" id="klasifikasi" {{ isset($disposisi[0]) ? 'disabled' : '' }}
+                            required>
+                            <option value="">-- Pilih Klasifikasi --</option>
+                            <option value="Biasa"
+                                {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Biasa' ? 'selected' : '') : '' }}>
+                                Biasa</option>
+                            <option value="Sangat Rahasia"
+                                {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Sangat Rahasia' ? 'selected' : '') : '' }}>
+                                Sangat Rahasia</option>
+                        </select>
+                        <label for="klasifikasi" class="form-label">Klafisikasi</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select border-dark" aria-label="Default select example" name="derajat"
+                            id="derajat" {{ isset($disposisi[0]) ? 'disabled' : '' }} required>
+                            <option value="">-- Pilih Derajat --</option>
+                            <option value="Biasa"
+                                {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Biasa' ? 'selected' : '') : '' }}>
+                                Biasa</option>
+                            <option value="Segera"
+                                {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Segera' ? 'selected' : '') : '' }}>
+                                Segera</option>
+                            <option value="Kilat"
+                                {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Kilat' ? 'selected' : '') : '' }}>
+                                Kilat</option>
+                        </select>
+                        <label for="derajat" class="form-label">Derajat</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-dark" id="surat_dari"
+                            aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :"
+                            value="BagYanduan" disabled>
+                        <label for="surat_dari" class="form-label">Surat dari :</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="Perihal" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <label for="perihal" class="form-label">Perihal</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[1] ? $disposisi[1]->isi_disposisi : ''}}</textarea>
+                        <label for="isi_disposisi" class="form-label">Isi Distribusi</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload File Distribusi :</label>
+                        <input class="form-control" type="file" id="file" name="file">
+                    </div>
+                    @if ($disposisi[1] && $disposisi[1]->file)
+                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[0]->file) }}" target="_blank">File Disposisi</a>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" style="width: 100%">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Distribusi  Binpam-->
+<div class="modal fade" id="modal_distribusi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title_modal_disposisi">Distribusi Kabag Binpam</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="getViewProcess(1)"></button>
+            </div>
+            <form action="{{ route('post.lembar.disposisi', ['id' => $kasus->id]) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" id="tipe_data" name="tipe_data"
+                    value="{{ isset($kasus) ? ($kasus->tipe_data ? $kasus->tipe_data : '') : '' }}">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
+                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
+                            disabled>
+                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                    </div>
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda"
                             aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" required>
@@ -705,7 +788,6 @@
                                 Sangat Rahasia</option>
                         </select>
                         <label for="klasifikasi" class="form-label">Klafisikasi</label>
-                        {{-- <input type="hidden" name="klasifikasi" value="{{ isset($disposisi[0]) ? $disposisi[0]['klasifikasi'] : null }}"> --}}
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="derajat"
@@ -722,7 +804,6 @@
                                 Kilat</option>
                         </select>
                         <label for="derajat" class="form-label">Derajat</label>
-                        {{-- <input type="hidden" name="derajat" value="{{ isset($disposisi[0]) ? $disposisi[0]['derajat'] : null }}"> --}}
                     </div>
 
                     <div class="form-floating mb-3">
@@ -732,21 +813,23 @@
                         <label for="surat_dari" class="form-label">Surat dari :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
-                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
-                            disabled>
-                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="perihal" name="perihal"
-                            placeholder="Perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}"
-                            disabled>
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="Perihal" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
                         <label for="perihal" class="form-label">Perihal</label>
                     </div>
-
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[1] ? ($disposisi[1]->isi_disposisi ?? '') : ($disposisi[1]->isi_disposisi ?? '')}}</textarea>
+                        <label for="isi_disposisi" class="form-label">Isi Disposisi</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload File Disposisi :</label>
+                        <input class="form-control" type="file" id="file" name="file">
+                    </div>
+                    @if ($disposisi[1] && $disposisi[1]->file)
+                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[1]->file) }}" target="_blank">File Disposisi</a>
+                    @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Generate</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%">Simpan</button>
                 </div>
             </form>
         </div>
@@ -755,18 +838,24 @@
 
 <!-- Modal Disposisi Datasemen-->
 <div class="modal fade" id="modal_disposisi_kadena" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+aria-hidden="true" data-bs-backdrop="static">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="title_modal_disposisi">Disposisi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(1)"></button>
             </div>
-            <form action="/lembar-disposisi/{{ $kasus->id }}" method="post">
+            <form action="/lembar-disposisi/{{ $kasus->id }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" value="3" name="tipe_disposisi">
                 <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
+                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
+                            disabled>
+                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                    </div>
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda"
                             placeholder="Nomor Agenda :"
@@ -816,32 +905,69 @@
                             value="BagYanduan" disabled>
                         <label for="surat_dari" class="form-label">Surat dari :</label>
                     </div>
+                    
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
-                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
-                            disabled>
-                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="perihal" name="perihal"
-                            placeholder="Perihal" value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}"
-                            disabled>
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="Perihal" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
                         <label for="perihal" class="form-label">Perihal</label>
                     </div>
-
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[2] ? $disposisi[2]->isi_disposisi : ''}}</textarea>
+                        <label for="isi_disposisi" class="form-label">Isi Disposisi</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload File Disposisi :</label>
+                        <input class="form-control" type="file" id="file" name="file">
+                    </div>
+                    @if ($disposisi[2] && $disposisi[2]->file)
+                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[0]->file) }}" target="_blank">File Disposisi</a>
+                    @endif
 
                 </div>
                 <div class="modal-footer">
-                    @if (isset($disposisi_kadena) && $disposisi_kadena->tipe_disposisi == 3 && isset($disposisi_kadena->limpah_unit))
-                        <button type="submit" class="btn btn-success">Download</button>
-                    @elseif (isset($disposisi_kadena) && $disposisi_kadena->tipe_disposisi == 3 && !isset($disposisi_kadena->limpah_unit))
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    @elseif (!isset($disposisi_kadena))
-                        <button type="submit" class="btn btn-primary">Generate</button>
-                    @endif
+                    <button type="submit" class="btn btn-primary" style="width: 100%">Simpan</button>
                 </div>
             </form>
         </div>
+    </div>
+</div>
+
+<!-- Modal Bukti-bukti-->
+<div class="modal fade" id="modalBukti" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Bukti-bukti</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            @if (isset($kasus->evidences))
+                <div class="row">
+                    @foreach ($evidences as $key => $evidence)
+                        @if (pathinfo($evidence, PATHINFO_EXTENSION) == 'jpg' || pathinfo($evidence, PATHINFO_EXTENSION) == 'jpeg' || pathinfo($evidence, PATHINFO_EXTENSION) == 'png')
+                            <div class="col-lg-6">
+                                <a href="{{$evidence}}" target="_blank" class="d-flex justify-content-center">
+                                    <figure class="figure">
+                                        <img src="{{$evidence}}" class="figure-img img-fluid rounded" alt="bukti-{{$key+1}}" style="height: 400px">
+                                        <figcaption class="figure-caption">Bukti ke {{ $key+1 }}</figcaption>
+                                    </figure>
+                                </a>
+                            </div>
+                        @else
+                            <div class="col-lg-6 d-flex justify-content-center">
+                                <a href="{{$evidence}}" target="_blank" class="d-flex justify-content-center">
+                                    <figure class="figure">
+                                        <img src="{{ asset('assets/images/new-document.png') }}" class="figure-img img-fluid rounded" alt="bukti-{{$key+1}}" style="height: 400px">
+                                        <figcaption class="figure-caption">Bukti ke {{ $key+1 }}</figcaption>
+                                    </figure>
+                                </a>
+                            </div>
+                        @endif
+                        
+                    @endforeach
+                </div>
+            @endif
+        </div>
+      </div>
     </div>
 </div>
 
@@ -852,6 +978,7 @@
         getPolda()
 
         if ($('#disiplin').is(':checked')) {
+            // $().
             document.getElementById("wujud_perbuatan").removeAttribute("disabled");
             document.getElementById("kode_etik").setAttribute("disabled", "disabled");
             getValDisiplin()
@@ -1092,6 +1219,7 @@
             document.getElementById("wujud_perbuatan").removeAttribute("disabled");
             document.getElementById("kode_etik").removeAttribute("required");
             document.getElementById("kode_etik").setAttribute("disabled", "disabled");
+            $('#wujud_perbuatan').find("option").remove().end()
             getValDisiplin()
         } else {
             document.getElementById("wujud_perbuatan").setAttribute("disabled", "disabled");
@@ -1105,6 +1233,7 @@
             document.getElementById("wujud_perbuatan").removeAttribute("disabled");
             document.getElementById("disiplin").removeAttribute("required");
             document.getElementById("disiplin").setAttribute("disabled", "disabled");
+            $('#wujud_perbuatan').find("option").remove().end()
             getValKodeEtik()
         } else {
             document.getElementById("wujud_perbuatan").setAttribute("disabled", "disabled");
@@ -1123,7 +1252,7 @@
         list_id_dis = `{{ $id_disiplin }}`;
         list_id_dis = list_id_dis.split('|');
 
-        let html_wp = ``;
+        let html_wp = `<option value="">PILIH WUJUD PERBUATAN</option>`;
         for (let index = 0; index < list_ketdis.length; index++) {
             const el_ketdis = list_ketdis[index];
             const el_id_dis = list_id_dis[index];
@@ -1151,7 +1280,7 @@
         list_id_ke = `{{ $id_kode_etik }}`;
         list_id_ke = list_id_ke.split('|');
 
-        let html_wp = ``;
+        let html_wp = `<option value="">PILIH WUJUD PERBUATAN</option>`;
         for (let index = 0; index < list_ketke.length; index++) {
             const el_ketke = list_ketke[index];
             const el_id_ke = list_id_ke[index];

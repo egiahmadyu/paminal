@@ -7,15 +7,17 @@
 
 
 @section('content')
-    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-        <ol class="breadcrumb d-flex justify-content-end">
-            <li class="breadcrumb-item active"><a href="">Permission</a></li>
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+        aria-label="breadcrumb">
+        <ol class="breadcrumb d-flex justify-content-start">
+            <li class="breadcrumb-item"><a href="/">HOME</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> <a href=""> {{ $title }} </a> </li>
         </ol>
     </nav>
     <div class="row">
         <div class="card">
             <div class="card-header d-flex align-items-center">
-                <h5 class="card-title flex-grow-1 mb-0">Permission</h5>
+                <h5 class="card-title flex-grow-1 mb-0">{{$title}}</h5>
                 <div class="d-flex gap-1 flex-wrap">
                     <button type="button" class="btn btn-success create-btn" data-bs-toggle="modal"
                         data-bs-target="#create_permission"><i class="ri-add-line align-bottom me-1"></i>Add Permission</button>
@@ -104,7 +106,6 @@
     <script>
         $(document).ready(function() {
             getDataTable();
-            
         });
 
         async function getDataTable() {
@@ -142,7 +143,7 @@
 
         function editPermission(id) {
             $('#editPermission').modal('show');
-
         }
+
     </script>
 @endsection

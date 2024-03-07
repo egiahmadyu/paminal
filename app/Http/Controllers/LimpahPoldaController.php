@@ -171,10 +171,15 @@ class LimpahPoldaController extends Controller
 
         if ($status == false) {
             return redirect()->back()->with('error', $message);
-            // return redirect()->route('kasus.detail',['id'=>$kasus_id])->with('error',$message);
         }
+
         if (!$data) {
+            $disposisi_name = $request->tipe_disposisi == '1' ? 'disposisi-karo-sesro-paminal' : 'distribusi-kabag-binpam';
             if ($request->tipe_disposisi == '3') {
+                if ($request->has('file')) {
+                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+                }
                 $distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->first();
                 $data = DisposisiHistory::create([
                     'data_pelanggar_id' => $kasus_id,
@@ -184,15 +189,58 @@ class LimpahPoldaController extends Controller
                     'tipe_disposisi' => $request->tipe_disposisi,
                     'limpah_unit' => $request->limpah_unit,
                     'limpah_den' => $distribusi_binpam->limpah_den,
+                    'isi_disposisi' => $request->isi_disposisi,
+                    'file' => $filename,
                 ]);
             } else {
+                if ($request->has('file')) {
+                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+                }
+                // dd($filename);
                 $data = DisposisiHistory::create([
                     'data_pelanggar_id' => $kasus_id,
                     'klasifikasi' => $request->klasifikasi,
                     'derajat' => $request->derajat,
                     'no_agenda' => $request->nomor_agenda,
                     'tipe_disposisi' => $request->tipe_disposisi,
+                    'isi_disposisi' => $request->isi_disposisi,
+                    'file' => $filename,
                 ]);
+            }
+        }
+        // dd('ga masuk');
+
+        if ($data && $data->tipe_disposisi == 1) {
+            $disposisi_name = 'disposisi-karo-sesro-paminal';
+            if ($request->has('limpah_den')) {
+                if ($request->has('file')) {
+
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+                    $data->update([
+                        'limpah_den' => $request->limpah_den,
+                        'isi_disposisi' => $request->isi_disposisi,
+                        'file' => $filename,
+                    ]);
+                } else {
+                    $data->update([
+                        'limpah_den' => $request->limpah_den,
+                        'isi_disposisi' => $request->isi_disposisi,
+                    ]);
+                }
+            } else {
+                if ($request->has('file')) {
+                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+                    $data->update([
+                        'isi_disposisi' => $request->isi_disposisi,
+                        'file' => $filename,
+                    ]);
+                } else {
+                    $data->update([
+                        'isi_disposisi' => $request->isi_disposisi,
+                    ]);
+                }
             }
         }
 
@@ -200,7 +248,8 @@ class LimpahPoldaController extends Controller
             if ($request->has('limpah_den')) {
                 if ($request->limpah_den == 7) {
                     $data->update([
-                        'limpah_den' => $request->limpah_den
+                        'limpah_den' => $request->limpah_den,
+                        'isi_disposisi' => $request->isi_disposisi,
                     ]);
                     $kasus->update([
                         'status_id' => 3
@@ -209,53 +258,69 @@ class LimpahPoldaController extends Controller
                     return redirect()->back()->with('message', 'DUMAS DILIMPAHKAN KE POLDA.');
                 }
 
+                $disposisi_name = 'distribusi-kabag-binpam';
+                if ($request->has('file')) {
+                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+
+                    $data->update([
+                        'limpah_den' => $request->limpah_den,
+                        'isi_disposisi' => $request->isi_disposisi,
+                        'file' => $filename,
+                    ]);
+                } else {
+                    $data->update([
+                        'limpah_den' => $request->limpah_den,
+                        'isi_disposisi' => $request->isi_disposisi,
+                    ]);
+                }
+
+                return redirect()->back()->with('message', 'Limpah BAG / DEN TELAH DITENTUKAN!');
+
                 // limpah kabagden
-                $template_filename_limpah_bagden = 'template_limpah_kabagbinpam';
-                $filename_limpah_bagden = $kasus->pelapor . '-surat-limpah-kabagbinpam';
+                // $template_filename_limpah_bagden = 'template_limpah_kabagbinpam';
+                // $filename_limpah_bagden = $kasus->pelapor . '-surat-limpah-kabagbinpam';
 
-                $data->update([
-                    'limpah_den' => $request->limpah_den
-                ]);
 
-                $pangkat_terlapor = Pangkat::find($kasus->pangkat);
-                $wujud_perbuatan = WujudPerbuatan::find($kasus->wujud_perbuatan);
-                $den = Datasemen::find($data->limpah_den);
-                $kabagden = DataAnggota::find($den->kaden);
-                $kabagden_pangkat = Pangkat::find($kabagden->pangkat);
-                $kabagden_nrp = $kabagden->nrp;
-                $limpah_bagden = Datasemen::find($data->limpah_den);
+                // $pangkat_terlapor = Pangkat::find($kasus->pangkat);
+                // $wujud_perbuatan = WujudPerbuatan::find($kasus->wujud_perbuatan);
+                // $den = Datasemen::find($data->limpah_den);
+                // $kabagden = DataAnggota::find($den->kaden);
+                // $kabagden_pangkat = Pangkat::find($kabagden->pangkat);
+                // $kabagden_nrp = $kabagden->nrp;
+                // $limpah_bagden = Datasemen::find($data->limpah_den);
 
-                $template_document_limpah_bagden = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename_limpah_bagden . '.docx'));
-                $template_document_limpah_bagden->setValues(array(
-                    'nomor_agenda' => $data->no_agenda,
-                    'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
-                    'tahun' => Carbon::parse($data->created_at)->translatedFormat('Y'),
-                    'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
-                    'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
-                    'tanggal' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
-                    'surat_dari' => 'BAGYANDUAN',
-                    'no_nota_dinas' => $kasus->no_nota_dinas,
-                    'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-                    'perihal' => $kasus->perihal_nota_dinas,
-                    'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
-                    'bag_den' => 'KA. ' . $limpah_bagden->name,
-                    'pelapor' => $kasus->pelapor,
-                    'pangkat_terlapor' => $pangkat_terlapor->name,
-                    'terlapor' => $kasus->terlapor,
-                    'jabatan_terlapor' => $kasus->jabatan,
-                    'kesatuan_terlapor' => $kasus->kesatuan,
-                    'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
-                    'kabagden' => $kabagden->nama,
-                    'kabagden_pangkat' => $kabagden_pangkat->name,
-                    'kabagden_nrp' => $kabagden_nrp,
-                ));
-                $template_document_limpah_bagden->saveAs(storage_path('template_surat/' . $filename_limpah_bagden . '.docx'));
+                // $template_document_limpah_bagden = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename_limpah_bagden . '.docx'));
+                // $template_document_limpah_bagden->setValues(array(
+                //     'nomor_agenda' => $data->no_agenda,
+                //     'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+                //     'tahun' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+                //     'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
+                //     'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
+                //     'tanggal' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
+                //     'surat_dari' => 'BAGYANDUAN',
+                //     'no_nota_dinas' => $kasus->no_nota_dinas,
+                //     'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+                //     'perihal' => $kasus->perihal_nota_dinas,
+                //     'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
+                //     'bag_den' => 'KA. ' . $limpah_bagden->name,
+                //     'pelapor' => $kasus->pelapor,
+                //     'pangkat_terlapor' => $pangkat_terlapor->name,
+                //     'terlapor' => $kasus->terlapor,
+                //     'jabatan_terlapor' => $kasus->jabatan,
+                //     'kesatuan_terlapor' => $kasus->kesatuan,
+                //     'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
+                //     'kabagden' => $kabagden->nama,
+                //     'kabagden_pangkat' => $kabagden_pangkat->name,
+                //     'kabagden_nrp' => $kabagden_nrp,
+                // ));
+                // $template_document_limpah_bagden->saveAs(storage_path('template_surat/' . $filename_limpah_bagden . '.docx'));
 
-                $path_files = storage_path('template_surat/' . $filename_limpah_bagden . '.docx');
-                toastr()->success('Limpah BAG / DEN telah ditentukan.', 'Berhasil!');
+                // $path_files = storage_path('template_surat/' . $filename_limpah_bagden . '.docx');
+                // toastr()->success('Limpah BAG / DEN telah ditentukan.', 'Berhasil!');
 
-                return response()->download($path_files)->deleteFileAfterSend(true);
-                // return redirect()->back()->with('message', 'Limpah BAG / DEN telah ditentukan.');
+                // return response()->download($path_files)->deleteFileAfterSend(true);
+
             }
         }
 
@@ -266,9 +331,22 @@ class LimpahPoldaController extends Controller
                     return back()->withInput()->with('error', 'ANGGOTA UNIT BELUM DIBUAT!');
                 }
 
-                $data->update([
-                    'limpah_unit' => $request->limpah_unit
-                ]);
+                $disposisi_name = 'disposisi-kaden';
+                if ($request->has('file')) {
+                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+
+                    $data->update([
+                        'limpah_unit' => $request->limpah_unit,
+                        'isi_disposisi' => $request->isi_disposisi,
+                        'file' => $filename,
+                    ]);
+                } else {
+                    $data->update([
+                        'limpah_unit' => $request->limpah_unit,
+                        'isi_disposisi' => $request->isi_disposisi,
+                    ]);
+                }
 
                 // Create pimpinan
                 $datasemen = Datasemen::where('id', $data->limpah_den)->first();
@@ -341,37 +419,38 @@ class LimpahPoldaController extends Controller
             // return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
         }
 
-        if ($data->tipe_disposisi == 1) {
-            $template_filename = 'template_disposisi_karopaminal';
-            $filename = $kasus->pelapor . '-surat-disposisi-karopaminal';
-        } elseif ($data->tipe_disposisi == 2) {
-            $template_filename = 'template_disposisi_kabagbinpam';
-            $filename = $kasus->pelapor . '-surat-distribusi-kabagbinpam';
-        } else {
-            $template_filename = 'template_disposisi_kadena';
-            $filename = $kasus->pelapor . '-surat-disposisi-ka-den-a';
-        }
+        // if ($data->tipe_disposisi == 1) {
+        //     $template_filename = 'template_disposisi_karopaminal';
+        //     $filename = $kasus->pelapor . '-surat-disposisi-karopaminal';
+        // } elseif ($data->tipe_disposisi == 2) {
+        //     $template_filename = 'template_disposisi_kabagbinpam';
+        //     $filename = $kasus->pelapor . '-surat-distribusi-kabagbinpam';
+        // } else {
+        //     $template_filename = 'template_disposisi_kadena';
+        //     $filename = $kasus->pelapor . '-surat-disposisi-kaden';
+        // }
 
-        $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename . '.docx'));
+        // $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename . '.docx'));
 
-        $template_document->setValues(array(
-            'klasifikasi' => $data->klasifikasi,
-            'derajat' => $data->derajat,
-            'nomor_agenda' => $data->no_agenda,
-            'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
-            'tahun_agenda' => Carbon::parse($data->created_at)->translatedFormat('Y'),
-            'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
-            'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
-            'surat_dari' => 'BAGYANDUAN',
-            'no_nota_dinas' => $kasus->no_nota_dinas,
-            'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'perihal' => $kasus->perihal_nota_dinas,
-            'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
-        ));
+        // $template_document->setValues(array(
+        //     'klasifikasi' => $data->klasifikasi,
+        //     'derajat' => $data->derajat,
+        //     'nomor_agenda' => $data->no_agenda,
+        //     'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
+        //     'tahun_agenda' => Carbon::parse($data->created_at)->translatedFormat('Y'),
+        //     'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
+        //     'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
+        //     'surat_dari' => 'BAGYANDUAN',
+        //     'no_nota_dinas' => $kasus->no_nota_dinas,
+        //     'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
+        //     'perihal' => $kasus->perihal_nota_dinas,
+        //     'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
+        // ));
 
-        $template_document->saveAs(storage_path('template_surat/' . $filename . '.docx'));
+        // $template_document->saveAs(storage_path('template_surat/' . $filename . '.docx'));
 
-        return response()->download(storage_path('template_surat/' . $filename . '.docx'))->deleteFileAfterSend(true);
+        // return response()->download(storage_path('template_surat/' . $filename . '.docx'))->deleteFileAfterSend(true);
+        return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL SIMPAN DATA !');
     }
 
     public function generateLiInfosus($kasus_id)

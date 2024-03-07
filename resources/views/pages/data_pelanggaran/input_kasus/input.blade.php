@@ -45,6 +45,16 @@
                 </div>
 
                 <div class="col-lg-12 mb-3">
+                    <label for="jenis_laporan" class="form-label">JENIS PELAPORAN </label>
+                    <input type="text" class="form-control border-dark" name="jenis_laporan" id="jenis_laporan"
+                        placeholder="LANGSUNG/WHATSAPP/DUMAS PIS PAMINAL"
+                        value="{{ isset($kasus) ? $kasus->jenis_laporan : (old('jenis_laporan') ? old('jenis_laporan') : 'DUMAS PIS PAMINAL') }}" readonly>
+                    <div class="invalid-feedback">
+                        MOHON ISI JENIS PELAPORAN !
+                    </div>
+                </div>
+
+                <div class="col-lg-12 mb-3">
                     <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS</label>
                     <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="NO. NOTA DINAS" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" disabled>
                     <div class="invalid-feedback">
