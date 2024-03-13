@@ -685,7 +685,7 @@
                         <label for="nomor_surat" class="form-label">Nomor Surat</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[1]) ? $disposisi[1]->no_agenda : '' }}" {{ isset($disposisi[1]) ? 'readonly' : '' }} required>
+                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[0]) ? $disposisi[0]->no_agenda : '' }}" {{ isset($disposisi[0]) ? 'readonly' : '' }} required>
                         <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -722,7 +722,7 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
                             aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :"
-                            value="BagYanduan" disabled>
+                            value="BAGYANDUAN" disabled>
                         <label for="surat_dari" class="form-label">Surat dari :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -730,14 +730,14 @@
                         <label for="perihal" class="form-label">Perihal</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[1] ? $disposisi[1]->isi_disposisi : ''}}</textarea>
-                        <label for="isi_disposisi" class="form-label">Isi Distribusi</label>
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[0] ? $disposisi[0]->isi_disposisi : ''}}</textarea>
+                        <label for="isi_disposisi" class="form-label">Isi Disposisi</label>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">Upload File Distribusi :</label>
+                        <label for="formFile" class="form-label">Upload File Disposisi :</label>
                         <input class="form-control" type="file" id="file" name="file">
                     </div>
-                    @if ($disposisi[1] && $disposisi[1]->file)
+                    @if ($disposisi[0] && $disposisi[0]->file)
                         <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[0]->file) }}" target="_blank">File Disposisi</a>
                     @endif
                 </div>
@@ -772,7 +772,7 @@
                     </div>
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda"
-                            aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" required>
+                            aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[1]) ? $disposisi[1]['no_agenda'] : '' }}" {{ isset($disposisi[1]) ? 'readonly' : '' }} required>
                         <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -809,7 +809,7 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
                             aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :"
-                            value="BagYanduan" disabled>
+                            value="BAGYANDUAN" disabled>
                         <label for="surat_dari" class="form-label">Surat dari :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -818,14 +818,14 @@
                     </div>
                     <div class="form-floating mb-3">
                         <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[1] ? ($disposisi[1]->isi_disposisi ?? '') : ($disposisi[1]->isi_disposisi ?? '')}}</textarea>
-                        <label for="isi_disposisi" class="form-label">Isi Disposisi</label>
+                        <label for="isi_disposisi" class="form-label">Isi Distribusi</label>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">Upload File Disposisi :</label>
+                        <label for="formFile" class="form-label">Upload File Distribusi :</label>
                         <input class="form-control" type="file" id="file" name="file">
                     </div>
                     @if ($disposisi[1] && $disposisi[1]->file)
-                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[1]->file) }}" target="_blank">File Disposisi</a>
+                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[1]->file) }}" target="_blank">File Distribusi</a>
                     @endif
                 </div>
                 <div class="modal-footer">
@@ -919,7 +919,7 @@ aria-hidden="true" data-bs-backdrop="static">
                         <input class="form-control" type="file" id="file" name="file">
                     </div>
                     @if ($disposisi[2] && $disposisi[2]->file)
-                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[0]->file) }}" target="_blank">File Disposisi</a>
+                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[2]->file) }}" target="_blank">File Disposisi</a>
                     @endif
 
                 </div>
