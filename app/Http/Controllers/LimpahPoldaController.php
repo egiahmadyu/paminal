@@ -14,6 +14,7 @@ use App\Models\Polda;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use PDF;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -173,12 +174,15 @@ class LimpahPoldaController extends Controller
             return redirect()->back()->with('error', $message);
         }
 
+        // dd($request->all());
+        // dd(!$data);
+
         if (!$data) {
             $disposisi_name = $request->tipe_disposisi == '1' ? 'disposisi-karo-sesro-paminal' : 'distribusi-kabag-binpam';
             if ($request->tipe_disposisi == '3') {
                 if ($request->has('file')) {
-                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
-                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+                    $filename = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $filename);
                 }
                 $distribusi_binpam = DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->first();
                 $data = DisposisiHistory::create([
@@ -194,10 +198,9 @@ class LimpahPoldaController extends Controller
                 ]);
             } else {
                 if ($request->has('file')) {
-                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
-                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
+                    $filename = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                    $request->file->move(public_path('assets/dokumen/disposisi'), $filename);
                 }
-                // dd($filename);
                 $data = DisposisiHistory::create([
                     'data_pelanggar_id' => $kasus_id,
                     'klasifikasi' => $request->klasifikasi,
@@ -208,249 +211,180 @@ class LimpahPoldaController extends Controller
                     'file' => $filename,
                 ]);
             }
-        }
-        // dd('ga masuk');
+        } else {
+            if ($data && $data->tipe_disposisi == 1) {
+                $disposisi_name = 'disposisi-karo-sesro-paminal';
+                $filename = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                if ($request->has('limpah_den')) {
+                    if ($request->has('file')) {
+                        if (File::exists(public_path('assets/dokumen/disposisi/' . $data->file))) {
+                            File::delete(public_path('assets/dokumen/disposisi/' . $data->file));
+                        }
 
-        if ($data && $data->tipe_disposisi == 1) {
-            $disposisi_name = 'disposisi-karo-sesro-paminal';
-            if ($request->has('limpah_den')) {
-                if ($request->has('file')) {
+                        $request->file->move(public_path('assets/dokumen/disposisi'), $filename);
+                        $data->update([
+                            'limpah_den' => $request->limpah_den,
+                            'isi_disposisi' => $request->isi_disposisi,
+                            'file' => $filename,
+                        ]);
+                    } else {
+                        $data->update([
+                            'limpah_den' => $request->limpah_den,
+                            'isi_disposisi' => $request->isi_disposisi,
+                        ]);
+                    }
+                } else {
+                    if ($request->has('file')) {
+                        if (File::exists(public_path('assets/dokumen/disposisi/' . $data->file))) {
+                            File::delete(public_path('assets/dokumen/disposisi/' . $data->file));
+                        }
 
-                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
-                    $data->update([
-                        'limpah_den' => $request->limpah_den,
-                        'isi_disposisi' => $request->isi_disposisi,
-                        'file' => $filename,
-                    ]);
-                } else {
-                    $data->update([
-                        'limpah_den' => $request->limpah_den,
-                        'isi_disposisi' => $request->isi_disposisi,
-                    ]);
-                }
-            } else {
-                if ($request->has('file')) {
-                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
-                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
-                    $data->update([
-                        'isi_disposisi' => $request->isi_disposisi,
-                        'file' => $filename,
-                    ]);
-                } else {
-                    $data->update([
-                        'isi_disposisi' => $request->isi_disposisi,
-                    ]);
+                        $request->file->move(public_path('assets/dokumen/disposisi'), $filename);
+
+                        $data->update([
+                            'isi_disposisi' => $request->isi_disposisi,
+                            'file' => $filename,
+                        ]);
+                    } else {
+                        $data->update([
+                            'isi_disposisi' => $request->isi_disposisi,
+                        ]);
+                    }
                 }
             }
-        }
 
-        if ($data && $data->tipe_disposisi == 2) {
-            if ($request->has('limpah_den')) {
-                if ($request->limpah_den == 7) {
+            if ($data && $data->tipe_disposisi == 2) {
+                if ($request->has('limpah_den')) {
+                    if ($request->limpah_den == 7) {
+                        $data->update([
+                            'limpah_den' => $request->limpah_den,
+                            'isi_disposisi' => $request->isi_disposisi,
+                        ]);
+                        $kasus->update([
+                            'status_id' => 3
+                        ]);
+
+                        return redirect()->back()->with('message', 'DUMAS DILIMPAHKAN KE POLDA.');
+                    }
+
                     $data->update([
                         'limpah_den' => $request->limpah_den,
-                        'isi_disposisi' => $request->isi_disposisi,
                     ]);
+
+                    return redirect()->back()->with("success", "LIMPAH BAG / DEN TELAH DITENTUKAN!");
+                } else {
+                    $disposisi_name = 'distribusi-kabag-binpam';
+                    if ($request->has('file')) {
+                        if (File::exists(public_path('assets/dokumen/disposisi/' . $data->file))) {
+                            File::delete(public_path('assets/dokumen/disposisi/' . $data->file));
+                        }
+
+                        $filename = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                        $request->file->move(public_path('assets/dokumen/disposisi'), $filename);
+
+                        $data->update([
+                            'isi_disposisi' => $request->isi_disposisi,
+                            'file' => $filename,
+                        ]);
+                    } else {
+                        $data->update([
+                            'isi_disposisi' => $request->isi_disposisi,
+                        ]);
+                    }
+                }
+            }
+
+            if ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
+                if ($request->has('limpah_unit')) {
+                    $penyidik = DataAnggota::where('unit', (int)$request->limpah_unit)->get();
+                    if (count($penyidik) < 1) {
+                        return back()->withInput()->with("error", "ANGGOTA UNIT BELUM DIBUAT !");
+                    }
+
+                    $disposisi_name = 'disposisi-kaden';
+                    if ($request->has('file')) {
+                        if (File::exists(public_path('assets/dokumen/disposisi/' . $data->file))) {
+                            File::delete(public_path('assets/dokumen/disposisi/' . $data->file));
+                        }
+                        $filename = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
+                        $request->file->move(public_path('assets/dokumen/disposisi'), $filename);
+
+                        $data->update([
+                            'limpah_unit' => $request->limpah_unit,
+                            'isi_disposisi' => $request->isi_disposisi,
+                            'file' => $filename,
+                        ]);
+                    } else {
+                        $data->update([
+                            'limpah_unit' => $request->limpah_unit,
+                            'isi_disposisi' => $request->isi_disposisi,
+                        ]);
+                    }
+
+                    // Create pimpinan
+                    $datasemen = Datasemen::where('id', $data->limpah_den)->first();
+
+                    $pimpinans = DataAnggota::where('id', $datasemen->kaden)->orWhere('id', $datasemen->wakaden)->get();
+                    foreach ($pimpinans as $key => $pimpinan) {
+                        Penyidik::create([
+                            'data_pelanggar_id' => $kasus->id,
+                            'name' => $pimpinan->nama,
+                            'nrp' => $pimpinan->nrp,
+                            'pangkat' => $pimpinan->pangkat,
+                            'jabatan' => $pimpinan->jabatan,
+                            'datasemen' => $pimpinan->datasemen,
+                            'unit' => '',
+                        ]);
+                    }
+
+                    // Create anggota tim
+                    $anggota = DataAnggota::where('unit', $data->limpah_unit)->where('datasemen', $data->limpah_den)->get();
+                    foreach ($anggota as $key => $valAnggota) {
+                        # code...
+                        Penyidik::create([
+                            'data_pelanggar_id' => $kasus->id,
+                            'name' => $valAnggota->nama,
+                            'nrp' => $valAnggota->nrp,
+                            'pangkat' => $valAnggota->pangkat,
+                            'jabatan' => $valAnggota->jabatan,
+                            'datasemen' => $valAnggota->datasemen,
+                            'unit' => $valAnggota->unit,
+                        ]);
+                    }
+
                     $kasus->update([
-                        'status_id' => 3
+                        'status_id' => 4
                     ]);
-
-                    return redirect()->back()->with('message', 'DUMAS DILIMPAHKAN KE POLDA.');
+                    return redirect()->route('kasus.detail', ['id' => $kasus->id])->with("success", "LIMPAH UNIT TELAH DITENTUKAN !");
                 }
-
-                $disposisi_name = 'distribusi-kabag-binpam';
-                if ($request->has('file')) {
-                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
-                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
-
-                    $data->update([
-                        'limpah_den' => $request->limpah_den,
-                        'isi_disposisi' => $request->isi_disposisi,
-                        'file' => $filename,
-                    ]);
-                } else {
-                    $data->update([
-                        'limpah_den' => $request->limpah_den,
-                        'isi_disposisi' => $request->isi_disposisi,
-                    ]);
-                }
-
-                return redirect()->back()->with('message', 'Limpah BAG / DEN TELAH DITENTUKAN!');
-
-                // limpah kabagden
-                // $template_filename_limpah_bagden = 'template_limpah_kabagbinpam';
-                // $filename_limpah_bagden = $kasus->pelapor . '-surat-limpah-kabagbinpam';
-
-
-                // $pangkat_terlapor = Pangkat::find($kasus->pangkat);
-                // $wujud_perbuatan = WujudPerbuatan::find($kasus->wujud_perbuatan);
-                // $den = Datasemen::find($data->limpah_den);
-                // $kabagden = DataAnggota::find($den->kaden);
-                // $kabagden_pangkat = Pangkat::find($kabagden->pangkat);
-                // $kabagden_nrp = $kabagden->nrp;
-                // $limpah_bagden = Datasemen::find($data->limpah_den);
-
-                // $template_document_limpah_bagden = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename_limpah_bagden . '.docx'));
-                // $template_document_limpah_bagden->setValues(array(
-                //     'nomor_agenda' => $data->no_agenda,
-                //     'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
-                //     'tahun' => Carbon::parse($data->created_at)->translatedFormat('Y'),
-                //     'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
-                //     'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
-                //     'tanggal' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
-                //     'surat_dari' => 'BAGYANDUAN',
-                //     'no_nota_dinas' => $kasus->no_nota_dinas,
-                //     'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-                //     'perihal' => $kasus->perihal_nota_dinas,
-                //     'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
-                //     'bag_den' => 'KA. ' . $limpah_bagden->name,
-                //     'pelapor' => $kasus->pelapor,
-                //     'pangkat_terlapor' => $pangkat_terlapor->name,
-                //     'terlapor' => $kasus->terlapor,
-                //     'jabatan_terlapor' => $kasus->jabatan,
-                //     'kesatuan_terlapor' => $kasus->kesatuan,
-                //     'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
-                //     'kabagden' => $kabagden->nama,
-                //     'kabagden_pangkat' => $kabagden_pangkat->name,
-                //     'kabagden_nrp' => $kabagden_nrp,
-                // ));
-                // $template_document_limpah_bagden->saveAs(storage_path('template_surat/' . $filename_limpah_bagden . '.docx'));
-
-                // $path_files = storage_path('template_surat/' . $filename_limpah_bagden . '.docx');
-                // toastr()->success('Limpah BAG / DEN telah ditentukan.', 'Berhasil!');
-
-                // return response()->download($path_files)->deleteFileAfterSend(true);
-
             }
-        }
 
-        if ($data && $data->tipe_disposisi == 3 && !isset($data->limpah_unit)) {
-            if ($request->has('limpah_unit')) {
-                $penyidik = DataAnggota::where('unit', (int)$request->limpah_unit)->get();
-                if (count($penyidik) < 1) {
-                    return back()->withInput()->with('error', 'ANGGOTA UNIT BELUM DIBUAT!');
-                }
-
-                $disposisi_name = 'disposisi-kaden';
-                if ($request->has('file')) {
-                    $filename = $fileName = time() . '-' . strtoupper($kasus->pelapor) . '-' . $disposisi_name . '.' . $request->file->extension();
-                    $request->file->move(public_path('assets/dokumen/disposisi'), $fileName);
-
-                    $data->update([
-                        'limpah_unit' => $request->limpah_unit,
-                        'isi_disposisi' => $request->isi_disposisi,
-                        'file' => $filename,
-                    ]);
-                } else {
-                    $data->update([
-                        'limpah_unit' => $request->limpah_unit,
-                        'isi_disposisi' => $request->isi_disposisi,
-                    ]);
-                }
-
-                // Create pimpinan
-                $datasemen = Datasemen::where('id', $data->limpah_den)->first();
-
-                $pimpinans = DataAnggota::where('id', $datasemen->kaden)->orWhere('id', $datasemen->wakaden)->get();
-                foreach ($pimpinans as $key => $pimpinan) {
-                    Penyidik::create([
-                        'data_pelanggar_id' => $kasus->id,
-                        'name' => $pimpinan->nama,
-                        'nrp' => $pimpinan->nrp,
-                        'pangkat' => $pimpinan->pangkat,
-                        'jabatan' => $pimpinan->jabatan,
-                        'datasemen' => $pimpinan->datasemen,
-                        'unit' => '',
-                    ]);
-                }
-
-                // Create anggota tim
-                $anggota = DataAnggota::where('unit', $data->limpah_unit)->where('datasemen', $data->limpah_den)->get();
-                foreach ($anggota as $key => $valAnggota) {
-                    # code...
-                    Penyidik::create([
-                        'data_pelanggar_id' => $kasus->id,
-                        'name' => $valAnggota->nama,
-                        'nrp' => $valAnggota->nrp,
-                        'pangkat' => $valAnggota->pangkat,
-                        'jabatan' => $valAnggota->jabatan,
-                        'datasemen' => $valAnggota->datasemen,
-                        'unit' => $valAnggota->unit,
-                    ]);
-                }
-
-                $kasus->update([
-                    'status_id' => 4
+            if ($request->tipe_data && $request->tipe_data != '1') {
+                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
+                    'no_agenda' => $request->nomor_agenda,
                 ]);
-                return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('message', 'LIMPAH UNIT TELAH DITENTUKAN.');
+                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
+                    'no_agenda' => $request->nomor_agenda,
+                ]);
+                DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
+                    'no_agenda' => $request->nomor_agenda,
+                    'tipe_disposisi' => $request->tipe_disposisi,
+                ]);
+
+                $bulan = $this->getRomawi(date('m'));
+                if ($kasus->tipe_data == '2') {
+                    $no_surat = 'R/Infosus-' . $request->nomor_agenda . '/' . $bulan . '/' . date('Y') . '/ROPAMINAL';
+                } else {
+                    $no_surat = 'R/LI-' . $request->nomor_agenda . '/' . $bulan . '/' . date('Y') . '/ROPAMINAL';
+                }
+
+                DataPelanggar::where('id', $kasus_id)->update([
+                    'no_nota_dinas' => $no_surat,
+                ]);
             }
         }
 
-        if ($request->tipe_data && $request->tipe_data != '1') {
-            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 1)->update([
-                'no_agenda' => $request->nomor_agenda,
-                // 'klasifikasi' => $request->klasifikasi,
-                // 'derajat' => $request->derajat,
-                'no_agenda' => $request->nomor_agenda,
-            ]);
-            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 2)->update([
-                'no_agenda' => $request->nomor_agenda,
-                // 'klasifikasi' => $request->klasifikasi,
-                // 'derajat' => $request->derajat,
-                'no_agenda' => $request->nomor_agenda,
-            ]);
-            DisposisiHistory::where('data_pelanggar_id', $kasus_id)->where('tipe_disposisi', 3)->update([
-                // 'klasifikasi' => $request->klasifikasi,
-                // 'derajat' => $request->derajat,
-                'no_agenda' => $request->nomor_agenda,
-                'tipe_disposisi' => $request->tipe_disposisi,
-            ]);
-
-            $bulan = $this->getRomawi(date('m'));
-            if ($kasus->tipe_data == '2') {
-                $no_surat = 'R/Infosus-' . $request->nomor_agenda . '/' . $bulan . '/' . date('Y') . '/ROPAMINAL';
-            } else {
-                $no_surat = 'R/LI-' . $request->nomor_agenda . '/' . $bulan . '/' . date('Y') . '/ROPAMINAL';
-            }
-
-            DataPelanggar::where('id', $kasus_id)->update([
-                'no_nota_dinas' => $no_surat,
-            ]);
-            // return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL MELAKUKAN PENOMORAN SURAT !');
-        }
-
-        // if ($data->tipe_disposisi == 1) {
-        //     $template_filename = 'template_disposisi_karopaminal';
-        //     $filename = $kasus->pelapor . '-surat-disposisi-karopaminal';
-        // } elseif ($data->tipe_disposisi == 2) {
-        //     $template_filename = 'template_disposisi_kabagbinpam';
-        //     $filename = $kasus->pelapor . '-surat-distribusi-kabagbinpam';
-        // } else {
-        //     $template_filename = 'template_disposisi_kadena';
-        //     $filename = $kasus->pelapor . '-surat-disposisi-kaden';
-        // }
-
-        // $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/' . $template_filename . '.docx'));
-
-        // $template_document->setValues(array(
-        //     'klasifikasi' => $data->klasifikasi,
-        //     'derajat' => $data->derajat,
-        //     'nomor_agenda' => $data->no_agenda,
-        //     'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
-        //     'tahun_agenda' => Carbon::parse($data->created_at)->translatedFormat('Y'),
-        //     'tgl_diterima' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
-        //     'waktu_diterima' => Carbon::parse($data->created_at)->translatedFormat('H:i'),
-        //     'surat_dari' => 'BAGYANDUAN',
-        //     'no_nota_dinas' => $kasus->no_nota_dinas,
-        //     'tgl_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-        //     'perihal' => $kasus->perihal_nota_dinas,
-        //     'tipe_no_surat' => $data->klasifikasi == 'Biasa' ? 'B' : 'R',
-        // ));
-
-        // $template_document->saveAs(storage_path('template_surat/' . $filename . '.docx'));
-
-        // return response()->download(storage_path('template_surat/' . $filename . '.docx'))->deleteFileAfterSend(true);
-        return redirect()->route('kasus.detail', ['id' => $kasus->id])->with('success', 'BERHASIL SIMPAN DATA !');
+        return redirect()->route('kasus.detail', ['id' => $kasus->id])->with("success", "BERHASIL SIMPAN DATA !");
     }
 
     public function generateLiInfosus($kasus_id)
@@ -503,23 +437,13 @@ class LimpahPoldaController extends Controller
         return response()->download(storage_path('template_surat/' . $filename . '.docx'))->deleteFileAfterSend(true);
     }
 
-    public function downloadDisposisi($type)
+    public function downloadDisposisi($disposisi_id)
     {
-        if ($type == 1) {
-            $template_document = new TemplateProcessor(storage_path('template_surat/template_disposisi_karopaminal.docx'));
-            $template_document->saveAs(storage_path('template_surat/surat-disposisi_karopaminal.docx'));
-
-            return response()->download(storage_path('template_surat/surat-disposisi_karopaminal.docx'))->deleteFileAfterSend(true);
-        } elseif ($type == 2) {
-            $template_document = new TemplateProcessor(storage_path('template_surat/template_disposisi_kabagbinpam.docx'));
-            $template_document->saveAs(storage_path('template_surat/surat-distribusi_kabagbinpam.docx'));
-
-            return response()->download(storage_path('template_surat/surat-template_disposisi_kabagbinpam.docx'))->deleteFileAfterSend(true);
-        } elseif ($type == 3) {
-            $template_document = new TemplateProcessor(storage_path('template_surat/template_disposisi_kadena.docx'));
-            $template_document->saveAs(storage_path('template_surat/surat-template_disposisi_kadena.docx'));
-
-            return response()->download(storage_path('template_surat/surat-template_disposisi_kadena.docx'))->deleteFileAfterSend(true);
+        $disposisi = DisposisiHistory::find($disposisi_id);
+        if (File::exists(public_path('assets/dokumen/disposisi/' . $disposisi->file))) {
+            return response()->download(public_path('assets/dokumen/disposisi/' . $disposisi->file));
+        } else {
+            return redirect()->back()->with("error", "File doesn't exists !");
         }
     }
 

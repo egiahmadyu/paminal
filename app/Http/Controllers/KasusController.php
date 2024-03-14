@@ -768,7 +768,7 @@ class KasusController extends Controller
 
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
-            $value->pangkat = $pangkat->name;
+            $value->pangkat = $pangkat->alias;
         }
 
         $pangkat = Pangkat::get();
@@ -816,7 +816,7 @@ class KasusController extends Controller
             'nd_hasil_gelar' => $nd_hasil_gelar,
             'bulan_romawi_ndPG' => $bulan_romawi_ndPG,
             'gelar_perkara' => $gelar_perkara,
-            'pangkat_pimpinan_gelar' => isset($gelar_perkara) ? $pangkat_pimpinan_gelar->name : '',
+            'pangkat_pimpinan_gelar' => isset($gelar_perkara) ? $pangkat_pimpinan_gelar->alias : '',
             'pimpinans' => $pimpinan,
             'limpah_biro' => isset($limpah_biro) ? $limpah_biro : '',
             'ndHGP' => NDHasilGelarPenyelidikanHistory::where('data_pelanggar_id', $id)->first(),
@@ -824,13 +824,14 @@ class KasusController extends Controller
             'penyidik' => $penyidik,
             'pangkat' => $pangkat,
             'usia_dumas' => $usia_dumas . ' hari',
-            'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
+            'terlapor' => $pangkat_terlapor->alias . ' ' . $kasus->terlapor,
             'tgl_bai_pelapor' => $bai_pelapor ? Carbon::parse($bai_pelapor->created_at)->translatedFormat('d F Y') : 'BAI PELAPOR BELUM DIBUAT',
             'tgl_bai_terlapor' => $bai_terlapor ? Carbon::parse($bai_terlapor->created_at)->translatedFormat('d F Y') : 'BAI TERLAPOR BELUM DIBUAT',
             'tgl_nd_pg' => Carbon::parse($ndPG->created_at)->translatedFormat('d F Y'),
             'hasil_lhp' => $lhp->hasil_penyelidikan == 1 ? 'Ditemukan Cukup Bukti' : 'Belum Ditemukan cukup bukti',
             'tgl_ugp' => isset($ugp) ? Carbon::parse($ugp->tanggal)->translatedFormat('d F Y') : '',
             'title' => 'GELAR PERKARA',
+            'bag_den' => $den,
         ];
 
         return view('pages.data_pelanggaran.proses.gelar_penyelidikan', $data);
@@ -1020,7 +1021,7 @@ class KasusController extends Controller
 
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
-            $value->pangkat = $pangkat->name;
+            $value->pangkat = $pangkat->alias;
         }
 
         $lhp = LHPHistory::where('data_pelanggar_id', $kasus->id)->first();

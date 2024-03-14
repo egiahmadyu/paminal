@@ -2,14 +2,16 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(1)"><i class="far fa-arrow-left"></i>
-                    SEBELUMNYA</button>
+                <button type="button" class="btn btn-info" onclick="getViewProcess(1)">
+                    <i class="far fa-arrow-left"></i> SEBELUMNYA
+                </button>
             </div>
             <div>
 
                 @if ($kasus->status_id > 4)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">SELANJUTANYA <i
-                            class="far fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">
+                        SELANJUTANYA <i class="far fa-arrow-right"></i>
+                    </button>
                 @endif
 
             </div>
@@ -56,28 +58,28 @@
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
-                                            <td> No. SPRIN </td>
+                                            <td> NO. SURAT PERINTAH (SPRIN) </td>
                                             <td>:</td>
                                             <td>
                                                 @if (isset($sprin))
-                                                    SPRIN/{{ $sprin->no_sprin }}/HUK.6.6./2023
+                                                    SPRIN/{{ $sprin->no_sprin }}/HUK.6.6./{{date('Y')}}
                                                 @else
-                                                    SPRIN/____/HUK.6.6./2023
+                                                    SPRIN/____/HUK.6.6./{{date('Y')}}
                                                 @endif
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Pembuat Sprin</td>
+                                            <td>PEMBUAT SPRIN</td>
                                             <td>:</td>
                                             <td>{{ isset($sprin) ? $sprin->user->name : '' }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pelapor</td>
+                                            <td>PELAPOR</td>
                                             <td>:</td>
                                             <td>{{ strtoupper($kasus->pelapor) }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Usia Dumas</td>
+                                            <td>USIA DUMAS</td>
                                             <td>:</td>
                                             <td>{{ $usia_dumas }}</td>
                                         </tr>
@@ -86,22 +88,17 @@
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
-                                            <td>Terduga Pelaku</td>
+                                            <td>TERDUGA PELAKU</td>
                                             <td>:</td>
                                             <td>{{ strtoupper($terlapor) }} / {{ $kasus->nrp }}</td>
                                         </tr>
-                                        {{-- <tr>
-                                            <td>Perihal</td>
-                                            <td>:</td>
-                                            <td>Perihal</td>
-                                        </tr> --}}
                                         <tr>
-                                            <td>Unit Pelaksana</td>
+                                            <td>UNIT PELAKSANA</td>
                                             <td>:</td>
                                             <td> {{ $den.' '.$unit }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Ketua Tim</td>
+                                            <td>KETUA TIM</td>
                                             <td>:</td>
                                             <td>{{ $penyidik[0]->pangkat.' '.$penyidik[0]->name.' / '.$penyidik[0]->nrp }}</td>
                                         </tr>
@@ -120,8 +117,9 @@
                     <input type="text" id="kasus_id" value="{{ $kasus->id }}" hidden>
                     <form>
                         <div class="form-buat-surat col-lg-12 mb-3">
-                            <label for="tgl_pembuatan_surat_perintah" class="form-label">Tanggal Pembuatan Surat
-                                Perintah (SPRIN)</label>
+                            <label for="tgl_pembuatan_surat_perintah" class="form-label">
+                                TANGGAL PEMBUATAN SPRIN
+                            </label>
                             <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                                 aria-describedby="emailHelp"
                                 value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) . ' WIB' : '' }}"
@@ -153,7 +151,7 @@
                 <div class="col-lg-4 mb-3">
                     <form>
                         <div class="form-buat-surat col-lg-12 mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan UUK</label>
+                            <label for="exampleInputEmail1" class="form-label">TANGGAL PEMBUATAN UUK</label>
                             <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                 value="{{ !empty($uuk) ? date('d-m-Y H:i', strtotime($uuk->created_at)) : '' }}"
                                 readonly aria-describedby="emailHelp">
@@ -169,7 +167,7 @@
                     <form>
                         <div class="form">
                             <div class="form-buat-surat col-lg-12 mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tanggal Pembuatan SP2HP2</label>
+                                <label for="exampleInputEmail1" class="form-label">TANGGAL PEMBUATAN SP2HP2 AWAL</label>
                                 <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                     value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
@@ -178,7 +176,7 @@
                             @can('edit-pulbaket')
                                 @if (!empty($sp2hp_awal))
                                     <a type="button" class="text-info" onclick="printSP2HP2({{$kasus->id}})">
-                                        <i class="far fa-download"></i> Surat
+                                        <i class="far fa-download"></i> SURAT
                                     </a>
                                 @else
                                     <a href="#!" data-bs-toggle="modal" data-bs-target="#modal_sp2hp2_awal">
@@ -208,7 +206,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Perintah (SPRIN)</h5>
+                <h5 class="modal-title" id="exampleModalLabel">PEMBUATAN SPRIN</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(4)"></button>
             </div>
@@ -219,7 +217,7 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" name="no_sprin"
                             placeholder="No. SPRIN" required>
-                        <label for="no_sprin">No. SPRIN </label>
+                        <label for="no_sprin">NO. SPRIN </label>
                         @if ($errors->has('no_sprin'))
                             <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
                         @endif
@@ -228,22 +226,22 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" name="masa_berlaku_sprin" id="masa_berlaku_sprin"
                             placeholder="Masa Berlaku SPRIN" required>
-                        <label for="masa_berlaku_sprin">Masa Berlaku SPRIN </label>
+                        <label for="masa_berlaku_sprin">MASA BERLAKU SPRIN </label>
                     </div>
 
                     <div class="card border-dark">
                         <div class="card-header border-dark">
-                            <h5>Tim Penyelidik</h5>
+                            <h5>TIM PENYELIDIK</h5>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">No.</th>
-                                        <th scope="col">Nama</th>
-                                        <th scope="col">Pangkat/NRP</th>
-                                        <th scope="col">Jabatan Struktural</th>
-                                        <th scope="col">Jabatan TIM</th>
+                                        <th scope="col">NO.</th>
+                                        <th scope="col">NAMA</th>
+                                        <th scope="col">PANGKAT/NRP</th>
+                                        <th scope="col">JABAAN STRUKTURAL</th>
+                                        <th scope="col">JABATAN TIM</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -265,7 +263,7 @@
 
                     <div class="form-outline mb-3">
                         @can('edit-pulbaket')
-                            <button type="submit" class="form-control btn btn-primary">Buat SPRIN</button>
+                            <button type="submit" class="form-control btn btn-primary">BUAT SPRIN</button>
                         @endcan
                     </div>
                 </form>
@@ -279,17 +277,17 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat UUK</h5>
+                <h5 class="modal-title" id="exampleModalLabel">PEMBUATAN SURAT UUK</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form class="form-control" action="/surat-uuk/{{ $kasus->id }}">
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Nama</label>
+                        <label for="exampleInputEmail1" class="form-label">NAMA</label>
                         <input type="text" class="form-control" name="nama" aria-describedby="emailHelp">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Pangkat</label>
+                        <label for="exampleInputPassword1" class="form-label">PANGKAT</label>
                         <input type="text" class="form-control" name="pangkat">
                     </div>
                     <div class="mb-3">
@@ -297,16 +295,15 @@
                         <input type="text" class="form-control" name="nrp">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Nomor Telp.</label>
+                        <label for="exampleInputPassword1" class="form-label">NOMOR TELEPON</label>
                         <input type="text" class="form-control" name="jabatan">
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Buat Surat</button>
+                    <button type="submit" class="btn btn-primary">BUAT SURAT</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
             </div>
         </div>
     </div>
@@ -318,7 +315,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan SP2HP2</h5>
+                <h5 class="modal-title" id="exampleModalLabel">PEMBUATAN SP2HP2</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="getViewProcess(4)"></button>
             </div>
             <div class="modal-body">
@@ -326,37 +323,33 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="penangan" aria-describedby="emailHelp"
                             placeholder="Unit yang Menangani" value="{{ isset($unit) ? $unit : ''}}" required>
-                        <label for="exampleInputEmail1" class="form-label">Unit yang Menangani</label>
+                        <label for="exampleInputEmail1" class="form-label">UNIT YANG MENANGANI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="pangkat_dihubungi"
                             placeholder="Pangkat yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->pangkat : ''}}" required>
-                        <label for="exampleInputPassword1" class="form-label">Pangkat yang dihubungi</label>
+                        <label for="exampleInputPassword1" class="form-label">PANGKAT YANG DIHUBUNGI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="dihubungi"
                             placeholder="Nama yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->name : ''}}" required>
-                        <label for="exampleInputPassword1" class="form-label">Nama yang dihubungi</label>
+                        <label for="exampleInputPassword1" class="form-label">NAMA YANG DIHUBUNGI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="jabatan_dihubungi"
                             placeholder="Jabatan yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->jabatan : ''}}" required>
-                        <label for="exampleInputPassword1" class="form-label">Jabatan yang dihubungi</label>
+                        <label for="exampleInputPassword1" class="form-label">JABATAN YANG DIHUBUNGI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="telp_dihubungi" placeholder="No. Telepon yang dihubungi" required>
-                        <label for="telp_dihubungi" class="form-label">No. Telepon yang dihubungi</label>
+                        <label for="telp_dihubungi" class="form-label">NO. TELEPON YANG DIHUBUNGI</label>
                     </div>
 
                     @can('edit-pulbaket')
-                        <button type="submit" class="btn btn-primary">Buat Surat</button>
+                        <button type="submit" class="btn btn-primary">BUAT SURAT</button>
                     @endcan
                 </form>
             </div>
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div> --}}
         </div>
     </div>
 </div>
@@ -367,7 +360,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pembuatan Surat Undangan Klarifikasi</h5>
+                <h5 class="modal-title" id="exampleModalLabel">PEMBUATAN SURAT UNDANGAN KLARIFIKASI</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(4)"></button>
             </div>
@@ -377,19 +370,19 @@
                     <!-- Input no surat undangan -->
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="jenis_undangan" id="jenis_undangan" required>
-                            <option value="">Pilih Jenis Undangan</option>
-                            <option value="1">Pelapor</option>
-                            <option value="2">Terlapor</option>
+                            <option value="">PILIH JENIS UNDANGAN</option>
+                            <option value="1">PELAPOR</option>
+                            <option value="2">TERLAPOR</option>
                         </select>
-                        <label for="jenis_undangan" class="form-label">-- Pilih Jenis Undangan --</label>
+                        <label for="jenis_undangan" class="form-label">-- PILIH JENIS UNDANGAN --</label>
                     </div>
 
                     <!--undangan sipil-->
                     <div class="row mb-3">
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="Masukan No. Surat Undangan" required>
-                                <label for="no_surat_undangan">No. Surat Undangan</label>
+                                <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="MASUKAN NO. SURAT UNDANGAN" required>
+                                <label for="no_surat_undangan">NO. SURAT UNDANGAN</label>
                                 @if ($errors->has('no_surat_undangan'))
                                     <div class="invalid-feedback">{{ $errors->first('no_surat_undangan') }}</div>
                                 @endif
@@ -400,15 +393,15 @@
                         </div>
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
-                                <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="Tanggal Klarifikasi" required>
-                                <label for="tgl_klarifikasi">Tanggal Klarifikasi</label>
+                                <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="TANGGAL KLARIFIKASI" required>
+                                <label for="tgl_klarifikasi">TANGGAL KLARIFIKASI</label>
                             </div>
                         </div>
                         <div class="col-lg-12 mb-3">
                             <div class="form-outline">
                                 <div class="form-floating">
-                                    <input type="time" data-provider="timepickr" data-time-basic="true" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="Waktu Klarifikasi" required>
-                                    <label for="waktu_klarifikasi">Waktu Klarifikasi</label>
+                                    <input type="time" data-provider="timepickr" data-time-basic="true" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="WAKTU KLARIFIKASI" required>
+                                    <label for="waktu_klarifikasi">WAKTU KLARIFIKASI</label>
                                 </div>
                             </div>
                         </div>
@@ -416,7 +409,7 @@
 
                     <div class="form-outline mb-3">
                         @can('edit-pulbaket')
-                            <button type="submit" class="form-control btn btn-primary">Buat Undangan</button>
+                            <button type="submit" class="form-control btn btn-primary">BUAT UNDANGAN</button>
                         @endcan
                     </div>
                 </form>
@@ -439,9 +432,12 @@
                     @csrf
                     <div class="form-outline mb-3" id="form_tambah_saksi">
                         <div class="mb-3">
-                            <label for="nama_saksi" class="form-label">Nama Saksi</label>
+                            <label for="nama_saksi" class="form-label">NAMA SAKSI</label>
                             <input type="text" class="form-control border-dark inputNamaSaksi" name="nama"
-                                aria-describedby="emailHelp" placeholder="Enter Nama Saksi" required>
+                                aria-describedby="emailHelp" placeholder="MASUKAN NAMA SAKSI" required>
+                        </div>
+                        <div class="invalid-feedback">
+                            MOHON ISI NAMA SAKSI !
                         </div>
                     </div>
                     <div class="form-outline mb-3">
@@ -472,11 +468,8 @@
                             MOHON ISI NO. TELEPON PELAPOR !
                         </div>
                     </div>
-                    {{-- <div class="form-outline mb-3" id="btn_tambah_saksi">
-                        <a type="button" class="btn btn-outline-success" href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a>
-                    </div> --}}
                     <div class="form-outline mb-3">
-                        <button type="submit" class="btn btn-outline-primary form-control">Simpan</button>
+                        <button type="submit" class="btn btn-outline-primary form-control">SIMPAN</button>
                     </div>
 
                 </form>
@@ -490,7 +483,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Buat BAI Pelapor</h5>
+                <h5 class="modal-title" id="exampleModalLabel">BUAT BAI PELAPOR</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(4)"></button>
             </div>
@@ -498,18 +491,18 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi" placeholder="Tanggal Introgasi" required>
-                            <label for="tanggal_introgasi">Tanggal Introgasi</label>
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi" placeholder="TANGGAL INTEROGASI" required>
+                            <label for="tanggal_introgasi">TANGGAL INTEROGASI</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi" required>
-                            <label for="waktu_introgasi">Waktu Intograsi</label>
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="WAKTU INTEROGASI" required>
+                            <label for="waktu_introgasi">WAKTU INTEROGASI</label>
                         </div>
                     </div>
                     <div class="form-outline border-0">
-                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                        <button type="submit" class="btn btn-primary form-control">SIMPAN</button>
                     </div>
                 </div>
             </form>
@@ -522,7 +515,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Buat BAI Terlapor</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Buat BAI TERLAPOR</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(4)"></button>
             </div>
@@ -530,19 +523,18 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi_terlapor" placeholder="Tanggal Introgasi" required>
-                            <label for="tanggal_introgasi_terlapor">Tanggal Introgasi</label>
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi_terlapor" placeholder="TANGGAL INTEROGASI" required>
+                            <label for="tanggal_introgasi_terlapor">TANGGAL INTEROGASI</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="Waktu Introgasi" required>
-                            <label for="waktu_introgasi">Waktu Introgasi</label>
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="WAKTU INTEROGASI" required>
+                            <label for="waktu_introgasi">WAKTU INTEROGASI</label>
                         </div>
                     </div>
                     <div>
-                        {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
-                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                        <button type="submit" class="btn btn-primary form-control">SIMPAN</button>
                     </div>
                 </div>
             </form>
@@ -556,7 +548,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Buat Nota Dinas Permohonan Gelar</h5>
+                <h5 class="modal-title" id="exampleModalLabel">BUAT NOTA DINAS PERMOHONAN GELAR</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(4)"></button>
             </div>
@@ -566,12 +558,11 @@
                     <div class="row mb-3">
                         <div class="col">
                             <input type="text" class="form-control" name="no_surat"
-                                placeholder="Masukan No. Nota Dinas Permohonan Gelar" required>
+                                placeholder="MASUKAN NO. NOTA DINAS PERMOHONAN GELAR" required>
                         </div>
                     </div>
                     <div>
-                        {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
-                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                        <button type="submit" class="btn btn-primary form-control">SIMPAN</button>
                     </div>
                 </div>
             </form>
@@ -585,7 +576,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Buat Laporan Hasil Penyelidikan</h5>
+                <h5 class="modal-title" id="exampleModalLabel">BUAT LAPORAN HASIL PENYELIDIKAN</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(4)"></button>
             </div>
@@ -593,27 +584,19 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <!--<div class="col-lg-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="no_surat"
-                                    placeholder="No. Laporan Hasil Penyelidikan" required>
-                                <label for="lhp">No. Laporan Hasil Penyelidikan</label>
-                            </div>
-                        </div>-->
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
                                 <select class="form-select border-dark" aria-label="Default select example" name="hasil_penyelidikan" id="hasil_penyelidikan" {{ isset($lhp) ? 'disabled' : '' }} required>
-                                    <option value="">-- Pilih Hasil Penyelidikan  --</option>
-                                    <option value="1" {{ isset($lhp) ? ($lhp->hasil_penyelidikan == '1' ? 'selected' : '') : '' }}>Ditemukan cukup bukti</option>
-                                    <option value="2" {{ isset($lhp) ? ($lhp->hasil_penyelidikan == '2' ? 'selected' : '') : '' }}>Belum Ditemukan cukup bukti</option>
+                                    <option value="">-- PILIH HASIL PENYELIDIKASN  --</option>
+                                    <option value="1" {{ isset($lhp) ? ($lhp->hasil_penyelidikan == '1' ? 'selected' : '') : '' }}>DITEMUKAN CUKUP BUKTI</option>
+                                    <option value="2" {{ isset($lhp) ? ($lhp->hasil_penyelidikan == '2' ? 'selected' : '') : '' }}>BELUM DITEMUKAN CUKUP BUKTI</option>
                                 </select>
-                                <label for="hasil_penyelidikan" class="form-label">Hasil Penyelidikan</label>
+                                <label for="hasil_penyelidikan" class="form-label">HASIL PENYELIDIKAN</label>
                             </div>
                         </div>
                     </div>
                     <div>
-                        {{-- <a href="#" onclick="tambahSaksi()"><i class="far fa-plus"></i> Tambah Saksi</a> --}}
-                        <button type="submit" class="btn btn-primary form-control">Simpan</button>
+                        <button type="submit" class="btn btn-primary form-control">SIMPAN</button>
                     </div>
                 </div>
             </form>

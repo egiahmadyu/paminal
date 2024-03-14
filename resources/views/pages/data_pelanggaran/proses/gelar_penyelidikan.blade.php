@@ -2,19 +2,16 @@
     <div class="col-lg-12 mb-4">
         <div class="d-flex justify-content-between">
             <div>
-                <button type="button" class="btn btn-info" onclick="getViewProcess(4)"><i class="far fa-arrow-left"></i>
-                    SEBELUMNYA</button>
-            </div>
-            <div>
-                @if ($kasus->status_id == 5 && $nd_hasil_gelar)
-                    <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>
-                @endif
+                <button type="button" class="btn btn-info" onclick="getViewProcess(4)">
+                    <i class="far fa-arrow-left"></i> SEBELUMNYA
+                </button>
             </div>
             <div>
 
                 @if ($kasus->status_id > 5)
-                    <button type="button" class="btn btn-primary" onclick="getViewProcess(6)">SELANJUTNYA <i
-                            class="far fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-primary" onclick="getViewProcess(6)">
+                        SELANJUTNYA <i class="far fa-arrow-right"></i>
+                    </button>
                 @endif
 
             </div>
@@ -57,44 +54,43 @@
                         <div class="col-lg-6">
                             <table>
                                 <tr>
-                                    <td> ND Permohonan Gelar </td>
+                                    <td> ND PERMOHONAN GELAR </td>
                                     <td> : </td>
                                     <td>
                                         @if (isset($ndPG))
-                                            R/ND-{{ $ndPG->no_surat }}/{{ $bulan_romawi_ndPG }}/WAS.2.4./{{ Carbon\Carbon::parse($ndPG->created_at)->translatedFormat('Y') }}/Den
-                                            A
+                                            R/ND-{{ $ndPG->no_surat }}/{{ $bulan_romawi_ndPG }}/WAS.2.4./{{ Carbon\Carbon::parse($ndPG->created_at)->translatedFormat('Y') }}/{{$bag_den}}
                                         @else
                                             -
                                         @endif
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Pelapor</td>
+                                    <td>PELAPOR</td>
                                     <td> : </td>
                                     <td>{{ strtoupper($kasus->pelapor) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Terduga Pelapor</td>
+                                    <td>TERDUGA PELANGGAR</td>
                                     <td>:</td>
                                     <td>{{ strtoupper($terlapor) }} / {{ $kasus->nrp }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Tanggal BAI Pelapor</td>
+                                    <td>TANGGAL BAI PELAPOR</td>
                                     <td>:</td>
                                     <td>{{ $tgl_bai_terlapor }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Tanggal BAI Terduga Pelanggar</td>
+                                    <td>TANGGAL BAI TERDUGA PELANGGAR</td>
                                     <td>:</td>
                                     <td>{{ $tgl_bai_pelapor }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Hasil Penyelidikan</td>
+                                    <td>HASIL PENYELIDIKAN</td>
                                     <td>:</td>
                                     <td>{{ $hasil_lhp }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Usia Dumas</td>
+                                    <td>USIA DUMAS</td>
                                     <td>:</td>
                                     <td>{{ $usia_dumas }}</td>
                                 </tr>
@@ -104,23 +100,23 @@
                         <div class="col-lg-6">
                             <table>
                                 <tr>
-                                    <td>Unit Pelaksana</td>
+                                    <td>UNIT PELAKSANA</td>
                                     <td>:</td>
                                     <td>{{ $unit }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Ketua Tim</td>
+                                    <td>KETUA TIM</td>
                                     <td>:</td>
                                     <td>{{ strtoupper($penyidik[0]->pangkat) . ' ' . $penyidik[0]->name . ' / ' . $penyidik[0]->nrp }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Tanggal Permohonan Gelar</td>
+                                    <td>TANGGAL PERMOHONAN GELAR</td>
                                     <td>:</td>
                                     <td>{{ $tgl_nd_pg }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Perihal</td>
+                                    <td>HAL</td>
                                     <td>:</td>
                                     <td>{{ $kasus->perihal_nota_dinas }}</td>
                                 </tr>
@@ -139,16 +135,18 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-buat-surat col-lg-12 mb-3">
-                        <label for="tgl_pembuatan_surat_perintah" class="form-label">TANGGAL PELAKSANAAN GELAR
-                            PERKARA</label>
+                        <label for="tgl_pembuatan_surat_perintah" class="form-label">
+                            TANGGAL PELAKSANAAN GELAR PERKARA
+                        </label>
                         <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                             aria-describedby="emailHelp" value="{{ isset($tgl_ugp) ? $tgl_ugp : '' }}" readonly>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-buat-surat col-lg-12 mb-3">
-                        <label for="tgl_pembuatan_surat_perintah" class="form-label">TANGGAL PEMBUATAN SP2HP2
-                            AKHIR</label>
+                        <label for="tgl_pembuatan_surat_perintah" class="form-label">
+                            TANGGAL PEMBUATAN SP2HP2 AKHIR
+                        </label>
                         <input type="text" class="form-control border-dark"
                             id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
                             value="{{ isset($sp2hp2_akhir) ? Carbon\Carbon::parse($sp2hp2_akhir->created_at)->translatedFormat('d F Y') : '' }}"
@@ -212,7 +210,10 @@
                                         <td>
                                             <a href="/notulen-gelar-perkara/{{ $kasus->id }}">
                                                 <button type="button" class="btn btn-outline-primary text-primary">
-                                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> DOKUMEN NOTULEN</h6>
+                                                    <h6 class="p-0 m-0">
+                                                        <i class="fas fa-print"></i>
+                                                        DOKUMEN NOTULEN
+                                                    </h6>
                                                 </button>
                                             </a>
                                         </td>
@@ -223,15 +224,19 @@
                                             @if (isset($ndHGP))
                                                 <a href="/nd-hasil-gelar-perkara/{{ $kasus->id }}">
                                                     <button type="button" class="btn btn-outline-primary text-primary">
-                                                        <h6 class="p-0 m-0"><i class="fas fa-print"></i> DOKUMEN ND
-                                                            LAPORAN</h6>
+                                                        <h6 class="p-0 m-0">
+                                                            <i class="fas fa-print"></i>
+                                                            DOKUMEN ND LAPORAN
+                                                        </h6>
                                                     </button>
                                                 </a>
                                             @else
                                                 <a href="" data-bs-toggle="modal"
                                                     data-bs-target="#modal_nd_laporan_hasil_gelar">
                                                     <button type="button" class="btn btn-outline-primary text-primary">
-                                                        <h6 class="p-0 m-0"><i class="fas fa-plus"></i> DOKUMEN ND LAPORAN
+                                                        <h6 class="p-0 m-0">
+                                                            <i class="fas fa-plus"></i>
+                                                            DOKUMEN ND LAPORAN
                                                         </h6>
                                                     </button>
                                                 </a>
@@ -243,7 +248,9 @@
                                         <td>
                                             <a href="/surat-sp2hp2-akhir/{{ $kasus->id }}">
                                                 <button type="button" class="btn btn-outline-primary text-primary">
-                                                    <h6 class="p-0 m-0"><i class="fas fa-print"></i> DOKUMEN SP2HP2 AKHIR
+                                                    <h6 class="p-0 m-0">
+                                                        <i class="fas fa-print"></i>
+                                                        DOKUMEN SP2HP2 AKHIR
                                                     </h6>
                                                 </button>
                                             </a>
@@ -257,8 +264,10 @@
                                                     <a href="/gelar-perkara-baglitpers/{{ $kasus->id }}">
                                                         <button type="button"
                                                             class="btn btn-outline-primary text-primary">
-                                                            <h6 class="p-0 m-0"><i class="fas fa-print"></i> DOKUMEN ND
-                                                                KA. LITPERS</h6>
+                                                            <h6 class="p-0 m-0">
+                                                                <i class="fas fa-print"></i> 
+                                                                DOKUMEN ND KA. LITPERS
+                                                            </h6>
                                                         </button>
                                                     </a>
                                                 @else
@@ -266,8 +275,10 @@
                                                         data-bs-target="#modal_litpers">
                                                         <button type="button"
                                                             class="btn btn-outline-primary text-primary">
-                                                            <h6 class="p-0 m-0"><i class="fas fa-plus"></i> Dokumen ND KA.
-                                                                LITPERS</h6>
+                                                            <h6 class="p-0 m-0">
+                                                                <i class="fas fa-plus"></i> 
+                                                                DOKUEN ND KA. LITPERS
+                                                            </h6>
                                                         </button>
                                                     </a>
                                                 @endif
@@ -295,10 +306,12 @@
                                 name="kasus_id">
                             <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan"
                                 hidden>
-                            <button class="btn btn-success" name="type_submit"
-                                {{ $kasus->status_id > 5 ? 'disabled' : '' }} value="update_status">LANJUTKAN
-                                KE LIMPAH
+                            <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }} value="update_status">
+                                LANJUTKAN KE LIMPAH
                             </button>
+                            @if ($kasus->status_id == 5 && $nd_hasil_gelar)
+                                <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>
+                            @endif
                         </form>
                     @endif
                 </div>
@@ -315,7 +328,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Undangan Gelar Perkara</h5>
+                <h5 class="modal-title" id="exampleModalLabel">UNDANGAN GELAR PERKARA</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(5)"></button>
             </div>
@@ -327,8 +340,8 @@
                                 <div class="form-floating">
                                     <input type="text" name="tanggal_gelar_perkara"
                                         class="form-control border-dark" id="tanggal_gelar_perkara"
-                                        placeholder="Tanggal Gelar Perkara" required>
-                                    <label for="tanggal_gelar_perkara">Tanggal Pelaksanaan Gelar Perkara</label>
+                                        placeholder="TANGGAL GELAR PERKARA" required>
+                                    <label for="tanggal_gelar_perkara">TANGGAL PELAKSANAAN GELAR PERKARA</label>
                                 </div>
                             </div>
                         </div>
@@ -337,8 +350,8 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <input type="time" name="waktu_gelar_perkara" class="form-control border-dark"
-                                        id="waktu_gelar_perkara" placeholder="Waktu Gelar Perkara" required>
-                                    <label for="waktu_gelar_perkara">Waktu Pelaksanaan Gelar Perkara</label>
+                                        id="waktu_gelar_perkara" placeholder="WAKTU GELAR PERKARA" required>
+                                    <label for="waktu_gelar_perkara">WAKTU PELAKSANAAN GELAR PERKARA</label>
                                 </div>
                             </div>
                         </div>
@@ -348,8 +361,8 @@
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark"
                                         name="tempat_gelar_perkara" id="tempat_gelar_perkara"
-                                        placeholder="Tempat Gelar Perkara" required>
-                                    <label for="tempat_gelar_perkara">Tempat Gelar Perkara</label>
+                                        placeholder="TEMPAT GELAR PERKARA" required>
+                                    <label for="tempat_gelar_perkara">TEMPAT PELAKSANAAN GELAR PERKARA</label>
                                 </div>
                             </div>
                         </div>
@@ -370,7 +383,7 @@
 
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
-                                <button type="submit" class="form-control btn btn-primary">Simpan</button>
+                                <button type="submit" class="form-control btn btn-primary">SIMPAN</button>
                             </div>
                         </div>
 
@@ -387,7 +400,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nota Dinas Laporan Hasil Gelar Penyelidikan</h5>
+                <h5 class="modal-title" id="exampleModalLabel">NOTA DINAS LAPORAN HASIL GELAR PENYELIDIKAN</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(5)"></button>
             </div>
@@ -398,30 +411,29 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
                                     <input type="text" class="form-control border-dark" name="no_surat"
-                                        placeholder="Masukan No. Nota Dinas Laporan Hasil Gelar Penyelidikan" required>
-                                    <label for="no_nd_gelar_penyelidikan">Masukan No. Nota Dinas Laporan Hasil Gelar
-                                        Penyelidikan</label>
+                                        placeholder="MASUKAN NO. NOTA DINAS LAPORAN HASIL GELAR PENYELIDIKAN" required>
+                                    <label for="no_nd_gelar_penyelidikan">NO. NOTA DINAS LAPORAN HASIL GELAR PENYELIDIKAN</label>
                                 </div>
                             </div>
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <select class="form-select border-dark" aria-label="Default select example"
                                         name="limpah_biro" id="limpah_biro" required>
-                                        <option value="">-- Pilih Limpah Biro --</option>
+                                        <option value="">-- PILIH LIMPAH --</option>
                                         @if ($kasus->wujudPerbuatan->jenis_wp == 'disiplin')
-                                            <option value="1">Provos</option>
+                                            <option value="1">PROVOS</option>
                                         @elseif ($kasus->wujudPerbuatan->jenis_wp == 'kode etik')
-                                            <option value="2">Wabprof</option>
+                                            <option value="2">WABPROF</option>
                                         @endif
-                                        <option value="3">Bid Propam Polda</option>
+                                        <option value="3">BID PROPAM POLDA</option>
                                     </select>
-                                    <label for="limpah_biro" class="form-label">Limpah Biro</label>
+                                    <label for="limpah_biro" class="form-label">LIMPAH</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
-                                <button type="submit" class="form-control btn btn-primary">Simpan</button>
+                                <button type="submit" class="form-control btn btn-primary">SIMPAN</button>
                             </div>
                         </div>
 
@@ -438,7 +450,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Undangan Gelar Perkara</h5>
+                <h5 class="modal-title" id="exampleModalLabel">UNDANGAN GELAR PERKARA</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(5)"></button>
             </div>
@@ -449,30 +461,28 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
                                     <input type="text" class="form-control border-dark" name="pasal"
-                                        placeholder="Masukan Pasal Pelanggaran" required>
-                                    <label for="pasal">Masukan Pasal Pelanggaran</label>
+                                        placeholder="MASUKAN PASAL PELANGGARAN" required>
+                                    <label for="pasal">MASUKAN PASAL PELANGGARAN</label>
                                 </div>
                             </div>
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
                                     <input type="text" class="form-control border-dark" name="ayat"
-                                        placeholder="Masukan Ayat Pelanggaran" required>
-                                    <label for="ayat">Masukan Ayat Pelanggaran</label>
+                                        placeholder="MASUKAN AYAT PELANGGARAN" required>
+                                    <label for="ayat">MASUKAN AYAT PELANGGARAN</label>
                                 </div>
                             </div>
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
-                                    {{-- <input type="text" class="form-control border-dark" name="bunyi_pasal"
-                                placeholder="Masukan Bunyi Pasal Pelanggaran" required> --}}
                                     <textarea class="form-control border-dark" name="bunyi_pasal" id="bunyi_pasal"
-                                        placeholder="Masukan Bunyi Pasal Pelanggaran" style="height: 100px" required></textarea>
-                                    <label for="bunyi_pasal">Masukan Bunyi Pasal Pelanggaran</label>
+                                        placeholder="MASUKAN BUNYI PASAL PELANGGARAN" style="height: 100px" required></textarea>
+                                    <label for="bunyi_pasal">MASUKAN BUNYI PASAL PELANGGARAN</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-outline mb-3">
-                                <button type="submit" class="form-control btn btn-primary">Simpan</button>
+                                <button type="submit" class="form-control btn btn-primary">SIMPAN</button>
                             </div>
                         </div>
 
@@ -525,7 +535,7 @@
                                 })
                             } else {
                                 Swal.fire({
-                                    title: 'Gagal',
+                                    title: 'GAGAL',
                                     text: data.message,
                                     icon: 'error',
                                     confirmButtonText: 'OK'
@@ -542,8 +552,8 @@
                             $('.loading').css('display', 'none')
                             console.log('error message: ', errorMessage)
                             var option = {
-                                title: 'Error',
-                                text: 'Terjadi Kesalahan Sistem...',
+                                title: 'ERROR',
+                                text: 'TERJADI KESALAHAN SISTEM...',
                                 icon: 'error',
                                 confirmButtonText: 'OK'
                             }

@@ -466,19 +466,18 @@
                                         @can('edit-diterima')
                                             <!--Disposisi Karo/Sesro-->
                                             <div class="col-lg-12 mb-3">
-                                                    <label for="exampleFormControlInput1" class="form-label">Disposisi
-                                                        Karo/Sesro</label>
+                                                    <label for="exampleFormControlInput1" class="form-label">DISPOSISI KARO/SESRO</label>
                                                     @if (isset($disposisi[0]) && $disposisi[0]->tipe_disposisi == 1)
                                                         <button class="btn btn-success" style="width: 100%"
                                                             data-bs-toggle="modal" data-bs-target="#modal_disposisi"
                                                             id="karosesro" onclick="onClickModal(this)" type="button">
-                                                            <i class="far fa-download"></i> Download
+                                                            <i class="far fa-download"></i> DOWNLOAD
                                                         </button>
                                                     @else
                                                         <button class="btn btn-primary" style="width: 100%"
                                                             data-bs-toggle="modal" data-bs-target="#modal_disposisi"
                                                             id="karosesro" onclick="onClickModal(this)" type="button">
-                                                            <i class="far fa-plus-square"></i> Buat
+                                                            <i class="far fa-plus-square"></i> BUAT
                                                         </button>
                                                     @endif
                                             </div>
@@ -487,26 +486,25 @@
                                         @can('edit-gelar_perkara')
                                                 <!--Distrubisi Binpam-->
                                                 <div class="col-lg-12">
-                                                    <label for="exampleFormControlInput1" class="form-label">Distribusi
-                                                        Binpam</label>
+                                                    <label for="exampleFormControlInput1" class="form-label">DISTRIBUSI BINPAM</label>
                                                     @if (isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2 && is_null($disposisi[1]->limpah_den))
                                                         <button class="btn btn-success" style="width: 100%"
                                                             data-bs-toggle="modal" data-bs-target="#modal_distribusi"
                                                             id="binpam" onclick="onClickModal(this)" type="button">
-                                                            <i class="far fa-download"></i> Download
+                                                            <i class="far fa-download"></i> DOWNLOAD
                                                         </button>
                                                     @elseif (isset($disposisi[1]) && $disposisi[1]->tipe_disposisi == 2 && $disposisi[1]->limpah_den)
                                                         <button class="btn btn-success" style="width: 100%"
                                                             data-bs-toggle="modal" data-bs-target="#modal_distribusi"
                                                             id="binpam" onclick="onClickModal(this)" type="button">
-                                                            <i class="far fa-download"></i> Download
+                                                            <i class="far fa-download"></i> DOWNLOAD
                                                         </button>
                                                     @else
                                                         @if (($user->hasDatasemen && $user->hasDatasemen->name == 'BAGBINPAM') || $user->name == 'Super Admin')
                                                             <button class="btn btn-primary" style="width: 100%"
-                                                                data-bs-toggle="modal" data-bs-target="#modal_disposisi"
+                                                                data-bs-toggle="modal" data-bs-target="#modal_distribusi"
                                                                 id="binpam" onclick="onClickModal(this)" type="button">
-                                                                <i class="far fa-plus-square"></i> Buat
+                                                                <i class="far fa-plus-square"></i> BUAT
                                                             </button>
                                                         @else
                                                             <div class="col-lg-12 mb-3 d-flex justify-content-center">
@@ -525,20 +523,18 @@
                                                                     id="limpah_den"
                                                                     {{ $user->hasDatasemen ? ($user->hasDatasemen->name == 'BAGBINPAM' ? '' : 'disabled') : '' }}
                                                                     {{ $kasus->status_id == 3 ? 'disabled' : '' }} required>
-                                                                    <option value="">-- Pilih Limpah Datasemen --
+                                                                    <option value="">-- PILIH LIMPAH BAG / DETASEMEN --
                                                                     </option>
                                                                     @foreach ($tim_disposisi as $key => $tim)
                                                                         <option value="{{ $tim->id }}"
                                                                             {{ isset($disposisi[1]->limpah_den) ? ($disposisi[1]->limpah_den == $tim->id ? 'selected' : '') : '' }}>
                                                                             {{ $tim->name }}</option>
                                                                     @endforeach
-                                                                    <option value="7"
-                                                                        {{ $kasus->status_id == 9 ? 'selected' : '' }}>LIMPAH
-                                                                        POLDA
+                                                                    <option value="7"{{ $kasus->status_id == 9 ? 'selected' : '' }}>
+                                                                        LIMPAH POLDA
                                                                     </option>
                                                                 </select>
-                                                                <label for="limpah_unit" class="form-label">Limpah
-                                                                    Datasemen</label>
+                                                                <label for="limpah_unit" class="form-label">LIMPAH DETASEMEN</label>
                                                             @elseif (isset($tim_disposisi) && $disposisi[1]->tipe_disposisi == 2 && $disposisi[1]->limpah_den)
                                                                 <select class="form-select border-dark mb-3"
                                                                     data-live-search="true"
@@ -546,20 +542,19 @@
                                                                     id="limpah_den"
                                                                     {{ \Auth::user()->hasRole('admin') ? '' : ($user->hasDatasemen->name == 'BAGBINPAM' ? '' : 'disabled') }}
                                                                     {{ $kasus->status_id == 3 ? 'disabled' : '' }} required>
-                                                                    <option value="">-- Pilih Limpah Datasemen --
+                                                                    <option value="">
+                                                                        -- PILIH LIMPAH DETASEMEN --
                                                                     </option>
                                                                     @foreach ($tim_disposisi as $key => $tim)
                                                                         <option value="{{ $tim->id }}"
                                                                             {{ isset($disposisi[1]->limpah_den) ? ($disposisi[1]->limpah_den == $tim->id ? 'selected' : '') : '' }}>
                                                                             {{ $tim->name }}</option>
                                                                     @endforeach
-                                                                    <option value="7"
-                                                                        {{ $kasus->status_id == 3 ? 'selected' : '' }}>Limpah
-                                                                        POLDA
+                                                                    <option value="7" {{ $kasus->status_id == 3 ? 'selected' : '' }}>
+                                                                        LIMPAH POLDA
                                                                     </option>
                                                                 </select>
-                                                                <label for="limpah_unit" class="form-label">Limpah
-                                                                    Datasemen</label>
+                                                                <label for="limpah_unit" class="form-label">LIMPAH DETASEMEN</label>
                                                             @endif
                                                             <div class="col-lg-12 mb-3" id="limpah-polda">
 
@@ -573,12 +568,12 @@
                                         @can('edit-pulbaket')
                                                 <!--Disposisi UNIT-->
                                                 <div class="col-lg-12" id="disposisi_kadena">
-                                                    <label for="exampleFormControlInput1" class="form-label">Disposisi</label>
+                                                    <label for="exampleFormControlInput1" class="form-label">DISPOSISI</label>
                                                     @if (isset($disposisi[2]) && $disposisi[2]->tipe_disposisi == 3)
                                                         <button class="btn btn-success" style="width: 100%"
                                                             data-bs-toggle="modal" data-bs-target="#modal_disposisi_kadena"
                                                             id="kadena" type="button">
-                                                            <i class="far fa-download"></i> Download
+                                                            <i class="far fa-download"></i> DOWNLOAD
                                                         </button>
                                                     @else
                                                         @if (($user->hasDatasemen && $user->hasDatasemen->name != 'BAGBINPAM') || $user->name == 'Super Admin')
@@ -586,7 +581,7 @@
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#modal_disposisi_kadena" id="kadena"
                                                                 type="button">
-                                                                <i class="far fa-plus-square"></i> Buat
+                                                                <i class="far fa-plus-square"></i> BUAT
                                                             </button>
                                                         @else
                                                             <div class="col-lg-12 mb-3 d-flex justify-content-center">
@@ -605,15 +600,14 @@
                                                                     id="limpah_unit"
                                                                     {{ isset($disposisi[2]) ? (isset($disposisi[2]->limpah_unit) ? 'disabled' : '') : '' }}
                                                                     required>
-                                                                    <option value="">-- Pilih Limpah Unit --</option>
+                                                                    <option value="">-- PILIH LIMPAH UNIT --</option>
                                                                     @foreach ($unit as $key => $u)
                                                                         <option value="{{ $u->id }}"
                                                                             {{ isset($unit) ? ($u->id == $disposisi[2]['limpah_unit'] ? 'selected' : '') : '' }}>
                                                                             {{ $u->unit }}</option>
                                                                     @endforeach
                                                                 </select>
-                                                                <label for="limpah_unit" class="form-label">Limpah
-                                                                    Unit</label>
+                                                                <label for="limpah_unit" class="form-label">LIMPAH UNIT</label>
                                                             @elseif (isset($unit) && $disposisi[2]->tipe_disposisi == 3 && $disposisi[2]->limpah_unit)
                                                                 <select class="form-select border-dark"
                                                                     data-live-search="true"
@@ -621,15 +615,14 @@
                                                                     id="limpah_unit"
                                                                     {{ isset($disposisi[2]) ? (isset($disposisi[2]->limpah_unit) ? 'disabled' : '') : '' }}
                                                                     required>
-                                                                    <option value="">-- Pilih Limpah Unit --</option>
+                                                                    <option value="">-- PILIH LIMPAH UNIT --</option>
                                                                     @foreach ($unit as $key => $u)
                                                                         <option value="{{ $u->id }}"
                                                                             {{ isset($unit) ? ($u->id == $disposisi[2]['limpah_unit'] ? 'selected' : '') : '' }}>
                                                                             {{ $u->unit }}</option>
                                                                     @endforeach
                                                                 </select>
-                                                                <label for="limpah_unit" class="form-label">Limpah
-                                                                    Unit</label>
+                                                                <label for="limpah_unit" class="form-label">LIMPAH UNIT</label>
                                                             @endif
                                                         @endif
                                                     </div>
@@ -663,13 +656,13 @@
     </div> --}}
 </form>
 
-<!-- Modal Disposisi Karo/Sesro & Binpam-->
+<!-- Modal Disposisi Karo/Sesro-->
 <div class="modal fade" id="modal_disposisi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title_modal_disposisi">Disposisi Karo/Sesro</h5>
+                <h5 class="modal-title" id="title_modal_disposisi">DISPOSISI KARO/SESRO</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(1)"></button>
             </div>
@@ -680,69 +673,69 @@
                 <div class="modal-body">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
-                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
+                            placeholder="NOMOR SURAT" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
                             disabled>
-                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                        <label for="nomor_surat" class="form-label">NOMOR SURAT</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[0]) ? $disposisi[0]->no_agenda : '' }}" {{ isset($disposisi[0]) ? 'readonly' : '' }} required>
-                        <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
+                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda" placeholder="NOMOR AGENDA :" value="{{ isset($disposisi[0]) ? $disposisi[0]->no_agenda : '' }}" {{ isset($disposisi[0]) ? 'readonly' : '' }} required>
+                        <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example"
                             name="klasifikasi" id="klasifikasi" {{ isset($disposisi[0]) ? 'disabled' : '' }}
                             required>
-                            <option value="">-- Pilih Klasifikasi --</option>
+                            <option value="">-- PILIH KLASIFIKASI --</option>
                             <option value="Biasa"
                                 {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Biasa' ? 'selected' : '') : '' }}>
-                                Biasa</option>
+                                BIASA</option>
                             <option value="Sangat Rahasia"
                                 {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Sangat Rahasia' ? 'selected' : '') : '' }}>
-                                Sangat Rahasia</option>
+                                SANGAT RAHASIA</option>
                         </select>
-                        <label for="klasifikasi" class="form-label">Klafisikasi</label>
+                        <label for="klasifikasi" class="form-label">KLASIFIKASI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="derajat"
                             id="derajat" {{ isset($disposisi[0]) ? 'disabled' : '' }} required>
-                            <option value="">-- Pilih Derajat --</option>
+                            <option value="">-- PILIH DERAJAT --</option>
                             <option value="Biasa"
                                 {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Biasa' ? 'selected' : '') : '' }}>
-                                Biasa</option>
+                                BIASA</option>
                             <option value="Segera"
                                 {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Segera' ? 'selected' : '') : '' }}>
-                                Segera</option>
+                                SEGERA</option>
                             <option value="Kilat"
                                 {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Kilat' ? 'selected' : '') : '' }}>
-                                Kilat</option>
+                                KILAT</option>
                         </select>
-                        <label for="derajat" class="form-label">Derajat</label>
+                        <label for="derajat" class="form-label">DERAJAT</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
                             aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :"
                             value="BAGYANDUAN" disabled>
-                        <label for="surat_dari" class="form-label">Surat dari :</label>
+                        <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="Perihal" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
-                        <label for="perihal" class="form-label">Perihal</label>
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="HAL" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <label for="perihal" class="form-label">HAL</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[0] ? $disposisi[0]->isi_disposisi : ''}}</textarea>
-                        <label for="isi_disposisi" class="form-label">Isi Disposisi</label>
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISPOSISI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[0] ? $disposisi[0]->isi_disposisi : ''}}</textarea>
+                        <label for="isi_disposisi" class="form-label">ISI DISPOSISI</label>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">Upload File Disposisi :</label>
-                        <input class="form-control" type="file" id="file" name="file">
+                        <label for="formFile" class="form-label">UPLOAD FILE DISPOSISI :</label>
+                        <input class="form-control" type="file" id="file" name="file" accept=".doc,.docx,.pdf">
                     </div>
                     @if ($disposisi[0] && $disposisi[0]->file)
-                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[0]->file) }}" target="_blank">File Disposisi</a>
+                        <a href="/download-disposisi/{{ $disposisi[0]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISPOSISI</a>
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" style="width: 100%">Simpan</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%">SIMPAN</button>
                 </div>
             </form>
         </div>
@@ -755,7 +748,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title_modal_disposisi">Distribusi Kabag Binpam</h5>
+                <h5 class="modal-title" id="title_modal_disposisi">DISTRIBUSI KABAG BINPAM</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(1)"></button>
             </div>
@@ -766,20 +759,20 @@
                 <div class="modal-body">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
-                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
+                            placeholder="NOMOR SURAT" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
                             disabled>
-                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                        <label for="nomor_surat" class="form-label">NOMOR SURAT</label>
                     </div>
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda"
-                            aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[1]) ? $disposisi[1]['no_agenda'] : '' }}" {{ isset($disposisi[1]) ? 'readonly' : '' }} required>
-                        <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
+                            aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[1]) ? $disposisi[1]['no_agenda'] : '' }}" {{ isset($disposisi[1]) ? 'disabled' : '' }} required>
+                        <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example"
                             name="klasifikasi" id="klasifikasi" {{ isset($disposisi[0]) ? 'disabled' : '' }}
                             required>
-                            <option value="">-- Pilih Klasifikasi --</option>
+                            <option value="">-- PILIH KLASIFIKASI --</option>
                             <option value="Biasa"
                                 {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Biasa' ? 'selected' : '') : '' }}>
                                 Biasa</option>
@@ -787,49 +780,49 @@
                                 {{ $disposisi[0] ? ($disposisi[0]['klasifikasi'] == 'Sangat Rahasia' ? 'selected' : '') : '' }}>
                                 Sangat Rahasia</option>
                         </select>
-                        <label for="klasifikasi" class="form-label">Klafisikasi</label>
+                        <label for="klasifikasi" class="form-label">KLASIFIKASI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="derajat"
                             id="derajat" {{ isset($disposisi[0]) ? 'disabled' : '' }} required>
-                            <option value="">-- Pilih Derajat --</option>
+                            <option value="">-- PILIH DERAJAT --</option>
                             <option value="Biasa"
                                 {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Biasa' ? 'selected' : '') : '' }}>
-                                Biasa</option>
+                                BIASA</option>
                             <option value="Segera"
                                 {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Segera' ? 'selected' : '') : '' }}>
-                                Segera</option>
+                                SEGERA</option>
                             <option value="Kilat"
                                 {{ isset($disposisi[0]) ? ($disposisi[0]->derajat == 'Kilat' ? 'selected' : '') : '' }}>
-                                Kilat</option>
+                                KILAT</option>
                         </select>
-                        <label for="derajat" class="form-label">Derajat</label>
+                        <label for="derajat" class="form-label">DERAJAT</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
-                            aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :"
+                            aria-describedby="emailHelp" name="surat_dari" placeholder="SURAT DARI :"
                             value="BAGYANDUAN" disabled>
-                        <label for="surat_dari" class="form-label">Surat dari :</label>
+                        <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="Perihal" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
-                        <label for="perihal" class="form-label">Perihal</label>
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="HAL" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <label for="perihal" class="form-label">HAL</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[1] ? ($disposisi[1]->isi_disposisi ?? '') : ($disposisi[1]->isi_disposisi ?? '')}}</textarea>
-                        <label for="isi_disposisi" class="form-label">Isi Distribusi</label>
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISTRIBUSI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[1] ? ($disposisi[1]->isi_disposisi ?? '') : ($disposisi[1]->isi_disposisi ?? '')}}</textarea>
+                        <label for="isi_disposisi" class="form-label">ISI DISTRIBUSI</label>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">Upload File Distribusi :</label>
+                        <label for="formFile" class="form-label">UPLOAD FILE DISTRIBUSI :</label>
                         <input class="form-control" type="file" id="file" name="file">
                     </div>
                     @if ($disposisi[1] && $disposisi[1]->file)
-                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[1]->file) }}" target="_blank">File Distribusi</a>
+                        <a href="/download-disposisi/{{ $disposisi[1]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISTRIBUSI</a>
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" style="width: 100%">Simpan</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%">SIMPAN</button>
                 </div>
             </form>
         </div>
@@ -837,12 +830,11 @@
 </div>
 
 <!-- Modal Disposisi Datasemen-->
-<div class="modal fade" id="modal_disposisi_kadena" tabindex="-1" aria-labelledby="exampleModalLabel"
-aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="modal_disposisi_kadena" tabindex="-1" aria-labelledby="exampleModalLabel"aria-hidden="true" data-bs-backdrop="static">
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="title_modal_disposisi">Disposisi</h5>
+                <h5 class="modal-title" id="title_modal_disposisi">DISPOSISI</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     onclick="getViewProcess(1)"></button>
             </div>
@@ -852,30 +844,30 @@ aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-body">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
-                            placeholder="Nomor Surat" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
+                            placeholder="NOMOR SURAT" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
                             disabled>
-                        <label for="nomor_surat" class="form-label">Nomor Surat</label>
+                        <label for="nomor_surat" class="form-label">NOMOR SURAT</label>
                     </div>
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda"
-                            placeholder="Nomor Agenda :"
+                            placeholder="NOMOR AGENDA :"
                             value="{{ isset($disposisi_kadena) ? $disposisi_kadena->no_agenda : '' }}"
                             {{ isset($disposisi_kadena) ? 'disabled' : '' }} required>
-                        <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>
+                        <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example"
                             name="klasifikasi" id="klasifikasi" {{ isset($disposisi[1]) ? 'disabled' : '' }}
                             required>
-                            <option value="">-- Pilih Klasifikasi --</option>
+                            <option value="">-- PILIH KLASIFIKASI --</option>
                             <option value="Biasa"
                                 {{ isset($disposisi[1]) ? ($disposisi[1]->klasifikasi == 'Biasa' ? 'selected' : '') : '' }}>
-                                Biasa</option>
+                                BIASA</option>
                             <option value="Sangat Rahasia"
                                 {{ isset($disposisi[1]) ? ($disposisi[1]->klasifikasi == 'Sangat Rahasia' ? 'selected' : '') : '' }}>
-                                Sangat Rahasia</option>
+                                SANGAT RAHASIA</option>
                         </select>
-                        <label for="klasifikasi" class="form-label">Klafisikasi</label>
+                        <label for="klasifikasi" class="form-label">KLASIFIKASI</label>
                         <input type="hidden" name="klasifikasi"
                             value="{{ isset($disposisi[0]) ? $disposisi[0]['klasifikasi'] : null }}">
 
@@ -883,48 +875,48 @@ aria-hidden="true" data-bs-backdrop="static">
                     <div class="form-floating mb-3">
                         <select class="form-select border-dark" aria-label="Default select example" name="derajat"
                             id="derajat" {{ isset($disposisi[1]) ? 'disabled' : '' }} required>
-                            <option value="">-- Pilih Derajat --</option>
+                            <option value="">-- PILIH DERAJAT --</option>
                             <option value="Biasa"
                                 {{ isset($disposisi[1]) ? ($disposisi[1]->derajat == 'Biasa' ? 'selected' : '') : '' }}>
-                                Biasa</option>
+                                BIASA</option>
                             <option value="Segera"
                                 {{ isset($disposisi[1]) ? ($disposisi[1]->derajat == 'Segera' ? 'selected' : '') : '' }}>
-                                Segera</option>
+                                SEGERA</option>
                             <option value="Kilat"
                                 {{ isset($disposisi[1]) ? ($disposisi[1]->derajat == 'Kilat' ? 'selected' : '') : '' }}>
-                                Kilat</option>
+                                KILAT</option>
                         </select>
-                        <label for="derajat" class="form-label">Derajat</label>
+                        <label for="derajat" class="form-label">DERAJAT</label>
                         <input type="hidden" name="derajat"
                             value="{{ isset($disposisi[1]) ? $disposisi[1]['derajat'] : null }}">
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
-                            aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :"
+                            aria-describedby="emailHelp" name="surat_dari" placeholder="SURAT DARI :"
                             value="BagYanduan" disabled>
-                        <label for="surat_dari" class="form-label">Surat dari :</label>
+                        <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="Perihal" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
-                        <label for="perihal" class="form-label">Perihal</label>
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="HAL" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <label for="perihal" class="form-label">HAL</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="Isi Disposisi" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[2] ? $disposisi[2]->isi_disposisi : ''}}</textarea>
-                        <label for="isi_disposisi" class="form-label">Isi Disposisi</label>
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISPOSISI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[2] ? $disposisi[2]->isi_disposisi : ''}}</textarea>
+                        <label for="isi_disposisi" class="form-label">ISI DISPOSISI</label>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">Upload File Disposisi :</label>
+                        <label for="formFile" class="form-label">UPLOAD FILE DISPOSISI :</label>
                         <input class="form-control" type="file" id="file" name="file">
                     </div>
                     @if ($disposisi[2] && $disposisi[2]->file)
-                        <a href="{{ public_path('/dokumen/disposisi/'.$disposisi[2]->file) }}" target="_blank">File Disposisi</a>
+                        <a href="/download-disposisi/{{ $disposisi[2]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISPOSISI</a>
                     @endif
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" style="width: 100%">Simpan</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%">SIMPAN</button>
                 </div>
             </form>
         </div>
@@ -1147,7 +1139,7 @@ aria-hidden="true" data-bs-backdrop="static">
     function onClickModal(modal) {
         let is_disabled = false;
         if (modal.id == 'karosesro') {
-            $('#title_modal_disposisi').text('Disposisi Karo/Sesro');
+            $('#title_modal_disposisi').text('DISPOSISI KARO/SESRO');
             let dis_karosesro = `{{ isset($disposisi[0]) ? $disposisi[0]->tipe_disposisi : '' }}`;
             if (dis_karosesro == 1) {
                 is_disabled = true;
@@ -1160,8 +1152,8 @@ aria-hidden="true" data-bs-backdrop="static">
                 let klasifikasi = `{{ isset($disposisi[0]) ? $disposisi[0]->klasifikasi : '' }}`;
                 let derajat = `{{ isset($disposisi[0]) ? $disposisi[0]->derajat : '' }}`;
                 let htmlNoAgenda = `<input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp"
-                                name="nomor_agenda" placeholder="Nomor Agenda :" value="` + no_agenda + `" required>
-                            <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>`;
+                                name="nomor_agenda" placeholder="NOMOR AGENDA" value="` + no_agenda + `" required>
+                            <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>`;
                 let htmlKlasifikasi = `<option value="` + klasifikasi + `" selected>` + klasifikasi + `</option>`;
                 let htmlDerajat = `<option value="` + derajat + `" selected>` + derajat + `</option>`;
 
@@ -1174,7 +1166,7 @@ aria-hidden="true" data-bs-backdrop="static">
             $('.modal-body').append(hiddenHtml);
 
         } else if (modal.id == 'binpam') {
-            $('#title_modal_disposisi').text('Distribusi Binpam');
+            $('#title_modal_disposisi').text('DISTRIBUSI BINPAM');
             let hiddenHtml = ''
             let dis_binpam = `{{ isset($disposisi[1]) ? $disposisi[1]->tipe_disposisi : '' }}`;
             if (dis_binpam == 2) {
@@ -1188,8 +1180,8 @@ aria-hidden="true" data-bs-backdrop="static">
                 let klasifikasi = `{{ isset($disposisi[1]) ? $disposisi[1]->klasifikasi : '' }}`;
                 let derajat = `{{ isset($disposisi[1]) ? $disposisi[1]->derajat : '' }}`;
                 let htmlNoAgenda = `<input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp"
-                                name="nomor_agenda" placeholder="Nomor Agenda :" value="` + no_agenda + `" required>
-                            <label for="nomor_agenda" class="form-label">Nomor Agenda :</label>`;
+                                name="nomor_agenda" placeholder="NOMOR AGENDA :" value="` + no_agenda + `" disabled required>
+                            <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>`;
                 let htmlKlasifikasi = `<option value="` + klasifikasi + `" selected>` + klasifikasi + `</option>`;
                 let htmlDerajat = `<option value="` + derajat + `" selected>` + derajat + `</option>`;
 
