@@ -9,7 +9,6 @@ use App\Models\DataPelanggar;
 use App\Models\Datasemen;
 use App\Models\DisposisiHistory;
 use App\Models\GelarPerkaraHistory;
-use App\Models\HistorySprin;
 use App\Models\LHPHistory;
 use App\Models\NdPermohonanGelar;
 use App\Models\Pangkat;
@@ -20,16 +19,13 @@ use App\Models\HistorySaksi;
 use App\Models\Sp2hp2Hisory;
 use App\Models\SprinHistory;
 use App\Models\UndanganKlarifikasiHistory;
-use App\Models\UndanganKlarifikasiSipilHistory;
 use App\Models\Unit;
 use App\Models\UukHistory;
 use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpWord\TemplateProcessor;
-use Yajra\DataTables\Facades\DataTables;
 
 class PulbaketController extends Controller
 {

@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataAnggota;
 use App\Models\Datasemen;
 use App\Models\Pangkat;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class AnggotaController extends Controller

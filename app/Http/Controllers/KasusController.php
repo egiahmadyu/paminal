@@ -16,7 +16,6 @@ use App\Models\JenisIdentitas;
 use App\Models\JenisKelamin;
 use App\Models\LHPHistory;
 use App\Models\LimpahBiro;
-use App\Models\LimpahBiroHistory;
 use App\Models\LimpahPolda;
 use App\Models\LitpersHistory;
 use App\Models\NDHasilGelarPenyelidikanHistory;
@@ -37,12 +36,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\Console\Input\Input;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\HelperController;
-
-use function PHPUnit\Framework\countOf;
-use function PHPUnit\Framework\isNull;
 
 class KasusController extends Controller
 {
@@ -332,25 +327,8 @@ class KasusController extends Controller
             }
         }
 
-        // if ($role->name == 'min') {
-        //     if ($user->hasDatasemen->name == 'BAGBINPAM') {
-        //         $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
-        //             ->select('data_pelanggars.*')
-        //             ->where('dhf.tipe_disposisi', 1)
-        //             ->where('data_pelanggars.tipe_data', '1')
-        //             ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
-        //     } else {
-        //         $query = DataPelanggar::leftJoin('disposisi_histories as dhf', 'dhf.data_pelanggar_id', '=', 'data_pelanggars.id')
-        //             ->select('data_pelanggars.*')
-        //             ->where('dhf.tipe_disposisi', 2)
-        //             ->where('dhf.limpah_den', $user->datasemen)
-        //             ->orderBy('data_pelanggars.created_at', 'asc')->with('status');
-        //     }
-        // }
-
         $table = DataTables::of($query->get())
             ->editColumn('no_nota_dinas', function ($query) {
-                // return $query->no_nota_dinas;
                 if (is_null($query->no_nota_dinas)) return '<a href="/data-kasus/detail/' . $query->id . '" style="color:#ffffff">Edit Data</a>';
                 return '<a href="/data-kasus/detail/' . $query->id . '" class="text-dark">' . $query->no_nota_dinas . '</a>';
             })
@@ -370,9 +348,6 @@ class KasusController extends Controller
                 'style' => function ($data) {
                     $disposisi = DisposisiHistory::where('data_pelanggar_id', $data->id);
                     $disposisi_exists = (clone $disposisi)->exists();
-                    // $disposisi_binpam = (clone $disposisi)->where('limpah_unit', null)->where('limpah_den', null)->first();
-                    // $disposisi_bagden = (clone $disposisi)->where('limpah_unit', null)->where('limpah_den', '>', 0)->first();
-                    // $disposisi_unit = (clone $disposisi)->where('limpah_unit', '>', 0)->where('limpah_den', '>', 0)->first();
 
                     $disposisi_binpam = (clone $disposisi)->where('tipe_disposisi', 1)->first();
                     $disposisi_bagden = (clone $disposisi)->where('tipe_disposisi', 2)->first();
@@ -473,14 +448,13 @@ class KasusController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()->with('error', strtoupper($validator->messages()));
-            // return redirect()->back()->withInput()->withErrors($validator)->with('error', strtoupper($validator->messages()));
         }
 
-        $no_pengaduan = "123456"; //generate otomatis
+        // $no_pengaduan = "123456"; //generate otomatis
         $data_pelanggar = DataPelanggar::where('id', $request->kasus_id)->first();
         $data_pelanggar->update([
             'no_nota_dinas' => $request->no_nota_dinas,
-            'no_pengaduan' => $no_pengaduan,
+            // 'no_pengaduan' => $no_pengaduan,
             'perihal_nota_dinas' => $request->perihal,
             'wujud_perbuatan' => $request->wujud_perbuatan,
             'tanggal_nota_dinas' => Carbon::create($request->tanggal_nota_dinas)->format('Y-m-d'),

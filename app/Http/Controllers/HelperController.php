@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DataPelanggar;
-use App\Models\LimpahPolda;
 use App\Models\Pangkat;
 use App\Models\Polda;
 use App\Models\Unit;
-use Illuminate\Http\Request;
 
 class HelperController extends Controller
 {

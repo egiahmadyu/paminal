@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Polda;
-use Illuminate\Http\Request;
 
 class PoldaController extends Controller
 {

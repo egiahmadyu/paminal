@@ -5,16 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Integrations\YanduanIntegration;
 use App\Models\Agama;
 use App\Models\DataPelanggar;
-use App\Models\JenisKelamin;
 use App\Models\Pangkat;
-use App\Models\Saksi;
 use App\Models\HistorySaksi;
 use App\Models\Terlapor;
 use Carbon\Carbon;
-use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
-
-use function PHPUnit\Framework\countOf;
 
 class YanduanController extends Controller
 {
@@ -93,12 +88,6 @@ class YanduanController extends Controller
                 $data['tempat_kejadian'] = $value->crime_scenes ? $value->crime_scenes[0]->detail : null;
                 $data['tanggal_kejadian'] = $value->crime_scenes ? Carbon::createFromFormat('d/m/Y H:i', $value->crime_scenes[0]->datetime)->format('Y-m-d') : null;
                 $data['nama_korban'] = $value->victims ? strtoupper($value->victims[0]->name) : null;
-                // $korban = '';
-                // if ($value->victims) {
-                //     $korban = $value->victims[0];
-                //     $korban = $korban->name ?? 'TIDAK ADA';
-                //     $data['nama_korban'] = strtoupper($korban);
-                // }
 
                 if ($value->evidences) {
                     foreach ($value->evidences as $key => $valEvidences) {
@@ -118,8 +107,6 @@ class YanduanController extends Controller
 
                 if (count($value->defendants) > 1) {
                     for ($i = 1; $i < count($value->defendants); $i++) {
-                        // $occupation = explode("/", $value->defendants[$i]->occupation);
-                        // $pangkat = Pangkat::where('name', $occupation[0]);
 
                         $terlapor['data_pelanggar_id'] = $insert->id;
                         $terlapor['nama'] = strtoupper($value->defendants[$i]->name);
@@ -175,10 +162,7 @@ class YanduanController extends Controller
                 if (count($value->defendants) > 0) {
                     $data['terlapor'] = strtoupper($value->defendants[0]->name);
                     $data['kesatuan'] = strtoupper($value->defendants[0]->unit);
-                    // $occupation = explode("/", $value->defendants[0]->occupation);
-                    // $pangkat = Pangkat::where('name', $occupation[0]);
                     $data['jabatan'] = strtoupper($value->defendants[0]->occupation);
-                    // $data['pangkat'] = $pangkat->id;
                 }
 
                 $pelapor = strtoupper(str_replace('/', '-', $value->reporter->name));
@@ -214,12 +198,6 @@ class YanduanController extends Controller
                 $data['tempat_kejadian'] = $value->crime_scenes ? $value->crime_scenes[0]->detail : null;
                 $data['tanggal_kejadian'] = $value->crime_scenes ? Carbon::createFromFormat('d/m/Y H:i', $value->crime_scenes[0]->datetime)->format('Y-m-d') : null;
                 $data['nama_korban'] = $value->victims ? strtoupper($value->victims[0]->name) : null;
-                // $korban = '';
-                // if ($value->victims) {
-                //     $korban = $value->victims[0];
-                //     $korban = $korban->name ?? 'TIDAK ADA';
-                //     $data['nama_korban'] = strtoupper($korban);
-                // }
 
                 if ($value->evidences) {
                     foreach ($value->evidences as $key => $valEvidences) {
@@ -239,8 +217,6 @@ class YanduanController extends Controller
 
                 if (count($value->defendants) > 1) {
                     for ($i = 1; $i < count($value->defendants); $i++) {
-                        // $occupation = explode("/", $value->defendants[$i]->occupation);
-                        // $pangkat = Pangkat::where('name', $occupation[0]);
 
                         $terlapor['data_pelanggar_id'] = $insert->id;
                         $terlapor['nama'] = strtoupper($value->defendants[$i]->name);

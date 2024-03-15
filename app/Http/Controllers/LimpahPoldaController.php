@@ -15,9 +15,6 @@ use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Session;
-use PDF;
-use PhpOffice\PhpWord\TemplateProcessor;
 
 class LimpahPoldaController extends Controller
 {
@@ -67,10 +64,8 @@ class LimpahPoldaController extends Controller
 
     public function updateDataLimpahPolda(Request $request, $id)
     {
-        // dd($request->all());
         $data = LimpahPolda::find($id);
         $polda = Polda::find($data->polda_id);
-        // $tgl_limpah = Carbon::createFromFormat('d-m-Y', $request->tgl_limpah)->format('Y-m-d');
         $tgl_limpah = strtotime($request->tgl_limpah);
         $tgl_limpah = date('Y-m-d', $tgl_limpah);
 
@@ -130,8 +125,6 @@ class LimpahPoldaController extends Controller
         toastr()->success('DUMAS DILIMPAHKAN KE POLDA', 'Berhasil!');
 
         return response()->download($path_files)->deleteFileAfterSend(true);
-
-        // return $pdf->download($kasus->pelapor . '-dokumen-limpah-polda.pdf');
     }
 
     public function generateDisposisi(Request $request, $kasus_id)
@@ -173,9 +166,6 @@ class LimpahPoldaController extends Controller
         if ($status == false) {
             return redirect()->back()->with('error', $message);
         }
-
-        // dd($request->all());
-        // dd(!$data);
 
         if (!$data) {
             $disposisi_name = $request->tipe_disposisi == '1' ? 'disposisi-karo-sesro-paminal' : 'distribusi-kabag-binpam';

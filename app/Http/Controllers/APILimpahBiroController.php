@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataPelanggar;
-use App\Models\Polda;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class APILimpahBiroController extends Controller

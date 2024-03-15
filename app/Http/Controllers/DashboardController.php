@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Agama;
 use App\Models\DataPelanggar;
 use App\Models\Datasemen;
-use App\Models\DisposisiHistory;
-use App\Models\LHPHistory;
-use App\Models\LimpahPolda;
 use App\Models\Polda;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Queue\Events\Looping;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception\InvalidOrderException;
 
