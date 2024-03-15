@@ -20,7 +20,7 @@
                 <h5 class="card-title flex-grow-1 mb-0">{{$title}}</h5>
                 <div class="d-flex gap-1 flex-wrap">
                     <button type="button" class="btn btn-success create-btn" data-bs-toggle="modal"
-                        data-bs-target="#create_permission"><i class="ri-add-line align-bottom me-1"></i>Add Permission</button>
+                        data-bs-target="#create_permission"><i class="ri-add-line align-bottom me-1"></i>TAMBAH PERMISSION</button>
                 </div>
             </div>
 
@@ -29,9 +29,9 @@
                 <table class="table table-centered align-middle table-nowrap mb-0" id="datalist">
                     <thead class="text-muted table-light">
                         <tr>
-                            <th scope="col">Permission</th>
-                            <th scope="col">Guard Name</th>
-                            <th scope="col">Action
+                            <th scope="col">PERMISSION</th>
+                            <th scope="col">GUARD NAME</th>
+                            <th scope="col">ACTION</th>
                     </thead>
                     <tbody>
                         
@@ -46,53 +46,53 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Permission</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">BUAT PERMISSION</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="/permission/store" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="name" placeholder="Permission Name" required>
-                            <label for="exampleFormControlInput1" class="form-label">Permission Name</label>
+                            <input type="text" class="form-control border-dark" name="name" placeholder="NAMA PERMISSION" required>
+                            <label for="exampleFormControlInput1" class="form-label">NAMA PERMISSION</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="Guard Name" disabled required>
-                            <label for="exampleFormControlInput1" class="form-label">Guard Name</label>
+                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="GUARD NAME" disabled required>
+                            <label for="exampleFormControlInput1" class="form-label">GUARD NAME</label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">TUTUP</button>
+                        <button type="submit" class="btn btn-primary">SIMPAN</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal create permission -->
+    <!-- Modal edit permission -->
     <div class="modal fade" id="editPermission" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Permission</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">EDIT PERMISSION</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="#" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="name" placeholder="Permission Name" required>
-                            <label for="exampleFormControlInput1" class="form-label">Permission Name</label>
+                            <input type="text" class="form-control border-dark" name="name" placeholder="NAMA PERMISSION" required>
+                            <label for="exampleFormControlInput1" class="form-label">NAMA PERMISSION</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="Guard Name" disabled required>
-                            <label for="exampleFormControlInput1" class="form-label">Guard Name</label>
+                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="GUARD NAME" disabled required>
+                            <label for="exampleFormControlInput1" class="form-label">GUARD NAME</label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">TUTUP</button>
+                        <button type="submit" class="btn btn-primary">SIMPAN</button>
                     </div>
                 </form>
             </div>

@@ -12,16 +12,16 @@
     <!-- DataTable list pelanggar -->
     <div class="row">
         <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
-            <h5 class="mb-0 pb-1 text-decoration-underline">Paminal User</h5>
+            <h5 class="mb-0 pb-1 text-decoration-underline">USER PAMINAL</h5>
         </div>
     </div>
     <div class="row">
         <div class="card">
             <div class="card-header d-flex align-items-center">
-                <h5 class="card-title flex-grow-1 mb-0">Daftar User</h5>
+                <h5 class="card-title flex-grow-1 mb-0">DAFTAR USER</h5>
                 <div class="d-flex gap-1 flex-wrap">
                     <button type="button" class="btn btn-outline-success create-btn" data-bs-toggle="modal"
-                        data-bs-target="#add_user"><i class="ri-add-line align-bottom me-1"></i>Tambah User</button>
+                        data-bs-target="#add_user"><i class="ri-add-line align-bottom me-1"></i>TAMBAH USER</button>
                 </div>
             </div>
 
@@ -32,10 +32,10 @@
                         <thead class="text-muted table-light">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">NAMA</th>
+                                <th scope="col">USERNAME</th>
+                                <th scope="col">ROLE</th>
+                                <th scope="col">ACTION</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,9 +46,9 @@
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->getRoleNames()[0] }}</td>
                                     <td>
-                                        <a href="#" type="button" class="btn btn-sm btn-outline-info">Reset Password</a>
-                                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="editData({{$user->id}})">Edit User</button>
-                                        <a href="/user/destroy/{{$user->id}}" type="button" class="btn btn-sm btn-outline-danger">Hapus User</a>
+                                        <a href="#" type="button" class="btn btn-sm btn-outline-info">RESET PASSWORD</a>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="editData({{$user->id}})">EDIT USER</button>
+                                        <a href="/user/destroy/{{$user->id}}" type="button" class="btn btn-sm btn-outline-danger">HAPUS USER</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -63,24 +63,24 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Buat User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">BUAT USER</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="/user/save" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label">NAME</label>
                             <input type="text" class="form-control" name="name" id="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
+                            <label for="username" class="form-label">USERNAME</label>
                             <input type="text" class="form-control" name="username" id="username" required>
                         </div>
                         <div class="mb-3">
-                            <label for="datasemen" class="form-label">Bag / Detasemen</label>
-                            <select class="form-select" id="datasemen" data-choices name="datasemen" required>
-                                <option value="">Pilih Datasemen</option>
+                            <label for="datasemen" class="form-label">BAG / DEN</label>
+                            <select class="form-select" id="datasemen" data-choices name="datasemen">
+                                <option value="">PILIH BAG / DEN</option>
                                 @foreach ($datasemens as $datasemen)
                                     <option value="{{ $datasemen->id }}">{{ $datasemen->name }}</option>
                                 @endforeach
@@ -89,20 +89,20 @@
                         <div class="mb-3" id="unit">
                             <label for="unit" class="form-label">UNIT</label>
                             <select class="form-select" data-choice aria-label="Default select example" name="unit">
-                                <option selected>Pilih Unit</option>
+                                <option selected>PILIH UNIT</option>
                                 @foreach ($units as $unit)
                                     <option value="{{$unit->id}}">{{ $unit->unit }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="jabatan" class="form-label">Jabatan</label>
-                            <input type="text" class="form-control" name="jabatan" id="jabatan" required>
+                            <label for="jabatan" class="form-label">JABATAN</label>
+                            <input type="text" class="form-control" name="jabatan" id="jabatan">
                         </div>
                         <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
+                            <label for="role" class="form-label">ROLE</label>
                             <select class="form-select" aria-label="Default select example" name="role" required>
-                                <option selected>Open this select menu</option>
+                                <option selected>PILIH ROLE</option>
                                 @foreach ($roles as $value)
                                     <option value="{{ $value->id }}">{{ $value->name }}</option>
                                 @endforeach
@@ -110,8 +110,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">TUTUP</button>
+                        <button type="submit" class="btn btn-primary">SIMPAN</button>
                     </div>
                 </form>
             </div>

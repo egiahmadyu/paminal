@@ -43,9 +43,6 @@ Route::post('reset', [AuthController::class, 'storeReset'])->name('reset.action'
 
 
 Route::middleware(['auth'])->group(function () {
-    // Route::get('/', function () {
-    //     return view('pages.dashboard.index');
-    // });
 
     Route::get('user', [UserController::class, 'index']);
     Route::post('user/save', [UserController::class, 'store']);
@@ -55,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('role', [RoleController::class, 'index']);
     Route::post('role/save', [RoleController::class, 'save']);
+    Route::get('role/edit/{id}', [RoleController::class, 'edit']);
+    Route::post('role/update/{id}', [RoleController::class, 'update']);
+    Route::get('role/destroy/{id}', [RoleController::class, 'delete'])->name('delete.role');
     Route::get('role/permission/{id}', [RoleController::class, 'permission']);
     Route::post('role/permission/{id}/save', [RoleController::class, 'savePermission']);
 

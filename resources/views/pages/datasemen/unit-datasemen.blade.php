@@ -21,8 +21,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
                     @can('manage-auth')
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahUnit">
-                            Tambah Unit
+                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#tambahUnit">
+                            TAMBAH UNIT
                         </button>
                     @endcan
                 </div><!-- end card header -->
@@ -32,9 +32,9 @@
                         <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
                             <thead class="text-muted table-light">
                                 <tr>
-                                    <th scope="col">Datasemen</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">DETASEMEN</th>
+                                    <th scope="col">UNIT</th>
+                                    <th scope="col">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -50,7 +50,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Unit</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">BUAT UNIT</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="/store-unit" method="POST" id="form_unit">
@@ -58,20 +58,20 @@
                     <div class="modal-body">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control border-dark" name="nama" placeholder="Nama Unit" required>
-                            <label for="exampleFormControlInput1" class="form-label">Nama Unit</label>
+                            <label for="exampleFormControlInput1" class="form-label">NAMA UNIT</label>
                         </div>
                         <div class="form-floating">
                             <select class="form-select border-dark" aria-label="Default select example" name="datasemen" id="tipe_data" required>
-                                <option value="">-- Pilih Bag / Detasemen --</option>
+                                <option value="">-- PILIH BAG/DEN --</option>
                                 @foreach ($datasemen as $den)
                                     <option value="{{ $den->id }}">{{ $den->name }}</option>
                                 @endforeach
                             </select>
-                            <label for="tipe_data" class="form-label">Bag / Detasemen</label>
+                            <label for="tipe_data" class="form-label">BAG / DEN</label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Buat</button>
+                        <button type="submit" class="btn btn-primary">BUAT</button>
                     </div>
                 </form>
             </div>

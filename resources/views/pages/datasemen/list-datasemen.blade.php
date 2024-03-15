@@ -21,8 +21,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">{{ $title }}</h4>
                     @can('manage-auth')
-                        <a type="button" class="btn btn-success" href="/tambah-datasemen">
-                            Tambah Bag / Den
+                        <a type="button" class="btn btn-outline-success" href="/tambah-datasemen">
+                            TAMBAH BAG / DEN
                         </a>
                     @endcan
                 </div><!-- end card header -->

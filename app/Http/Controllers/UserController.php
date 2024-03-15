@@ -21,8 +21,8 @@ class UserController extends Controller
             'roles' => Role::all(),
             'datasemens' => $datasemens,
             'units' => $units,
+            'title' => 'SETTING - USERS',
         ];
-
 
         return view('pages.user.index', $data);
     }

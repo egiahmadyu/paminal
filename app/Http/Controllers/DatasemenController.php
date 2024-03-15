@@ -30,7 +30,7 @@ class DatasemenController extends Controller
                 }
                 $pangkat = Pangkat::where('id', $anggota->pangkat)->first();
                 if ($pangkat) {
-                    $kaden = $pangkat->name . ' ' . $anggota->nama;
+                    $kaden = $pangkat->alias . ' ' . $anggota->nama;
                 } else {
                     $kaden = $anggota->nama;
                 }
@@ -44,7 +44,7 @@ class DatasemenController extends Controller
                 }
                 $pangkat = Pangkat::where('id', $anggota->pangkat)->first();
                 if ($pangkat) {
-                    $wakaden = $pangkat->name . ' ' . $anggota->nama;
+                    $wakaden = $pangkat->alias . ' ' . $anggota->nama;
                 } else {
                     $wakaden = $anggota->nama;
                 }

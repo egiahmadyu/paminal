@@ -23,13 +23,13 @@
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">{{ $title }} {{ $unit->unit }} </h4>
                     @can('edit-anggota_unit')
-                        <a type="button" class="btn btn-success" id="tambah_anggota">
-                            Tambah Anggota Unit
+                        <a type="button" class="btn btn-outline-success" id="tambah_anggota">
+                            TAMBAH ANGGOTA UNIT
                         </a>
                     @endcan
                     @can('edit-anggota')
-                        <a type="button" class="btn btn-info ms-3" href="/list-anggota">
-                            Tambah Anggota
+                        <a type="button" class="btn btn-outline-info ms-3" href="/list-anggota">
+                            TAMBAH ANGGOTA PAMINAL
                         </a>
                     @endcan
 
@@ -40,7 +40,7 @@
                         <div class="row" id="isi_form">
                             <div class="col-lg-6 mb-3">
                                 <select class="form-select border-dark" data-choices name="anggota" id="anggota" required>
-                                    <option value="">-- Pilih Anggota --</option>
+                                    <option value="">-- PILIH ANGGOTA --</option>
                                     @if (isset($anggota))
                                         @foreach ($anggota as $item)
                                             <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -50,17 +50,9 @@
                             </div>
                             <div class="col-lg-3 mb-3">
                                 <button type="submit" class="btn btn-primary">
-                                    Submit
+                                    SIMPAN
                                 </button>
                             </div>
-                            {{-- <div class="col-lg-3 mb-3">
-                                <a type="button" class="btn btn-success" id="tambah">
-                                    <i class="fas fa-plus-square"></i>
-                                </a>
-                                <a type="button" class="btn btn-danger" id="kurang">
-                                    <i class="fas fa-minus-square"></i>
-                                </a>
-                            </div> --}}
                         </div>
                     </form>
 
@@ -71,10 +63,10 @@
                         <table class="table table-centered align-middle table-nowrap mb-0" id="data-data">
                             <thead class="text-muted table-light">
                                 <tr>
-                                    <th scope="col">Nama</th>
+                                    <th scope="col">NAMA</th>
                                     <th scope="col">NRP</th>
-                                    <th scope="col">Jabatan</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">JABATAN</th>
+                                    <th scope="col">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

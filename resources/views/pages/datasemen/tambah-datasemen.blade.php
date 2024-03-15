@@ -28,8 +28,8 @@
                         <div class="row">
                             <div class="col-lg-12 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="nama_datasemen" id="nama_datasemen" placeholder="Nama Datasemen" value="{{ isset($datasemen) ? $datasemen->name : '' }}" required style="text-transform:uppercase">
-                                    <label for="name">Nama Detasemen</label>
+                                    <input type="text" class="form-control border-dark" name="nama_datasemen" id="nama_datasemen" placeholder="NAMA BAG/DEN" value="{{ isset($datasemen) ? $datasemen->name : '' }}" required style="text-transform:uppercase">
+                                    <label for="name">NAMA BAG/DEN</label>
                                 </div>
                             </div>
 
@@ -37,7 +37,7 @@
                             <div class="col-lg-6 mb-3">
                                 <div class="form-control border-dark">
                                     <select class="form-select border-dark" data-choices data-live-search="true" aria-label="Default select example" name="kaden" id="kaden" required>
-                                        <option value="">-- Pilih Kepala Detasemen --</option>
+                                        <option value="">-- PILIH KA. BAG/DEN --</option>
                                         @if (isset($anggota))
                                             @foreach ($anggota as $key => $a)
                                                 <option value="{{ $a->id }}" {{ isset($kaden) ? ( $kaden->id == $a->id ? 'selected' : '' ) : ''}}>
@@ -53,8 +53,8 @@
                             <!--Wakaden-->
                             <div class="col-lg-6 mb-3">
                                 <div class="form-control border-dark">
-                                    <select class="form-select border-dark" data-choices data-live-search="true" aria-label="Default select example" name="wakaden" id="wakaden" required>
-                                        <option value="">-- Pilih Wakil Kepala Detasemen --</option>
+                                    <select class="form-select border-dark" data-choices data-live-search="true" aria-label="Default select example" name="wakaden" id="wakaden">
+                                        <option value="">-- PILIH WA. KEPALA --</option>
                                         @if (isset($anggota))
                                             @foreach ($anggota as $key => $a)
                                                 <option value="{{ $a->id }}" {{ isset($wakaden) ? ( $wakaden->id == $a->id ? 'selected' : '' ) : ''}}>
@@ -72,7 +72,7 @@
                         <div class="row">
                             <div class="col-lg-12 mb-3">
                                 <button class="btn btn-primary form-control" type="submit">
-                                    Submit Data
+                                    SUBMIT DATA
                                 </button>
                             </div>
                         </div>
