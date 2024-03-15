@@ -10,7 +10,7 @@
 
                 @if ($kasus->status_id > 4)
                     <button type="button" class="btn btn-primary" onclick="getViewProcess(5)">
-                        SELANJUTANYA <i class="far fa-arrow-right"></i>
+                        SELANJUTNYA <i class="far fa-arrow-right"></i>
                     </button>
                 @endif
 
@@ -71,7 +71,7 @@
                                         <tr>
                                             <td>PEMBUAT SPRIN</td>
                                             <td>:</td>
-                                            <td>{{ isset($sprin) ? $sprin->user->name : '' }}</td>
+                                            <td>{{ isset($sprin) ? strtoupper($sprin->user->name) : '' }}</td>
                                         </tr>
                                         <tr>
                                             <td>PELAPOR</td>
@@ -81,7 +81,7 @@
                                         <tr>
                                             <td>USIA DUMAS</td>
                                             <td>:</td>
-                                            <td>{{ $usia_dumas }}</td>
+                                            <td>{{ strtoupper($usia_dumas) }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -816,7 +816,7 @@
         document.body.appendChild( tempDownload );
 
         // var download = data.file;
-        tempDownload.setAttribute( 'href', `/surat-perintah/${id}` );
+        tempDownload.setAttribute( 'href', `/surat-perintah-pengantar/${id}` );
         // tempDownload.setAttribute( 'download', download );
 
         tempDownload.click();
@@ -832,7 +832,7 @@
         document.body.appendChild( tempDownload );
 
         // var download = data.file;
-        tempDownload.setAttribute( 'href', `/surat-perintah/${id}` );
+        tempDownload.setAttribute( 'href', `/surat-sp2hp2-awal/${id}` );
         // tempDownload.setAttribute( 'download', download );
 
         tempDownload.click();

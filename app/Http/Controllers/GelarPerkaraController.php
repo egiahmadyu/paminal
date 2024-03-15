@@ -58,9 +58,13 @@ class GelarPerkaraController extends Controller
         $disposisi = DisposisiHistory::where('data_pelanggar_id', $kasus->id)->where('tipe_disposisi', 3)->first();
         $detasemen = Datasemen::find($disposisi->limpah_den);
 
+        $karopaminal = DataAnggota::where('jabatan', 'LIKE', 'KAROPAMINAL')->first();
+
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_undangan_gelar_perkara.docx'));
 
         $template_document->setValues(array(
+            'nama_karopaminal' => $karopaminal->nama,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
             'tgl_ttd_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_ttd' => Carbon::parse($data->created_at)->translatedFormat('Y'),
             'no_surat_nd_permohonan_gp' => $nd_permohonan_gelar->no_surat . '/' . $this->getRomawi(Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('m')) . '/WAS.2.4/' . Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('T') . '/Den A',
@@ -70,14 +74,14 @@ class GelarPerkaraController extends Controller
             'waktu' => Carbon::parse($data->waktu)->translatedFormat('H:i'),
             'tempat' => $data->tempat,
             'pimpinan' => strtoupper($data->pimpinan),
-            'pangkat_pimpinan' => strtoupper($pangkat_pimpinan->name),
+            'pangkat_pimpinan' => strtoupper($pangkat_pimpinan->alias),
             'jabatan_pimpinan' => strtoupper($data->jabatan_pimpinan),
             'tanggal_ugp' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
             'penangan' => $data->penangan,
             'dihubungi' => $data->dihubungi,
             'jabatan_dihubungi' => $data->jabatan_dihubungi,
             'telp_dihubungi' => $data->telp_dihubungi,
-            'pangkat_terlapor' => strtoupper($pangkat_terlapor->name),
+            'pangkat_terlapor' => strtoupper($pangkat_terlapor->alias),
             'terlapor' => strtoupper($kasus->terlapor),
             'nrp_terlapor' => $kasus->nrp,
             'jabatan_terlapor' => strtoupper($kasus->jabatan),
@@ -190,15 +194,18 @@ class GelarPerkaraController extends Controller
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
             $value->pangkat = $pangkat->name;
         }
-        $pangkat_pimpinan_gelar = Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first()->name;
+        $pangkat_pimpinan_gelar = Pangkat::where('id', $gelar_perkara->pangkat_pimpinan)->first()->alias;
 
         $wilayah_hukum = Polda::where('id', $kasus->wilayah_hukum)->first();
+        $karopaminal = DataAnggota::where('jabatan', 'LIKE', 'KAROPAMINAL')->first();
 
         $template_document->setValues(array(
+            'nama_karopaminal' => $karopaminal->nama,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
             'tahun_ttd' => Carbon::parse($gelar_perkara->created_at)->translatedFormat('Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'pangkat' => strtoupper($pangkat->name),
+            'pangkat' => strtoupper($pangkat->alias),
             'jabatan' => $kasus->jabatan,
             'kwn' => $kasus->kewarganegaraan,
             'nama' => strtoupper($kasus->terlapor),
@@ -274,7 +281,12 @@ class GelarPerkaraController extends Controller
         $pangkat = Pangkat::where('id', $kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
 
+        $kabagbinpam = DataAnggota::where('jabatan', 'LIKE', 'KABAGBINPAM')->first();
+
         $template_document->setValues(array(
+            'nama_kabagbinpam' => $kabagbinpam->nama,
+            'pangkat_kabagbinpam' => Pangkat::find($kabagbinpam->pangkat)->name,
+            'nrp_kabagbinpam' => $kabagbinpam->nrp,
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => strtoupper($pangkat->name),

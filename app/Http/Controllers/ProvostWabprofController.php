@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataAnggota;
 use App\Models\DataPelanggar;
 use App\Models\GelarPerkaraHistory;
 use App\Models\LimpahBiro;
@@ -37,14 +38,18 @@ class ProvostWabprofController extends Controller
             $jenis_limpah = "Kepala BID PROPAM " . $polda->name;
         }
 
+        $karopaminal = DataAnggota::where('jabatan', 'LIKE', 'KAROPAMINAL')->first();
+
         $template_document->setValues(array(
+            'nama_karopaminal' => $karopaminal->nama,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
             'tgl_ttd_romawi' => $this->getRomawi(Carbon::now()->month),
             'tahun_ttd' => Carbon::now()->year,
             'yth_kabiro' => $jenis_limpah,
             'no_nd_yanduan' => $kasus->no_nota_dinas,
             'tgl_no_nd_yanduan' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'perihal_nd_yanduan' => $kasus->perihal_nota_dinas,
-            'no_sprin' => 'Sprin/', $sprin->no_sprin, '/', $this->getRomawi(Carbon::parse($sprin->created_at)->translatedFormat('m')), '/HUK.6.6./', Carbon::parse($sprin->created_at)->translatedFormat('Y'),
+            'no_sprin' => 'SPRIN/' . $sprin->no_sprin . '/' . $this->getRomawi(Carbon::parse($sprin->created_at)->translatedFormat('m')) . '/HUK.6.6./' . Carbon::parse($sprin->created_at)->translatedFormat('Y'),
             'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'pangkat_terlapor' => strtoupper($pangkat_terlapor->name),

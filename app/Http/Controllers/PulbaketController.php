@@ -54,7 +54,6 @@ class PulbaketController extends Controller
                 'no_sprin' => $request->no_sprin,
                 'created_by' => auth()->user()->id,
                 'masa_berlaku_sprin' => Carbon::createFromFormat('m/d/Y', $request->masa_berlaku_sprin)->format('Y-m-d H:i:s'),
-                // 'isi_surat_perintah' => $request->isi_surat_perintah
             ]);
         }
 
@@ -63,7 +62,8 @@ class PulbaketController extends Controller
             'no_sprin' => $data->no_sprin,
             'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_sprin' => Carbon::parse($data->created_at)->translatedFormat('Y'),
-            'masa_berlaku_sprin' => Carbon::parse($data->masa_berlaku_sprin)->translatedFormat('F Y'),
+            'mulai_berlaku_sprin' => Carbon::parse($data->created_at)->translatedFormat('d F Y'),
+            'masa_berlaku_sprin' => Carbon::parse($data->masa_berlaku_sprin)->translatedFormat('d F Y'),
             'tanggal' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'perihal' => $kasus->perihal_nota_dinas,
@@ -100,9 +100,12 @@ class PulbaketController extends Controller
                 'no_pengantar_sprin' => null,
             ]);
         }
+        $karopaminal = DataAnggota::where('jabatan', 'LIKE', 'KAROPAMINAL')->first();
 
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/pengantar_sprin.docx'));
         $template_document->setValues(array(
+            'nama_karopaminal' => $karopaminal->nama,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
             'nama' => $kasus->terlapor,
             'nrp' => $kasus->nrp,
             'pangkat' => $pangkat->name,
@@ -136,12 +139,15 @@ class PulbaketController extends Controller
 
         $pangkat = Pangkat::where('id', $kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
+        $karopaminal = DataAnggota::where('jabatan', 'LIKE', 'KAROPAMINAL')->first();
 
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/template_uuk.docx'));
         $template_document->setValues(array(
+            'nama_karopaminal' => $karopaminal->nama,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
             'nama' => strtoupper($kasus->terlapor),
             'nrp' => $kasus->nrp,
-            'pangkat' => $pangkat->name,
+            'pangkat' => $pangkat->alias,
             'jabatan' => $kasus->jabatan,
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'tanggal' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
@@ -173,9 +179,15 @@ class PulbaketController extends Controller
                 'tipe' => 'awal',
             ]);
         }
+
+        $sesropaminal = DataAnggota::where('jabatan', 'LIKE', 'SESROPAMINAL')->first();
+
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/sp2hp2_awal.docx'));
 
         $template_document->setValues(array(
+            'nama_sesropaminal' => $sesropaminal->nama,
+            'pangkat_sesropaminal' => Pangkat::find($sesropaminal->pangkat)->name,
+            'nrp_sesropaminal' => $sesropaminal->nrp,
             'penangan' => $data->penangan . ' Datasemen A',
             'dihubungi' => $data->dihubungi,
             'jabatan_dihubungi' => $data->jabatan_dihubungi,
@@ -223,7 +235,6 @@ class PulbaketController extends Controller
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/sp2hp2_akhir.docx'));
 
         $template_document->setValues(array(
-            'penangan' => $data->penangan . ' Datasemen A',
             'dihubungi' => $data->pangkat_dihubungi . ' ' . $data->dihubungi . ' jabatan ' . $data->jabatan_dihubungi,
             'telp_dihubungi' => $data->telp_dihubungi,
             'pelapor' => $kasus->pelapor,
@@ -235,16 +246,16 @@ class PulbaketController extends Controller
             'bulan_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_sp2hp2' => Carbon::parse($data->created_at)->translatedFormat('Y'),
             'klasifikasi' => strtoupper($disposisi->klasifikasi),
-            'no_sprin' => 'SPRIN/' . $sprin->no_sprin . '/I/HUK.6.6./2023',
+            'no_sprin' => 'SPRIN/' . $sprin->no_sprin . '/' . $this->getRomawi(Carbon::parse($sprin->created_at)->translatedFormat('m')) . '/HUK.6.6./' . Carbon::parse($sprin->created_at)->translatedFormat('Y'),
             'tgl_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
-            'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor . ' jabatan ' . $kasus->jabatan,
+            'terlapor' => $pangkat_terlapor->alias . ' ' . $kasus->terlapor . ' jabatan ' . $kasus->jabatan,
             'kesatuan' => $kasus->kesatuan,
             'wilayah_hukum' => $kasus->wilayahHukum->name,
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'hasil_penyelidikan' => $lhp->hasil_penyelidikan == 1 ? 'Ditemukan cukup bukti' : 'Belum ditemukan cukup bukti',
             'tgl_gelar' => Carbon::parse($gelar_perkara->tanggal)->translatedFormat('d F Y'),
             'tempat_gelar' => $gelar_perkara->tempat,
-            'pimpinan_gelar' => $pangkat_pimpinan_gelar->name . ' ' . $gelar_perkara->pimpinan . ' jabatan ' . $gelar_perkara->jabatan_pimpinan,
+            'pimpinan_gelar' => $pangkat_pimpinan_gelar->alias . ' ' . $gelar_perkara->pimpinan . ' jabatan ' . $gelar_perkara->jabatan_pimpinan,
         ));
 
         $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-surat-sp2hp2_akhir.docx'));
@@ -286,13 +297,18 @@ class PulbaketController extends Controller
         $pangkat = Pangkat::where('id', $kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
         $undangan_klarifikasi = UndanganKlarifikasiHistory::where('data_pelanggar_id', $kasus_id)->first();
+
+        $karopaminal = DataAnggota::where('jabatan', 'LIKE', 'KAROPAMINAL')->first();
+
         $template_document->setValues(array(
+            'nama_karopaminal' => $karopaminal->nama,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'perihal_nota_dinas' => $kasus->perihal_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pelapor' => $kasus->pelapor,
             'pekerjaan' => $kasus->pekerjaan,
-            'nik' => $kasus->nik,
+            'nik' => $kasus->no_identitas,
             'agama' => $kasus->religi->name,
             'alamat' => $kasus->alamat,
             'telp' => $kasus->no_telp,
@@ -461,7 +477,12 @@ class PulbaketController extends Controller
         $pangkat = Pangkat::where('id', $kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
         $sprin = SprinHistory::where('data_pelanggar_id', $kasus_id)->first();
+
+        $karopaminal = DataAnggota::where('jabatan', 'LIKE', 'KAROPAMINAL')->first();
+
         $template_document->setValues(array(
+            'nama_karopaminal' => $karopaminal->nama,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'perihal' => $kasus->perihal_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
@@ -535,6 +556,8 @@ class PulbaketController extends Controller
         $template_document->setValues(array(
             'tgl_lhp' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
             'no_sprin' => $sprin->no_sprin,
+            'tanggal_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
+            'tahun_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
             'pangkat' => $pangkat_terlapor->name,
@@ -548,8 +571,6 @@ class PulbaketController extends Controller
             'jabatan' => $kasus->jabatan,
             'kesatuan' => $kasus->kesatuan,
             'pelapor' => $kasus->pelapor,
-            'tanggal_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('d F Y'),
-            'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
             'ketua' => $penyidik[0]['name'] ?? '',
             'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
             'jabatan_ketua' => $penyidik[0]['jabatan'] ?? '',
@@ -616,7 +637,7 @@ class PulbaketController extends Controller
             'bulan_nd_permohonan' => Carbon::parse($data->created_at)->translatedFormat('F Y'),
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),
-            'pangkat' => $pangkat->name,
+            'pangkat' => $pangkat->alias,
             'jabatan' => $kasus->jabatan,
             'kwn' => $kasus->kewarganegaraan,
             'terlapor' => $kasus->terlapor,
@@ -663,12 +684,16 @@ class PulbaketController extends Controller
 
         $pangkat = Pangkat::where('id', $kasus->pangkat)->first();
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
+        $sesropaminal = DataAnggota::where('jabatan', 'LIKE', 'SESROPAMINAL')->first();
 
         // dd($kasus->perihal_nota_dinas);
         if ($data->jenis_undangan == 1) {
             $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_sipil.docx'));
 
             $template_document->setValues(array(
+                'nama_sesropaminal' => $sesropaminal->nama,
+                'pangkat_sesropaminal' => Pangkat::find($sesropaminal->pangkat)->name,
+                'nrp_sesropaminal' => $sesropaminal->nrp,
                 'no_surat_undangan' => $data->no_surat_undangan,
                 'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
                 'tahun_surat' => Carbon::parse($data->created_at)->translatedFormat('Y'),
@@ -702,6 +727,9 @@ class PulbaketController extends Controller
             $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_personel.docx'));
 
             $template_document->setValues(array(
+                'nama_sesropaminal' => $sesropaminal->nama,
+                'pangkat_sesropaminal' => Pangkat::find($sesropaminal->pangkat)->name,
+                'nrp_sesropaminal' => $sesropaminal->nrp,
                 'no_surat_undangan' => $data->no_surat_undangan,
                 'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
                 'tahun_surat' => Carbon::parse($data->created_at)->translatedFormat('Y'),
