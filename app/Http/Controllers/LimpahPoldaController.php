@@ -83,6 +83,7 @@ class LimpahPoldaController extends Controller
     {
         $kasus = DataPelanggar::find($kasus_id);
         $data = LimpahPolda::where('data_pelanggar_id', $kasus->id)->first();
+        // dd($data);
         $polda = Polda::find($data->polda_id);
         $pangkat_terlapor = Pangkat::find($kasus->pangkat);
         $terlapor = $pangkat_terlapor->name . ' ' . $kasus->terlapor;
@@ -130,8 +131,8 @@ class LimpahPoldaController extends Controller
     public function generateDisposisi(Request $request, $kasus_id)
     {
         $kasus = DataPelanggar::find($kasus_id);
-
         if ($request->limpah_den == 7) {
+
             $limpah = LimpahPolda::create([
                 'data_pelanggar_id' => $request->kasus_id,
                 'polda_id' => $request->polda,

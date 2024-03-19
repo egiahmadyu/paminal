@@ -80,8 +80,8 @@
                         <textarea class="form-control border-dark" name="catatan" placeholder="Catatan" id="catatan" value="{{ isset($limpahPolda) ? ($limpahPolda->catatan ? '' : '' ) : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px">{{ isset($limpahPolda) ? ($limpahPolda->catatan ? $limpahPolda->catatan : '' ) : '' }}</textarea>
                     </div>
                     <div class="col-lg-12 mb-4">
-                        <a href="/surat-limpah-polda/{{ $limpahPolda->id }}" type="button" class="btn btn-outline-success">BUAT SURAT LIMPAH KE {{ $limpahPolda->polda->name }}</a>
-                        <a href="/penagihan-tinjut-polda/{{ $limpahPolda->polda_id }}" type="button" class="btn btn-outline-info">PENAGIHAN TINJUT {{ $limpahPolda->polda->name }}</a>
+                        <a href="/surat-limpah-polda/{{ $kasus->id }}" type="button" class="btn btn-outline-success">BUAT SURAT LIMPAH KE {{ $limpahPolda->polda->name }}</a>
+                        {{-- <a href="/penagihan-tinjut-polda/{{ $limpahPolda->polda_id }}" type="button" class="btn btn-outline-info">PENAGIHAN TINJUT {{ $limpahPolda->polda->name }}</a> --}}
                         <button type="submit" class="btn btn-outline-warning">UPDATE DATA</button>
                     </div>
                 </div>
