@@ -64,7 +64,7 @@ class GelarPerkaraController extends Controller
 
         $template_document->setValues(array(
             'nama_karopaminal' => $karopaminal->nama,
-            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->name,
+            'pangkat_karopaminal' => Pangkat::find($karopaminal->pangkat)->alias,
             'tgl_ttd_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
             'tahun_ttd' => Carbon::parse($data->created_at)->translatedFormat('Y'),
             'no_surat_nd_permohonan_gp' => $nd_permohonan_gelar->no_surat . '/' . $this->getRomawi(Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('m')) . '/WAS.2.4/' . Carbon::parse($nd_permohonan_gelar->created_at)->translatedFormat('T') . '/Den A',
@@ -122,7 +122,7 @@ class GelarPerkaraController extends Controller
             'pelapor' => $kasus->pelapor,
             'bulan_sprin' => Carbon::parse($sprin->created_at)->translatedFormat('F Y'),
             'tgl_gp' => Carbon::parse($gelar_perkara->created_at)->translatedFormat('F Y'),
-            'pimpinan_gp' => $pangkat_pimpinan->name . ' ' . $gelar_perkara->pimpinan,
+            'pimpinan_gp' => $pangkat_pimpinan->alias . ' ' . $gelar_perkara->pimpinan,
             'nrp_gp' => $gelar_perkara->nrp_pimpinan,
         ));
         $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-notulen_gelar_perkara.docx'));
@@ -285,7 +285,7 @@ class GelarPerkaraController extends Controller
 
         $template_document->setValues(array(
             'nama_kabagbinpam' => $kabagbinpam->nama,
-            'pangkat_kabagbinpam' => Pangkat::find($kabagbinpam->pangkat)->name,
+            'pangkat_kabagbinpam' => Pangkat::find($kabagbinpam->pangkat)->alias,
             'nrp_kabagbinpam' => $kabagbinpam->nrp,
             'no_nota_dinas' => $kasus->no_nota_dinas,
             'tanggal_nota_dinas' => Carbon::parse($kasus->tanggal_nota_dinas)->translatedFormat('d F Y'),

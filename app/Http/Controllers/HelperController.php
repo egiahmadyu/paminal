@@ -34,7 +34,7 @@ class HelperController extends Controller
         foreach ($data_pelanggar as $key => $value) {
             # code...
             if ($result == true) {
-                if ($key != 'kewarganegaraan' && $key != 'catatan' && $key != 'link_ktp' && $key != 'selfie' && $key != 'evidences') {
+                if ($key != 'no_pengaduan' && $key != 'kewarganegaraan' && $key != 'catatan' && $key != 'link_ktp' && $key != 'selfie' && $key != 'evidences') {
                     $result = is_null($value) ? false : true;
                 }
             }

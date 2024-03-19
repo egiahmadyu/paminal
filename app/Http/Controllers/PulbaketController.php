@@ -228,9 +228,15 @@ class PulbaketController extends Controller
                 'tipe' => 'akhir',
             ]);
         }
+
+        $sesropaminal = DataAnggota::where('jabatan', 'LIKE', 'SESROPAMINAL')->first();
+
         $template_document = new \PhpOffice\PhpWord\TemplateProcessor(storage_path('template_surat/sp2hp2_akhir.docx'));
 
         $template_document->setValues(array(
+            'nama_sesropaminal' => $sesropaminal->nama,
+            'pangkat_sesropaminal' => Pangkat::find($sesropaminal->pangkat)->name,
+            'nrp_sesropaminal' => $sesropaminal->nrp,
             'dihubungi' => $data->pangkat_dihubungi . ' ' . $data->dihubungi . ' jabatan ' . $data->jabatan_dihubungi,
             'telp_dihubungi' => $data->telp_dihubungi,
             'pelapor' => $kasus->pelapor,
@@ -318,6 +324,7 @@ class PulbaketController extends Controller
             'tanggal_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('d F Y'),
             'waktu_introgasi' => Carbon::parse($undangan_klarifikasi->waktu_klarifikasi)->translatedFormat('H:i'),
             'hari_introgasi' => Carbon::parse($undangan_klarifikasi->tgl_klarifikasi)->translatedFormat('l'),
+            'bag_den' => $den,
             'ketua' => $penyidik[0]['name'] ?? '',
             'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
             'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
@@ -503,6 +510,7 @@ class PulbaketController extends Controller
             'pangkat_ketua' => $penyidik[0]['pangkat'] ?? '',
             'jabatan_ketua' => $penyidik[0]['jabatan'] ?? '',
             'nrp_ketua' => $penyidik[0]['nrp'] ?? '',
+            'bag_den' => $den,
 
         ));
 
@@ -546,7 +554,7 @@ class PulbaketController extends Controller
         $penyidik = Penyidik::where('data_pelanggar_id', $kasus->id)->orderBy('pangkat', 'asc')->get();
         foreach ($penyidik as $key => $value) {
             $pangkat = Pangkat::where('id', $value->pangkat)->first();
-            $value->pangkat = $pangkat->name;
+            $value->pangkat = $pangkat->alias;
         }
 
         $template_document->setValues(array(
@@ -559,7 +567,7 @@ class PulbaketController extends Controller
             'pangkat' => $pangkat_terlapor->name,
             'jabatan' => $kasus->jabatan,
             'perihal' => $kasus->perihal_nota_dinas,
-            'kwn' => $kasus->kewarganegaraan,
+            'wilayah_hukum' => $kasus->wilayahHukum->name,
             'terlapor' => strtoupper($kasus->terlapor),
             'wujud_perbuatan' => $wujud_perbuatan->keterangan_wp,
             'terlapor' => $kasus->terlapor,
@@ -682,7 +690,11 @@ class PulbaketController extends Controller
         $wujud_perbuatan = WujudPerbuatan::where('id', $kasus->wujud_perbuatan)->first();
         $sesropaminal = DataAnggota::where('jabatan', 'LIKE', 'SESROPAMINAL')->first();
 
-        // dd($kasus->perihal_nota_dinas);
+        $katim = Penyidik::join('datasemens', 'datasemens.id', '=', 'penyidiks.datasemen')
+            ->join('data_anggotas', 'data_anggotas.id', '=', 'datasemens.kaden')
+            ->where('penyidiks.data_pelanggar_id', $kasus->id)
+            ->first();
+
         if ($data->jenis_undangan == 1) {
             $template_document = new TemplateProcessor(storage_path('template_surat/template_undangan_klarifikasi_sipil.docx'));
 
@@ -714,6 +726,9 @@ class PulbaketController extends Controller
                 'nama_penyelidik' => $sp2hp->dihubungi,
                 'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
                 'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
+                'pangkat_katim' => Pangkat::find($katim->pangkat)->alias,
+                'katim' => $katim->nama,
+                'jabatan_katim' => $katim->jabatan,
             ));
 
             $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_sipil.docx'));
@@ -724,7 +739,7 @@ class PulbaketController extends Controller
 
             $template_document->setValues(array(
                 'nama_sesropaminal' => $sesropaminal->nama,
-                'pangkat_sesropaminal' => Pangkat::find($sesropaminal->pangkat)->name,
+                'pangkat_sesropaminal' => Pangkat::find($sesropaminal->pangkat)->alias,
                 'nrp_sesropaminal' => $sesropaminal->nrp,
                 'no_surat_undangan' => $data->no_surat_undangan,
                 'tgl_romawi' => $this->getRomawi(Carbon::parse($data->created_at)->translatedFormat('m')),
@@ -752,6 +767,9 @@ class PulbaketController extends Controller
                 'jabatan_penyelidik' => $sp2hp->jabatan_dihubungi,
                 'no_telp_penyelidik' => $sp2hp->telp_dihubungi,
                 'wilayah_hukum' => $kasus->wilayahHukum->name,
+                'pangkat_katim' => Pangkat::find($katim->pangkat)->alias,
+                'katim' => $katim->nama,
+                'jabatan_katim' => $katim->jabatan,
             ));
 
             $template_document->saveAs(storage_path('template_surat/' . $kasus->pelapor . '-dokumen-undangan_klarifikasi_personel.docx'));

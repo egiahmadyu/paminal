@@ -1019,7 +1019,8 @@ class KasusController extends Controller
             'saksis' => $saksis,
             'jenis_kelamin' => $jenis_kelamin,
             'usia_dumas' => $usia_dumas . ' hari',
-            'terlapor' => $pangkat_terlapor->name . ' ' . $kasus->terlapor,
+            'terlapor' => $kasus->terlapor,
+            'pangkat_terlapor' => $pangkat_terlapor->alias,
             'title' => 'PULBAKET',
         ];
         return view('pages.data_pelanggaran.proses.pulbaket', $data);

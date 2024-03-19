@@ -122,7 +122,7 @@
                                             <a href="/bai-anggota/{{ $kasus->id }}"
                                                 class="btn btn-outline-primary text-primary">
                                                 <h6 class="p-0 m-0">
-                                                    <i class="far fa-file-plus"></i> DOKUMEN BAI TERDUGA PELANGGAR
+                                                    <i class="far fa-file-plus"></i> DOKUMEN BAI TERLAPOR
                                                 </h6>
                                             </a>
                                         </div>
@@ -185,6 +185,9 @@
                         value="update_status">
                         LANJUTKAN KE PROSES GELAR PENYELIDIKAN
                     </button>
+                    @if ($kasus->status_id != 5)
+                        <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>
+                    @endif
                 </form>
             </div>
         </div>

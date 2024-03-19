@@ -309,7 +309,7 @@
                             <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }} value="update_status">
                                 LANJUTKAN KE LIMPAH
                             </button>
-                            @if ($kasus->status_id == 5 && $nd_hasil_gelar)
+                            @if ($kasus->status_id != 5)
                                 <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>
                             @endif
                         </form>

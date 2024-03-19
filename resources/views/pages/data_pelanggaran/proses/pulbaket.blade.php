@@ -88,9 +88,14 @@
                                 <div class="col-lg-6">
                                     <table>
                                         <tr>
-                                            <td>TERDUGA PELAKU</td>
+                                            <td>TERLAPOR</td>
                                             <td>:</td>
                                             <td>{{ strtoupper($terlapor) }} / {{ $kasus->nrp }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>PANGKAT / NRP TERLAPOR</td>
+                                            <td>:</td>
+                                            <td>{{ strtoupper($pangkat_terlapor) }} / {{ $kasus->nrp }}</td>
                                         </tr>
                                         <tr>
                                             <td>UNIT PELAKSANA</td>
@@ -587,7 +592,7 @@
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
                                 <select class="form-select border-dark" aria-label="Default select example" name="hasil_penyelidikan" id="hasil_penyelidikan" {{ isset($lhp) ? 'disabled' : '' }} required>
-                                    <option value="">-- PILIH HASIL PENYELIDIKASN  --</option>
+                                    <option value="">-- PILIH HASIL PENYELIDIKAN  --</option>
                                     <option value="1" {{ isset($lhp) ? ($lhp->hasil_penyelidikan == '1' ? 'selected' : '') : '' }}>DITEMUKAN CUKUP BUKTI</option>
                                     <option value="2" {{ isset($lhp) ? ($lhp->hasil_penyelidikan == '2' ? 'selected' : '') : '' }}>BELUM DITEMUKAN CUKUP BUKTI</option>
                                 </select>
