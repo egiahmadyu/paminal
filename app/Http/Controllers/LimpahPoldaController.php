@@ -15,6 +15,7 @@ use App\Models\WujudPerbuatan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class LimpahPoldaController extends Controller
 {
@@ -166,6 +167,24 @@ class LimpahPoldaController extends Controller
 
         if ($status == false) {
             return redirect()->back()->with('error', $message);
+        }
+
+        if ($request->has('file')) {
+            $rules = [
+                'file' => 'max:300'
+            ];
+
+            $messages = [
+                'file' => 'MAKSIUM FILE YANG DIUPLOAD 300kb.',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()) {
+                $message = $validator->messages();
+                $message = $message->messages();
+                return redirect()->back()->with('error', strtoupper($message['file'][0]));
+            }
         }
 
         if (!$data) {

@@ -730,9 +730,12 @@
                         <label for="formFile" class="form-label">UPLOAD FILE DISPOSISI :</label>
                         <input class="form-control" type="file" id="file" name="file" accept=".doc,.docx,.pdf">
                     </div>
-                    @if ($disposisi[0] && $disposisi[0]->file)
-                        <a href="/download-disposisi/{{ $disposisi[0]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISPOSISI</a>
-                    @endif
+                    <div class="upload-file-desc d-flex justify-content-between">
+                        PDF (MAKS 300kb)
+                        @if ($disposisi[0] && $disposisi[0]->file)
+                            <a href="/download-disposisi/{{ $disposisi[0]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISPOSISI</a>
+                        @endif
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" style="width: 100%">SIMPAN</button>
@@ -815,11 +818,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="formFile" class="form-label">UPLOAD FILE DISTRIBUSI :</label>
-                        <input class="form-control" type="file" id="file" name="file">
+                        <input class="form-control" type="file" id="file" name="file" accept=".doc,.docx,.pdf">
                     </div>
-                    @if ($disposisi[1] && $disposisi[1]->file)
-                        <a href="/download-disposisi/{{ $disposisi[1]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISTRIBUSI</a>
-                    @endif
+                    <div class="upload-file-desc d-flex justify-content-between">
+                        PDF (MAKS 300kb)
+                        @if ($disposisi[1] && $disposisi[1]->file)
+                            <a href="/download-disposisi/{{ $disposisi[1]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISTRIBUSI</a>
+                        @endif
+                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" style="width: 100%">SIMPAN</button>
@@ -903,17 +910,20 @@
                         <label for="perihal" class="form-label">HAL</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISPOSISI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[2] ? $disposisi[2]->isi_disposisi : ''}}</textarea>
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISTRIBUSI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[2] ? ($disposisi[2]->isi_disposisi ?? '') : ($disposisi[2]->isi_disposisi ?? '')}}</textarea>
+                        {{-- <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISPOSISI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[2] ? $disposisi[2]->isi_disposisi : ''}}</textarea> --}}
                         <label for="isi_disposisi" class="form-label">ISI DISPOSISI</label>
                     </div>
                     <div class="mb-3">
                         <label for="formFile" class="form-label">UPLOAD FILE DISPOSISI :</label>
-                        <input class="form-control" type="file" id="file" name="file">
+                        <input class="form-control" type="file" id="file" name="file" accept=".doc,.docx,.pdf">
                     </div>
-                    @if ($disposisi[2] && $disposisi[2]->file)
-                        <a href="/download-disposisi/{{ $disposisi[2]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISPOSISI</a>
-                    @endif
-
+                    <div class="upload-file-desc d-flex justify-content-between">
+                        PDF (MAKS 300kb)
+                        @if ($disposisi[2] && $disposisi[2]->file)
+                            <a href="/download-disposisi/{{ $disposisi[2]['id'] }}" title="DOWNLOAD FILE"> <i class="far fa-download"></i> FILE DISPOSISI</a>
+                        @endif
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" style="width: 100%">SIMPAN</button>
