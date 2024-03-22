@@ -5,7 +5,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>DMS PAMINAL | SIGN IN</title>
+    <title>PIS PAMINAL | SIGN IN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Minimal Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -22,9 +22,10 @@
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
-    
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
+
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
 
     <style>
         /* Loader */
@@ -189,8 +190,9 @@
 
                         <div class="card-body p-3 p-sm-5 m-lg-2">
                             <div class="text-center">
-                                <img width="70%" src="{{ asset('assets/images/logo/paminal.png') }}" alt="">
-                                
+                                <img width="40%" src="{{ asset('assets/images/logo/logo-paminal.png') }}"
+                                    alt="">
+
                                 <h5 class="text-primary fs-22">Welcome Back !</h5>
                                 <p class="text-muted">Sign in to continue to Propam Integrated System.</p>
                             </div>
@@ -219,7 +221,8 @@
                                     </div>
 
                                     <div class="mt-4">
-                                        <button class="btn btn-primary w-100" id="sign-in" type="submit">Sign In</button>
+                                        <button class="btn btn-primary w-100" id="sign-in" type="submit">Sign
+                                            In</button>
                                     </div>
                                 </form>
 
@@ -228,18 +231,20 @@
                                             class="fw-semibold text-secondary text-decoration-underline"> SignUp</a>
                                     </p>
                                 </div> --}}
-                                
+
                             </div>
-                            
+
                         </div>
                         <div class="card-footer">
                             <footer class="">
                                 <p class="text-center text-muted mb-0">&copy;
-                                    <script>document.write(new Date().getFullYear())</script> Propam Integrated System - Divisi Propam Polri
+                                    <script>
+                                        document.write(new Date().getFullYear())
+                                    </script> Propam Integrated System - Divisi Propam Polri
                                 </p>
                             </footer>
                         </div>
-                        
+
                         <!-- end card body -->
                     </div>
                     <!-- end card -->
@@ -263,44 +268,40 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script>
-        $(document).ready(function(){
-            $("form").submit(function(){
+        $(document).ready(function() {
+            $("form").submit(function() {
                 $('.loading').css('display', 'block')
             });
         });
 
-        @if(Session::has('message'))
-            toastr.options =
-            {
-                "closeButton" : true,
-                "progressBar" : true
+        @if (Session::has('message'))
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
             }
             toastr.success("{{ session('message') }}");
         @endif
 
-        @if(Session::has('error'))
-            toastr.options =
-            {
-                "closeButton" : true,
-                "progressBar" : true
+        @if (Session::has('error'))
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
             }
             toastr.error("{{ session('error') }}");
         @endif
 
-        @if(Session::has('info'))
-            toastr.options =
-            {
-                "closeButton" : true,
-                "progressBar" : true
+        @if (Session::has('info'))
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
             }
             toastr.info("{{ session('info') }}");
         @endif
 
-        @if(Session::has('warning'))
-            toastr.options =
-            {
-                "closeButton" : true,
-                "progressBar" : true
+        @if (Session::has('warning'))
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
             }
             toastr.warning("{{ session('warning') }}");
         @endif
