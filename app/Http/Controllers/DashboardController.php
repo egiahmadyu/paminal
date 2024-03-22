@@ -41,6 +41,7 @@ class DashboardController extends Controller
     public function getDataChart($tipe, Request $request)
     {
         try {
+            $data = null;
             if ($tipe == 'trend_dumas') {
                 $data = $this->getTrendDumas();
             } elseif ($tipe == 'statistik_bulanan') {
@@ -64,6 +65,7 @@ class DashboardController extends Controller
     public function getData($tipe, Request $request)
     {
         try {
+            // $data = null;
             if ($tipe == 'status_dumas') {
                 $data = $this->getStatusDumas($request->value);
             } elseif ($tipe == 'limpah_polda') {
@@ -87,7 +89,7 @@ class DashboardController extends Controller
     public function getLimpahDen($tipe)
     {
         try {
-            //code...
+            $result = null;
             if ($tipe == 'POLDA') {
                 $result = DataPelanggar::join('limpah_poldas', 'limpah_poldas.data_pelanggar_id', '=', 'data_pelanggars.id')->count();
             } else {
@@ -119,24 +121,29 @@ class DashboardController extends Controller
 
     public function getStatusDumas($tipe)
     {
-        if ($tipe == 'terbukti') {
-            $data = DataPelanggar::join('l_h_p_histories', 'l_h_p_histories.data_pelanggar_id', '=', 'data_pelanggars.id')
-                ->where('l_h_p_histories.hasil_penyelidikan', '=', '1')
-                ->orderBy('data_pelanggars.id')
-                ->count();
-        } elseif ($tipe == 'terbukti') {
-            $data = DataPelanggar::join('l_h_p_histories', 'l_h_p_histories.data_pelanggar_id', '=', 'data_pelanggars.id')
-                ->where('l_h_p_histories.hasil_penyelidikan', '=', '2')
-                ->orderBy('data_pelanggars.id')
-                ->count();
-        } elseif ($tipe == 'rj') {
-            $data = DataPelanggar::where('status_id', 7)->count();
-        } else {
-            $data = DataPelanggar::join('sprin_histories as sh', 'sh.data_pelanggar_id', '=', 'data_pelanggars.id')
-                ->whereBetween('data_pelanggars.status_id', [4, 5])
-                ->count();
+        try {
+            $data = null;
+            if ($tipe == 'terbukti') {
+                $data = DataPelanggar::join('l_h_p_histories', 'l_h_p_histories.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->where('l_h_p_histories.hasil_penyelidikan', '=', '1')
+                    ->orderBy('data_pelanggars.id')
+                    ->count();
+            } elseif ($tipe == 'terbukti') {
+                $data = DataPelanggar::join('l_h_p_histories', 'l_h_p_histories.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->where('l_h_p_histories.hasil_penyelidikan', '=', '2')
+                    ->orderBy('data_pelanggars.id')
+                    ->count();
+            } elseif ($tipe == 'rj') {
+                $data = DataPelanggar::where('status_id', 7)->count();
+            } else {
+                $data = DataPelanggar::join('sprin_histories as sh', 'sh.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->whereBetween('data_pelanggars.status_id', [4, 5])
+                    ->count();
+            }
+            return $data;
+        } catch (\Throwable $e) {
+            return $e->getMessage();
         }
-        return $data;
     }
 
     public function DataTriwulanSemester($tipe)
