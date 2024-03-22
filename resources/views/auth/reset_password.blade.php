@@ -25,9 +25,8 @@
                         </div>
                 
                         <div class="p-2">
-                            <form action="{{ route('reset.action') }}" method="post">
+                            <form action="/reset/{{ base64_encode($user_id) }}" method="post">
                                 @csrf
-                                <input type="hidden" name="user_id" value="{{ $user_id }}">
                                 <div class="mb-3">
                                     <label class="form-label" for="password-input">Password</label>
                                     <div class="position-relative auth-pass-inputgroup">

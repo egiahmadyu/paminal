@@ -27,10 +27,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [AuthController::class, 'index'])->name('reset.password')->name('login');
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'loginAction'])->name('login-action');
-Route::post('reset', [AuthController::class, 'storeReset'])->name('reset.action');
 Route::get('reset-password/{user_id?}', [AuthController::class, 'resetPassword'])->name('reset.password');
+Route::post('reset/{id}', [AuthController::class, 'storeReset'])->name('reset.action');
 // Route::get('/pdf-test', [LimpahPoldaController::class, 'generateDocumen']);
 
 

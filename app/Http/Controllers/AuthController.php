@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -53,18 +54,42 @@ class AuthController extends Controller
     return view('auth.reset_password', $data);
   }
 
-  public function storeReset(Request $request)
+  public function storeReset(Request $request, $id)
   {
     if ($request->password == '123456') {
       return back()->with('error', 'Gagal mengganti password');
     }
 
     try {
-      $user = User::find($request->user_id);
-      $user->password = bcrypt($request->password);
-      $user->save();
+      $id = base64_decode($id);
 
-      return redirect('/login')->with('success', 'Berhasil merubah password !');
+      $rules = [
+        'password' => 'required|min:8',
+      ];
+
+
+
+      $validator = Validator::make(['password' => $request->password], $rules);
+      if ($validator->fails()) {
+
+        // get the error messages from the validator
+        $messages = $validator->messages();
+        $messages = $messages->messages();
+
+        // redirect our user back to the form with the errors from the validator
+        return back()->with('error', $messages['password']->password);
+      }
+
+      $user = User::find($id);
+      if ($user) {
+        # code...
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect('/login')->with('success', 'Berhasil merubah password !');
+      } else {
+        return back()->with('error', 'User tidak ditemukan.');
+      }
     } catch (\Exception $e) {
       return back()->with('error', $e->getMessage());
     }
