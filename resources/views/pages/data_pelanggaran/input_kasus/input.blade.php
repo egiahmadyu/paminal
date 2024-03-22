@@ -48,7 +48,7 @@
                     <label for="jenis_laporan" class="form-label">JENIS PELAPORAN </label>
                     <input type="text" class="form-control border-dark" name="jenis_laporan" id="jenis_laporan"
                         placeholder="LANGSUNG/WHATSAPP/DUMAS PIS PAMINAL"
-                        value="{{ isset($kasus) ? $kasus->jenis_laporan : (old('jenis_laporan') ? old('jenis_laporan') : 'DUMAS PIS PAMINAL') }}" readonly>
+                        value="{{ isset($kasus) ? $kasus->jenis_laporan : (old('jenis_laporan') ? old('jenis_laporan') : 'DUMAS PIS PAMINAL') }}" autocomplete="off" readonly>
                     <div class="invalid-feedback">
                         MOHON ISI JENIS PELAPORAN !
                     </div>
@@ -56,7 +56,7 @@
 
                 <div class="col-lg-12 mb-3">
                     <label for="no_nota_dinas" class="form-label">NO. NOTA DINAS</label>
-                    <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="NO. NOTA DINAS" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" disabled>
+                    <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas" placeholder="NO. NOTA DINAS" value="{{ old('no_nota_dinas') ? old('no_nota_dinas') : '' }}" maxlength="50" autocomplete="off" disabled>
                     <div class="invalid-feedback">
                         MOHON ISI NO. NOTA DINAS !
                     </div>
@@ -72,11 +72,11 @@
                             
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="jenis_wp" value="1" {{ old('jenis_wp') == 1 ? 'checked' : ''}} onchange='disiplinChange(this);' required>
+                            <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="jenis_wp" value="1" {{ old('jenis_wp') == 1 ? 'checked' : ''}} onchange='disiplinChange(this);' autocomplete="off" required>
                             <label class="form-check-label " for="disiplin">DISIPLIN</label>
                           </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="jenis_wp" value="2" {{ old('jenis_wp') == 2 ? 'checked' : ''}} onchange='kodeEtikChange(this);' required>
+                            <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="jenis_wp" value="2" {{ old('jenis_wp') == 2 ? 'checked' : ''}} onchange='kodeEtikChange(this);' autocomplete="off" required>
                             <label class="form-check-label" for="kode_etik">KODE ETIK</label>
                         </div>
                         
@@ -85,7 +85,7 @@
 
                 <div class="col-lg-12 mb-3">
                     <label for="wujud_perbuatan" class="form-label">WUJUD PERBUATAN</label>
-                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" disabled required>
+                    <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="wujud_perbuatan" id="wujud_perbuatan" autocomplete="off" disabled required>
                         <option value="">PILIH WUJUD PERBUATAN</option>
                     </select>
                     <div class="invalid-feedback">
@@ -95,7 +95,7 @@
 
                 <div class="col-lg-12 mb-3">
                     <label for="tanggal_nota_dinas" class="form-label">TANGGAL NOTA DINAS</label>
-                    <input type="text" data-live-search="true" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="DD/MM/YYYY" required value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}">
+                    <input type="text" data-live-search="true" name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker" placeholder="DD/MM/YYYY" autocomplete="off" required value="{{ old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '' }}">
                     <div class="invalid-feedback">
                         MOHON PILIH TANGGAL NOTA DINAS !
                     </div>
@@ -103,7 +103,7 @@
 
                 <div class="col-lg-12 mb-3">
                     <label for="perihal" class="form-label">PERIHAL ADUAN</label>
-                    <textarea class="form-control border-dark" name="perihal" placeholder="PERIHAL" id="perihal" value="{{ old('perihal') ? old('perihal') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px"  required></textarea>
+                    <textarea class="form-control border-dark" name="perihal" placeholder="PERIHAL" id="perihal" value="{{ old('perihal') ? old('perihal') : '' }}" autocomplete="off" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px"  required></textarea>
                     <div class="invalid-feedback">
                         MOHON ISI PERIHAL ADUAN !
                     </div>
@@ -132,7 +132,7 @@
                     <div class="row">
                         <div class="col-lg-12 mb-3">
                             <label for="pelapor" class="form-label">NAMA</label>
-                            <input type="text" class="form-control border-dark" name="pelapor" id="pelapor" placeholder="NAMA" value="{{ old('pelapor') ? old('pelapor') : '' }}" required>
+                            <input type="text" class="form-control border-dark" name="pelapor" id="pelapor" placeholder="NAMA" value="{{ old('pelapor') ? old('pelapor') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NAMA PELAPOR !
                             </div>
@@ -141,7 +141,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="umur" class="form-label">UMUR</label>
-                            <input type="number" class="form-control border-dark" name="umur" id="umur" placeholder="UMUR" value="{{ old('umur') ? old('umur') : '' }}" required>
+                            <input type="number" class="form-control border-dark" name="umur" id="umur" placeholder="UMUR" value="{{ old('umur') ? old('umur') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI UMUR PELAPOR !
                             </div>
@@ -150,7 +150,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="jenis_kelamin" class="form-label">JENIS KELAMIN</label>
-                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" required>
+                            <select class="form-select border-dark" data-live-search="true" aria-label="Default select example" name="jenis_kelamin" id="jenis_kelamin" autocomplete="off" required>
                                 <option value="" selected disabled>PILIH JENIS KELAMIN</option>
                                 @if (isset($jenis_kelamin))
                                     @foreach ($jenis_kelamin as $key => $jk)
@@ -166,7 +166,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="pekerjaan" class="form-label">PEKERJAAN</label>
-                            <input type="text" name="pekerjaan" class="form-control border-dark" placeholder="PEKERJAAN" value="{{ old('pekerjaan') ? old('pekerjaan') : '' }}" required>
+                            <input type="text" name="pekerjaan" class="form-control border-dark" placeholder="PEKERJAAN" value="{{ old('pekerjaan') ? old('pekerjaan') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI PEKERJAAN PELAPOR !
                             </div>
@@ -189,7 +189,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="no_identitas" class="form-label">NO. IDENTITAS</label>
-                            <input type="text" name="no_identitas" id="no_identitas" placeholder="contoh : 0000-1234-4321-9999" maxlength="20" class="form-control border-dark" value="{{ old('no_identitas') ? old('no_identitas') : '' }}" required>
+                            <input type="text" name="no_identitas" id="no_identitas" placeholder="contoh : 0000-1234-4321-9999" maxlength="20" class="form-control border-dark" value="{{ old('no_identitas') ? old('no_identitas') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NO. IDENTITAS !
                             </div>
@@ -214,7 +214,7 @@
 
                         <div class="col-lg-12 mb-3">
                             <label for="no_telp" class="form-label">NO. TELEPON</label>
-                            <input type="text" name="no_telp" maxlength="18" id="no_telp" placeholder="contoh: 0888-1234-9999" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" required>
+                            <input type="text" name="no_telp" maxlength="18" id="no_telp" placeholder="contoh: 0888-1234-9999" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NO. TELEPON PELAPOR !
                             </div>
@@ -223,7 +223,7 @@
 
                         <div class="col-lg-12 mb-3">
                             <label for="floatingTextarea" class="form-label">ALAMAT LENGKAP</label>
-                            <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
+                            <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" autocomplete="off" required></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI ALAMAT PELAPOR !
                             </div>
@@ -237,7 +237,7 @@
                     <div class="row">
                         <div class="col-lg-6 mb-3">
                             <label for="nrp" class="form-label">NRP</label>
-                            <input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP" value="{{ old('nrp') ? old('nrp') : '' }}" required>
+                            <input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP" value="{{ old('nrp') ? old('nrp') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NRP TERDUGA PELANGGAR !
                             </div>
@@ -246,7 +246,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="terlapor" class="form-label">NAMA</label>
-                            <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="NAMA" value="{{ old('terlapor') ? old('terlapor') : '' }}" required>
+                            <input type="text" class="form-control border-dark" name="terlapor" id="terlapor" placeholder="NAMA" value="{{ old('terlapor') ? old('terlapor') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NAMA TERDUGA PELANGGAR !
                             </div>
@@ -273,7 +273,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="jabatan" class="form-label">JABATAN</label>
-                            <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="JABATAN" value="{{ old('jabatan') ? old('jabatan') : '' }}" required>
+                            <input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="JABATAN" value="{{ old('jabatan') ? old('jabatan') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI JABATAN TERDUGA PELANGGAR !
                             </div>
@@ -282,7 +282,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="kesatuan" class="form-label">KESATUAN</label>
-                            <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan" placeholder="KESATUAN" value="{{ old('kesatuan') ? old('kesatuan') : '' }}" required>
+                            <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan" placeholder="KESATUAN" value="{{ old('kesatuan') ? old('kesatuan') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI KESATUAN TERDUGA PELANGGAR !
                             </div>
@@ -309,7 +309,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="tempat_kejadian" class="form-label">TEMPAT KEJADIAN</label>
-                            <input type="text" class="form-control border-dark" name="tempat_kejadian" id="tempat_kejadian" placeholder="TEMPAT KEJADIAN" value="{{ old('tempat_kejadian') ? old('tempat_kejadian') : '' }}" required>
+                            <input type="text" class="form-control border-dark" name="tempat_kejadian" id="tempat_kejadian" placeholder="TEMPAT KEJADIAN" value="{{ old('tempat_kejadian') ? old('tempat_kejadian') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI TEMPAT KEJADIAN PELANGGARAN !
                             </div>
@@ -318,7 +318,7 @@
 
                         <div class="col-lg-6 mb-3">
                             <label for="tempat_kejadian" class="form-label">TANGGAL KEJADIAN</label>
-                            <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="DD/MM/YYYY" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" required>
+                            <input type="text" id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark" placeholder="DD/MM/YYYY" value="{{ old('tanggal_kejadian') ? old('tanggal_kejadian') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON PILIH TANGGAL KEJADIAN PELANGGARAN !
                             </div>
@@ -327,7 +327,7 @@
 
                         <div class="col-lg-12 mb-3">
                             <label for="nama_korban" class="form-label">NAMA KORBAN</label>
-                            <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="NAMA KORBAN" value="{{ old('nama_korban') ? old('nama_korban') : '' }}" required>
+                            <input type="text" class="form-control border-dark" name="nama_korban" id="nama_korban" placeholder="NAMA KORBAN" value="{{ old('nama_korban') ? old('nama_korban') : '' }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NAMA KORBAN !
                             </div>
@@ -336,7 +336,7 @@
                         
                         <div class="col-lg-12 mb-3" id="kronologi_form">
                             <label for="kronologis" id="label_kronologi" class="form-label">KRONOLOGIS</label>
-                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 300px" required></textarea>
+                            <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 300px" autocomplete="off" required></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI KRONOLOGIS PELANGGARAN !
                             </div>
@@ -351,7 +351,7 @@
 
                         <div class="col-lg-12 mb-3" id="catatan_form" hidden>
                             <label for="catatan" id="label_catatan" class="form-label">CATATAN</label>
-                            <textarea class="form-control border-dark" name="catatan[]" placeholder="" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" ></textarea>
+                            <textarea class="form-control border-dark" name="catatan[]" placeholder="" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" autocomplete="off"></textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI CATATAN PELANGGARAN !
                             </div>
@@ -474,7 +474,7 @@
 
             $('#add_kronologi').on('click', function() {
                 let krono = `<div class="form-floating mt-3">
-                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
+                                <textarea class="form-control border-dark" name="kronologis[]" placeholder="" id="kronologis" value="{{ old('kronologis') ? old('kronologis') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" autocomplete="off" required></textarea>
                                 <label for="kronologis" class="form-label">Fakta-fakta</label>
                             </div>`
                 $('#kronologi_form').append(krono)
@@ -484,12 +484,12 @@
                 let krono = ''
                 if ($('#tipe_data').val() == 2) {
                     krono += `<div class="form-floating mt-3">
-                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" autocomplete="off" required></textarea>
                                 <label for="catatan" class="form-label">Catatan</label>
                             </div>`
                 } else if ($('#tipe_data').val() == 3) {
                     krono += `<div class="form-floating mt-3">
-                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required></textarea>
+                                <textarea class="form-control border-dark" name="catatan[]" placeholder="CATATAN" id="catatan" value="{{ old('catatan') ? old('catatan') : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" autocomplete="off" required></textarea>
                                 <label for="catatan" class="form-label">Pendapat Pelapor</label>
                             </div>`
                 }

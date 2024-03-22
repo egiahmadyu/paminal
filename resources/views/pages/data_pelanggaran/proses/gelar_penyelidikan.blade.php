@@ -139,7 +139,7 @@
                             TANGGAL PELAKSANAAN GELAR PERKARA
                         </label>
                         <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
-                            aria-describedby="emailHelp" value="{{ isset($tgl_ugp) ? $tgl_ugp : '' }}" readonly>
+                            aria-describedby="emailHelp" value="{{ isset($tgl_ugp) ? $tgl_ugp : '' }}" autocomplete="off" readonly>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -150,7 +150,7 @@
                         <input type="text" class="form-control border-dark"
                             id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
                             value="{{ isset($sp2hp2_akhir) ? Carbon\Carbon::parse($sp2hp2_akhir->created_at)->translatedFormat('d F Y') : '' }}"
-                            readonly>
+                            autocomplete="off" readonly>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -159,7 +159,7 @@
                         <input type="text" class="form-control border-dark" id="pimpinan_gelar"
                             aria-describedby="emailHelp"
                             value="{{ isset($gelar_perkara) ? $pangkat_pimpinan_gelar . ' ' . $gelar_perkara->pimpinan . ' / ' . $gelar_perkara->nrp_pimpinan : '' }}"
-                            readonly>
+                            autocomplete="off" readonly>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -167,7 +167,7 @@
                         <label for="tgl_pembuatan_surat_perintah" class="form-label">PELIMPAHAN</label>
                         <input type="text" class="form-control border-dark"
                             id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
-                            value="{{ isset($limpah_biro) ? $limpah_biro : '' }}" readonly>
+                            value="{{ isset($limpah_biro) ? $limpah_biro : '' }}" autocomplete="off" readonly>
                     </div>
                 </div>
             </div>
@@ -303,8 +303,8 @@
                         <form action="/data-kasus/update" method="post">
                             @csrf
                             <input type="text" class="form-control" value="{{ $kasus->id }}" hidden
-                                name="kasus_id">
-                            <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan"
+                                name="kasus_id" autocomplete="off">
+                            <input type="text" class="form-control" value="6" hidden name="disposisi_tujuan" autocomplete="off"
                                 hidden>
                             <button class="btn btn-success" name="type_submit" {{ $kasus->status_id > 5 ? 'disabled' : '' }} value="update_status">
                                 LANJUTKAN KE LIMPAH
@@ -340,7 +340,7 @@
                                 <div class="form-floating">
                                     <input type="text" name="tanggal_gelar_perkara"
                                         class="form-control border-dark" id="tanggal_gelar_perkara"
-                                        placeholder="TANGGAL GELAR PERKARA" required>
+                                        placeholder="TANGGAL GELAR PERKARA" autocomplete="off" autocomplete="off" required>
                                     <label for="tanggal_gelar_perkara">TANGGAL PELAKSANAAN GELAR PERKARA</label>
                                 </div>
                             </div>
@@ -350,7 +350,7 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating">
                                     <input type="time" name="waktu_gelar_perkara" class="form-control border-dark"
-                                        id="waktu_gelar_perkara" placeholder="WAKTU GELAR PERKARA" required>
+                                        id="waktu_gelar_perkara" placeholder="WAKTU GELAR PERKARA" autocomplete="off" required>
                                     <label for="waktu_gelar_perkara">WAKTU PELAKSANAAN GELAR PERKARA</label>
                                 </div>
                             </div>
@@ -361,7 +361,7 @@
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark"
                                         name="tempat_gelar_perkara" id="tempat_gelar_perkara"
-                                        placeholder="TEMPAT GELAR PERKARA" required>
+                                        placeholder="TEMPAT GELAR PERKARA" autocomplete="off" required>
                                     <label for="tempat_gelar_perkara">TEMPAT PELAKSANAAN GELAR PERKARA</label>
                                 </div>
                             </div>
@@ -411,7 +411,7 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
                                     <input type="text" class="form-control border-dark" name="no_surat"
-                                        placeholder="MASUKAN NO. NOTA DINAS LAPORAN HASIL GELAR PENYELIDIKAN" required>
+                                        placeholder="MASUKAN NO. NOTA DINAS LAPORAN HASIL GELAR PENYELIDIKAN" autocomplete="off" required>
                                     <label for="no_nd_gelar_penyelidikan">NO. NOTA DINAS LAPORAN HASIL GELAR PENYELIDIKAN</label>
                                 </div>
                             </div>
@@ -461,21 +461,21 @@
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
                                     <input type="text" class="form-control border-dark" name="pasal"
-                                        placeholder="MASUKAN PASAL PELANGGARAN" required>
+                                        placeholder="MASUKAN PASAL PELANGGARAN" autocomplete="off" required>
                                     <label for="pasal">MASUKAN PASAL PELANGGARAN</label>
                                 </div>
                             </div>
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
                                     <input type="text" class="form-control border-dark" name="ayat"
-                                        placeholder="MASUKAN AYAT PELANGGARAN" required>
+                                        placeholder="MASUKAN AYAT PELANGGARAN" autocomplete="off" required>
                                     <label for="ayat">MASUKAN AYAT PELANGGARAN</label>
                                 </div>
                             </div>
                             <div class="form-outline mb-3">
                                 <div class="form-floating ">
                                     <textarea class="form-control border-dark" name="bunyi_pasal" id="bunyi_pasal"
-                                        placeholder="MASUKAN BUNYI PASAL PELANGGARAN" style="height: 100px" required></textarea>
+                                        placeholder="MASUKAN BUNYI PASAL PELANGGARAN" style="height: 100px" autocomplete="off" required></textarea>
                                     <label for="bunyi_pasal">MASUKAN BUNYI PASAL PELANGGARAN</label>
                                 </div>
                             </div>

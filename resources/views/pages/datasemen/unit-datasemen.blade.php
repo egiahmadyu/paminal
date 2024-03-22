@@ -57,7 +57,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="nama" placeholder="Nama Unit" required>
+                            <input type="text" class="form-control border-dark" name="nama" placeholder="Nama Unit" autocomplete="off" required>
                             <label for="exampleFormControlInput1" class="form-label">NAMA UNIT</label>
                         </div>
                         <div class="form-floating">
@@ -149,7 +149,7 @@
                     });
 
                     let html = '@csrf<div class="modal-body"><div class="form-floating mb-3">'
-                    html += '<input type="text" class="form-control border-dark" name="nama" placeholder="Nama Unit" value="'+ data.unit.unit +'" required>'
+                    html += '<input type="text" class="form-control border-dark" name="nama" placeholder="Nama Unit" value="'+ data.unit.unit +'" autocomplete="off" required>'
                     
                     html +=   '<label for="exampleFormControlInput1" class="form-label">Nama Unit</label></div><div class="form-floating"><select class="form-select border-dark" aria-label="Default select example" name="datasemen" id="tipe_data" required><option value="">-- Pilih Bag / Detasemen --</option>'
 

@@ -80,21 +80,21 @@
                             <div class="col-lg-3 mb-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark" name="nama[]" id="nama"
-                                        placeholder="Nama" required>
+                                        placeholder="Nama" autocomplete="off" required>
                                     <label for="nama">NAMA</label>
                                 </div>
                             </div>
                             <div class="col-lg-3 mb-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark" name="nrp[]" id="nrp"
-                                        placeholder="NRP" required>
+                                        placeholder="NRP" autocomplete="off" required>
                                     <label for="nrp">NRP</label>
                                 </div>
                             </div>
                             <div class="col-lg-3 mb-3">
                                 <div class="form-floating">
                                     <input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan"
-                                        placeholder="Jabatan">
+                                        placeholder="Jabatan" autocomplete="off" required>
                                     <label for="jabatan">JABATAN</label>
                                 </div>
                             </div>
@@ -161,7 +161,7 @@
                         let html =
                             `<div class="row"><div class="col-lg-3 mb-3"><div class="form-control border-dark"><select class="form-select" data-choices name="pangkat[]" id="pangkat" aria-placeholder="Pangkat" required><option value="">-- PILIH PANGKAT --</option>` +
                             option +
-                            `</select></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nama[]" id="nama" placeholder="NAMA" required><label for="nama">NAMA</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp[]" id="nrp" placeholder="NRP" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="JABATAN"><label for="jabatan">JABATAN</label></div></div></div>`
+                            `</select></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nama[]" id="nama" placeholder="NAMA" autocomplete="off" required><label for="nama">NAMA</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp[]" id="nrp" placeholder="NRP" autocomplete="off" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan[]" id="jabatan" placeholder="JABATAN" autocomplete="off" required><label for="jabatan">JABATAN</label></div></div></div>`
                         $('.modal-body').append(html)
                     },
                     error: function(jqXhr, textStatus, errorMessage) { // error callback
@@ -252,10 +252,10 @@
                     let html = `<div class="row"><div class="col-lg-3 mb-3">` + select +
                         `</div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nama" id="nama" placeholder="Nama" value="` +
                         anggota.nama +
-                        `" required><label for="nama">Nama</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP" value="` +
+                        `" autocomplete="off" required><label for="nama">Nama</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="nrp" id="nrp" placeholder="NRP" value="` +
                         anggota.nrp +
-                        `" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="Jabatan" value="` +
-                        anggota.jabatan + `" required><label for="jabatan">Jabatan</label></div></div></div>`
+                        `" autocomplete="off" required><label for="nrp">NRP</label></div></div><div class="col-lg-3 mb-3"><div class="form-floating"><input type="text" class="form-control border-dark" name="jabatan" id="jabatan" placeholder="Jabatan" value="` +
+                        anggota.jabatan + `" autocomplete="off" required><label for="jabatan">Jabatan</label></div></div></div>`
 
                     $('#edit_anggota').empty()
                     $('#editAnggota').modal('show');

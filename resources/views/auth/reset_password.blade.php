@@ -31,7 +31,7 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="password-input">Password</label>
                                     <div class="position-relative auth-pass-inputgroup">
-                                        <input type="password" class="form-control pe-5 password-input border-dark" onpaste="return false" placeholder="Enter password" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="password" required>
+                                        <input type="password" class="form-control pe-5 password-input border-dark" onpaste="return false" placeholder="Enter password" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="password" autocomplete="off" required>
                                         <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                     </div>
                                     <div id="passwordInput" class="form-text">Password harus berisi 8-20 karakter.</div>

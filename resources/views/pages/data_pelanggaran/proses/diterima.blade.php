@@ -71,7 +71,7 @@
                     <input type="text" class="form-control border-dark" name="jenis_laporan" id="jenis_laporan"
                         placeholder="LANGSUNG/WHATSAPP"
                         value="{{ isset($kasus) ? $kasus->jenis_laporan : (old('jenis_laporan') ? old('jenis_laporan') : '') }}"
-                        disabled>
+                        autocomplete="off" disabled>
                     <div class="invalid-feedback">
                         MOHON ISI JENIS PELAPORAN !
                     </div>
@@ -82,7 +82,7 @@
                     <input type="text" class="form-control border-dark" name="no_nota_dinas" id="no_nota_dinas"
                         placeholder="R/ND-      /WAS.2.4/2023/Bagyanduan"
                         value="{{ isset($kasus) ? $kasus->no_nota_dinas : (old('no_nota_dinas') ? old('no_nota_dinas') : '') }}"
-                        required>
+                        autocomplete="off" required>
                     <div class="invalid-feedback">
                         MOHON ISI NO. NOTA DINAS !
                     </div>
@@ -97,14 +97,14 @@
                             <input class="form-check-input border-dark" type="checkbox" id="disiplin" name="disiplin"
                                 value="1" onchange="disiplinChange(this);"
                                 {{ $kasus->wujud_perbuatan ? ($kasus->wujudPerbuatan->jenis_wp == 'disiplin' ? 'checked' : 'disabled') : (old('disiplin') ? old('disiplin') : '') }}
-                                required>
+                                autocomplete="off" required>
                             <label class="form-check-label" for="disiplin">DISIPLIN</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input border-dark" type="checkbox" id="kode_etik" name="kode_etik"
                                 value="2" onchange="kodeEtikChange(this);"
                                 {{ $kasus->wujud_perbuatan ? ($kasus->wujudPerbuatan->jenis_wp == 'kode etik' ? 'checked' : 'disabled') : (old('kode_etik') ? old('kode_etik') : '') }}
-                                required>
+                                autocomplete="off" required>
                             <label class="form-check-label" for="kode_etik">KODE ETIK</label>
                         </div>
                     </center>
@@ -127,7 +127,7 @@
                         name="tanggal_nota_dinas" class="form-control border-dark" id="datepicker"
                         placeholder="Tanggal Nota Dinas"
                         value="{{ isset($kasus) ? $kasus->tanggal_nota_dinas : (old('tanggal_nota_dinas') ? old('tanggal_nota_dinas') : '') }}"
-                        readonly required>
+                        autocomplete="off" readonly required>
                     <div class="invalid-feedback">
                         MOHON PILIH TANGGAL NOTA DINAS !
                     </div>
@@ -137,7 +137,7 @@
                     <label for="perihal" class="form-label">PERIHAL</label>
                     <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal"
                         value="{{ isset($kasus) ? $kasus->perihal_nota_dinas : (old('perihal') ? old('perihal') : '') }}"
-                        onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px" required>{{ isset($kasus) ? $kasus->perihal_nota_dinas : (old('perihal') ? old('perihal') : '') }}</textarea>
+                        onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px" autocomplete="off" required>{{ isset($kasus) ? $kasus->perihal_nota_dinas : (old('perihal') ? old('perihal') : '') }}</textarea>
                     <div class="invalid-feedback">
                         MOHON ISI PERIHAL ADUAN !
                     </div>
@@ -180,7 +180,7 @@
                             <input type="text" class="form-control border-dark" name="pelapor" id="pelapor"
                                 placeholder="Nama Pelapor" onkeyup="this.value = this.value.replace(/[&*/<>]/g, '')"
                                 value="{{ isset($kasus) ? $kasus->pelapor : (old('pelapor') ? old('pelapor') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NAMA PELAPOR !
                             </div>
@@ -191,7 +191,7 @@
                             <input type="number" class="form-control border-dark" name="umur" id="umur"
                                 placeholder="Umur Pelapor"
                                 value="{{ isset($kasus) ? $kasus->umur : (old('umur') ? old('umur') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI UMUR PELAPOR !
                             </div>
@@ -220,7 +220,7 @@
                             <input type="text" name="pekerjaan" class="form-control border-dark"
                                 placeholder="Pekerjaan Pelapor"
                                 value="{{ isset($kasus) ? $kasus->pekerjaan : (old('pekerjaan') ? old('pekerjaan') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI PEKERJAAN PELAPOR !
                             </div>
@@ -251,7 +251,7 @@
                                 placeholder="contoh : 1234-5678-9012-1234" maxlength="20"
                                 class="form-control border-dark"
                                 value="{{ isset($kasus) ? $kasus->no_identitas : (old('no_identitas') ? old('no_identitas') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NO. IDENTITAS !
                             </div>
@@ -281,7 +281,7 @@
                             <input type="tel" name="no_telp" id="no_telp" maxlength="18"
                                 placeholder="contoh: 0888-1234-9999" class="form-control border-dark"
                                 value="{{ isset($kasus) ? $kasus->no_telp : (old('no_telp') ? old('no_telp') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NO. TELEPON PELAPOR !
                             </div>
@@ -291,7 +291,7 @@
                             <label for="floatingTextarea" class="form-label">ALAMAT LENGKAP</label>
                             <textarea class="form-control border-dark" name="alamat" placeholder="Alamat" id="floatingTextarea"
                                 value="{{ isset($kasus) ? $kasus->alamat : (old('alamat') ? old('alamat') : '') }}"
-                                onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" required>{{ isset($kasus) ? $kasus->alamat : (old('alamat') ? old('alamat') : '') }}</textarea>
+                                onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 160px" autocomplete="off" required>{{ isset($kasus) ? $kasus->alamat : (old('alamat') ? old('alamat') : '') }}</textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI ALAMAT PELAPOR !
                             </div>
@@ -307,7 +307,7 @@
                             <label for="nrp" class="form-label">NRP TERDUGA PELANGGAR</label>
                             <input type="text" class="form-control border-dark" name="nrp" id="nrp"
                                 placeholder="NRP Terduga Pelanggar"
-                                value="{{ isset($kasus) ? $kasus->nrp : (old('nrp') ? old('nrp') : '') }}" required>
+                                value="{{ isset($kasus) ? $kasus->nrp : (old('nrp') ? old('nrp') : '') }}" autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NRP TERDUGA PELANGGAR !
                                 *ISI DEFAULT "0" JIKA NOMOR NRP BELUM DIKETAHUI.
@@ -319,7 +319,7 @@
                             <input type="text" class="form-control border-dark" name="terlapor" id="terlapor"
                                 placeholder="Nama Terduga Pelanggar" onkeyup="this.value = this.value.replace(/[&*/<>]/g, '')"
                                 value="{{ isset($kasus) ? $kasus->terlapor : (old('terlapor') ? old('terlapor') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NAMA TERDUGA PELANGGAR !
                             </div>
@@ -349,7 +349,7 @@
                             <input type="text" class="form-control border-dark" name="jabatan" id="jabatan"
                                 placeholder="Jabatan Terduga Pelanggar"
                                 value="{{ isset($kasus) ? $kasus->jabatan : (old('jabatan') ? old('jabatan') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI JABATAN TERDUGA PELANGGAR !
                             </div>
@@ -360,7 +360,7 @@
                             <input type="text" class="form-control border-dark" name="kesatuan" id="kesatuan"
                                 placeholder="Kesatuan Terduga Pelanggar"
                                 value="{{ isset($kasus) ? $kasus->kesatuan : (old('kesatuan') ? old('kesatuan') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI KESATUAN TERDUGA PELANGGAR !
                             </div>
@@ -390,7 +390,7 @@
                             <input type="text" class="form-control border-dark" name="tempat_kejadian"
                                 id="tempat_kejadian" placeholder="Tempat Kejadian"
                                 value="{{ isset($kasus) ? $kasus->tempat_kejadian : (old('tempat_kejadian') ? old('tempat_kejadian') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI TEMPAT KEJADIAN PELANGGARAN !
                             </div>
@@ -402,7 +402,7 @@
                                 id="datepicker_tgl_kejadian" name="tanggal_kejadian" class="form-control border-dark"
                                 placeholder="BB/HH/TTTT"
                                 value="{{ isset($kasus) ? $kasus->tanggal_kejadian : (old('tanggal_kejadian') ? old('tanggal_kejadian') : '') }}"
-                                readonly required>
+                                autocomplete="off" readonly required>
                             <div class="invalid-feedback">
                                 MOHON PILIH TANGGAL KEJADIAN PELANGGARAN !
                             </div>
@@ -413,7 +413,7 @@
                             <input type="text" class="form-control border-dark" name="nama_korban"
                                 id="nama_korban" placeholder="Nama korban"
                                 value="{{ isset($kasus) ? $kasus->nama_korban : (old('nama_korban') ? old('nama_korban') : '') }}"
-                                required>
+                                autocomplete="off" required>
                             <div class="invalid-feedback">
                                 MOHON ISI NAMA KORBAN !
                             </div>
@@ -423,7 +423,7 @@
                             <label for="kronologis" class="form-label">KRONOLOGIS</label>
                             <textarea class="form-control border-dark" name="kronologis[]" placeholder="Kronologis" id="kronologis"
                                 value="{{ isset($kasus) ? $kasus->kronologi : (old('kronologis') ? old('kronologis')[0] : '') }}"
-                                onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 300px" required>{{ isset($kasus) ? $kasus->kronologi : (old('kronologis') ? old('kronologis')[0] : '') }}</textarea>
+                                onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 300px" autocomplete="off" required>{{ isset($kasus) ? $kasus->kronologi : (old('kronologis') ? old('kronologis')[0] : '') }}</textarea>
                             <div class="invalid-feedback">
                                 MOHON ISI KRONOLOGIS PELANGGARAN !
                             </div>
@@ -650,9 +650,6 @@
         value="{{ isset($disposisi[0]) ? $disposisi[0]['klasifikasi'] : null }}">
     <input type="hidden" name="derajat" value="{{ isset($disposisi[0]) ? $disposisi[0]['derajat'] : null }}">
     <input type="hidden" name="tipe_disposisi" id="tipe_disposisi" value="">
-    {{-- <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Generate</button>
-    </div> --}}
 </form>
 
 <!-- Modal Disposisi Karo/Sesro-->
@@ -673,11 +670,11 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
                             placeholder="NOMOR SURAT" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
-                            disabled>
+                            autocomplete="off" disabled>
                         <label for="nomor_surat" class="form-label">NOMOR SURAT</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda" placeholder="NOMOR AGENDA :" value="{{ isset($disposisi[0]) ? $disposisi[0]->no_agenda : '' }}" {{ isset($disposisi[0]) ? 'readonly' : '' }} required>
+                        <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda" placeholder="NOMOR AGENDA :" value="{{ isset($disposisi[0]) ? $disposisi[0]->no_agenda : '' }}" {{ isset($disposisi[0]) ? 'readonly' : '' }} autocomplete="off" required>
                         <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -714,15 +711,15 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
                             aria-describedby="emailHelp" name="surat_dari" placeholder="Surat dari :"
-                            value="BAGYANDUAN" disabled>
+                            value="BAGYANDUAN" autocomplete="off" disabled>
                         <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="HAL" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="HAL" cols="30" rows="10" style="height: 100px" autocomplete="off" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
                         <label for="perihal" class="form-label">HAL</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISPOSISI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[0] ? $disposisi[0]->isi_disposisi : ''}}</textarea>
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISPOSISI" cols="30" rows="10" style="height: 100px" autocomplete="off" required>{{ $disposisi[0] ? $disposisi[0]->isi_disposisi : ''}}</textarea>
                         <label for="isi_disposisi" class="form-label">ISI DISPOSISI</label>
                     </div>
                     <div class="mb-3">
@@ -762,12 +759,12 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
                             placeholder="NOMOR SURAT" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
-                            disabled>
+                            autocomplete="off" disabled>
                         <label for="nomor_surat" class="form-label">NOMOR SURAT</label>
                     </div>
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" pattern="[0-9]+" class="form-control border-dark" id="nomor_agenda"
-                            aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[1]) ? $disposisi[1]['no_agenda'] : '' }}" {{ isset($disposisi[1]) ? 'disabled' : '' }} required>
+                            aria-describedby="emailHelp" name="nomor_agenda" placeholder="Nomor Agenda :" value="{{ isset($disposisi[1]) ? $disposisi[1]['no_agenda'] : '' }}" {{ isset($disposisi[1]) ? 'disabled' : '' }} autocomplete="off" required>
                         <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -804,7 +801,7 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
                             aria-describedby="emailHelp" name="surat_dari" placeholder="SURAT DARI :"
-                            value="BAGYANDUAN" disabled>
+                            value="BAGYANDUAN" autocomplete="off" disabled>
                         <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -812,7 +809,7 @@
                         <label for="perihal" class="form-label">HAL</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISTRIBUSI" cols="30" rows="10" style="height: 100px" required>{{ $disposisi[1] ? ($disposisi[1]->isi_disposisi ?? '') : ($disposisi[1]->isi_disposisi ?? '')}}</textarea>
+                        <textarea class="form-control border-dark" name="isi_disposisi" id="isi_disposisi" placeholder="ISI DISTRIBUSI" cols="30" rows="10" style="height: 100px" autocomplete="off" required>{{ $disposisi[1] ? ($disposisi[1]->isi_disposisi ?? '') : ($disposisi[1]->isi_disposisi ?? '')}}</textarea>
                         <label for="isi_disposisi" class="form-label">ISI DISTRIBUSI</label>
                     </div>
                     <div class="mb-3">
@@ -851,14 +848,14 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="nomor_surat" name="nomor_surat"
                             placeholder="NOMOR SURAT" value="{{ isset($kasus) ? $kasus->no_nota_dinas : '' }}"
-                            disabled>
+                            autocomplete="off" disabled>
                         <label for="nomor_surat" class="form-label">NOMOR SURAT</label>
                     </div>
                     <div class="form-floating mb-3" id="form_agenda">
                         <input type="number" class="form-control border-dark" id="nomor_agenda" name="nomor_agenda"
                             placeholder="NOMOR AGENDA :"
                             value="{{ isset($disposisi_kadena) ? $disposisi_kadena->no_agenda : '' }}"
-                            {{ isset($disposisi_kadena) ? 'disabled' : '' }} required>
+                            {{ isset($disposisi_kadena) ? 'disabled' : '' }} autocomplete="off" required>
                         <label for="nomor_agenda" class="form-label">NOMOR AGENDA :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -900,12 +897,12 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" id="surat_dari"
                             aria-describedby="emailHelp" name="surat_dari" placeholder="SURAT DARI :"
-                            value="BagYanduan" disabled>
+                            value="BagYanduan" autocomplete="off" disabled>
                         <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="HAL" cols="30" rows="10" style="height: 100px" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
+                        <textarea class="form-control border-dark" name="perihal" id="perihal" placeholder="HAL" cols="30" rows="10" style="height: 100px" autocomplete="off" readonly>{{ isset($kasus) ? $kasus->perihal_nota_dinas : '' }}</textarea>
                         <label for="perihal" class="form-label">HAL</label>
                     </div>
                     <div class="form-floating mb-3">

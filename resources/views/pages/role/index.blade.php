@@ -80,7 +80,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">NAMA ROLE</label>
-                            <input type="text" class="form-control" name="name" required>
+                            <input type="text" class="form-control" name="name" autocomplete="off" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -104,7 +104,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">NAMA ROLE</label>
-                            <input type="text" class="form-control border-dark" name="name" id="editName" required>
+                            <input type="text" class="form-control border-dark" name="name" id="editName" autocomplete="off" required>
                         </div>
                     </div>
                     <div class="modal-footer">

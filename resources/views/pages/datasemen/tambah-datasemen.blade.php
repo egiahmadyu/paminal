@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="col-lg-12 mb-3">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control border-dark" name="nama_datasemen" id="nama_datasemen" placeholder="NAMA BAG/DEN" value="{{ isset($datasemen) ? $datasemen->name : '' }}" required style="text-transform:uppercase">
+                                    <input type="text" class="form-control border-dark" name="nama_datasemen" id="nama_datasemen" placeholder="NAMA BAG/DEN" value="{{ isset($datasemen) ? $datasemen->name : '' }}" required autocomplete="off" style="text-transform:uppercase">
                                     <label for="name">NAMA BAG/DEN</label>
                                 </div>
                             </div>

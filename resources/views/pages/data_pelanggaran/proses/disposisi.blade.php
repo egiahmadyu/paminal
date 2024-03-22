@@ -22,7 +22,7 @@
         <form action="{{ route('kasus.update.status') }}" method="post">
             @csrf
             <input type="text" class="form-control" id="kasus_id" name="data_pelanggar_id"
-                value="{{ $kasus->id }}" hidden>
+                value="{{ $kasus->id }}" autocomplete="off" hidden>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Disposisi</label>
                 <select class="form-select" aria-label="Default select example" name="disposisi_tujuan"

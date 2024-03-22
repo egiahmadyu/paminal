@@ -128,7 +128,7 @@
                             <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                                 aria-describedby="emailHelp"
                                 value="{{ !empty($sprin) ? date('d-m-Y H:i', strtotime($sprin->created_at)) . ' WIB' : '' }}"
-                                readonly>
+                                autocomplete="off" readonly>
                         </div>
                         @can('edit-pulbaket')
                             @if (!empty($sprin))
@@ -159,7 +159,7 @@
                             <label for="exampleInputEmail1" class="form-label">TANGGAL PEMBUATAN UUK</label>
                             <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                 value="{{ !empty($uuk) ? date('d-m-Y H:i', strtotime($uuk->created_at)) : '' }}"
-                                readonly aria-describedby="emailHelp">
+                                readonly autocomplete="off" aria-describedby="emailHelp">
                         </div>
                         @can('edit-pulbaket')
                             <a type="button" class="text-info" onclick="printUUK({{$kasus->id}})">
@@ -176,7 +176,7 @@
                                 <input type="text" class="form-control border-dark" id="exampleInputEmail1"
                                     aria-describedby="emailHelp"
                                     value="{{ !empty($sp2hp_awal) ? date('d-m-Y H:i', strtotime($sp2hp_awal->created_at)) : '' }}"
-                                    readonly>
+                                    autocomplete="off" readonly>
                             </div>
                             @can('edit-pulbaket')
                                 @if (!empty($sp2hp_awal))
@@ -221,7 +221,7 @@
                     <!-- Input no SPRIN -->
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" name="no_sprin"
-                            placeholder="No. SPRIN" required>
+                            placeholder="NO. SPRIN" autocomplete="off" required>
                         <label for="no_sprin">NO. SPRIN </label>
                         @if ($errors->has('no_sprin'))
                             <div class="invalid-feedback">{{ $errors->first('no_sprin') }}</div>
@@ -230,7 +230,7 @@
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control border-dark" name="masa_berlaku_sprin" id="masa_berlaku_sprin"
-                            placeholder="Masa Berlaku SPRIN" required>
+                            placeholder="MASA BERLAKU SPRIN" autocomplete="off" required>
                         <label for="masa_berlaku_sprin">MASA BERLAKU SPRIN </label>
                     </div>
 
@@ -289,19 +289,19 @@
                 <form class="form-control" action="/surat-uuk/{{ $kasus->id }}">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">NAMA</label>
-                        <input type="text" class="form-control" name="nama" aria-describedby="emailHelp">
+                        <input type="text" class="form-control" name="nama" aria-describedby="emailHelp" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">PANGKAT</label>
-                        <input type="text" class="form-control" name="pangkat">
+                        <input type="text" class="form-control" name="pangkat" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">NRP</label>
-                        <input type="text" class="form-control" name="nrp">
+                        <input type="text" class="form-control" name="nrp" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">NOMOR TELEPON</label>
-                        <input type="text" class="form-control" name="jabatan">
+                        <input type="text" class="form-control" name="jabatan" autocomplete="off">
                     </div>
 
                     <button type="submit" class="btn btn-primary">BUAT SURAT</button>
@@ -327,26 +327,26 @@
                 <form action="/surat-sp2hp2-awal/{{ $kasus->id }}">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="penangan" aria-describedby="emailHelp"
-                            placeholder="Unit yang Menangani" value="{{ isset($unit) ? $unit : ''}}" required>
+                            placeholder="Unit yang Menangani" value="{{ isset($unit) ? $unit : ''}}" autocomplete="off" required>
                         <label for="exampleInputEmail1" class="form-label">UNIT YANG MENANGANI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="pangkat_dihubungi"
-                            placeholder="Pangkat yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->pangkat : ''}}" required>
+                            placeholder="Pangkat yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->pangkat : ''}}" autocomplete="off" required>
                         <label for="exampleInputPassword1" class="form-label">PANGKAT YANG DIHUBUNGI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="dihubungi"
-                            placeholder="Nama yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->name : ''}}" required>
+                            placeholder="Nama yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->name : ''}}" autocomplete="off" required>
                         <label for="exampleInputPassword1" class="form-label">NAMA YANG DIHUBUNGI</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="jabatan_dihubungi"
-                            placeholder="Jabatan yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->jabatan : ''}}" required>
+                            placeholder="Jabatan yang dihubungi" value="{{ isset($penyidik) ? $penyidik[2]->jabatan : ''}}" autocomplete="off" required>
                         <label for="exampleInputPassword1" class="form-label">JABATAN YANG DIHUBUNGI</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="telp_dihubungi" placeholder="No. Telepon yang dihubungi" required>
+                        <input type="text" class="form-control" name="telp_dihubungi" placeholder="No. Telepon yang dihubungi" autocomplete="off" required>
                         <label for="telp_dihubungi" class="form-label">NO. TELEPON YANG DIHUBUNGI</label>
                     </div>
 
@@ -386,7 +386,7 @@
                     <div class="row mb-3">
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="MASUKAN NO. SURAT UNDANGAN" required>
+                                <input type="text" class="form-control border-dark" name="no_surat_undangan" placeholder="MASUKAN NO. SURAT UNDANGAN" autocomplete="off" required>
                                 <label for="no_surat_undangan">NO. SURAT UNDANGAN</label>
                                 @if ($errors->has('no_surat_undangan'))
                                     <div class="invalid-feedback">{{ $errors->first('no_surat_undangan') }}</div>
@@ -398,14 +398,14 @@
                         </div>
                         <div class="col-lg-12 mb-3">
                             <div class="form-floating">
-                                <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="TANGGAL KLARIFIKASI" required>
+                                <input type="text" name="tgl_klarifikasi" class="form-control border-dark" id="tgl_klarifikasi" placeholder="TANGGAL KLARIFIKASI" autocomplete="off" required>
                                 <label for="tgl_klarifikasi">TANGGAL KLARIFIKASI</label>
                             </div>
                         </div>
                         <div class="col-lg-12 mb-3">
                             <div class="form-outline">
                                 <div class="form-floating">
-                                    <input type="time" data-provider="timepickr" data-time-basic="true" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="WAKTU KLARIFIKASI" required>
+                                    <input type="time" data-provider="timepickr" data-time-basic="true" name="waktu_klarifikasi" class="form-control border-dark" id="waktu_klarifikasi" placeholder="WAKTU KLARIFIKASI" autocomplete="off" required>
                                     <label for="waktu_klarifikasi">WAKTU KLARIFIKASI</label>
                                 </div>
                             </div>
@@ -439,7 +439,7 @@
                         <div class="mb-3">
                             <label for="nama_saksi" class="form-label">NAMA SAKSI</label>
                             <input type="text" class="form-control border-dark inputNamaSaksi" name="nama"
-                                aria-describedby="emailHelp" placeholder="MASUKAN NAMA SAKSI" required>
+                                aria-describedby="emailHelp" placeholder="MASUKAN NAMA SAKSI" autocomplete="off" required>
                         </div>
                         <div class="invalid-feedback">
                             MOHON ISI NAMA SAKSI !
@@ -461,14 +461,14 @@
                     </div>
                     <div class="form-outline mb-3">
                         <label for="floatingTextarea" class="form-label">ALAMAT LENGKAP</label>
-                        <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" style="height: 160px" required></textarea>
+                        <textarea class="form-control border-dark" name="alamat" placeholder="ALAMAT" id="floatingTextarea" value="{{ old('alamat') ? old('alamat') : '' }}" style="height: 160px" autocomplete="off" required></textarea>
                         <div class="invalid-feedback">
                             MOHON ISI ALAMAT PELAPOR !
                         </div>
                     </div>
                     <div class="form-outline mb-3">
                         <label for="no_telp" class="form-label">NO. TELEPON</label>
-                        <input type="text" name="no_telp" maxlength="15" id="no_telp" placeholder="contoh: 0888-1234-9999" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" required>
+                        <input type="text" name="no_telp" maxlength="15" id="no_telp" placeholder="contoh: 0888-1234-9999" class="form-control border-dark" value="{{ old('no_telp') ? old('no_telp') : '' }}" autocomplete="off" required>
                         <div class="invalid-feedback">
                             MOHON ISI NO. TELEPON PELAPOR !
                         </div>
@@ -496,13 +496,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi" placeholder="TANGGAL INTEROGASI" required>
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi" placeholder="TANGGAL INTEROGASI" autocomplete="off" required>
                             <label for="tanggal_introgasi">TANGGAL INTEROGASI</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="WAKTU INTEROGASI" required>
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="WAKTU INTEROGASI" autocomplete="off" required>
                             <label for="waktu_introgasi">WAKTU INTEROGASI</label>
                         </div>
                     </div>
@@ -528,13 +528,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi_terlapor" placeholder="TANGGAL INTEROGASI" required>
+                            <input type="text" name="tanggal_introgasi" class="form-control border-dark" id="tanggal_introgasi_terlapor" placeholder="TANGGAL INTEROGASI" autocomplete="off" required>
                             <label for="tanggal_introgasi_terlapor">TANGGAL INTEROGASI</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="WAKTU INTEROGASI" required>
+                            <input type="text" name="waktu_introgasi" class="form-control border-dark" id="waktu_introgasi" placeholder="WAKTU INTEROGASI" autocomplete="off" required>
                             <label for="waktu_introgasi">WAKTU INTEROGASI</label>
                         </div>
                     </div>
@@ -563,7 +563,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <input type="text" class="form-control" name="no_surat"
-                                placeholder="MASUKAN NO. NOTA DINAS PERMOHONAN GELAR" required>
+                                placeholder="MASUKAN NO. NOTA DINAS PERMOHONAN GELAR" autocomplete="off" required>
                         </div>
                     </div>
                     <div>
@@ -715,13 +715,11 @@
         let inHtml =
             `<div class="mb-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control border-dark inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi" required>
+                    <input type="text" class="form-control border-dark inputNamaSaksi" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama Saksi" autocomplete="off" required>
                     <label for="no_nota_dinas" class="form-label">Nama Saksi</label>
                 </div>
             </div>`;
-        // let inHtml = '<input type="text" class="form-control" name="nama_saksi[]" aria-describedby="emailHelp" placeholder="Enter Nama ">';
         $('#form_tambah_saksi').append(inHtml);
-        // $('#form_tambah_saksi .inputNamaSaksi:last').before(inHtml);
     }
 
     function tambahAnggota() {
@@ -729,28 +727,28 @@
             `<div class="row mb-3">
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control border-dark" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyelidik" required>
+                    <input type="text" class="form-control border-dark" name="pangkat_anggota[]" id="pangkat" placeholder="Pangkat Penyelidik" autocomplete="off" required>
                     <label for="pangkat_anggota" class="form-label">Pangkat Penyelidik</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control border-dark" name="nama_penyelidik_anggota[]" id="nama_penyidik" placeholder="Nama Penyelidik" required>
+                    <input type="text" class="form-control border-dark" name="nama_penyelidik_anggota[]" id="nama_penyidik" placeholder="Nama Penyelidik" autocomplete="off" required>
                     <label for="nama_penyelidik_anggota" class="form-label">Nama Penyelidik</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control border-dark" name="nrp_anggota[]" id="nrp" placeholder="NRP" required>
+                    <input type="text" class="form-control border-dark" name="nrp_anggota[]" id="nrp" placeholder="NRP" autocomplete="off" required>
                     <label for="nrp_anggota" class="form-label">NRP</label>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control border-dark" name="jabatan_anggota[]" id="jabatan" placeholder="Jabatan Penyelidik" required>
+                    <input type="text" class="form-control border-dark" name="jabatan_anggota[]" id="jabatan" placeholder="Jabatan Penyelidik" autocomplete="off" required>
                     <label for="jabatan_anggota" class="form-label">Jabatan Penyelidik</label>
                 </div>
             </div>

@@ -4,12 +4,6 @@
             <div>
                 <button type="button" class="btn btn-warning" onclick="getViewProcess(1)"><i class="far fa-arrow-left"></i> SEBELUMNYA</button>
             </div>
-
-            {{-- <div>
-                @if ($kasus->status_id > 2)
-                    <button type="button" class="btn btn-info" onclick="getViewProcess(3)">Selanjutnya</button>
-                @endif
-            </div> --}}
         </div>
     </div>
     <div class="row">
@@ -53,18 +47,16 @@
                                 @endforeach
                             @endif
                         </select>
-                        {{-- <input type="text" class="form-control border-dark" id="polda_limpah" name="polda_id" value="{{ $limpahPolda->polda->name }}"> --}}
                     </div>
                     <div class="col-lg-4 mb-4">
                         <label for="exampleInputEmail1" class="form-label">TANGGAL LIMPAH</label>
-                        {{-- <input type="text" class="form-control border-dark" name="tgl_limpah" value="{{ $tgl_limpah }}"> --}}
                         <input type="text" name="tgl_limpah" class="form-control border-dark" data-provider="flatpickr" data-date-format="Y-m-d" id="datepicker" placeholder="Y-m-d"
-                        value="{{ isset($limpahPolda) ? $limpahPolda->tanggal_limpah : '' }}"
+                        value="{{ isset($limpahPolda) ? $limpahPolda->tanggal_limpah : '' }}" autocomplete="off"
                         readonly required>
                     </div>
                     <div class="col-lg-4 mb-4">
                         <label for="exampleInputEmail1" class="form-label">PELIMPAH</label>
-                        <input type="text" class="form-control border-dark" value="{{ $limpahPolda->user->name }}" disabled>
+                        <input type="text" class="form-control border-dark" value="{{ $limpahPolda->user->name }}" autocomplete="off" disabled>
                     </div>
                     <div class="col-lg-12 mb-4">
                         <label for="exampleInputEmail1" class="form-label">HASIL TINDAK LANJUT</label>
@@ -77,26 +69,13 @@
                     </div>
                     <div class="col-lg-12 mb-4">
                         <label for="exampleInputEmail1" class="form-label">CATATAN</label>
-                        <textarea class="form-control border-dark" name="catatan" placeholder="Catatan" id="catatan" value="{{ isset($limpahPolda) ? ($limpahPolda->catatan ? '' : '' ) : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" style="height: 150px">{{ isset($limpahPolda) ? ($limpahPolda->catatan ? $limpahPolda->catatan : '' ) : '' }}</textarea>
+                        <textarea class="form-control border-dark" name="catatan" placeholder="Catatan" id="catatan" value="{{ isset($limpahPolda) ? ($limpahPolda->catatan ? '' : '' ) : '' }}" onkeyup="this.value = this.value.replace(/[&*<>]/g, '')" autocomplete="off" style="height: 150px">{{ isset($limpahPolda) ? ($limpahPolda->catatan ? $limpahPolda->catatan : '' ) : '' }}</textarea>
                     </div>
                     <div class="col-lg-12 mb-4">
                         <a href="/surat-limpah-polda/{{ $kasus->id }}" type="button" class="btn btn-outline-success">BUAT SURAT LIMPAH KE {{ $limpahPolda->polda->name }}</a>
-                        {{-- <a href="/penagihan-tinjut-polda/{{ $limpahPolda->polda_id }}" type="button" class="btn btn-outline-info">PENAGIHAN TINJUT {{ $limpahPolda->polda->name }}</a> --}}
                         <button type="submit" class="btn btn-outline-warning">UPDATE DATA</button>
                     </div>
                 </div>
-
-                {{-- <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div class="title">
-                            <h3>Isi Surat Limpah</h3>
-                        </div>
-                        <div class="container">
-                            <textarea name="ticketDesc" id="myTextarea" cols="30" rows="10">{{ $limpahPolda->isi_surat }}</textarea>
-                        </div>
-                    </div>
-                    
-                </div> --}}
             </div>
         </form>
     </div>

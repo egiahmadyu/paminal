@@ -154,69 +154,69 @@
                         @csrf
                         <input type="hidden" name="filter" value="1">
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="disposisi-bagden" id="disposisi-bagden">
+                            <input class="form-check-input" type="checkbox" value="disposisi-bagden" id="disposisi-bagden" autocomplete="off">
                             <label class="form-check-label" for="disposisi-bagden">
                               DISTRIBUSI BAG / DEN
                             </label>
                         </div>
                         
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="disposisi-unit" id="disposisi-unit" name="disposisi-unit">
+                            <input class="form-check-input" type="checkbox" value="disposisi-unit" id="disposisi-unit" name="disposisi-unit" autocomplete="off">
                             <label class="form-check-label" for="disposisi-unit">
                               DISPOSISI UNIT
                             </label>
                         </div>
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="diterima" id="diterima" name="diterima">
+                            <input class="form-check-input" type="checkbox" value="diterima" id="diterima" name="diterima" autocomplete="off">
                             <label class="form-check-label" for="diterima">
                               DITERIMA
                             </label>
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="diproses" id="diproses" name="diproses">
+                            <input class="form-check-input" type="checkbox" value="diproses" id="diproses" name="diproses" autocomplete="off">
                             <label class="form-check-label" for="diproses">
                               DIPROSES
                             </label>
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="selesai" id="selesai" name="selesai">
+                            <input class="form-check-input" type="checkbox" value="selesai" id="selesai" name="selesai" autocomplete="off">
                             <label class="form-check-label" for="selesai">
                               SELESAI
                             </label>
                         </div>
                         
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="selesai-tidak-benar" id="selesai-tidak-benar" name="selesai-tidak-benar">
+                            <input class="form-check-input" type="checkbox" value="selesai-tidak-benar" id="selesai-tidak-benar" name="selesai-tidak-benar" autocomplete="off">
                             <label class="form-check-label" for="selesai-tidak-benar">
                               SELESAI TIDAK BENAR
                             </label>
                         </div>
                         
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="rj" id="rj" name="rj">
+                            <input class="form-check-input" type="checkbox" value="rj" id="rj" name="rj" autocomplete="off">
                             <label class="form-check-label" for="rj">
                               RESTORATIVE JUSTICE
                             </label>
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="limpah-biro" id="limpah-biro" name="limpah-biro">
+                            <input class="form-check-input" type="checkbox" value="limpah-biro" id="limpah-biro" name="limpah-biro" autocomplete="off">
                             <label class="form-check-label" for="limpah-biro">
                               LIMPAH BIRO
                             </label>
                         </div>
                         
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="limpah-polda" id="limpah-polda" name="limpah-polda">
+                            <input class="form-check-input" type="checkbox" value="limpah-polda" id="limpah-polda" name="limpah-polda" autocomplete="off">
                             <label class="form-check-label" for="limpah-polda">
                               LIMPAH POLDA
                             </label>
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="diproses-polda" id="diproses-polda" name="diproses-polda">
+                            <input class="form-check-input" type="checkbox" value="diproses-polda" id="diproses-polda" name="diproses-polda" autocomplete="off">
                             <label class="form-check-label" for="diproses-polda">
                               DIPROSES POLDA
                             </label>

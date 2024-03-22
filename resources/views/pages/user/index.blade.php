@@ -71,11 +71,11 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name" class="form-label">NAME</label>
-                            <input type="text" class="form-control" name="name" id="name" required>
+                            <input type="text" class="form-control" name="name" id="name" autocomplete="off" required>
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">USERNAME</label>
-                            <input type="text" class="form-control" name="username" id="username" required>
+                            <input type="text" class="form-control" name="username" id="username"  autocomplete="off" required>
                         </div>
                         <div class="mb-3">
                             <label for="datasemen" class="form-label">BAG / DEN</label>
@@ -97,7 +97,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="jabatan" class="form-label">JABATAN</label>
-                            <input type="text" class="form-control" name="jabatan" id="jabatan">
+                            <input type="text" class="form-control" name="jabatan" id="jabatan" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">ROLE</label>

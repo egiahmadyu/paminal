@@ -53,11 +53,11 @@
                     @csrf
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="name" placeholder="NAMA PERMISSION" required>
+                            <input type="text" class="form-control border-dark" name="name" placeholder="NAMA PERMISSION" autocomplete="off" required>
                             <label for="exampleFormControlInput1" class="form-label">NAMA PERMISSION</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="GUARD NAME" disabled required>
+                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="GUARD NAME" autocomplete="off" disabled required>
                             <label for="exampleFormControlInput1" class="form-label">GUARD NAME</label>
                         </div>
                     </div>
@@ -82,11 +82,11 @@
                     @csrf
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="name" placeholder="NAMA PERMISSION" required>
+                            <input type="text" class="form-control border-dark" name="name" placeholder="NAMA PERMISSION" autocomplete="off" required>
                             <label for="exampleFormControlInput1" class="form-label">NAMA PERMISSION</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="GUARD NAME" disabled required>
+                            <input type="text" class="form-control border-dark" name="guard_name" value="web" placeholder="GUARD NAME" autocomplete="off" disabled required>
                             <label for="exampleFormControlInput1" class="form-label">GUARD NAME</label>
                         </div>
                     </div>

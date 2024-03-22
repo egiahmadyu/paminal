@@ -140,7 +140,7 @@
                 <input type="hidden" name="tipe_data" value="{{ $kasus->tipe_data }}">
                 <div class="modal-body">
                     <div class="form-floating mb-3" id="form_agenda">
-                        <input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="NOMOR :" value="{{ !is_null($disposisi[2]['no_agenda']) ? $disposisi[2]['no_agenda'] : '' }}" {{ !is_null($disposisi[2]['no_agenda']) ? 'readonly' : '' }} required>
+                        <input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp" name="nomor_agenda" placeholder="NOMOR :" value="{{ !is_null($disposisi[2]['no_agenda']) ? $disposisi[2]['no_agenda'] : '' }}" {{ !is_null($disposisi[2]['no_agenda']) ? 'readonly' : '' }} autocomplete="off" required>
                         <label for="nomor_agenda" class="form-label">NOMOR :</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -157,11 +157,11 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control border-dark" id="surat_dari" aria-describedby="emailHelp" name="surat_dari" placeholder="SURAT DARI :" value="{{ $den_bag_pemohon->name }}" disabled>
+                        <input type="text" class="form-control border-dark" id="surat_dari" aria-describedby="emailHelp" name="surat_dari" placeholder="SURAT DARI :" value="{{ $den_bag_pemohon->name }}" autocomplete="off" disabled>
                         <label for="surat_dari" class="form-label">SURAT DARI :</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ $kasus->tipe_data == 2 ? 'INFO KHUSUS' : 'LAPORAN INFORMASI' }}" style="height: 70px" disabled required>{{ $kasus->tipe_data == 2 ? 'INFO KHUSUS' : 'LAPORAN INFORMASI' }}</textarea>
+                        <textarea class="form-control border-dark" name="perihal" placeholder="Perihal" id="perihal" value="{{ $kasus->tipe_data == 2 ? 'INFO KHUSUS' : 'LAPORAN INFORMASI' }}" style="height: 70px" autocomplete="off" disabled required>{{ $kasus->tipe_data == 2 ? 'INFO KHUSUS' : 'LAPORAN INFORMASI' }}</textarea>
                         <label for="perihal" class="form-label">Perihal</label>
                     </div>
                     <input type="number" value="3" hidden name="tipe_disposisi">
@@ -208,7 +208,7 @@
                 let no_agenda = `{{ isset($disposisi[2]) ? $disposisi[2]['no_agenda'] : ''}}`;
                 
                 let htmlNoAgenda = `<input type="text" class="form-control border-dark" id="nomor_agenda" aria-describedby="emailHelp"
-                                name="nomor_agenda" placeholder="NOMOR SURAT :" value="` + no_agenda + `" `+disabled+` required>
+                                name="nomor_agenda" placeholder="NOMOR SURAT :" value="` + no_agenda + `" `+disabled+` autocomplete="off" required>
                             <label for="nomor_agenda" class="form-label">NOMOR SURAT :</label>`;
 
                 $('#form_agenda').html(htmlNoAgenda);

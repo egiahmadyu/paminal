@@ -9,7 +9,7 @@
                     <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                         aria-describedby="emailHelp"
                         value="{{ isset($bai_pelapor) ? Carbon\Carbon::parse($bai_pelapor->created_at)->translatedFormat('d-m-Y') : '' }}"
-                        readonly>
+                        autocomplete="off" readonly>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -18,7 +18,7 @@
                     <input type="text" class="form-control border-dark" id="tgl_pembuatan_surat_perintah"
                         aria-describedby="emailHelp"
                         value="{{ isset($bai_terlapor) ? Carbon\Carbon::parse($bai_terlapor->created_at)->translatedFormat('d-m-Y') : '' }}"
-                        readonly>
+                        autocomplete="off" readonly>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -27,7 +27,7 @@
                     <input type="text" class="form-control border-dark"
                         id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
                         value="{{ isset($nd_pgp) ? Carbon\Carbon::parse($nd_pgp->created_at)->translatedFormat('d-m-Y') : '' }}"
-                        readonly>
+                        autocomplete="off" readonly>
                 </div>
             </div>
             <div class="col-lg-12">
@@ -36,7 +36,7 @@
                     <input type="text" class="form-control border-dark"
                         id="tgl_pembuatan_surat_perintah"aria-describedby="emailHelp"
                         value="{{ isset($lhp) ? ($lhp->hasil_penyelidikan == 1 ? 'DITEMUKAN CUKUP BUKTI' : 'BELUM DITEMUKAN CUKUP BUKTI') : '' }}"
-                        readonly>
+                        autocomplete="off" readonly>
                 </div>
             </div>
         </div>
