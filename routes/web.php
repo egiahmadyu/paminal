@@ -27,19 +27,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('partials.master');
-// });
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/pdf-test', [LimpahPoldaController::class, 'generateDocumen']);
-// Route::get('/lembar-disposisi', [LimpahPoldaController::class, 'generateDisposisi']);
+Route::get('/login', [AuthController::class, 'index'])->name('reset.password')->name('login');
 Route::post('login', [AuthController::class, 'loginAction'])->name('login-action');
-Route::get('reset-password/{user_id?}', [AuthController::class, 'resetPassword'])->name('reset.password');
 Route::post('reset', [AuthController::class, 'storeReset'])->name('reset.action');
+Route::get('reset-password/{user_id?}', [AuthController::class, 'resetPassword'])->name('reset.password');
+// Route::get('/pdf-test', [LimpahPoldaController::class, 'generateDocumen']);
 
 
 Route::middleware(['auth'])->group(function () {
@@ -161,12 +153,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan-hasil-limpah-biro/{id}', [ProvostWabprofController::class, 'printLimpahBiro']);
 
     Route::post('/limpah-biro/{id}', [ProvostWabprofController::class, 'simpanData']);
-
-
-
-
-    // Route::group(['middleware' => ['role:super-admin']], function () {
-    //     Route::get('/user',[UserController::class, 'index'])->name('user-index');
-    //     Route::get('/role',[RoleController::class, 'index'])->name('role-index');
-    // });
 });

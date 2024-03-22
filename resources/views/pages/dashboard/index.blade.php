@@ -16,20 +16,11 @@
             height: 550px;
             #ffffff
         }
-
-        /* #chartdiv, #chartDonat, #chartBubble {
-            
-        } */
     </style>
 @endprepend
 
 
 @section('content')
-    {{-- <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item active"><a href="/">DASHBOARD</a></li>
-        </ol>
-    </nav> --}}
 
     <div style="width: 100%">
         
@@ -48,7 +39,6 @@
                 <div class="icon">
                     <i class="far fa-gavel f-left" aria-hidden="true"></i>
                 </div>
-                {{-- <a href="/data-kasus" class="card-box-footer"><h6 style="color: white">Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i></h6></a> --}}
             </div>
         </div>
         
@@ -61,7 +51,6 @@
                 <div class="icon">
                     <i class="far fa-sync-alt fa-spin" aria-hidden="true"></i>
                 </div>
-                {{-- <a href="/data-kasus" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a> --}}
             </div>
         </div>
 
@@ -74,7 +63,6 @@
                 <div class="icon">
                     <i class="far fa-landmark"></i>
                 </div>
-                {{-- <a href="#" class="card-box-footer"> <h6 style="color: white"> Lihat Selengkapnya <i class="fa fa-arrow-circle-right"></i> </h6></a> --}}
             </div>
         </div>
     </div>
@@ -193,10 +181,6 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    {{-- <select class="form-select mb-4" id="rekap_dumas" select-one>
-                        <option value="q">Triwulan</option>
-                        <option value="s">Semester</option>
-                    </select> --}}
                     <div class="row">
                         <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12">
                             <div class="flex-grow-1">
@@ -310,7 +294,6 @@
     <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    {{-- <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Resources -->

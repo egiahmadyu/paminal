@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
     
     <style>
         [data-layout-mode=light] .page-content {
@@ -378,27 +379,19 @@
 <body>
 
     <div class="loading" style="display: none">Loading&#8230;</div>
+    @if (!isset($login))
     <div id="layout-wrapper">
+        
+
         <div class="top-tagbar">
             <div class="w-100">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-md-4 col-9">
                         <div class="text-white-50 fs-13">
                             <i class="bi bi-clock align-middle me-2"></i>
-                            {{-- <span id="current-time"></span> --}}
                             <span id="waktu-saat-ini"></span>
                         </div>
                     </div>
-                    {{-- <div class="col-md-4 col-6 d-none d-lg-block">
-                        <div class="d-flex align-items-center justify-content-center gap-3 fs-13 text-white-50">
-                            <div>
-                                <i class="bi bi-envelope align-middle me-2"></i> support@themesbrand.com
-                            </div>
-                            <div>
-                                <i class="bi bi-globe align-middle me-2"></i> www.themesbrand.com
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
         </div>
@@ -428,15 +421,7 @@
                 </div>
             </div>
         </div>
-
-        {{-- <div class="customizer-setting d-none d-md-block">
-            <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
-                data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-                <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
-            </div>
-        </div> --}}
-
-
+        
         <!-- Theme Settings -->
         @include('partials.theme')
 
@@ -572,10 +557,148 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
-          </script>
+        </script>
 
     </div>
+    
+    @else
+        @yield('content')
+        @include('partials.javascript')
 
+        @include('partials.javascript')
+        <script>
+            let a;
+            let date;
+            setInterval(() => {
+                a = new Date();
+                date = getDaysName() +', '+a.getDate() + ' ' + getMonthName(a.getMonth()) + ' ' +a.getFullYear() + ' | ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds()  + ' WIB'
+                document.getElementById('waktu-saat-ini').innerHTML = date;
+            }, 1000);
+
+            function getMonthName(monthNumber) {
+                const date = new Date();
+                date.setMonth(monthNumber);
+
+                return date.toLocaleString('id-ID', {
+                    month: 'long',
+                });
+            }
+
+            function getDaysName() {
+                const weekday = ["Minggu","Senin","Selasa","Rabu","Kamis","Jum'at","Sabtu"];
+
+                const d = new Date();
+                let day = weekday[d.getDay()];
+
+                return day
+            }
+
+            const flatPickrList = [].slice.call(document.querySelectorAll('.flatpickr-validation'))
+            // Flat pickr
+            if (flatPickrList) {
+                flatPickrList.forEach(flatPickr => {
+                    flatPickr.flatpickr({
+                        allowInput: true,
+                        monthSelectorType: 'static'
+                    });
+                });
+            }
+
+            $("#import_data").submit(function(event){
+                event.preventDefault();
+                $('.loading').css('display', 'block')
+                var form = $('#import_data').serialize()
+                $.ajax('/api/yanduan', {
+                    type: 'POST',  // http method
+                    data: form,
+                    dataType: 'json', // type of response data
+                    success: function (data,status,xhr) {   // success callback function
+                        if(data.status == 200) {
+                            $('#modal_import_yanduan').modal('hide')
+                            $('.loading').css('display', 'none')
+                            Swal.fire({
+                                title: 'BERHASIL !',
+                                text: data.total_import + ' Data berhasil ditambahkan',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload()
+                                }
+                            })
+                        }
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) { // error callback
+                        $('p').append('Error: ' + errorMessage);
+                    }
+                });
+            });
+            
+        </script>
+
+        @yield('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("logout").on('click',function(){
+                    $('.loading').css('display', 'block')
+                });
+            });
+
+            @if(Session::has('message'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.success("{{ session('message') }}");
+            @endif
+
+            @if(Session::has('error'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.error("{{ session('error') }}");
+            @endif
+
+            @if(Session::has('info'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.info("{{ session('info') }}");
+            @endif
+
+            @if(Session::has('warning'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.warning("{{ session('warning') }}");
+            @endif
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "700",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        </script>
+    @endif
 </body>
 
 </html>

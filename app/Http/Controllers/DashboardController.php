@@ -86,25 +86,35 @@ class DashboardController extends Controller
 
     public function getLimpahDen($tipe)
     {
-        if ($tipe == 'POLDA') {
-            $result = DataPelanggar::join('limpah_poldas', 'limpah_poldas.data_pelanggar_id', '=', 'data_pelanggars.id')->count();
-        } else {
-            $den = Datasemen::where('name', $tipe)->first();
-            $result = DataPelanggar::join('disposisi_histories', 'disposisi_histories.data_pelanggar_id', '=', 'data_pelanggars.id')
-                ->where('disposisi_histories.tipe_disposisi', '=', 3)
-                ->where('disposisi_histories.limpah_den', '=', $den->id)
-                ->count();
-        }
+        try {
+            //code...
+            if ($tipe == 'POLDA') {
+                $result = DataPelanggar::join('limpah_poldas', 'limpah_poldas.data_pelanggar_id', '=', 'data_pelanggars.id')->count();
+            } else {
+                $den = Datasemen::where('name', $tipe)->first();
+                $result = DataPelanggar::join('disposisi_histories', 'disposisi_histories.data_pelanggar_id', '=', 'data_pelanggars.id')
+                    ->where('disposisi_histories.tipe_disposisi', '=', 3)
+                    ->where('disposisi_histories.limpah_den', '=', $den->id)
+                    ->count();
+            }
 
-        return $result;
+            return $result;
+        } catch (\Throwable $e) {
+            return $e->getMessage();
+        }
     }
 
     public function getLimpahPolda($tipe)
     {
-        $result = DataPelanggar::join('limpah_poldas as lp', 'lp.data_pelanggar_id', '=', 'data_pelanggars.id')
-            ->where('lp.polda_id', '=', $tipe)
-            ->count();
-        return $result;
+        try {
+            //code...
+            $result = DataPelanggar::join('limpah_poldas as lp', 'lp.data_pelanggar_id', '=', 'data_pelanggars.id')
+                ->where('lp.polda_id', '=', $tipe)
+                ->count();
+            return $result;
+        } catch (\Throwable $e) {
+            return $e->getMessage();
+        }
     }
 
     public function getStatusDumas($tipe)

@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+  public function index()
+  {
+    $data = [
+      'login' => true,
+      'title' => 'SIGN IN'
+    ];
+    return view('auth.login', $data);
+  }
+
   public function loginAction(Request $request)
   {
 
@@ -29,13 +38,19 @@ class AuthController extends Controller
 
       return redirect()->intended('/');
     } else {
-      return back()->with('error', 'Login Failed');
+      return back()->with('warning', 'Username / Password salah.');
     }
   }
 
-  public function resetPassword(?int $user_id = null)
+  public function resetPassword($user_id = null)
   {
-    return view('auth.reset_password', compact('user_id'));
+    $user_id = base64_decode($user_id);
+    $data = [
+      'login' => true,
+      'user_id' => $user_id,
+      'title' => 'SIGN IN'
+    ];
+    return view('auth.reset_password', $data);
   }
 
   public function storeReset(Request $request)
@@ -49,7 +64,7 @@ class AuthController extends Controller
       $user->password = bcrypt($request->password);
       $user->save();
 
-      return redirect()->route('login')->with('success', 'Berhasil merubah password !');
+      return redirect('/login')->with('success', 'Berhasil merubah password !');
     } catch (\Exception $e) {
       return back()->with('error', $e->getMessage());
     }
