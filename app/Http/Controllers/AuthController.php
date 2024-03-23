@@ -71,11 +71,7 @@ class AuthController extends Controller
       $id = base64_decode($id);
 
       $rules = [
-        'password' => ['required', 'min', Password::min(8)
-          ->letters()
-          ->mixedCase()
-          ->numbers()
-          ->symbols()],
+        'password' => ['required', 'min:8'],
       ];
 
       $validator = Validator::make(['password' => $request->password], $rules);
