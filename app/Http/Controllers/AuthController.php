@@ -91,7 +91,7 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return redirect('/login')->with('success', 'BERHASIL MENGUBAH KATA SANDI.');
+        return redirect('/')->with('success', 'BERHASIL MENGUBAH KATA SANDI.');
       } else {
         return back()->with('error', 'USER TIDAK DITEMUKAN.');
       }
