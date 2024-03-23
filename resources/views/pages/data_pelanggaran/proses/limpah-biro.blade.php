@@ -140,7 +140,6 @@
                                     </div>
                                 @else
                                     <div class="form-buat-surat col-lg-12 mb-3 mt-3">
-                                        {{-- <label for="tgl_pembuatan_surat_perintah" class="form-label"></label> --}}
                                         <select class="form-select border-dark" aria-label="Default select example" name="limpah_polda" id="limpah_polda" required>
                                                 <option value="" class="text-center">PILIH PELIMPAHAN POLDA</option>
                                                 @if (isset($polda))
@@ -195,30 +194,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button> --}}
                 <button type="button" class="btn btn-primary">SIMPAN</button>
             </div>
         </div>
     </div>
 </div>
-
-
-<script>
-    // $(document).ready(function() {
-    //     getNextData()
-    // });
-
-    // function getNextData() {
-    //     console.log($('#test_sprin').val())
-    //     if ($('#test_sprin').val() == 'done') {
-
-    //         $.ajax({
-    //             url: `/pulbaket/view/next-data/` + $('#kasus_id').val(),
-    //             method: "get"
-    //         }).done(function(data) {
-    //             $('.loader-view').css("display", "none");
-    //             $("#viewNext").html(data)
-    //         });
-    //     }
-    // }
-</script>

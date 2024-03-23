@@ -33,15 +33,12 @@
                                         <input type="password" class="form-control pe-5 password-input border-dark" onpaste="return false" placeholder="Enter password" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="password" autocomplete="off" required>
                                         <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                     </div>
-                                    <div id="passwordInput" class="form-text">Password harus berisi 8-20 karakter.</div>
-                                </div>
-                
-                                <div id="password-contain" class="p-3 bg-light mb-2 rounded">
-                                    <h5 class="fs-13">Password harus berisi :</h5>
-                                    <p id="pass-length" class="invalid fs-12 mb-2"> Minimal <b>8 karakter</b></p>
-                                    <p id="pass-lower" class="invalid fs-12 mb-2"> Minimal huruf <b>kecil</b> (a-z)</p>
-                                    <p id="pass-upper" class="invalid fs-12 mb-2"> Minimal huruf <b>kapital</b> (A-Z)</p>
-                                    <p id="pass-number" class="invalid fs-12 mb-0"> Minimal ada <b>angka</b> (0-9)</p>
+                                    <div id="passwordInput" class="form-text mt-3">
+                                        {{-- Password harus berisi 8-20 karakter. --}}
+                                        <h5 class="fs-13">Password harus berisi : </h5>
+                                        <p id="pass-length" class="invalid fs-12 mb-2 form-text"> Minimal <b>8 karakter</b></p>
+                                        <p id="pass-length" class="invalid fs-12 mb-2 form-text"> Kombinasi huruf kecil, besar, angkat dan karakter/simbol</p>
+                                    </div>
                                 </div>
                 
                                 <div class="mt-4">

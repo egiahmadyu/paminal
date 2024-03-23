@@ -40,7 +40,6 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">
-                        {{-- {{ $kasus->no_nota_dinas ? 'DATA NOTA DINAS ' . $kasus->no_nota_dinas : ($kasus->tipe_data == '2' ? 'DATA INFORMASI KHUSUS' : 'DATA LAPORAN INFORMASI') }} --}}
                         @if ($kasus->tipe_data == '1')
                             DATA NOTA DINAS {{ strtoupper($kasus->no_nota_dinas) }}
                         @elseif ($kasus->tipe_data == '2')
@@ -55,10 +54,6 @@
                             <span class="badge bg-warning">DATA DARI YANDUAN DENGAN ID : {{ $kasus->ticket_id }}</span>
                         @endif
                     </h4>
-
-                    {{-- @if ($kasus->status_id == 5 && $nd_hasil_gelar)
-                        <button class="btn btn-danger" id="rj">RESTORATIVE JUSTICE</button>
-                    @endif --}}
 
                 </div><!-- end card header -->
 
@@ -113,24 +108,5 @@
                 $("#viewProses").html(data)
             });
         }
-
-        // function getValue() {
-        //     console.log($('#editor').text())
-        // }
-
-        // $(function() {
-        //     $( "#datepicker" ).datepicker({
-        //         autoclose:true,
-        //         todayHighlight:true,
-        //         format:'yyyy-mm-dd',
-        //         language: 'id'
-        //     });
-        //     $( "#datepicker_tgl_kejadian" ).datepicker({
-        //         autoclose:true,
-        //         todayHighlight:true,
-        //         format:'yyyy-mm-dd',
-        //         language: 'id'
-        //     });
-        // });
     </script>
 @endsection

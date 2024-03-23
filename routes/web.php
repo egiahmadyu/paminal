@@ -58,10 +58,10 @@ Route::middleware(['auth'])->group(function () {
 
     //Dashboard
     Route::prefix('/')->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->name('dashboard');
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/get-chart/{tipe}', [DashboardController::class, 'getDataChart'])->name('get.chart');
         Route::get('/get-data-dumas/{tipe}', [DashboardController::class, 'getDataDumas'])->name('get.data.dumas');
-        Route::get('/get-data/{tipe}', [DashboardController::class, 'getData'])->name('dashboard')->name('get.data');
+        Route::get('/get-data/{tipe}', [DashboardController::class, 'getData'])->name('get.data');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 

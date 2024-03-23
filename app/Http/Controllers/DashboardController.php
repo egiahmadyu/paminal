@@ -6,6 +6,7 @@ use App\Models\DataPelanggar;
 use App\Models\Datasemen;
 use App\Models\Polda;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception\InvalidOrderException;
@@ -41,7 +42,7 @@ class DashboardController extends Controller
     public function getDataChart($tipe, Request $request)
     {
         try {
-            $data = null;
+            $data = [];
             if ($tipe == 'trend_dumas') {
                 $data = $this->getTrendDumas();
             } elseif ($tipe == 'statistik_bulanan') {
@@ -51,12 +52,13 @@ class DashboardController extends Controller
             }
 
             return response()->json([
-                'status' => 200,
+                'status' => JsonResponse::HTTP_OK,
+                'message' => 'success',
                 'data' => $data
             ]);
         } catch (InvalidOrderException $e) {
             return response()->json([
-                'status' => 500,
+                'status' => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => $e->getMessage()
             ]);
         }
@@ -65,7 +67,7 @@ class DashboardController extends Controller
     public function getData($tipe, Request $request)
     {
         try {
-            // $data = null;
+            $data = 0;
             if ($tipe == 'status_dumas') {
                 $data = $this->getStatusDumas($request->value);
             } elseif ($tipe == 'limpah_polda') {
@@ -75,12 +77,13 @@ class DashboardController extends Controller
             }
 
             return response()->json([
-                'status' => 200,
+                'status' => JsonResponse::HTTP_OK,
+                'message' => 'success',
                 'data' => $data,
             ]);
         } catch (InvalidOrderException $e) {
             return response()->json([
-                'status' => 500,
+                'status' => JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => $e->getMessage()
             ]);
         }
@@ -89,7 +92,7 @@ class DashboardController extends Controller
     public function getLimpahDen($tipe)
     {
         try {
-            $result = null;
+            $result = 0;
             if ($tipe == 'POLDA') {
                 $result = DataPelanggar::join('limpah_poldas', 'limpah_poldas.data_pelanggar_id', '=', 'data_pelanggars.id')->count();
             } else {
@@ -101,7 +104,7 @@ class DashboardController extends Controller
             }
 
             return $result;
-        } catch (\Throwable $e) {
+        } catch (InvalidOrderException $e) {
             return $e->getMessage();
         }
     }
@@ -109,12 +112,11 @@ class DashboardController extends Controller
     public function getLimpahPolda($tipe)
     {
         try {
-            //code...
             $result = DataPelanggar::join('limpah_poldas as lp', 'lp.data_pelanggar_id', '=', 'data_pelanggars.id')
                 ->where('lp.polda_id', '=', $tipe)
                 ->count();
             return $result;
-        } catch (\Throwable $e) {
+        } catch (InvalidOrderException $e) {
             return $e->getMessage();
         }
     }
@@ -122,7 +124,7 @@ class DashboardController extends Controller
     public function getStatusDumas($tipe)
     {
         try {
-            $data = null;
+            $data = 0;
             if ($tipe == 'terbukti') {
                 $data = DataPelanggar::join('l_h_p_histories', 'l_h_p_histories.data_pelanggar_id', '=', 'data_pelanggars.id')
                     ->where('l_h_p_histories.hasil_penyelidikan', '=', '1')
@@ -141,7 +143,7 @@ class DashboardController extends Controller
                     ->count();
             }
             return $data;
-        } catch (\Throwable $e) {
+        } catch (InvalidOrderException $e) {
             return $e->getMessage();
         }
     }

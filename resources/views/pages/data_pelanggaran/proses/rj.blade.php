@@ -142,23 +142,3 @@
     </div>
 </div>
 
-
-<script>
-    // $(document).ready(function() {
-    //     getNextData()
-    // });
-
-    // function getNextData() {
-    //     console.log($('#test_sprin').val())
-    //     if ($('#test_sprin').val() == 'done') {
-
-    //         $.ajax({
-    //             url: `/pulbaket/view/next-data/` + $('#kasus_id').val(),
-    //             method: "get"
-    //         }).done(function(data) {
-    //             $('.loader-view').css("display", "none");
-    //             $("#viewNext").html(data)
-    //         });
-    //     }
-    // }
-</script>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -22,24 +24,29 @@ class AuthController extends Controller
   public function loginAction(Request $request)
   {
 
-    $credentials = $request->validate([
-      'username' => ['required'],
-      'password' => ['required'],
-    ]);
+    try {
+      //code...
+      $request->validate([
+        'username' => 'required',
+        'password' => 'required',
+      ]);
 
-    $check = Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']]);
+      $check = Auth::attempt(['username' => $request->username, 'password' => $request->password]);
 
-    if ($check) {
-      $request->session()->regenerate();
+      if ($check) {
+        $request->session()->regenerate();
 
-      if ($request->password == '123456') {
-        $user = User::where('username', $request->username)->first();
-        return redirect()->route('reset.password', ['user_id' => $user->id])->with('error', 'Harap ubah password anda !');
+        if ($request->password == '123456') {
+          $user = User::where('username', $request->username)->first();
+          return redirect()->route('reset.password', ['user_id' => $user->id])->with('error', 'HARAP UBAH KATA SANDI ANDA.');
+        }
+
+        return redirect()->route('dashboard')->with('info', 'BERHASIL MASUK.');
+      } else {
+        return back()->with('warning', 'USERNAME / KATA SANDI SALAH.');
       }
-
-      return redirect()->intended('/');
-    } else {
-      return back()->with('warning', 'Username / Password salah.');
+    } catch (\Exception $e) {
+      return back()->with('error', $e->getMessage());
     }
   }
 
@@ -49,7 +56,7 @@ class AuthController extends Controller
     $data = [
       'login' => true,
       'user_id' => $user_id,
-      'title' => 'SIGN IN'
+      'title' => 'RESET PASSWORD'
     ];
     return view('auth.reset_password', $data);
   }
@@ -57,17 +64,19 @@ class AuthController extends Controller
   public function storeReset(Request $request, $id)
   {
     if ($request->password == '123456') {
-      return back()->with('error', 'Gagal mengganti password');
+      return back()->with('error', 'GAGAL MENGGANTI KATA SANDI.');
     }
 
     try {
       $id = base64_decode($id);
 
       $rules = [
-        'password' => 'required|min:8',
+        'password' => ['required', 'min', Password::min(8)
+          ->letters()
+          ->mixedCase()
+          ->numbers()
+          ->symbols()],
       ];
-
-
 
       $validator = Validator::make(['password' => $request->password], $rules);
       if ($validator->fails()) {
@@ -86,9 +95,9 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return redirect('/login')->with('success', 'Berhasil merubah password !');
+        return redirect('/login')->with('success', 'BERHASIL MENGUBAH KATA SANDI.');
       } else {
-        return back()->with('error', 'User tidak ditemukan.');
+        return back()->with('error', 'USER TIDAK DITEMUKAN.');
       }
     } catch (\Exception $e) {
       return back()->with('error', $e->getMessage());
@@ -98,6 +107,6 @@ class AuthController extends Controller
   public function logout()
   {
     Auth::logout();
-    return redirect('/login');
+    return redirect()->route('login')->with('info', 'ANDA TELAH KELUAR.');
   }
 }

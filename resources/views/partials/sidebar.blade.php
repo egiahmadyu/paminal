@@ -101,12 +101,6 @@
                     </li>
                 @endcan
 
-                {{-- <li class="nav-item">
-                    <a href="{{ route('logout') }}" class="nav-link menu-link">
-                        <i class="far fa-sign-out-alt"></i> <span data-key="t-dashboard">Logout</span>
-                    </a>
-                </li> --}}
-
                 @can('manage-auth')
                     <li class="menu-title"><span data-key="t-menu">SETTING</span></li>
                     <li class="nav-item">
@@ -139,9 +133,6 @@
                         </div>
                     </center>
                 </li>
-                <!-- <li class="nav-item">
-                    <img src="/maskot-polri.png" alt="" class="img-fluid">
-                </li> -->
 
             </ul>
 
